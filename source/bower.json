@@ -1,0 +1,16 @@
+{
+  "name": "bower_files",
+  "dependencies": {
+    "bootstrap-sass": "3.3.6",
+    "angular": "1.4.8",
+    "angular-route": "1.4.8",
+    "underscore": "1.8.3",
+    "bootstrap-sass": "3.3.7",
+    "bootstrap": "3.3.7",
+    "jquery": "2.2.0",
+    "js-cookie": "2.2.1",
+    "querystring": "3.46.1",
+    "kanto": "0.0.2",
+    "cyberhawk": "0.0.1"
+  }
+}

@@ -1,0 +1,26 @@
+FROM darthjee/production_plague_inc-base:0.0.1 as base
+
+####################################
+
+FROM base as builder
+
+COPY --chown=app:app ./source/ /home/app/app/
+
+RUN bundle install --clean --without development test;
+
+RUN rm /home/app/app/public/assets/* -f
+RUN rm /home/app/app/spec -rf
+RUN bower install;
+RUN RAILS_ENV=production rails assets:precompile
+RUN rm /home/app/app/assets -rf
+RUN rm /home/app/app/vendor/assets -rf
+RUN rm /home/app/app/log/* -f
+RUN rm /home/app/app/tmp/* -rf
+
+##################################
+
+FROM base
+
+COPY --chown=app:app --from=builder /home/app/app/ /home/app/app/
+
+RUN bundle install --clean --without development test

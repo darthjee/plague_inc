@@ -1,0 +1,76 @@
+version: '3'
+services:
+  plague_inc_mysql:
+    image: mysql:5.7
+    container_name: plague_inc_mysql
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: plague_inc
+    ports:
+      - 127.0.0.1:$PLAGUE_INC_MYSQL_PORT:3306
+
+  #################### Base  ####################
+
+  base: &base
+    image: darthjee/plague_inc
+    volumes:
+      - ./source:/home/app/app
+    links:
+      - plague_inc_mysql:mysql
+    env_file: .env
+
+
+  base_build:
+    <<: *base
+    build:
+      context: .
+      dockerfile: Dockerfile.plague_inc
+    command: echo done
+
+  production_base_build:
+    image: darthjee/production_plague_inc
+    env_file: .env
+    environment:
+      RAILS_ENV: production
+    build:
+      context: .
+      dockerfile: Dockerfile.production_plague_inc
+    links:
+      - plague_inc_mysql:mysql
+    command: echo done
+  #################### CONTAINERS ####################
+
+  plague_inc_app:
+    <<: *base
+    container_name: plague_inc_app
+    command: /bin/bash bin/server.sh
+    depends_on: [base_build]
+    ports:
+      - 127.0.0.1:3000:3000
+    environment:
+      - RAILS_ENV=development
+      - PLAGUE_INC_MYSQL_PORT=3306
+
+  plague_inc_tests:
+    <<: *base
+    container_name: plague_inc_tests
+    command: /bin/bash bin/tests.sh
+    depends_on: [base_build]
+    environment:
+      - RAILS_ENV=test
+
+  plague_inc_root:
+    <<: *base
+    user: root
+    container_name: plague_inc_root
+    command: /bin/bash
+    depends_on: [base_build]
+  plague_inc_production:
+    depends_on: [production_base_build, plague_inc_mysql]
+    container_name: plague_inc_production
+    image: darthjee/production_plague_inc
+    links:
+      - plague_inc_mysql:mysql
+    env_file: .env
+    environment:
+      RAILS_ENV: production

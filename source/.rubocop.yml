@@ -1,0 +1,43 @@
+require: rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 2.5
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'db/**/*.rb'
+    - 'spec/**/*_spec.rb'
+    - 'spec/support/**/*.rb'
+
+Style/MixinUsage:
+  Exclude:
+    - 'bin/*'
+
+Metrics/LineLength:
+  Exclude:
+    - 'db/schema.rb'
+    - 'spec/spec_helper.rb'
+    - 'config/environments/*.rb'
+    - 'config/initializers/content_security_policy.rb'
+
+Style/StringLiterals:
+  Exclude:
+    - 'db/schema.rb'
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - 'db/schema.rb'
+
+Style/NumericLiterals:
+  Exclude:
+    - 'db/schema.rb'
+
+Layout/EmptyLinesAroundBlockBody:
+  Exclude:
+    - 'db/schema.rb'
+
+RSpec/NestedGroups:
+  Max: 4
