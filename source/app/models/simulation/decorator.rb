@@ -6,4 +6,3 @@ class Simulation < ApplicationRecord
     expose :name
   end
 end
-

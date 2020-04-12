@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateSimulations < ActiveRecord::Migration[5.2]
   def change
     create_table :simulations do |t|

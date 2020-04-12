@@ -26,7 +26,7 @@ describe SimulationsController do
       end
 
       it do
-        expect(response).to redirect_to("#/simulations/new")
+        expect(response).to redirect_to('#/simulations/new')
       end
     end
 
@@ -79,12 +79,12 @@ describe SimulationsController do
         get :index
       end
 
-      it { expect(response).to redirect_to("#/simulations") }
+      it { expect(response).to redirect_to('#/simulations') }
     end
   end
 
   describe 'POST create' do
-   context 'when requesting json format' do
+    context 'when requesting json format' do
       let(:simulation) { Simulation.last }
       let(:parameters) do
         { format: :json, simulation: payload }
