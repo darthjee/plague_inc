@@ -4,12 +4,12 @@ jobs:
     docker:
       - image: darthjee/circleci_plague_inc-base:0.0.1
         environment:
-          DR_MARIO_MYSQL_HOST: mysql
-          DR_MARIO_MYSQL_PORT: 3306
-          DR_MARIO_MYSQL_USER: plague_inc
-          DR_MARIO_MYSQL_NAME: plague_inc
-          DR_MARIO_MYSQL_PASSWORD: plague_inc
-          DR_MARIO_PASSWORD_SALT: abcd
+          PLAGUE_INC_MYSQL_HOST: mysql
+          PLAGUE_INC_MYSQL_PORT: 3306
+          PLAGUE_INC_MYSQL_USER: plague_inc
+          PLAGUE_INC_MYSQL_NAME: plague_inc
+          PLAGUE_INC_MYSQL_PASSWORD: plague_inc
+          PLAGUE_INC_PASSWORD_SALT: abcd
       - image: circleci/mysql:5.7
         name: mysql
         environment:
