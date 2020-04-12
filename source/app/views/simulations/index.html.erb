@@ -6,6 +6,11 @@
       </div>
       <div class="panel-body">
         <ul class="list-group">
+          <li class="list-group-item">
+            <%= angular_safe_link_to(:new_simulation) do %>
+              + New simulation
+            <% end %>
+          </li>
           <li class="list-group-item" ng-repeat="simulation in gnc.data">
             <%= angular_safe_link_to(:simulation, id: "{{simulation.id}}") do %>
               {{simulation.name}}

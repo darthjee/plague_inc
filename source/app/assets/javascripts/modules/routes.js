@@ -17,7 +17,7 @@
         controllerAs: 'hc'
       }
     }, {
-      routes: ['/simulations/:id', '/simulations']
+      routes: ['/simulations/new', '/simulations/:id', '/simulations']
     }];
     provider.$get().bindRoutes();
   }]);
