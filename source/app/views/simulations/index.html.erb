@@ -8,7 +8,7 @@
         <ul class="list-group">
           <li class="list-group-item" ng-repeat="simulation in gnc.data">
             <%= angular_safe_link_to(:simulation, id: "{{simulation.id}}") do %>
-              {{simulation.name}}</a>
+              {{simulation.name}}
             <% end %>
           </li>
         </ul>
