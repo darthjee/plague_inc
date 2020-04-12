@@ -16,6 +16,8 @@
         controller: 'Home.Controller',
         controllerAs: 'hc'
       }
+    }, {
+      routes: ['/simulations/new', '/simulations/:id', '/simulations']
     }];
     provider.$get().bindRoutes();
   }]);
