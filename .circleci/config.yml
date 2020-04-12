@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: darthjee/circleci_plague_inc-base:0.2.1
+      - image: darthjee/circleci_plague_inc-base:0.0.1
         environment:
           DR_MARIO_MYSQL_HOST: mysql
           DR_MARIO_MYSQL_PORT: 3306
