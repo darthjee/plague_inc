@@ -11,7 +11,11 @@
     }
 
     provider.configs = [{
-      routes: []
+      routes: ['/'],
+      config: {
+        controller: 'Home.Controller',
+        controllerAs: 'hc'
+      }
     }];
     provider.$get().bindRoutes();
   }]);
