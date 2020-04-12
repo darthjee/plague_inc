@@ -11,7 +11,7 @@
     }
 
     provider.configs = [{
-      routes: ['/'],
+      routes: ['/', '/simulations'],
       config: {
         controller: 'Home.Controller',
         controllerAs: 'hc'

@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-md-3 col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Simulations
+      </div>
+      <div class="panel-body">
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="simulation in gnc.data">
+            <%= angular_safe_link_to(:simulation, id: "{{simulation.id}}") do %>
+              {{simulation.name}}</a>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
