@@ -60,8 +60,7 @@ jobs:
           name: Coverage Test Report
           command: cc-test-reporter after-build --exit-code $?
   build-production:
-    docker:
-      - image: darthjee/docker:0.1.0
+    machine: true
     steps:
       - checkout
       - run:
