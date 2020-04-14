@@ -1,4 +1,18 @@
 version: 2
+workflows:
+  version: 2
+  test:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - master
+      - build-production:
+          filters:
+            branches:
+              ignore:
+                - master
 jobs:
   build:
     docker:
@@ -45,3 +59,11 @@ jobs:
       - run:
           name: Coverage Test Report
           command: cc-test-reporter after-build --exit-code $?
+  build-production:
+    docker:
+      - image: darthjee/docker:0.1.0
+    steps:
+      - checkout
+      - run:
+          name: Make Build
+          command: make PROJECT=production_plague_inc build
