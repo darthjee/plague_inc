@@ -1,6 +1,17 @@
 version: 2
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
+      - build-and-release:
+          requires: [test]
+          filters:
+            branches:
+              only:
+                - master
 jobs:
-  build:
+  test:
     docker:
       - image: darthjee/circleci_plague_inc-base:0.0.1
         environment:
@@ -45,3 +56,25 @@ jobs:
       - run:
           name: Coverage Test Report
           command: cc-test-reporter after-build --exit-code $?
+  build-and-release:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Make Build
+          command: make PROJECT=production_plague_inc build
+      - run:
+          name: Build heroku image
+          command: make build-heroku
+      - run:
+          name: Install Heroku
+          command: curl https://cli-assets.heroku.com/install.sh | sh
+      - run:
+          name: set heroku app
+          command: heroku git:remote -a plague-inc
+      - run:
+          name: Heroku docker login
+          command: heroku container:login
+      - run:
+          name: Release
+          command: make release

@@ -8,9 +8,12 @@ COPY --chown=app:app ./source/ /home/app/app/
 
 RUN bundle install --clean --without development test;
 
+RUN rm /home/app/app/config/master.key -f
+RUN rm /home/app/app/config/credentials.yml.enc -f
 RUN rm /home/app/app/public/assets/* -f
 RUN rm /home/app/app/spec -rf
-RUN bower install;
+RUN EDITOR=none rails credentials:edit
+RUN rake bower:install
 RUN RAILS_ENV=production rails assets:precompile
 RUN rm /home/app/app/assets -rf
 RUN rm /home/app/app/vendor/assets -rf
