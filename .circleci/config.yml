@@ -8,7 +8,7 @@ workflows:
           requires: [test]
           filters:
             branches:
-              ignore:
+              only:
                 - master
 jobs:
   test:
