@@ -69,3 +69,6 @@ jobs:
       - run:
           name: Build heroku image
           command: make build-heroku
+      - run:
+          name: Release
+          command: make release
