@@ -3,12 +3,9 @@ workflows:
   version: 2
   test:
     jobs:
-      - test:
-          filters:
-            branches:
-              only:
-                - master
-      - build-production:
+      - test
+      - build-and-release:
+          requires: [test]
           filters:
             branches:
               ignore:
@@ -59,7 +56,7 @@ jobs:
       - run:
           name: Coverage Test Report
           command: cc-test-reporter after-build --exit-code $?
-  build-production:
+  build-and-release:
     machine: true
     steps:
       - checkout
