@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Simulation::Decorator do
   subject(:decorator) { described_class.new(object) }
 
-  let(:attributes) { %w[id name] }
+  let(:attributes) { %w[id name algorithm] }
 
   describe '#to_json' do
     context 'when object is one entity' do
@@ -61,7 +61,10 @@ describe Simulation::Decorator do
         let(:expected_errors) do
           {
             name: ["can't be blank"],
-            algorithm: ["is not included in the list"]
+            algorithm: [
+              "can't be blank",
+              "is not included in the list"
+            ]
           }
         end
 
