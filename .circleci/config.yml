@@ -9,7 +9,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - release-fix
 jobs:
   test:
     docker:
