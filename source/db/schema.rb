@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(version: 2020_04_16_172306) do
 
   create_table "simulations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
-    t.string "algorithm", default: "infection", null: false
+    t.string "algorithm", null: false
   end
 
 end
