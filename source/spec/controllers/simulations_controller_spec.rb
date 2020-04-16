@@ -91,7 +91,8 @@ describe SimulationsController do
       end
       let(:payload) do
         {
-          name: 'my simulation'
+          name:      'my simulation',
+          algorithm: 'contagion'
         }
       end
 
