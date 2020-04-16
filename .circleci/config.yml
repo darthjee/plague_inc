@@ -6,6 +6,10 @@ workflows:
       - test
       - build-and-release:
           requires: [test]
+          filters:
+            branches:
+              only:
+                - master
 jobs:
   test:
     docker:
