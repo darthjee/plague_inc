@@ -71,7 +71,7 @@ jobs:
           command: curl https://cli-assets.heroku.com/install.sh | sh
       - run:
           name: set heroku app
-          command: heroku git:remote -a plague-inc
+          command: heroku git:remote -a $HEROKU_APP_NAME
       - run:
           name: Heroku docker login
           command: heroku container:login
