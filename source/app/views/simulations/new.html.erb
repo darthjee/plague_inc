@@ -1,22 +1,31 @@
 <form class="form-horizontal">
-  <div class="form-group">
-    <label for="name" class="col-sm-1 control-label">Name</label>
-    <input name="name"
-           id="name"
-           class="col-sm-1"
-           ng-model="gnc.data.name"
-           type="text">
+  <div class="form-group row">
+    <div class="col-sm-1">
+      <label for="name" class="control-label">Name</label>
+    </div>
+    <div class="col-sm-1">
+      <input name="name"
+             id="name"
+             class="form-control col-sm-1"
+             ng-model="gnc.data.name"
+             placeholder="Simulation name"
+             type="text">
+    </div>
   </div>
 
-  <div class="form-group">
-    <label for="name" class="col-sm-1 control-label">Algorithm</label>
-    <select ng-model="gnc.data.algorithm">
-      <option value="">Select</option>
-      <option value="contagion">Contagion</option>
-    </select>
+  <div class="form-group row">
+    <div class="col-sm-1">
+      <label for="name" class="control-label">Algorithm</label>
+    </div>
+    <div class="col-sm-1">
+      <select ng-model="gnc.data.algorithm" class="form-control">
+        <option value="">Select</option>
+        <option value="contagion">Contagion</option>
+      </select>
+    </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group row">
     <div class="col-sm-offset-1 col-sm-1">
       <button ng-click="gnc.save()"
               type"submit"
