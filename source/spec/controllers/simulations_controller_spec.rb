@@ -91,7 +91,8 @@ describe SimulationsController do
       end
       let(:payload) do
         {
-          name: 'my simulation'
+          name: 'my simulation',
+          algorithm: 'contagion'
         }
       end
 
@@ -113,6 +114,28 @@ describe SimulationsController do
         post :create, params: parameters
 
         expect(response.body).to eq(expected_json)
+      end
+
+      context 'when there are errors' do
+        let(:payload)    { { algorithm: 'invalid' } }
+        let(:simulation) { Simulation.new(payload) }
+
+        it do
+          post :create, params: parameters
+
+          expect(response).not_to be_successful
+        end
+
+        it do
+          expect { post :create, params: parameters }
+            .not_to change(Simulation, :count)
+        end
+
+        it 'returns simulation with errors' do
+          post :create, params: parameters
+
+          expect(response.body).to eq(expected_json)
+        end
       end
     end
   end

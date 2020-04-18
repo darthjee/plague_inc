@@ -3,5 +3,6 @@
 FactoryBot.define do
   factory :simulation, class: 'Simulation' do
     sequence(:name) { |n| "Simulation ###{n}" }
+    algorithm       { 'contagion' }
   end
 end

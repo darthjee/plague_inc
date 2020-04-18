@@ -11,7 +11,11 @@
 
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li>first link</li>
+        <li>
+          <%= angular_safe_link_to(:simulations) do %>
+            Simulations
+          <% end %>
+        </li>
       </ul>
     </div>
   </div>
