@@ -91,7 +91,7 @@ describe SimulationsController do
       end
       let(:payload) do
         {
-          name:      'my simulation',
+          name: 'my simulation',
           algorithm: 'contagion'
         }
       end
@@ -119,7 +119,6 @@ describe SimulationsController do
       context 'when there are errors' do
         let(:payload)    { { algorithm: 'invalid' } }
         let(:simulation) { Simulation.new(payload) }
-
 
         it do
           post :create, params: parameters

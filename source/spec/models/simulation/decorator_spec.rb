@@ -19,14 +19,14 @@ describe Simulation::Decorator do
       end
 
       context 'when object is invalid' do
-        let(:object)  do
+        let(:object) do
           build(:simulation, name: nil, algorithm: 'invalid')
         end
 
         let(:expected_errors) do
           {
             name: ["can't be blank"],
-            algorithm: ["is not included in the list"]
+            algorithm: ['is not included in the list']
           }
         end
 
@@ -63,7 +63,7 @@ describe Simulation::Decorator do
             name: ["can't be blank"],
             algorithm: [
               "can't be blank",
-              "is not included in the list"
+              'is not included in the list'
             ]
           }
         end

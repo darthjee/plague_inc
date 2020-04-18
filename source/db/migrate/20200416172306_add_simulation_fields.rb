@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class AddSimulationFields < ActiveRecord::Migration[5.2]
   def change
-    change_column :simulations, :name, :string, null: false, default: "UNAMED"
+    change_column :simulations, :name, :string, null: false, default: 'UNAMED'
     change_column :simulations, :name, :string, null: false, default: nil
 
     change_table :simulations do |t|
