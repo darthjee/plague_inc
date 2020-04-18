@@ -8,6 +8,7 @@ class AddSimulationFields < ActiveRecord::Migration[5.2]
     change_table :simulations do |t|
       t.string :algorithm, size: 10, null: false, default: :contagion
     end
-    change_column :simulations, :algorithm, :string, size: 10, null: false, default: nil
+    change_column :simulations, :algorithm,
+                  :string, size: 10, null: false, default: nil
   end
 end
