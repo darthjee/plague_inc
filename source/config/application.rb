@@ -22,8 +22,7 @@ module PlagueInc
     # your application.
     %w[
       vendor/assets/bower_components
-      vendor/assets/bower_components/bootstrap-sass/assets/fonts/bootstrap
-      vendor/assets/bower_components/bootstrap-sass/assets/javascripts
+      vendor/assets/bower_components/bootstrap/dist/css/
     ].each do |path|
       config.assets.paths << Rails.root.join(*path.split('/'))
     end

@@ -13,8 +13,6 @@
 //= require jquery
 //= require js-cookie
 //= require bootstrap
-//= require bootstrap/transition
-//= require bootstrap/collapse
 //= require underscore
 //= require angular/angular
 //= require angular-route/angular-route
