@@ -118,7 +118,7 @@ describe SimulationsController do
 
       context 'when there are errors' do
         let(:payload)    { { algorithm: 'invalid' } }
-        let(:simulation) { Simulation.new(payload) }
+        let(:simulation) { Simulation.new(payload).tap(&:valid?) }
 
         it do
           post :create, params: parameters
