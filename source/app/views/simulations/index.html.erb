@@ -1,23 +1,23 @@
-<div class="row">
-  <div class="col-md-3 col-sm-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
+<div class="card-deck mb-3">
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header">
+      <h4 class="my-0 font-weight-normal">
         Simulations
-      </div>
-      <div class="panel-body">
-        <ul class="list-group">
-          <li class="list-group-item">
-            <%= angular_safe_link_to(:new_simulation) do %>
-              + New simulation
-            <% end %>
-          </li>
-          <li class="list-group-item" ng-repeat="simulation in gnc.data">
-            <%= angular_safe_link_to(:simulation, id: "{{simulation.id}}") do %>
-              {{simulation.name}}
-            <% end %>
-          </li>
-        </ul>
-      </div>
+      </h4>
+    </div>
+    <div class="card-body">
+      <ul class="list-group mt-3 mb-4">
+        <li class="list-group-item">
+          <%= angular_safe_link_to(:new_simulation, {}, class: "text-dark") do %>
+            + New simulation
+          <% end %>
+        </li>
+        <li class="list-group-item" ng-repeat="simulation in gnc.data">
+          <%= angular_safe_link_to(:simulation, { id: "{{simulation.id}}" }, class: "text-dark") do %>
+            {{simulation.name}}
+          <% end %>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
