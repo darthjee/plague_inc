@@ -1,38 +1,48 @@
-<form class="form-horizontal">
-  <div class="form-group row">
-    <div class="col-sm-1">
-      <label for="name" class="control-label">Name</label>
+<div class="card-deck mb-3 col-lg-6 col-12">
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header">
+      <h4 class="my-0 font-weight-normal">
+        New Simulation
+      </h4>
     </div>
-    <div class="col-sm-1">
-      <input name="name"
-             id="name"
-             class="form-control col-sm-1"
-             ng-model="gnc.data.name"
-             placeholder="Simulation name"
-             type="text">
+    <div class="card-body">
+      <form class="form-horizontal">
+        <div class="form-group row">
+          <div class="col-2">
+            <label for="name" class="control-label">Name</label>
+          </div>
+          <div class="col-10">
+            <input name="name"
+                   id="name"
+                   class="form-control"
+                   ng-model="gnc.data.name"
+                   placeholder="Simulation name"
+                   type="text">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-2">
+            <label for="name" class="control-label">Algorithm</label>
+          </div>
+          <div class="col-10">
+            <select ng-model="gnc.data.algorithm" class="form-control">
+              <option value="">Select</option>
+              <option value="contagion">Contagion</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="offset-2 col-10">
+            <button ng-click="gnc.save()"
+                    type"submit"
+                    class="btn btn-primary">
+              Save
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-
-  <div class="form-group row">
-    <div class="col-sm-1">
-      <label for="name" class="control-label">Algorithm</label>
-    </div>
-    <div class="col-sm-1">
-      <select ng-model="gnc.data.algorithm" class="form-control">
-        <option value="">Select</option>
-        <option value="contagion">Contagion</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <div class="col-sm-offset-1 col-sm-1">
-      <button ng-click="gnc.save()"
-              type"submit"
-              class="btn btn-default">
-        Save
-      </button>
-    </div>
-  </div>
-</form>
-
+</div>
