@@ -1,14 +1,13 @@
 module FormHelper
   def bootstrap_input(model, field, placeholder: nil)
-    "<input name='#{field}'
-            id='#{field}'
-            class='form-control'
-            ng-class=\"{'is-invalid': #{model}.errors.#{field}}\"
-            ng-model='#{model}.#{field}'
-            placeholder='#{placeholder}'
-            type='text'>
-     <div class='invalid-feedback' ng-repeat='error in #{model}.errors.#{field}'>
-        {{error}}
-     </div>".html_safe
+    locals = {
+      ng_errors: [model, :errors, field].join('.'),
+      ng_model: [model, field].join('.'),
+      model: model,
+      field: field,
+      placeholder: placeholder
+    }
+
+    render partial: 'templates/forms/input', locals: locals
   end
 end

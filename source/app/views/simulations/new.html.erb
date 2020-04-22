@@ -12,16 +12,7 @@
             <label for="name" class="control-label">Name</label>
           </div>
           <div class="col-10">
-            <input name="name"
-                   id="name"
-                   class="form-control"
-                   ng-class="{'is-invalid': gnc.data.errors.name}"
-                   ng-model="gnc.data.name"
-                   placeholder="Simulation name"
-                   type="text">
-            <div class="invalid-feedback" ng-repeat="error in gnc.data.errors.name">
-              {{error}}
-            </div>
+            <%= bootstrap_input('gnc.data', :name, placeholder: "Simulation name") %>
           </div>
         </div>
 
