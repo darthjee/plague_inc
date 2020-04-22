@@ -3,14 +3,15 @@
     <label for="<%= field %>" class="control-label"><%= label %></label>
   </div>
   <div class="col-10">
-    <input 
+    <select
        id="<%= field %>"
        name="<%= field %>"
-       class="form-control"
-       ng-class="{'is-invalid': <%= ng_errors %>}"
        ng-model="<%= ng_model %>"
-       placeholder="<%= placeholder %>"
-       type="text" />
+       class="form-control"
+       ng-class="{'is-invalid': <%= ng_errors %>}">
+      <option value="">Select</option>
+      <option value="contagion">Contagion</option>
+    </select>
 
     <div class="invalid-feedback" ng-repeat="error in <%= ng_errors %>">
       {{error}}

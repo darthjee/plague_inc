@@ -8,18 +8,7 @@
     <div class="card-body">
       <form class="form-horizontal">
         <%= bootstrap_input('gnc.data', :name, placeholder: "Simulation name") %>
-
-        <div class="form-group row">
-          <div class="col-2">
-            <label for="name" class="control-label">Algorithm</label>
-          </div>
-          <div class="col-10">
-            <select ng-model="gnc.data.algorithm" class="form-control">
-              <option value="">Select</option>
-              <option value="contagion">Contagion</option>
-            </select>
-          </div>
-        </div>
+        <%= bootstrap_select('gnc.data', :algorithm) %>
 
         <div class="form-group row">
           <div class="offset-2 col-10">

@@ -11,4 +11,16 @@ module FormHelper
 
     render partial: 'templates/forms/input', locals: locals
   end
+
+  def bootstrap_select(model, field, label: field.capitalize)
+    locals = {
+      label: label,
+      ng_errors: [model, :errors, field].join('.'),
+      ng_model: [model, field].join('.'),
+      model: model,
+      field: field
+    }
+
+    render partial: 'templates/forms/select', locals: locals
+  end
 end
