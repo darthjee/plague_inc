@@ -4,12 +4,19 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     belongs_to :simulation
 
-    validates_presence_of :simulation,
-      :lethality,
-      :days_till_recovery,
-      :days_till_sympthoms,
-      :days_till_start_death
+    validates_presence_of :simulation
 
-    validates_inclusion_of :lethality, in: ((0.0..1.0))
+    validates :lethality,
+              presence: true,
+              inclusion: { in: (0.0..1.0) }
+    validates :days_till_recovery,
+              presence: true,
+              numericality: { greater_than_or_equal_to: 0 }
+    validates :days_till_sympthoms,
+              presence: true,
+              numericality: { greater_than_or_equal_to: 0 }
+    validates :days_till_start_death,
+              presence: true,
+              numericality: { greater_than_or_equal_to: 0 }
   end
 end

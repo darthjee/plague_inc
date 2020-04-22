@@ -20,4 +20,3 @@ RSpec.describe Simulation, type: :model do
     end
   end
 end
-
