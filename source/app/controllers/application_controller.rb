@@ -3,6 +3,8 @@
 class ApplicationController < ActionController::Base
   include Azeroth::Resourceable
 
+  helper FormHelper
+
   def forbidden
     head :forbidden
   end
