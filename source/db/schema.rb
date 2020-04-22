@@ -10,11 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_16_172306) do
+ActiveRecord::Schema.define(version: 2020_04_22_172255) do
+
+  create_table "simulation_contagions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "simulation_id", null: false
+    t.float "lethality", null: false
+    t.integer "days_till_recovery", null: false
+    t.integer "days_till_sympthoms", null: false
+    t.integer "days_till_start_death", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["simulation_id"], name: "index_simulation_contagions_on_simulation_id", unique: true
+  end
 
   create_table "simulations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "algorithm", null: false
   end
 
+  add_foreign_key "simulation_contagions", "simulations"
 end
