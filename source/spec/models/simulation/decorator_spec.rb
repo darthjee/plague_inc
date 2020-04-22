@@ -18,37 +18,39 @@ describe Simulation::Decorator do
         expect(decorator.to_json).to eq(expected_json)
       end
 
-      context 'when object is invalid' do
+      context 'when object is invalid but object has not been validated' do
         let(:object) do
           build(:simulation, name: nil, algorithm: 'invalid')
         end
 
-        context "when object has not been validated" do
-          it 'returns expected json without errors' do
-            expect(decorator.to_json).to eq(expected_json)
-          end
+        it 'returns expected json without errors' do
+          expect(decorator.to_json).to eq(expected_json)
+        end
+      end
+
+      context 'when object is invalid and object has been validated' do
+        let(:object) do
+          build(:simulation, name: nil, algorithm: 'invalid')
         end
 
-        context "when object has been validated" do
-          before { object.valid? }
+        let(:expected_errors) do
+          {
+            name: ["can't be blank"],
+            algorithm: ['is not included in the list']
+          }
+        end
 
-          let(:expected_errors) do
-            {
-              name: ["can't be blank"],
-              algorithm: ['is not included in the list']
-            }
-          end
+        let(:expected_json) do
+          object
+            .as_json
+            .slice(*attributes)
+            .merge(errors: expected_errors).to_json
+        end
 
-          let(:expected_json) do
-            object
-              .as_json
-              .slice(*attributes)
-              .merge(errors: expected_errors).to_json
-          end
+        before { object.valid? }
 
-          it 'returns expected json with errors' do
-            expect(decorator.to_json).to eq(expected_json)
-          end
+        it 'returns expected json with errors' do
+          expect(decorator.to_json).to eq(expected_json)
         end
       end
     end
@@ -66,41 +68,40 @@ describe Simulation::Decorator do
         expect(decorator.to_json).to eq(expected_json)
       end
 
-      context 'when object is a collection with invalid objects' do
-        context "when objects have not been validated" do
-          it 'returns expected json without errors' do
-            expect(decorator.to_json).to eq(expected_json)
-          end
+      context 'when object is a collection of invalid not validated objects' do
+        let(:object) { build_list(:simulation, 3, name: nil, algorithm: nil) }
+
+        it 'returns expected json without errors' do
+          expect(decorator.to_json).to eq(expected_json)
+        end
+      end
+
+      context 'when object is a collection with invalid ivalidated objects' do
+        before { object.each(&:valid?) }
+
+        let(:expected_errors) do
+          {
+            name: ["can't be blank"],
+            algorithm: [
+              "can't be blank",
+              'is not included in the list'
+            ]
+          }
         end
 
-        context "when objects have been validated" do
-          before { object.each(&:valid?) }
+        let(:object) { build_list(:simulation, 3, name: nil, algorithm: nil) }
 
-          let(:expected_errors) do
-            {
-              name: ["can't be blank"],
-              algorithm: [
-                "can't be blank",
-                'is not included in the list'
-              ]
-            }
-          end
+        let(:expected_json) do
+          object.map do |simulation|
+            simulation
+              .as_json
+              .slice(*attributes)
+              .merge(errors: expected_errors)
+          end.to_json
+        end
 
-          let(:object) { build_list(:simulation, 3, name: nil, algorithm: nil) }
-
-          let(:expected_json) do
-            object.map do |simulation|
-              simulation
-                .as_json
-                .slice(*attributes)
-                .merge(errors: expected_errors)
-            end.to_json
-          end
-
-
-          it 'returns expected json' do
-            expect(decorator.to_json).to eq(expected_json)
-          end
+        it 'returns expected json' do
+          expect(decorator.to_json).to eq(expected_json)
         end
       end
     end

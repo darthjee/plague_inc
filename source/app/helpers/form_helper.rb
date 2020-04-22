@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FormHelper
   def bootstrap_input(model, field, placeholder: nil, label: field.capitalize)
     locals = {
