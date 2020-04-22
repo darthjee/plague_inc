@@ -1,6 +1,7 @@
 module FormHelper
-  def bootstrap_input(model, field, placeholder: nil)
+  def bootstrap_input(model, field, placeholder: nil, label: field.capitalize)
     locals = {
+      label: label,
       ng_errors: [model, :errors, field].join('.'),
       ng_model: [model, field].join('.'),
       model: model,
