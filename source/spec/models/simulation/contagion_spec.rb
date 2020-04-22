@@ -7,7 +7,7 @@ RSpec.describe Simulation::Contagion, type: :model do
 
   describe 'validations' do
     it do
-      expect(contagion).to validate_presence_of(:simulation_id)
+      expect(contagion).to validate_presence_of(:simulation)
     end
 
     it do
