@@ -9,8 +9,10 @@
        ng-model="<%= ng_model %>"
        class="form-control"
        ng-class="{'is-invalid': <%= ng_errors %>}">
-      <option value="">Select</option>
-      <option value="contagion">Contagion</option>
+       <option value="">Select</option>
+       <% options.each do |option|%>
+         <option value="<%= option %>"><%= option.capitalize %></option>
+       <% end %>
     </select>
 
     <div class="invalid-feedback" ng-repeat="error in <%= ng_errors %>">
