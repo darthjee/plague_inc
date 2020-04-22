@@ -19,26 +19,29 @@ class Simulation < ApplicationRecord
               presence: true,
               numericality: { greater_than_or_equal_to: 0 }
 
-    validate :validate_days
+    validate :validate_days_till_sympthoms
+    validate :validate_days_till_start_death
 
     private
 
-    def validate_days
+    def validate_days_till_sympthoms
       return unless days_till_recovery
+      return unless days_till_recovery < days_till_sympthoms.to_i
 
-      if days_till_recovery < days_till_sympthoms.to_i
-        errors.add(
-          :days_till_sympthoms,
-          "cannot be greater than days to recovery"
-        )
-      end
+      errors.add(
+        :days_till_sympthoms,
+        'cannot be greater than days to recovery'
+      )
+    end
 
-      if days_till_recovery < days_till_start_death.to_i
-        errors.add(
-          :days_till_start_death,
-          "cannot be greater than days to recovery"
-        )
-      end
+    def validate_days_till_start_death
+      return unless days_till_recovery
+      return unless days_till_recovery < days_till_start_death.to_i
+
+      errors.add(
+        :days_till_start_death,
+        'cannot be greater than days to recovery'
+      )
     end
   end
 end

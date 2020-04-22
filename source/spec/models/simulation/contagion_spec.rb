@@ -46,12 +46,11 @@ RSpec.describe Simulation::Contagion, type: :model do
         .is_greater_than_or_equal_to(0)
     end
 
-    context "when days_till_sympthoms is bigger than days_till_recovery" do
+    context 'when days_till_sympthoms is bigger than days_till_recovery' do
       subject(:contagion) do
         build(:contagion,
               days_till_sympthoms: 11,
-              days_till_recovery: 10
-             )
+              days_till_recovery: 10)
       end
 
       it { expect(contagion).to be_invalid }
@@ -64,12 +63,11 @@ RSpec.describe Simulation::Contagion, type: :model do
       end
     end
 
-    context "when days_till_start_death is bigger than days_till_recovery" do
+    context 'when days_till_start_death is bigger than days_till_recovery' do
       subject(:contagion) do
         build(:contagion,
               days_till_start_death: 11,
-              days_till_recovery: 10
-             )
+              days_till_recovery: 10)
       end
 
       it { expect(contagion).to be_invalid }
