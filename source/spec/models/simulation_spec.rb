@@ -19,4 +19,27 @@ RSpec.describe Simulation, type: :model do
         .in_array(described_class::ALGORITHMS)
     end
   end
+
+  describe '#settings' do
+    it { expect(simulation.settings).to be_nil }
+
+    context 'when simulation has contagion' do
+      subject(:simulation) { build(:simulation, :contagion) }
+
+      it { expect(simulation.settings).to be_a(Simulation::Contagion) }
+
+      it { expect(simulation.settings).to eq(simulation.contagion) }
+    end
+  end
+
+  describe '#settings=' do
+    context 'when settings is a contagion' do
+      let(:settings) { build(:contagion, simulation: nil) }
+
+      it do
+        expect { simulation.settings = settings }
+          .to change(simulation, :contagion)
+      end
+    end
+  end
 end
