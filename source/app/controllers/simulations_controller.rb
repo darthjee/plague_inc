@@ -5,19 +5,22 @@ class SimulationsController < ApplicationController
 
   protect_from_forgery except: [:create]
 
-  resource_for :simulation
-
-  before_action :build_settings, only: [:create]
+  resource_for :simulation, before_save: :build_settings
 
   private
 
   def build_settings
+    simulation.build_contagion(contagion_params)
   end
 
   def simulation_params
-    binding.pry
     params.require(:simulation)
       .permit(:name, :algorithm)
+  end
+
+  def contagion_params
+    params.require(:simulation)
+      .permit(settings: allowed_contagion_params)[:settings]
   end
 
   def allowed_contagion_params
