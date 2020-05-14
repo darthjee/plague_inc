@@ -34,12 +34,12 @@ gem 'jbuilder', '~> 2.5'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
-gem 'azeroth',      '>= 0.3.0'
+gem 'azeroth',      '>= 0.7.0'
 gem 'bower-rails',  '~> 0.12.0'
 gem 'newrelic_rpm', '~> 6.8.0.360'
 gem 'nokogiri',     '1.10.9'
 gem 'rake',         '13.0.1'
-gem 'sinclair',     '1.5.2'
+gem 'sinclair',     '1.6.4'
 gem 'tarquinn',     '0.1.0'
 gem 'turbolinks',   '5.2.1'
 
