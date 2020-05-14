@@ -83,7 +83,7 @@ describe SimulationsController do
     end
   end
 
-  describe 'POST create' do
+  fdescribe 'POST create' do
     context 'when requesting json format' do
       let(:simulation) { Simulation.last }
       let(:parameters) do
@@ -92,7 +92,13 @@ describe SimulationsController do
       let(:payload) do
         {
           name: 'my simulation',
-          algorithm: 'contagion'
+          algorithm: 'contagion',
+          settings: {
+            lethality: 0.5,
+            days_till_recovery: 13,
+            days_till_sympthoms: 12,
+            days_till_start_death: 11
+          }
         }
       end
 
@@ -107,6 +113,12 @@ describe SimulationsController do
       it do
         expect { post :create, params: parameters }
           .to change(Simulation, :count)
+          .by(1)
+      end
+
+      it do
+        expect { post :create, params: parameters }
+          .to change(Simulation::Contagion, :count)
           .by(1)
       end
 
