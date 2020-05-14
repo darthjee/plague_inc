@@ -3,10 +3,15 @@ workflows:
   version: 2
   test:
     jobs:
-      - test
+      - test:
+          filters:
+            tags:
+              only: /.*/
       - build-and-release:
           requires: [test]
           filters:
+            tags:
+              only: /.*/
             branches:
               only:
                 - master
