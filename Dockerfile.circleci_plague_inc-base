@@ -1,5 +1,5 @@
-FROM darthjee/circleci_taa:0.4.2 as base
-FROM darthjee/scripts:0.1.7 as scripts
+FROM darthjee/circleci_taa:0.5.0 as base
+FROM darthjee/scripts:0.1.8 as scripts
 
 ######################################
 
