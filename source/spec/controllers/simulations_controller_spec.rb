@@ -83,7 +83,7 @@ describe SimulationsController do
     end
   end
 
-  fdescribe 'POST create' do
+  describe 'POST create' do
     context 'when requesting json format' do
       let(:simulation) { Simulation.last }
       let(:parameters) do

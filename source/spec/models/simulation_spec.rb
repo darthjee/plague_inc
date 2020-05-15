@@ -18,13 +18,21 @@ RSpec.describe Simulation, type: :model do
       expect(simulation).to validate_inclusion_of(:algorithm)
         .in_array(described_class::ALGORITHMS)
     end
+
+    it do
+      expect(simulation).to validate_presence_of(:settings)
+    end
   end
 
   describe '#settings' do
-    it { expect(simulation.settings).to be_nil }
+    context 'when simulation has no settings at all' do
+      subject(:simulation) { build(:simulation, contagion: nil) }
+
+      it { expect(simulation.settings).to be_nil }
+    end
 
     context 'when simulation has contagion' do
-      subject(:simulation) { build(:simulation, :contagion) }
+      subject(:simulation) { build(:simulation) }
 
       it { expect(simulation.settings).to be_a(Simulation::Contagion) }
 

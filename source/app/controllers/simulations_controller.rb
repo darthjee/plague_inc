@@ -10,7 +10,7 @@ class SimulationsController < ApplicationController
   private
 
   def build_settings
-    simulation.build_contagion(contagion_params)
+    simulation.build_settings(settings_params)
   end
 
   def simulation_params
@@ -18,7 +18,7 @@ class SimulationsController < ApplicationController
       .permit(:name, :algorithm)
   end
 
-  def contagion_params
+  def settings_params
     params.require(:simulation)
       .permit(settings: allowed_contagion_params)[:settings]
   end

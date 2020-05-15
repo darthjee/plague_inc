@@ -7,7 +7,7 @@ class Simulation < ApplicationRecord
 
   has_one :contagion
 
-  validates_presence_of :name, :algorithm
+  validates_presence_of :name, :algorithm, :settings
   validates_inclusion_of :algorithm, in: ALGORITHMS
 
   def settings
@@ -16,5 +16,9 @@ class Simulation < ApplicationRecord
 
   def settings=(settings)
     self.contagion = settings
+  end
+
+  def build_settings(attrs)
+    self.build_contagion(attrs)
   end
 end

@@ -4,10 +4,6 @@ FactoryBot.define do
   factory :simulation, class: 'Simulation' do
     sequence(:name) { |n| "Simulation ###{n}" }
     algorithm       { 'contagion' }
-
-    trait :contagion do
-      algorithm { 'contagion' }
-      contagion
-    end
+    contagion       { build(:contagion, simulation: nil) }
   end
 end
