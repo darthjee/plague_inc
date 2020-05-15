@@ -5,6 +5,7 @@ class Simulation < ApplicationRecord
     expose :id
     expose :name
     expose :algorithm
+    expose :settings
     expose :errors, if: :invalid?
   end
 end

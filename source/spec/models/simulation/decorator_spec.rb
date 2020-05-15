@@ -5,14 +5,28 @@ require 'spec_helper'
 describe Simulation::Decorator do
   subject(:decorator) { described_class.new(object) }
 
-  let(:attributes)     { %w[id name algorithm] }
+  let(:attributes) { %w[id name algorithm] }
+  let(:settings_attributes) do
+    %w[
+      lethality days_till_recovery
+      days_till_sympthoms days_till_start_death
+    ]
+  end
   let(:decorator_json) { JSON.parse(decorator.to_json) }
 
   describe '#to_json' do
     context 'when object is one entity' do
       let(:object) { create(:simulation) }
+
+      let(:settings_json) do
+        object.settings.as_json.slice(*settings_attributes)
+      end
+
       let(:expected_json) do
-        object.as_json.slice(*attributes).as_json
+        object.as_json
+              .slice(*attributes)
+              .merge(settings: settings_json)
+              .as_json
       end
 
       it 'returns expected json' do
@@ -45,6 +59,7 @@ describe Simulation::Decorator do
           object
             .as_json
             .slice(*attributes)
+            .merge(settings: settings_json)
             .merge(errors: expected_errors)
             .deep_stringify_keys
         end
@@ -62,7 +77,11 @@ describe Simulation::Decorator do
 
       let(:expected_json) do
         object.map do |simulation|
-          simulation.as_json.slice(*attributes)
+          simulation.as_json
+                    .slice(*attributes)
+                    .merge(
+                      settings: simulation.settings.as_json.slice(*settings_attributes)
+                    )
         end.as_json
       end
 
@@ -98,7 +117,10 @@ describe Simulation::Decorator do
             simulation
               .as_json
               .slice(*attributes)
-              .merge(errors: expected_errors)
+              .merge(
+                errors: expected_errors,
+                settings: simulation.settings.as_json.slice(*settings_attributes)
+              )
           end.as_json
         end
 
