@@ -45,14 +45,36 @@ describe Simulation::Decorator do
 
       context 'when object is invalid and object has been validated' do
         let(:object) do
-          build(:simulation, name: nil, algorithm: 'invalid')
+          build(
+            :simulation,
+            name: nil,
+            algorithm: 'invalid',
+            settings: settings
+          )
+        end
+
+        let(:settings) do
+          build(:contagion, lethality: nil)
         end
 
         let(:expected_errors) do
           {
             name: ["can't be blank"],
-            algorithm: ['is not included in the list']
+            algorithm: ['is not included in the list'],
+            settings: ['is invalid']
           }
+        end
+
+        let(:settings_json) do
+          settings
+            .as_json
+            .slice(*settings_attributes)
+            .merge(errors: {
+                     lethality: [
+                       "can't be blank",
+                       'is not included in the list'
+                     ]
+                   })
         end
 
         let(:expected_json) do
