@@ -65,16 +65,20 @@ describe Simulation::Decorator do
           }
         end
 
+        let(:settings_errors) do
+          {
+            lethality: [
+              "can't be blank",
+              'is not included in the list'
+            ]
+          }
+        end
+
         let(:settings_json) do
           settings
             .as_json
             .slice(*settings_attributes)
-            .merge(errors: {
-                     lethality: [
-                       "can't be blank",
-                       'is not included in the list'
-                     ]
-                   })
+            .merge(errors: settings_errors)
         end
 
         let(:expected_json) do
@@ -99,11 +103,12 @@ describe Simulation::Decorator do
 
       let(:expected_json) do
         object.map do |simulation|
-          simulation.as_json
-                    .slice(*attributes)
-                    .merge(
-                      settings: simulation.settings.as_json.slice(*settings_attributes)
-                    )
+          simulation
+            .as_json
+            .slice(*attributes)
+            .merge(
+              settings: simulation.settings.as_json.slice(*settings_attributes)
+            )
         end.as_json
       end
 
@@ -141,7 +146,9 @@ describe Simulation::Decorator do
               .slice(*attributes)
               .merge(
                 errors: expected_errors,
-                settings: simulation.settings.as_json.slice(*settings_attributes)
+                settings: simulation
+              .settings
+              .as_json.slice(*settings_attributes)
               )
           end.as_json
         end
