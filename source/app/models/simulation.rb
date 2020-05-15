@@ -9,6 +9,7 @@ class Simulation < ApplicationRecord
 
   validates_presence_of :name, :algorithm, :settings
   validates_inclusion_of :algorithm, in: ALGORITHMS
+  validates_associated :settings
 
   def settings
     contagion
@@ -19,6 +20,9 @@ class Simulation < ApplicationRecord
   end
 
   def build_settings(attrs)
-    self.build_contagion(attrs)
+    case algorithm
+    when 'contagion'
+      build_contagion(attrs)
+    end
   end
 end

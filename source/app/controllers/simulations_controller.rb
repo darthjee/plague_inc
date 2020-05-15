@@ -15,12 +15,12 @@ class SimulationsController < ApplicationController
 
   def simulation_params
     params.require(:simulation)
-      .permit(:name, :algorithm)
+          .permit(:name, :algorithm)
   end
 
   def settings_params
     params.require(:simulation)
-      .permit(settings: allowed_contagion_params)[:settings]
+          .permit(settings: allowed_contagion_params)[:settings]
   end
 
   def allowed_contagion_params

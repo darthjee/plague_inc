@@ -93,12 +93,16 @@ describe SimulationsController do
         {
           name: 'my simulation',
           algorithm: 'contagion',
-          settings: {
-            lethality: 0.5,
-            days_till_recovery: 13,
-            days_till_sympthoms: 12,
-            days_till_start_death: 11
-          }
+          settings: settings_payload
+        }
+      end
+
+      let(:settings_payload) do
+        {
+          lethality: 0.5,
+          days_till_recovery: 13,
+          days_till_sympthoms: 12,
+          days_till_start_death: 11
         }
       end
 
@@ -128,9 +132,37 @@ describe SimulationsController do
         expect(response.body).to eq(expected_json)
       end
 
-      context 'when there are errors' do
+      context 'when there are validation errors' do
         let(:payload)    { { algorithm: 'invalid' } }
         let(:simulation) { Simulation.new(payload).tap(&:valid?) }
+
+        it do
+          post :create, params: parameters
+
+          expect(response).not_to be_successful
+        end
+
+        it do
+          expect { post :create, params: parameters }
+            .not_to change(Simulation, :count)
+        end
+
+        it 'returns simulation with errors' do
+          post :create, params: parameters
+
+          expect(response.body).to eq(expected_json)
+        end
+      end
+
+      context 'when there are validation errors in contagion' do
+        let(:settings_payload) { {} }
+        let(:simulation) do
+          Simulation.new({
+                           name: 'my simulation',
+                           algorithm: 'contagion',
+                           contagion: Simulation::Contagion.new
+                         }).tap(&:valid?)
+        end
 
         it do
           post :create, params: parameters
