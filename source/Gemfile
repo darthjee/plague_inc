@@ -42,6 +42,7 @@ gem 'rake',         '13.0.1'
 gem 'sinclair',     '1.6.4'
 gem 'tarquinn',     '0.1.0'
 gem 'turbolinks',   '5.2.1'
+gem 'arstotzka',    '1.4.4'
 
 gem 'darthjee-core_ext', '>= 2.0.0'
 
