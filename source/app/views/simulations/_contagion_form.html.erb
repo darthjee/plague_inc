@@ -1,0 +1,19 @@
+<div class="card mb-4 form-simulation-contagion-block">
+  <div class="card-header">
+    <h4 class="my-0 font-weight-normal">
+      Contagion
+    </h4>
+  </div>
+  <div class="card-body">
+    <%= bootstrap_input(
+      'gnc.data.settings',
+      :lethality,
+      placeholder: "0.9",
+    ) %>
+  <%= bootstrap_input(
+    'gnc.data.settings',
+    :days_till_recovery, placeholder: "15") %>
+    <%= bootstrap_input('gnc.data.settings', :days_till_sympthoms, placeholder: "7") %>
+    <%= bootstrap_input('gnc.data.settings', :days_till_start_death, placeholder: "10") %>
+  </div>
+</div>
