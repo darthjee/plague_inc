@@ -13,6 +13,19 @@
 
   _.extend(fn, Cyberhawk.Controller.prototype);
 
+  fn.save = function() {
+    var promise = this.requester.saveRequest(this.payload());
+    promise.then(this._setData);
+    promise.then(this._goIndex);
+    promise.error(this._error);
+  };
+
+  fn.payload = function() {
+    return {
+      simulation: this.data
+    }
+  };
+
   app.controller('Simulation.NewController', [
     'cyberhawk_requester', 'cyberhawk_notifier', '$location',
     Controller
