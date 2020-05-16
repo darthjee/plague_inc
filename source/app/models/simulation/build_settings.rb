@@ -19,11 +19,16 @@ class Simulation < ApplicationRecord
 
     def build_contagion
       simulation.build_settings(settings_params)
-      params.require(:simulation)[:settings][:groups].each do |group_param|
+      groups_params.each do |group_param|
         simulation.settings.groups.build(group_param.permit(:name))
       end
     end
 
+    def groups_params
+      return [] unless params.require(:simulation)[:settings]
+      return [] unless params.require(:simulation)[:settings][:groups]
+      params.require(:simulation)[:settings][:groups]
+    end
 
     def settings_params
       params.require(:simulation)
