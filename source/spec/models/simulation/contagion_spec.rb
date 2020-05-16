@@ -46,6 +46,10 @@ RSpec.describe Simulation::Contagion, type: :model do
         .is_greater_than_or_equal_to(0)
     end
 
+    it do
+      expect(contagion).to validate_presence_of(:groups)
+    end
+
     context 'when days_till_sympthoms is bigger than days_till_recovery' do
       subject(:contagion) do
         build(:contagion,

@@ -5,7 +5,7 @@ class Simulation < ApplicationRecord
     belongs_to :simulation
     has_many :groups
 
-    validates_presence_of :simulation
+    validates_presence_of :simulation, :groups
 
     validates :lethality,
               presence: true,
