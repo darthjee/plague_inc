@@ -3,6 +3,7 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     belongs_to :simulation
+    has_many :groups
 
     validates_presence_of :simulation
 
