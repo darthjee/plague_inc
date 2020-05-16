@@ -102,7 +102,14 @@ describe SimulationsController do
           lethality: 0.5,
           days_till_recovery: 13,
           days_till_sympthoms: 12,
-          days_till_start_death: 11
+          days_till_start_death: 11,
+          groups: [group_payload]
+        }
+      end
+
+      let(:group_payload) do
+        {
+          name: 'Group 1'
         }
       end
 
