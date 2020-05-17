@@ -2,15 +2,21 @@
 
 class Simulation < ApplicationRecord
   class BuildSettings
+    include Arstotzka
+
+    expose :groups,
+           path: 'simulation.settings',
+           json: :params,
+           after_each: :permit_group_params,
+           default: []
+
     def initialize(simulation, params)
       @simulation = simulation
       @params = params
     end
 
     def build
-      if simulation.algorithm == 'contagion'
-        build_contagion
-      end
+      build_contagion if simulation.algorithm == 'contagion'
     end
 
     private
@@ -19,20 +25,18 @@ class Simulation < ApplicationRecord
 
     def build_contagion
       simulation.build_settings(settings_params)
-      groups_params.each do |group_param|
-        simulation.settings.groups.build(group_param.permit(:name))
+      groups.each do |group_param|
+        simulation.settings.groups.build(group_param)
       end
     end
 
     def groups_params
-      return [] unless params.require(:simulation)[:settings]
-      return [] unless params.require(:simulation)[:settings][:groups]
       params.require(:simulation)[:settings][:groups]
     end
 
     def settings_params
       params.require(:simulation)
-        .permit(settings: allowed_contagion_params)[:settings]
+            .permit(settings: allowed_contagion_params)[:settings]
     end
 
     def allowed_contagion_params
@@ -44,6 +48,8 @@ class Simulation < ApplicationRecord
       ]
     end
 
-
+    def permit_group_params(group_params)
+      group_params.permit(:name)
+    end
   end
 end
