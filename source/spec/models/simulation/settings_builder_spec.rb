@@ -14,15 +14,23 @@ describe Simulation::SettingsBuilder do
         simulation: {
           name: 'my simulation',
           algorithm: algorithm,
-          settings: {
-            lethality: 0.5,
-            days_till_recovery: 13,
-            days_till_sympthoms: 12,
-            days_till_start_death: 11,
-            groups: [{ name: 'Group 1' }]
-          }
+          settings: settings_params
         }
       }
+    end
+
+    let(:settings_params) do
+      {
+        lethality: 0.5,
+        days_till_recovery: 13,
+        days_till_sympthoms: 12,
+        days_till_start_death: 11,
+        groups: groups_params
+      }
+    end
+
+    let(:groups_params) do
+      [{ name: 'Group 1' }]
     end
 
     context 'when algorithm is contagion' do
