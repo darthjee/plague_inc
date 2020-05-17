@@ -4,8 +4,8 @@ class Simulation < ApplicationRecord
   class SettingsBuilder
     include Arstotzka
 
-    expose :groups,
-           path: 'simulation.settings',
+    expose :groups_params,
+      full_path: 'simulation.settings.groups',
            json: :params,
            after_each: :permit_group_params,
            default: []
@@ -25,7 +25,7 @@ class Simulation < ApplicationRecord
 
     def build_contagion
       simulation.build_settings(settings_params)
-      groups.each do |group_param|
+      groups_params.each do |group_param|
         simulation.settings.groups.build(group_param)
       end
     end
