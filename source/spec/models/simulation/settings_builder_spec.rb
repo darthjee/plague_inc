@@ -62,7 +62,7 @@ describe Simulation::SettingsBuilder do
           {
             simulation: {
               name: 'my simulation',
-              algorithm: algorithm,
+              algorithm: algorithm
             }
           }
         end

@@ -5,15 +5,15 @@ class Simulation < ApplicationRecord
     include Arstotzka
 
     expose :groups_params,
-      full_path: 'simulation.settings.groups',
-      json: :params,
-      after_each: :permit_group_params,
-      default: []
+           full_path: 'simulation.settings.groups',
+           json: :params,
+           after_each: :permit_group_params,
+           default: []
 
     expose :settings_params,
-      full_path: 'simulation.settings',
-      json: :params,
-      after: :permit_settings_params
+           full_path: 'simulation.settings',
+           json: :params,
+           after: :permit_settings_params
 
     def initialize(simulation, params)
       @simulation = simulation
@@ -37,6 +37,7 @@ class Simulation < ApplicationRecord
 
     def permit_settings_params(params)
       return unless params
+
       params.permit(*allowed_contagion_params)
     end
 
