@@ -49,6 +49,45 @@ describe Simulation::SettingsBuilder do
           .from(nil)
           .to([an_instance_of(Simulation::Contagion::Group)])
       end
+
+      it do
+        expect { builder.build }
+          .to change(simulation, :valid?)
+          .from(false)
+          .to(true)
+      end
+
+      context 'when missing settings' do
+        let(:params) do
+          {
+            simulation: {
+              name: 'my simulation',
+              algorithm: algorithm,
+            }
+          }
+        end
+
+        it do
+          expect { builder.build }.not_to raise_error
+        end
+
+        it do
+          expect { builder.build }
+            .to change(simulation, :settings)
+        end
+
+        it 'builds empty groups' do
+          expect { builder.build }
+            .to change { simulation.settings.try(:groups) }
+            .from(nil)
+            .to([])
+        end
+
+        it do
+          expect { builder.build }
+            .not_to change(simulation, :valid?)
+        end
+      end
     end
   end
 end
