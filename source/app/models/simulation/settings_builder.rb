@@ -30,10 +30,6 @@ class Simulation < ApplicationRecord
       end
     end
 
-    def groups_params
-      params.require(:simulation)[:settings][:groups]
-    end
-
     def settings_params
       params.require(:simulation)
             .permit(settings: allowed_contagion_params)[:settings]
