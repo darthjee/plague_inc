@@ -11,6 +11,7 @@ class Simulation < ApplicationRecord
            default: []
 
     def initialize(simulation, params)
+      puts params.class
       @simulation = simulation
       @params = params
     end
