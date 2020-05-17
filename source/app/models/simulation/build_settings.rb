@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Simulation < ApplicationRecord
-  class BuildSettings
+  class SettingsBuilder
     include Arstotzka
 
     expose :groups,

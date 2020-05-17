@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::BuildSettings do
+describe Simulation::SettingsBuilder do
   describe '#build' do
     subject(:builder) { described_class.new(simulation, parameters) }
 

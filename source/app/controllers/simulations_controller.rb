@@ -10,7 +10,7 @@ class SimulationsController < ApplicationController
   private
 
   def build_settings
-    Simulation::BuildSettings
+    Simulation::SettingsBuilder
       .new(simulation, params)
       .build
   end
