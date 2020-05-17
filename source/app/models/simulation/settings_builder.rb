@@ -6,9 +6,14 @@ class Simulation < ApplicationRecord
 
     expose :groups_params,
       full_path: 'simulation.settings.groups',
-           json: :params,
-           after_each: :permit_group_params,
-           default: []
+      json: :params,
+      after_each: :permit_group_params,
+      default: []
+
+    expose :settings_params,
+      full_path: 'simulation.settings',
+      json: :params,
+      after: :permit_settings_params
 
     def initialize(simulation, params)
       @simulation = simulation
@@ -30,9 +35,9 @@ class Simulation < ApplicationRecord
       end
     end
 
-    def settings_params
-      params.require(:simulation)
-            .permit(settings: allowed_contagion_params)[:settings]
+    def permit_settings_params(params)
+      return unless params
+      params.permit(*allowed_contagion_params)
     end
 
     def allowed_contagion_params
