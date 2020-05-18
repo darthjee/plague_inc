@@ -9,13 +9,12 @@
       <li class="list-group-item" ng-repeat="group in gnc.data.settings.groups">
         <%= bootstrap_input('group', :name, placeholder: "Name") %>
       </li>
-      <button ng-click="gnc.addGroup()"
-              type"submit"
-              class="btn btn-secondary">
-        +
-      </button>
-
     </ul>
+    <button ng-click="gnc.addGroup()"
+            type"submit"
+            class="btn btn-secondary">
+      +
+    </button>
   </div>
 </div>
 
