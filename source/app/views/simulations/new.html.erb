@@ -10,7 +10,11 @@
         <div class="card-body">
           <%= form.input(:name, placeholder: "Simulation name") %>
           <%= form.select(:algorithm, options: Simulation::ALGORITHMS ) %>
-          <%= render partial: 'contagion_form', locals: { form: form } %>
+
+          <% form.with_model('settings') do |f| %>
+            <%= render partial: 'contagion_form', locals: { form: f } %>
+          <% end %>
+
           <div class="form-group row">
             <div class="offset-2 col-10">
               <button ng-click="gnc.save()"

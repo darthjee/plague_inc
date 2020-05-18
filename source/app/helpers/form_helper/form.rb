@@ -36,6 +36,12 @@ module FormHelper
       render partial: 'templates/forms/select', locals: locals
     end
 
+    def with_model(model)
+      new_model = [self.model, model].join('.')
+
+      yield Form.new(renderer, new_model)
+    end
+
     private
 
     attr_reader :renderer
