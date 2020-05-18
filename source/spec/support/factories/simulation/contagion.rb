@@ -7,5 +7,6 @@ FactoryBot.define do
     days_till_recovery    { 10 }
     days_till_sympthoms   { 10 }
     days_till_start_death { 10 }
+    groups { build_list(:contagion_group, 1, contagion: nil) }
   end
 end

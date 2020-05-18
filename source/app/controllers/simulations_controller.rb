@@ -10,25 +10,13 @@ class SimulationsController < ApplicationController
   private
 
   def build_settings
-    simulation.build_settings(settings_params)
+    Simulation::SettingsBuilder
+      .new(simulation, params)
+      .build
   end
 
   def simulation_params
     params.require(:simulation)
           .permit(:name, :algorithm)
-  end
-
-  def settings_params
-    params.require(:simulation)
-          .permit(settings: allowed_contagion_params)[:settings]
-  end
-
-  def allowed_contagion_params
-    %i[
-      lethality
-      days_till_recovery
-      days_till_sympthoms
-      days_till_start_death
-    ]
   end
 end
