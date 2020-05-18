@@ -2,10 +2,6 @@
 
 module FormHelper
   class Input < Element
-    def self.render(*args)
-      new(*args).render
-    end
-
     private
 
     attr_reader :placeholder
