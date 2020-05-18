@@ -19,6 +19,15 @@
     }
   };
 
+  fn.addGroup = function() {
+    if (!this.data.settings) {
+      this.data.settings = {
+        groups: []
+      };
+    }
+    this.data.settings.groups.push({});
+  };
+
   app.controller('Simulation.NewController', [
     'cyberhawk_requester', 'cyberhawk_notifier', '$location',
     Controller
