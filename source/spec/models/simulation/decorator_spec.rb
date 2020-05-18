@@ -24,16 +24,16 @@ describe Simulation::Decorator do
 
       let(:settings_json) do
         object.settings
-          .as_json
-          .slice(*settings_attributes)
-          .merge(groups: [group_json])
+              .as_json
+              .slice(*settings_attributes)
+              .merge(groups: [group_json])
       end
 
       let(:expected_json) do
         object.as_json
-          .slice(*attributes)
-          .merge(settings: settings_json)
-          .as_json
+              .slice(*attributes)
+              .merge(settings: settings_json)
+              .as_json
       end
 
       it 'returns expected json' do
@@ -118,9 +118,9 @@ describe Simulation::Decorator do
               settings: simulation.settings
             .as_json.slice(*settings_attributes)
             .merge(groups: [
-              name: simulation.settings.groups.first.name
-          ])
-          )
+                     name: simulation.settings.groups.first.name
+                   ])
+            )
         end.as_json
       end
 
@@ -162,9 +162,9 @@ describe Simulation::Decorator do
               .settings
               .as_json.slice(*settings_attributes)
               .merge(groups: [
-                name: simulation.settings.groups.first.name
-            ])
-            )
+                       name: simulation.settings.groups.first.name
+                     ])
+              )
           end.as_json
         end
 
