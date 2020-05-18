@@ -1,4 +1,4 @@
-<div class="card-deck mb-3 col-lg-6 col-12">
+<div class="card-deck mb-8 col-lg-12 col-12">
   <div class="card mb-4 shadow-sm">
     <div class="card-header">
       <h4 class="my-0 font-weight-normal">
@@ -21,6 +21,26 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header">
+      <h4 class="my-0 font-weight-normal">
+        Groups
+      </h4>
+    </div>
+    <div class="card-body">
+      <ul class="list-group mt-3 mb-4">
+        <li class="list-group-item" ng-repeat="group in gnc.data.settings.groups">
+          <%= bootstrap_input('group', :name, placeholder: "Name") %>
+        </li>
+        <button ng-click="gnc.addGroup()"
+                type"submit"
+                class="btn btn-primary">
+          +
+        </button>
+
+      </ul>
     </div>
   </div>
 </div>
