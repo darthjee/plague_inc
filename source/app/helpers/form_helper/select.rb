@@ -5,14 +5,11 @@ module FormHelper
     private
 
     attr_reader :options
+    default_value :template, 'templates/forms/select'
 
     def initialize(options:, **args)
       super(**args)
       @options = options
-    end
-
-    def template
-      'templates/forms/select'
     end
 
     def locals

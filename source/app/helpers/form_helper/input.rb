@@ -9,14 +9,11 @@ module FormHelper
     private
 
     attr_reader :placeholder
+    default_value :template, 'templates/forms/input'
 
     def initialize(placeholder: nil, **args)
       super(**args)
       @placeholder = placeholder
-    end
-
-    def template
-      'templates/forms/input'
     end
 
     def locals
