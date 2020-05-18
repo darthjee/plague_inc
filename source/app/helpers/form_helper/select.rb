@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FormHelper
-  class Select < Element
+  class Select < InputElement
     private
 
     attr_reader :options

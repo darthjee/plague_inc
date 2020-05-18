@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FormHelper
-  class Input < Element
+  class Input < InputElement
     private
 
     attr_reader :placeholder
