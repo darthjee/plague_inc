@@ -11,7 +11,7 @@
     </div>
     <ul class="list-group mt-3 mb-4">
       <li class="list-group-item" ng-repeat="group in gnc.data.settings.groups">
-        <%= bootstrap_input('group', :name, placeholder: "Name") %>
+        <%= form.input(:name, placeholder: "Name", model: 'group') %>
         <button ng-click="gnc.removeGroup($index)"
                 type"submit"
                 class="btn btn-secondary">

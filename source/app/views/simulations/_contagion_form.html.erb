@@ -5,15 +5,15 @@
     </h4>
   </div>
   <div class="card-body">
-    <%= bootstrap_input(
-      'gnc.data.settings',
+    <%= form.input(
       :lethality,
       placeholder: "0.9",
     ) %>
-  <%= bootstrap_input(
-    'gnc.data.settings',
-    :days_till_recovery, placeholder: "15") %>
-    <%= bootstrap_input('gnc.data.settings', :days_till_sympthoms, placeholder: "7") %>
-    <%= bootstrap_input('gnc.data.settings', :days_till_start_death, placeholder: "10") %>
+    <%= form.input(
+      :days_till_recovery,
+      placeholder: "15",
+    ) %>
+    <%= form.input(:days_till_sympthoms, placeholder: "7", model: 'gnc.data.settings') %>
+    <%= form.input(:days_till_start_death, placeholder: "10", model: 'gnc.data.settings') %>
   </div>
 </div>
