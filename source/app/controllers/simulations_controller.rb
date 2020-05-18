@@ -14,9 +14,4 @@ class SimulationsController < ApplicationController
       .new(simulation, params)
       .build
   end
-
-  def simulation_params
-    params.require(:simulation)
-          .permit(:name, :algorithm)
-  end
 end

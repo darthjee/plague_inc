@@ -1,12 +1,12 @@
-<div class="card-deck mb-3 col-lg-6 col-12">
-  <div class="card mb-4 shadow-sm">
-    <div class="card-header">
-      <h4 class="my-0 font-weight-normal">
-        New Simulation
-      </h4>
-    </div>
-    <div class="card-body">
-      <form class="form-horizontal form-simulation-{{gnc.data.algorithm}}">
+<form class="form-horizontal form-simulation-{{gnc.data.algorithm}}">
+  <div class="card-deck mb-12 col-lg-12 col-12">
+    <div class="card mb-4 shadow-sm col-6">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">
+          New Simulation
+        </h4>
+      </div>
+      <div class="card-body">
         <%= bootstrap_input('gnc.data', :name, placeholder: "Simulation name") %>
         <%= bootstrap_select('gnc.data', :algorithm, options: Simulation::ALGORITHMS ) %>
         <%= render partial: 'contagion_form' %>
@@ -20,7 +20,8 @@
             </button>
           </div>
         </div>
-      </form>
+      </div>
     </div>
+    <%= render partial: 'contagion_groups_form' %>
   </div>
-</div>
+</form>

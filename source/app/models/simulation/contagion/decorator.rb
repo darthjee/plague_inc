@@ -7,6 +7,7 @@ class Simulation < ApplicationRecord
       expose :days_till_recovery
       expose :days_till_sympthoms
       expose :days_till_start_death
+      expose :groups
     end
   end
 end
