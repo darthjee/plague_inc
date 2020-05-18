@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FormHelper
   class Form
     attr_reader :model
@@ -7,20 +9,8 @@ module FormHelper
       @model    = model
     end
 
-    def input(field,
-              model: self.model,
-                        placeholder: nil,
-                        label: field.to_s.capitalize.gsub(/_/, ' '))
-      locals = {
-        label: label,
-        ng_errors: [model, :errors, field].join('.'),
-        ng_model: [model, field].join('.'),
-        model: model,
-        field: field,
-        placeholder: placeholder
-      }
-
-      render partial: 'templates/forms/input', locals: locals
+    def input(field, model: self.model, **args)
+      Input.render(renderer, field, model: model, **args)
     end
 
     def select(field, model: self.model, label: field.capitalize, options: [])
@@ -49,4 +39,3 @@ module FormHelper
     delegate :render, to: :renderer
   end
 end
-
