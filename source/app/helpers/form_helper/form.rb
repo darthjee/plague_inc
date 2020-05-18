@@ -13,17 +13,8 @@ module FormHelper
       Input.render(renderer, field, model: model, **args)
     end
 
-    def select(field, model: self.model, label: field.capitalize, options: [])
-      locals = {
-        label: label,
-        ng_errors: [model, :errors, field].join('.'),
-        ng_model: [model, field].join('.'),
-        model: model,
-        field: field,
-        options: options
-      }
-
-      render partial: 'templates/forms/select', locals: locals
+    def select(field, model: self.model, **args)
+      Select.render(renderer, field, model: model, **args)
     end
 
     def with_model(model)
