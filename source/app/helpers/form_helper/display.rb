@@ -10,7 +10,7 @@ module FormHelper
     end
 
     def input(field, model: self.model, **args)
-      Input.render(renderer: renderer, field: field, model: model, **args)
+      Text.render(renderer: renderer, field: field, model: model, **args)
     end
 
     def select(field, model: self.model, **args)
@@ -24,7 +24,7 @@ module FormHelper
     def with_model(model)
       new_model = [self.model, model].join('.')
 
-      yield Form.new(renderer, new_model)
+      yield Display.new(renderer, new_model)
     end
 
     private

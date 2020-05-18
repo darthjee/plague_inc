@@ -14,7 +14,7 @@ module FormHelper
 
     attr_reader :renderer
 
-    def initialize(renderer:)
+    def initialize(renderer:, **_args)
       @renderer = renderer
     end
   end

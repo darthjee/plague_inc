@@ -1,5 +1,5 @@
-<form class="form-horizontal form-simulation-{{gnc.data.algorithm}}">
-  <% bootstrap_form('gnc.data') do |form| %>
-    <%= render partial: 'form', locals: { form: form } %>
+<div class="form-simulation-{{gnc.data.algorithm}}">
+  <% bootstrap_display('gnc.data') do |display| %>
+    <%= render partial: 'form', locals: { form: display } %>
   <% end %>
-</form>
+</div>
