@@ -1,48 +1,22 @@
 # frozen_string_literal: true
 
 module FormHelper
-  class Select
-    def self.render(*args)
-      new(*args).render
-    end
-
-    def render
-      renderer.render partial: 'templates/forms/select', locals: locals
-    end
-
+  class Select < Element
     private
 
-    attr_reader :renderer, :field, :model, :options
+    attr_reader :options
 
-    def initialize(renderer, field, model: nil, label: nil, options: nil)
-      @renderer = renderer
-      @field = field
-      @model = model
-      @label = label
+    def initialize(options:, **args)
+      super(**args)
       @options = options
     end
 
-    def label
-      @label ||= field.to_s.capitalize.gsub(/_/, ' ')
-    end
-
-    def ng_model
-      [model, field].join('.')
-    end
-
-    def ng_errors
-      [model, :errors, field].join('.')
+    def template
+      'templates/forms/select'
     end
 
     def locals
-      {
-        label: label,
-        ng_errors: ng_errors,
-        ng_model: [model, field].join('.'),
-        field: field,
-        options: options
-      }
+      super.merge(options: options)
     end
   end
 end
-

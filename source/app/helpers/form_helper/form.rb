@@ -10,11 +10,11 @@ module FormHelper
     end
 
     def input(field, model: self.model, **args)
-      Input.render(renderer, field, model: model, **args)
+      Input.render(renderer: renderer, field: field, model: model, **args)
     end
 
     def select(field, model: self.model, **args)
-      Select.render(renderer, field, model: model, **args)
+      Select.render(renderer: renderer, field: field, model: model, **args)
     end
 
     def with_model(model)
