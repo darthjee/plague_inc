@@ -18,15 +18,22 @@ describe Simulation::Decorator do
     context 'when object is one entity' do
       let(:object) { create(:simulation) }
 
+      let(:group_json) do
+        { name: object.settings.groups.first.name }
+      end
+
       let(:settings_json) do
-        object.settings.as_json.slice(*settings_attributes)
+        object.settings
+          .as_json
+          .slice(*settings_attributes)
+          .merge(groups: [group_json])
       end
 
       let(:expected_json) do
         object.as_json
-              .slice(*attributes)
-              .merge(settings: settings_json)
-              .as_json
+          .slice(*attributes)
+          .merge(settings: settings_json)
+          .as_json
       end
 
       it 'returns expected json' do
@@ -79,6 +86,7 @@ describe Simulation::Decorator do
             .as_json
             .slice(*settings_attributes)
             .merge(errors: settings_errors)
+            .merge(groups: [group_json])
         end
 
         let(:expected_json) do
@@ -107,8 +115,12 @@ describe Simulation::Decorator do
             .as_json
             .slice(*attributes)
             .merge(
-              settings: simulation.settings.as_json.slice(*settings_attributes)
-            )
+              settings: simulation.settings
+            .as_json.slice(*settings_attributes)
+            .merge(groups: [
+              name: simulation.settings.groups.first.name
+          ])
+          )
         end.as_json
       end
 
@@ -149,7 +161,10 @@ describe Simulation::Decorator do
                 settings: simulation
               .settings
               .as_json.slice(*settings_attributes)
-              )
+              .merge(groups: [
+                name: simulation.settings.groups.first.name
+            ])
+            )
           end.as_json
         end
 
