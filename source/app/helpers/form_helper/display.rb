@@ -13,12 +13,11 @@ module FormHelper
       Text.render(renderer: renderer, field: field, model: model, **args)
     end
 
-    def select(field, model: self.model, **args)
-      Select.render(renderer: renderer, field: field, model: model, **args)
+    def select(*args)
+      input(*args)
     end
 
     def button(**args)
-      Button.render(renderer: renderer, **args)
     end
 
     def with_model(model)
