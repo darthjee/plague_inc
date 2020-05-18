@@ -4,7 +4,7 @@ module FormHelper
       @renderer = renderer
     end
 
-    def bootstrap_input(model, field,
+    def input(model, field,
                         placeholder: nil,
                         label: field.to_s.capitalize.gsub(/_/, ' '))
       Form.new(self)
@@ -20,7 +20,7 @@ module FormHelper
       render partial: 'templates/forms/input', locals: locals
     end
 
-    def bootstrap_select(model, field, label: field.capitalize, options: [])
+    def select(model, field, label: field.capitalize, options: [])
       locals = {
         label: label,
         ng_errors: [model, :errors, field].join('.'),
