@@ -1,13 +1,16 @@
 module FormHelper
   class Form
-    def initialize(renderer)
+    attr_reader :model
+
+    def initialize(renderer, model)
       @renderer = renderer
+      @model    = model
     end
 
-    def input(model, field,
+    def input(field,
+              model: self.model,
                         placeholder: nil,
                         label: field.to_s.capitalize.gsub(/_/, ' '))
-      Form.new(self)
       locals = {
         label: label,
         ng_errors: [model, :errors, field].join('.'),
@@ -20,7 +23,7 @@ module FormHelper
       render partial: 'templates/forms/input', locals: locals
     end
 
-    def select(model, field, label: field.capitalize, options: [])
+    def select(field, model: self.model, label: field.capitalize, options: [])
       locals = {
         label: label,
         ng_errors: [model, :errors, field].join('.'),

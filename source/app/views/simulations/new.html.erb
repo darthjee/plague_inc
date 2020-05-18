@@ -1,4 +1,4 @@
-<% bootstrap_form do |form| %>
+<% bootstrap_form('gnc.data') do |form| %>
   <form class="form-horizontal form-simulation-{{gnc.data.algorithm}}">
     <div class="card-deck mb-12 col-lg-12 col-12">
       <div class="card mb-4 shadow-sm col-6">
@@ -8,8 +8,8 @@
           </h4>
         </div>
         <div class="card-body">
-          <%= form.input('gnc.data', :name, placeholder: "Simulation name") %>
-          <%= form.select('gnc.data', :algorithm, options: Simulation::ALGORITHMS ) %>
+          <%= form.input(:name, placeholder: "Simulation name") %>
+          <%= form.select(:algorithm, options: Simulation::ALGORITHMS ) %>
           <%= render partial: 'contagion_form', locals: { form: form } %>
           <div class="form-group row">
             <div class="offset-2 col-10">
