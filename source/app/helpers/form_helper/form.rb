@@ -17,6 +17,14 @@ module FormHelper
       Select.render(renderer: renderer, field: field, model: model, **args)
     end
 
+    def button(ng_click:, ng_disabled:, classes:)
+      render partial: 'templates/forms/button', locals: {
+        ng_click: ng_click,
+        ng_disabled: ng_disabled,
+        classes: classes,
+      }
+    end
+
     def with_model(model)
       new_model = [self.model, model].join('.')
 

@@ -15,7 +15,11 @@
 
       <div class="form-group row">
         <div class="offset-2 col-10">
-          <%= render partial: 'templates/forms/button', locals: { ng_click: 'gnc.save()', ng_disabled: 'gnc.ongoing', classes: 'btn-primary' } %>
+          <%= form.button(
+            ng_click: 'gnc.save()',
+            ng_disabled: 'gnc.ongoing',
+            classes: 'btn-primary'
+          ) %>
         </div>
       </div>
     </div>
