@@ -1,12 +1,12 @@
-<div class="card-deck mb-8 col-lg-12 col-12">
-  <div class="card mb-4 shadow-sm">
-    <div class="card-header">
-      <h4 class="my-0 font-weight-normal">
-        New Simulation
-      </h4>
-    </div>
-    <div class="card-body">
-      <form class="form-horizontal form-simulation-{{gnc.data.algorithm}}">
+<form class="form-horizontal form-simulation-{{gnc.data.algorithm}}">
+  <div class="card-deck mb-8 col-lg-12 col-12">
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">
+          New Simulation
+        </h4>
+      </div>
+      <div class="card-body">
         <%= bootstrap_input('gnc.data', :name, placeholder: "Simulation name") %>
         <%= bootstrap_select('gnc.data', :algorithm, options: Simulation::ALGORITHMS ) %>
         <%= render partial: 'contagion_form' %>
@@ -20,27 +20,27 @@
             </button>
           </div>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
-  <div class="card mb-4 shadow-sm">
-    <div class="card-header">
-      <h4 class="my-0 font-weight-normal">
-        Groups
-      </h4>
-    </div>
-    <div class="card-body">
-      <ul class="list-group mt-3 mb-4">
-        <li class="list-group-item" ng-repeat="group in gnc.data.settings.groups">
-          <%= bootstrap_input('group', :name, placeholder: "Name") %>
-        </li>
-        <button ng-click="gnc.addGroup()"
-                type"submit"
-                class="btn btn-secondary">
-          +
-        </button>
+    <div class="card mb-4 shadow-sm form-simulation-contagion-block">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">
+          Groups
+        </h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-group mt-3 mb-4">
+          <li class="list-group-item" ng-repeat="group in gnc.data.settings.groups">
+            <%= bootstrap_input('group', :name, placeholder: "Name") %>
+          </li>
+          <button ng-click="gnc.addGroup()"
+                  type"submit"
+                  class="btn btn-secondary">
+            +
+          </button>
 
-      </ul>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
+</form>
