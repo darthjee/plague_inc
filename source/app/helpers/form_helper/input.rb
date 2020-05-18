@@ -12,7 +12,7 @@ module FormHelper
 
     private
 
-    attr_reader :renderer, :field, :model, :placeholder, :label
+    attr_reader :renderer, :field, :model, :placeholder
 
     def initialize(renderer, field, model: nil, placeholder: nil, label: nil)
       @renderer = renderer
