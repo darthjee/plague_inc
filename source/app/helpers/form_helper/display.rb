@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module FormHelper
-  class Form
+  class Display
     attr_reader :model
 
     def initialize(renderer, model)
@@ -10,21 +10,19 @@ module FormHelper
     end
 
     def input(field, model: self.model, **args)
-      Input.render(renderer: renderer, field: field, model: model, **args)
+      Text.render(renderer: renderer, field: field, model: model, **args)
     end
 
-    def select(field, model: self.model, **args)
-      Select.render(renderer: renderer, field: field, model: model, **args)
+    def select(*args)
+      input(*args)
     end
 
-    def button(**args)
-      Button.render(renderer: renderer, **args)
-    end
+    def button(**args); end
 
     def with_model(model)
       new_model = [self.model, model].join('.')
 
-      yield Form.new(renderer, new_model)
+      yield Display.new(renderer, new_model)
     end
 
     private

@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 module FormHelper
-  class Input < Element
-    def self.render(*args)
-      new(*args).render
-    end
-
+  class Input < InputElement
     private
 
     attr_reader :placeholder

@@ -1,12 +1,5 @@
-<div class="card-deck mb-3">
-  <div class="card mb-4 shadow-sm">
-    <div class="card-header">
-      <h4 class="my-0 font-weight-normal">
-        Simulation #{{gnc.data.id}} "{{gnc.data.name}}"
-      </h4>
-    </div>
-    <div class="card-body">
-      Simulation information
-    </div>
-  </div>
+<div class="form-simulation-{{gnc.data.algorithm}}">
+  <% bootstrap_display('gnc.data') do |display| %>
+    <%= render partial: 'form', locals: { form: display } %>
+  <% end %>
 </div>

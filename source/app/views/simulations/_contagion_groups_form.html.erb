@@ -12,18 +12,14 @@
     <ul class="list-group mt-3 mb-4">
       <li class="list-group-item" ng-repeat="group in gnc.data.settings.groups">
         <%= form.input(:name, placeholder: "Name", model: 'group') %>
-        <button ng-click="gnc.removeGroup($index)"
-                type"submit"
-                class="btn btn-secondary">
-          -
-        </button>
+        <%= form.button(
+          ng_click: 'gnc.removeGroup($index)',
+          classes: 'btn-secondary',
+          text: '-'
+        )%>
       </li>
     </ul>
-    <button ng-click="gnc.addGroup()"
-            type"submit"
-            class="btn btn-secondary">
-      +
-    </button>
+    <%= form.button(ng_click: 'gnc.addGroup()', classes: 'btn-secondary', text: '+')%>
   </div>
 </div>
 
