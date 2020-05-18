@@ -17,8 +17,7 @@ module FormHelper
       input(*args)
     end
 
-    def button(**args)
-    end
+    def button(**args); end
 
     def with_model(model)
       new_model = [self.model, model].join('.')
@@ -33,4 +32,3 @@ module FormHelper
     delegate :render, to: :renderer
   end
 end
-

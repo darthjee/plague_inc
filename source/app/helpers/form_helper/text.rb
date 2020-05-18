@@ -8,4 +8,3 @@ module FormHelper
     default_value :template, 'templates/display/text'
   end
 end
-
