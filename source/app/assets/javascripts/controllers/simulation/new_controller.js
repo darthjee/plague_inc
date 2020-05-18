@@ -32,6 +32,10 @@
     }
   };
 
+  fn.removeGroup = function(index) {
+    this.data.settings.groups.splice(index, 1);
+  };
+
   app.controller('Simulation.NewController', [
     'cyberhawk_requester', 'cyberhawk_notifier', '$location',
     Controller
