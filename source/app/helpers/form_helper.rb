@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module FormHelper
-  def bootstrap_input(model, field, placeholder: nil, label: field.to_s.capitalize.gsub(/_/,' '))
+  def bootstrap_input(model, field,
+                      placeholder: nil,
+                      label: field.to_s.capitalize.gsub(/_/, ' '))
     locals = {
       label: label,
       ng_errors: [model, :errors, field].join('.'),
