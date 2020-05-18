@@ -25,7 +25,11 @@
         groups: []
       };
     }
-    this.data.settings.groups.push({});
+    if (!this.data.settings.groups) {
+      this.data.settings.groups = [{}]
+    } else {
+      this.data.settings.groups.push({});
+    }
   };
 
   app.controller('Simulation.NewController', [
