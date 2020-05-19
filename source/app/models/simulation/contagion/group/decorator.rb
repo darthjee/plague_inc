@@ -5,6 +5,7 @@ class Simulation < ApplicationRecord
     class Group < ApplicationRecord
       class Decorator < ::Decorator
         expose :name
+        expose :size
       end
     end
   end

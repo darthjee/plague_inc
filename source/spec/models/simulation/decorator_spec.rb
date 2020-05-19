@@ -19,7 +19,12 @@ describe Simulation::Decorator do
       let(:object) { create(:simulation) }
 
       let(:group_json) do
-        { name: object.settings.groups.first.name }
+        object
+          .settings
+          .groups
+          .first
+          .as_json
+          .slice('name', 'size')
       end
 
       let(:settings_json) do
@@ -118,7 +123,8 @@ describe Simulation::Decorator do
               settings: simulation.settings
             .as_json.slice(*settings_attributes)
             .merge(groups: [
-                     name: simulation.settings.groups.first.name
+                     name: simulation.settings.groups.first.name,
+                     size: simulation.settings.groups.first.size
                    ])
             )
         end.as_json
@@ -162,7 +168,8 @@ describe Simulation::Decorator do
               .settings
               .as_json.slice(*settings_attributes)
               .merge(groups: [
-                       name: simulation.settings.groups.first.name
+                       name: simulation.settings.groups.first.name,
+                       size: simulation.settings.groups.first.size
                      ])
               )
           end.as_json
