@@ -10,12 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_16_220822) do
+ActiveRecord::Schema.define(version: 2020_05_19_100617) do
 
   create_table "simulation_contagion_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "contagion_id", null: false
+    t.bigint "contagion_id", null: false
     t.float "lethality_override"
+    t.integer "size", null: false
+    t.index ["contagion_id"], name: "fk_rails_feaa742918"
   end
 
   create_table "simulation_contagions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -34,5 +36,6 @@ ActiveRecord::Schema.define(version: 2020_05_16_220822) do
     t.string "algorithm", null: false
   end
 
+  add_foreign_key "simulation_contagion_groups", "simulation_contagions", column: "contagion_id"
   add_foreign_key "simulation_contagions", "simulations"
 end

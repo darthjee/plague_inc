@@ -51,7 +51,7 @@ class Simulation < ApplicationRecord
     end
 
     def permit_group_params(group_params)
-      group_params.permit(:name)
+      group_params.permit(:name, :size)
     end
   end
 end
