@@ -109,7 +109,8 @@ describe SimulationsController do
 
       let(:group_payload) do
         {
-          name: 'Group 1'
+          name: 'Group 1',
+          size: 100
         }
       end
 
