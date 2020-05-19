@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2020_05_19_100617) do
     t.string "name", null: false
     t.integer "contagion_id", null: false
     t.float "lethality_override"
-    t.integer "size", null: false
+    t.integer "size", default: 100, null: false
   end
 
   create_table "simulation_contagions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
