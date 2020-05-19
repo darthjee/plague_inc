@@ -30,7 +30,7 @@ describe Simulation::SettingsBuilder do
     end
 
     let(:groups_params) do
-      [{ name: 'Group 1' }]
+      [{ name: 'Group 1', size: 100 }]
     end
 
     context 'when algorithm is contagion' do
