@@ -45,8 +45,8 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
-    arstotzka (1.5.0)
-      activesupport (~> 5.2.0)
+    arstotzka (1.6.1)
+      activesupport (>= 5.2.4.2)
       sinclair (>= 1.6.5)
     ast (2.4.0)
     axiom-types (0.1.1)
@@ -315,7 +315,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  arstotzka (= 1.5.0)
+  arstotzka (= 1.6.1)
   azeroth (>= 0.7.1)
   bootsnap (>= 1.1.0)
   bower-rails (~> 0.12.0)
