@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require './app/models/simulation/builder'
+
 class Simulation < ApplicationRecord
   ALGORITHMS = %w[
     contagion
