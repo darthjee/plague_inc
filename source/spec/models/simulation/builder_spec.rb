@@ -40,15 +40,42 @@ fdescribe Simulation::Builder do
     let(:expected_simulation) do
       Simulation.new(
         name: 'my simulation',
-        algorithm: 'contagion'
+        algorithm: 'contagion',
+        settings: expected_settings
+      )
+    end
+
+    let(:expected_settings) do
+      Simulation::Contagion.new(
+        lethality: 0.5,
+        days_till_recovery: 13,
+        days_till_sympthoms: 12,
+        days_till_start_death: 11,
       )
     end
 
     it { expect(builder.build).to be_a(Simulation) }
 
+    it { expect(builder.build).to be_valid }
+
     it do
       expect(builder.build.as_json)
         .to eq(expected_simulation.as_json)
+    end
+
+    it 'builds settings' do
+      expect(builder.build.settings)
+        .not_to be_nil
+    end
+
+    it 'builds a contagion' do
+      expect(builder.build.settings)
+        .to be_a(Simulation::Contagion)
+    end
+
+    it 'builds settings with attributes' do
+      expect(builder.build.settings.to_json)
+        .to eq(expected_settings.to_json)
     end
   end
 end

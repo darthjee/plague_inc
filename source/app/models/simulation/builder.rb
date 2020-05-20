@@ -4,7 +4,8 @@ class Simulation < ApplicationRecord
   class Builder
     include Arstotzka
 
-    expose :simulation, after: :build_simulation
+    expose :simulation, cached: true, after: :build_simulation
+    expose :settings, path: :simulation, cached: true, after: :build_settings
 
     def initialize(params, collection)
       @json       = params
@@ -12,6 +13,7 @@ class Simulation < ApplicationRecord
     end
 
     def build
+      settings
       simulation
     end
 
@@ -24,6 +26,16 @@ class Simulation < ApplicationRecord
         simulation_params.permit(:name, :algorithm)
       )
     end
+
+    def build_settings(settings_params)
+      simulation.build_settings(
+        settings_params.permit(*%i[
+          lethality
+          days_till_recovery
+          days_till_sympthoms
+          days_till_start_death
+        ])
+      )
+    end
   end
 end
-
