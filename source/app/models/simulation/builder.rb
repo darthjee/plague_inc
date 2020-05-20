@@ -6,6 +6,7 @@ class Simulation < ApplicationRecord
 
     expose :simulation, cached: true, after: :build_simulation
     expose :settings, path: :simulation, cached: true, after: :build_settings
+    expose :groups, path: 'simulation.settings', cached: true, after_each: :build_group
 
     def initialize(params, collection)
       @json       = params
@@ -13,7 +14,7 @@ class Simulation < ApplicationRecord
     end
 
     def build
-      settings
+      groups
       simulation
     end
 
@@ -35,6 +36,12 @@ class Simulation < ApplicationRecord
           days_till_sympthoms
           days_till_start_death
         ])
+      )
+    end
+
+    def build_group(group_params)
+      settings.groups.build(
+        group_params.permit(:name, :size)
       )
     end
   end

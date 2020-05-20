@@ -51,6 +51,14 @@ fdescribe Simulation::Builder do
         days_till_recovery: 13,
         days_till_sympthoms: 12,
         days_till_start_death: 11,
+        groups: [expected_group]
+      )
+    end
+
+    let(:expected_group) do
+      Simulation::Contagion::Group.new(
+        name: 'Group 1',
+        size: 100
       )
     end
 
@@ -76,6 +84,21 @@ fdescribe Simulation::Builder do
     it 'builds settings with attributes' do
       expect(builder.build.settings.to_json)
         .to eq(expected_settings.to_json)
+    end
+
+    it 'builds groups' do
+      expect(builder.build.settings.groups)
+        .not_to be_empty
+    end
+
+    it 'builds a correct group' do
+      expect(builder.build.settings.groups)
+        .to all(be_a(Simulation::Contagion::Group))
+    end
+
+    it 'builds groups with attributes' do
+      expect(builder.build.settings.groups.to_json)
+        .to eq([expected_group].to_json)
     end
   end
 end
