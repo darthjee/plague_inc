@@ -2,4 +2,5 @@
 
 Arstotzka.configure do
   cached true
+  json :params
 end

@@ -9,7 +9,7 @@ class Simulation < ApplicationRecord
     expose :groups, path: 'simulation.settings', after_each: :build_group, default: []
 
     def initialize(params, collection)
-      @json       = params
+      @params     = params
       @collection = collection
     end
 
@@ -19,7 +19,7 @@ class Simulation < ApplicationRecord
 
     private
 
-    attr_reader :json, :collection
+    attr_reader :params, :collection
 
     def build_simulation(simulation_params)
       Simulation.new(
