@@ -22,11 +22,4 @@ class Simulation < ApplicationRecord
   def settings=(settings)
     self.contagion = settings
   end
-
-  def build_settings(attrs)
-    case algorithm
-    when 'contagion'
-      build_contagion(attrs)
-    end
-  end
 end
