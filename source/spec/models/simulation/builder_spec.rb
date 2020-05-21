@@ -101,20 +101,18 @@ describe Simulation::Builder do
         .to eq([expected_group].to_json)
     end
 
-    context 'when settings payload is missing' do
+    context 'when settings payload and algorithm are missing' do
       let(:params) do
         {
           simulation: {
-            name: 'my simulation',
-            algorithm: 'contagion'
+            name: 'my simulation'
           }
         }
       end
 
       let(:expected_simulation) do
         Simulation.new(
-          name: 'my simulation',
-          algorithm: 'contagion'
+          name: 'my simulation'
         )
       end
 
@@ -129,6 +127,38 @@ describe Simulation::Builder do
 
       it 'does not generate settings' do
         expect(builder.build.settings).to be_nil
+      end
+    end
+
+    context 'when settings payload is missing' do
+      let(:params) do
+        {
+          simulation: {
+            name: 'my simulation',
+            algorithm: 'contagion'
+          }
+        }
+      end
+
+      let(:expected_simulation) do
+        Simulation.new(
+          name: 'my simulation',
+          algorithm: 'contagion',
+          settings: Simulation::Contagion.new
+        )
+      end
+
+      it { expect(builder.build).to be_a(Simulation) }
+
+      it { expect(builder.build).not_to be_valid }
+
+      it do
+        expect(builder.build.as_json)
+          .to eq(expected_simulation.as_json)
+      end
+
+      it 'generate settingsi empty settings' do
+        expect(builder.build.settings).to be_a(Simulation::Contagion)
       end
     end
 

@@ -5,6 +5,7 @@ class Simulation < ApplicationRecord
     include Arstotzka
 
     expose :simulation, after: :build_simulation
+    expose :algorithm,  path: :simulation
     expose :settings,   path: :simulation,
                         after: :build_settings
     expose :groups,     path: 'simulation.settings',
@@ -32,7 +33,8 @@ class Simulation < ApplicationRecord
     end
 
     def build_settings(settings_params)
-      return unless settings_params
+      return unless algorithm
+      return Simulation::Contagion.new unless settings_params
 
       Simulation::Contagion.new(
         settings_params.permit(
@@ -45,6 +47,10 @@ class Simulation < ApplicationRecord
       Simulation::Contagion::Group.new(
         group_params.permit(:name, :size)
       )
+    end
+
+    def settings_class
+      Simulation.const_get(algorithm.capitalize)
     end
   end
 end

@@ -142,7 +142,13 @@ describe SimulationsController do
 
       context 'when there are validation errors' do
         let(:payload)    { { algorithm: 'invalid' } }
-        let(:simulation) { Simulation.new(payload).tap(&:valid?) }
+        let(:simulation_attributes) do
+          payload.merge(settings: Simulation::Contagion.new)
+        end
+
+        let(:simulation) do
+          Simulation.new(simulation_attributes).tap(&:valid?)
+        end
 
         it do
           post :create, params: parameters
@@ -166,10 +172,10 @@ describe SimulationsController do
         let(:settings_payload) { {} }
         let(:simulation) do
           Simulation.new({
-                           name: 'my simulation',
-                           algorithm: 'contagion',
-                           contagion: Simulation::Contagion.new
-                         }).tap(&:valid?)
+            name: 'my simulation',
+            algorithm: 'contagion',
+            contagion: Simulation::Contagion.new
+          }).tap(&:valid?)
         end
 
         it do
