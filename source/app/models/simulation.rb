@@ -7,6 +7,8 @@ class Simulation < ApplicationRecord
     contagion
   ].freeze
 
+  ALLOWED_ATTRIBUTES = %i[name algorithm].freeze
+
   has_one :contagion
 
   validates_presence_of :name, :algorithm, :settings

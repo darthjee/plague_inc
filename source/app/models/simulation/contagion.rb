@@ -2,6 +2,13 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    ALLOWED_ATTRIBUTES = %i[
+      lethality
+      days_till_recovery
+      days_till_sympthoms
+      days_till_start_death
+    ].freeze
+
     belongs_to :simulation
     has_many :groups
 

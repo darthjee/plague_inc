@@ -3,6 +3,8 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Group < ApplicationRecord
+      ALLOWED_ATTRIBUTES = %i[name size]
+
       belongs_to :contagion
 
       validates_presence_of :name, :contagion
