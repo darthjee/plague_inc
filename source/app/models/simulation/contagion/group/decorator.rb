@@ -4,8 +4,7 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Group < ApplicationRecord
       class Decorator < ::Decorator
-        expose :name
-        expose :size
+        ALLOWED_ATTRIBUTES.each(&method(:expose))
       end
     end
   end

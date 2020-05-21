@@ -5,13 +5,11 @@ class SimulationsController < ApplicationController
 
   protect_from_forgery except: [:create]
 
-  resource_for :simulation, before_save: :build_settings
+  resource_for :simulation, build_with: :build_simulation
 
   private
 
-  def build_settings
-    Simulation::SettingsBuilder
-      .new(simulation, params)
-      .build
+  def build_simulation
+    Simulation::Builder.new(params, simulations).build
   end
 end

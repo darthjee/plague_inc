@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require './app/models/simulation/builder'
+
 class Simulation < ApplicationRecord
   ALGORITHMS = %w[
     contagion
   ].freeze
+
+  ALLOWED_ATTRIBUTES = %i[name algorithm].freeze
 
   has_one :contagion
 
@@ -17,12 +21,5 @@ class Simulation < ApplicationRecord
 
   def settings=(settings)
     self.contagion = settings
-  end
-
-  def build_settings(attrs)
-    case algorithm
-    when 'contagion'
-      build_contagion(attrs)
-    end
   end
 end
