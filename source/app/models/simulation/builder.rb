@@ -6,7 +6,7 @@ class Simulation < ApplicationRecord
 
     expose :simulation, cached: true, after: :build_simulation
     expose :settings, path: :simulation, cached: true, after: :build_settings
-    expose :groups, path: 'simulation.settings', cached: true, after_each: :build_group
+    expose :groups, path: 'simulation.settings', cached: true, after_each: :build_group, default: []
 
     def initialize(params, collection)
       @json       = params
@@ -29,6 +29,8 @@ class Simulation < ApplicationRecord
     end
 
     def build_settings(settings_params)
+      return unless settings_params
+
       Simulation::Contagion.new(
         settings_params.permit(
           Simulation::Contagion::ALLOWED_ATTRIBUTES

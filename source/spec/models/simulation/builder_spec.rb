@@ -100,5 +100,79 @@ describe Simulation::Builder do
       expect(builder.build.settings.groups.to_json)
         .to eq([expected_group].to_json)
     end
+
+    context 'when settings payload is missing' do
+      let(:params) do
+        {
+          simulation: {
+            name: 'my simulation',
+            algorithm: 'contagion'
+          }
+        }
+      end
+
+      let(:expected_simulation) do
+        Simulation.new(
+          name: 'my simulation',
+          algorithm: 'contagion'
+        )
+      end
+
+      it { expect(builder.build).to be_a(Simulation) }
+
+      it { expect(builder.build).not_to be_valid }
+
+      it do
+        expect(builder.build.as_json)
+          .to eq(expected_simulation.as_json)
+      end
+
+      it 'does not generate settings' do
+        expect(builder.build.settings).to be_nil
+      end
+    end
+
+    context 'when group payload is missing' do
+      let(:settings_params) do
+        {
+          lethality: 0.5,
+          days_till_recovery: 13,
+          days_till_sympthoms: 12,
+          days_till_start_death: 11
+        }
+      end
+
+      let(:expected_settings) do
+        Simulation::Contagion.new(
+          lethality: 0.5,
+          days_till_recovery: 13,
+          days_till_sympthoms: 12,
+          days_till_start_death: 11
+        )
+      end
+
+      it { expect(builder.build).to be_a(Simulation) }
+
+      it { expect(builder.build).not_to be_valid }
+
+      it do
+        expect(builder.build.as_json)
+          .to eq(expected_simulation.as_json)
+      end
+
+      it 'builds a contagion' do
+        expect(builder.build.settings)
+          .to be_a(Simulation::Contagion)
+      end
+
+      it 'builds settings with attributes' do
+        expect(builder.build.settings.to_json)
+          .to eq(expected_settings.to_json)
+      end
+
+      it 'does not generate groups' do
+        expect(builder.build.settings.groups).to be_empty
+      end
+    end
   end
 end
