@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Builder do
+describe Simulation::Builder do
   subject(:builder) do
     described_class.new(parameters, collection)
   end

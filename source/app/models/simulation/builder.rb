@@ -14,7 +14,6 @@ class Simulation < ApplicationRecord
     end
 
     def build
-      groups
       simulation
     end
 
@@ -25,22 +24,24 @@ class Simulation < ApplicationRecord
     def build_simulation(simulation_params)
       Simulation.new(
         simulation_params.permit(:name, :algorithm)
+        .merge(settings: settings)
       )
     end
 
     def build_settings(settings_params)
-      simulation.build_settings(
+      Simulation::Contagion.new(
         settings_params.permit(*%i[
           lethality
           days_till_recovery
           days_till_sympthoms
           days_till_start_death
         ])
+          .merge(groups: groups)
       )
     end
 
     def build_group(group_params)
-      settings.groups.build(
+      Simulation::Contagion::Group.new(
         group_params.permit(:name, :size)
       )
     end
