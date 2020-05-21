@@ -5,8 +5,11 @@ class Simulation < ApplicationRecord
     include Arstotzka
 
     expose :simulation, after: :build_simulation
-    expose :settings, path: :simulation, after: :build_settings
-    expose :groups, path: 'simulation.settings', after_each: :build_group, default: []
+    expose :settings,   path: :simulation,
+                        after: :build_settings
+    expose :groups,     path: 'simulation.settings',
+                        after_each: :build_group,
+                        default: []
 
     def initialize(params, collection)
       @params     = params
