@@ -11,9 +11,9 @@ class Simulation < ApplicationRecord
                         after_each: :build_group,
                         default: []
 
-    def initialize(params, collection)
-      @params     = params
-      @collection = collection
+    def initialize(params, simulations)
+      @params      = params
+      @simulations = simulations
     end
 
     def build
@@ -22,10 +22,10 @@ class Simulation < ApplicationRecord
 
     private
 
-    attr_reader :params, :collection
+    attr_reader :params, :simulations
 
     def build_simulation(simulation_params)
-      Simulation.new(
+      simulations.new(
         simulation_params.permit(Simulation::ALLOWED_ATTRIBUTES)
         .merge(settings: settings)
       )
