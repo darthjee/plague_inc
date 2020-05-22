@@ -17,5 +17,9 @@ module FormHelper
     def initialize(renderer:, **_args)
       @renderer = renderer
     end
+
+    def locals
+      {}
+    end
   end
 end
