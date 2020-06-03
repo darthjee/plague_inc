@@ -40,10 +40,11 @@ gem 'bower-rails',  '~> 0.12.0'
 gem 'newrelic_rpm', '~> 6.8.0.360'
 gem 'nokogiri',     '1.10.9'
 gem 'rake',         '13.0.1'
-gem 'sinclair',     '1.6.6'
+gem 'sinclair',     '1.6.7'
 gem 'tarquinn',     '0.1.0'
 gem 'turbolinks',   '5.2.1'
 
+gem 'magicka', path: 'gems/magicka'
 gem 'darthjee-core_ext', '>= 2.0.0'
 
 group :development do
