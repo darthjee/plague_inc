@@ -10,11 +10,11 @@ module FormHelper
     end
 
     def input(field, model: self.model, **args)
-      Input.render(renderer: renderer, field: field, model: model, **args)
+      Magicka::Input.render(renderer: renderer, field: field, model: model, **args)
     end
 
     def select(field, model: self.model, **args)
-      Select.render(renderer: renderer, field: field, model: model, **args)
+      Magicka::Select.render(renderer: renderer, field: field, model: model, **args)
     end
 
     def button(**args)
