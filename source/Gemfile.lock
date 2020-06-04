@@ -1,10 +1,3 @@
-PATH
-  remote: gems/magicka
-  specs:
-    magicka (0.5.1)
-      activesupport (~> 5.2.4.3)
-      sinclair (>= 1.6.7)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -128,6 +121,9 @@ GEM
     loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
+    magicka (0.5.2)
+      activesupport (~> 5.2.4.3)
+      sinclair (>= 1.6.7)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     marcel (0.3.3)
@@ -322,7 +318,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  arstotzka (= 1.6.1)
+  arstotzka (~> 1.6.1)
   azeroth (>= 0.7.1)
   bootsnap (>= 1.1.0)
   bower-rails (~> 0.12.0)
@@ -333,7 +329,7 @@ DEPENDENCIES
   factory_bot (= 5.1.1)
   jbuilder (~> 2.5)
   listen (= 3.2.1)
-  magicka!
+  magicka (~> 0.5.2)
   mysql2
   newrelic_rpm (~> 6.8.0.360)
   nokogiri (= 1.10.9)
@@ -358,10 +354,10 @@ DEPENDENCIES
   sass-rails (= 5.1.0)
   shoulda-matchers (= 4.3.0)
   simplecov (= 0.17.1)
-  sinclair (= 1.6.7)
+  sinclair (~> 1.6.7)
   spring (= 2.1.0)
   spring-watcher-listen (= 2.0.1)
-  tarquinn (= 0.1.0)
+  tarquinn (~> 0.1.0)
   timecop (= 0.9.1)
   turbolinks (= 5.2.1)
   uglifier (= 4.2.0)
