@@ -3,7 +3,7 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Behavior < ApplicationRecord
-      ALLOWED_ATTRIBUTES = %i[name size].freeze
+      ALLOWED_ATTRIBUTES = %i[interactions contagion_risk].freeze
 
       belongs_to :contagion
 
