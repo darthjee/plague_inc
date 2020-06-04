@@ -27,18 +27,30 @@ describe Simulation::Decorator do
           .slice('name', 'size')
       end
 
+      let(:behavior_json) do
+        object
+          .settings
+          .behaviors
+          .first
+          .as_json
+          .slice('interactions', 'contagion_risk')
+      end
+
       let(:settings_json) do
-        object.settings
-              .as_json
-              .slice(*settings_attributes)
-              .merge(groups: [group_json])
+        object
+          .settings
+          .as_json
+          .slice(*settings_attributes)
+          .merge(groups: [group_json])
+          .merge(behaviors: [behavior_json])
       end
 
       let(:expected_json) do
-        object.as_json
-              .slice(*attributes)
-              .merge(settings: settings_json)
-              .as_json
+        object
+          .as_json
+          .slice(*attributes)
+          .merge(settings: settings_json)
+          .as_json
       end
 
       it 'returns expected json' do
@@ -92,6 +104,7 @@ describe Simulation::Decorator do
             .slice(*settings_attributes)
             .merge(errors: settings_errors)
             .merge(groups: [group_json])
+            .merge(behaviors: [behavior_json])
         end
 
         let(:expected_json) do
@@ -125,6 +138,10 @@ describe Simulation::Decorator do
             .merge(groups: [
                      name: simulation.settings.groups.first.name,
                      size: simulation.settings.groups.first.size
+                   ])
+            .merge(behaviors: [
+                     interactions: simulation.settings.behaviors.first.interactions,
+                     contagion_risk: simulation.settings.behaviors.first.contagion_risk
                    ])
             )
         end.as_json
@@ -171,6 +188,10 @@ describe Simulation::Decorator do
                        name: simulation.settings.groups.first.name,
                        size: simulation.settings.groups.first.size
                      ])
+            .merge(behaviors: [
+                     interactions: simulation.settings.behaviors.first.interactions,
+                     contagion_risk: simulation.settings.behaviors.first.contagion_risk
+                   ])
               )
           end.as_json
         end
