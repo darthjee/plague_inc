@@ -1,7 +1,7 @@
 PATH
   remote: gems/magicka
   specs:
-    magicka (0.3.0)
+    magicka (0.5.1)
       activesupport (~> 5.2.4.3)
       sinclair (>= 1.6.7)
 
