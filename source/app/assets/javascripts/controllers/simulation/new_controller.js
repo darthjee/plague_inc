@@ -19,6 +19,24 @@
     }
   };
 
+  fn.addBehavior = function() {
+    if (!this.data.settings) {
+      this.data.settings = {
+        behaviors: []
+      };
+    }
+    if (!this.data.settings.behaviors) {
+      this.data.settings.behaviors = [{}]
+    } else {
+      this.data.settings.behaviors.push({});
+    }
+  };
+
+  fn.removeBehavior = function(index) {
+    this.data.settings.behaviors.splice(index, 1);
+  };
+
+
   fn.addGroup = function() {
     if (!this.data.settings) {
       this.data.settings = {
