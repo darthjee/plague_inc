@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   include Azeroth::Resourceable
 
-  helper FormHelper
+  helper Magicka::Helper
 
   def forbidden
     head :forbidden
