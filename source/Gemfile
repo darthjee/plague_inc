@@ -44,8 +44,8 @@ gem 'sinclair',     '~> 1.6.7'
 gem 'tarquinn',     '~> 0.1.0'
 gem 'turbolinks',   '5.2.1'
 
-gem 'magicka',      '~> 0.5.2'
 gem 'darthjee-core_ext', '>= 2.0.0'
+gem 'magicka', '~> 0.5.2'
 
 group :development do
   # Access an interactive console on exception pages
