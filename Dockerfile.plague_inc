@@ -1,4 +1,4 @@
-FROM darthjee/plague_inc-base:0.2.1
+FROM darthjee/plague_inc-base:0.3.0
 
 WORKDIR /home/app/app
 COPY --chown=app:app source/Gemfile* /home/app/app/
