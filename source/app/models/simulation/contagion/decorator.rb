@@ -6,6 +6,7 @@ class Simulation < ApplicationRecord
       ALLOWED_ATTRIBUTES.each(&method(:expose))
 
       expose :groups
+      expose :behaviors
     end
   end
 end

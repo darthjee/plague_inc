@@ -1,29 +1,5 @@
 <div class="card-deck mb-12 col-lg-12 col-12">
-  <div class="card mb-4 shadow-sm col-6">
-    <div class="card-header">
-      <h4 class="my-0 font-weight-normal">
-        New Simulation
-      </h4>
-    </div>
-    <div class="card-body">
-      <%= form.input(:name, placeholder: "Simulation name") %>
-      <%= form.select(:algorithm, options: Simulation::ALGORITHMS ) %>
-
-      <% form.with_model('settings') do |f| %>
-        <%= render partial: 'contagion_form', locals: { form: f } %>
-      <% end %>
-
-      <div class="form-group row">
-        <div class="offset-2 col-10">
-          <%= form.button(
-            ng_click: 'gnc.save()',
-            ng_disabled: 'gnc.ongoing',
-            classes: 'btn-primary',
-            text: 'Save'
-          ) %>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render partial: 'base', locals: { form: form } %>
   <%= render partial: 'contagion_groups_form', locals: { form: form } %>
+  <%= render partial: 'contagion_behaviors_form', locals: { form: form } %>
 </div>

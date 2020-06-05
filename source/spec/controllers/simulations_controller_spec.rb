@@ -103,7 +103,8 @@ describe SimulationsController do
           days_till_recovery: 13,
           days_till_sympthoms: 12,
           days_till_start_death: 11,
-          groups: [group_payload]
+          groups: [group_payload],
+          behaviors: [behavior_payload]
         }
       end
 
@@ -111,6 +112,13 @@ describe SimulationsController do
         {
           name: 'Group 1',
           size: 100
+        }
+      end
+
+      let(:behavior_payload) do
+        {
+          interactions: 15,
+          contagion_risk: 0.5
         }
       end
 
@@ -131,6 +139,18 @@ describe SimulationsController do
       it do
         expect { post :create, params: parameters }
           .to change(Simulation::Contagion, :count)
+          .by(1)
+      end
+
+      it do
+        expect { post :create, params: parameters }
+          .to change(Simulation::Contagion::Group, :count)
+          .by(1)
+      end
+
+      it do
+        expect { post :create, params: parameters }
+          .to change(Simulation::Contagion::Behavior, :count)
           .by(1)
       end
 

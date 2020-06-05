@@ -11,6 +11,9 @@ class Simulation < ApplicationRecord
     expose :groups,     path: 'simulation.settings',
                         after_each: :build_group,
                         default: []
+    expose :behaviors,  path: 'simulation.settings',
+                        after_each: :build_behavior,
+                        default: []
 
     def initialize(params, simulations)
       @params      = params
@@ -36,16 +39,29 @@ class Simulation < ApplicationRecord
       return unless algorithm
       return Simulation::Contagion.new unless settings_params
 
-      Simulation::Contagion.new(
-        settings_params.permit(
-          Simulation::Contagion::ALLOWED_ATTRIBUTES
-        ).merge(groups: groups)
+      build_object(
+        settings_params, Simulation::Contagion,
+        groups: groups,
+        behaviors: behaviors
       )
     end
 
     def build_group(group_params)
-      Simulation::Contagion::Group.new(
-        group_params.permit(:name, :size)
+      build_object(
+        group_params, Simulation::Contagion::Group
+      )
+    end
+
+    def build_behavior(behavior_params)
+      build_object(
+        behavior_params, Simulation::Contagion::Behavior
+      )
+    end
+
+    def build_object(params, klass, **attributes)
+      klass.new(
+        params.permit(klass::ALLOWED_ATTRIBUTES)
+        .merge(**attributes)
       )
     end
 

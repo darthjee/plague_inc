@@ -25,7 +25,8 @@ describe Simulation::Builder do
       days_till_recovery: 13,
       days_till_sympthoms: 12,
       days_till_start_death: 11,
-      groups: [group_params]
+      groups: [group_params],
+      behaviors: [behavior_params]
     }
   end
 
@@ -33,6 +34,13 @@ describe Simulation::Builder do
     {
       name: 'Group 1',
       size: 100
+    }
+  end
+
+  let(:behavior_params) do
+    {
+      interactions: 15,
+      contagion_risk: 0.5
     }
   end
 
@@ -59,6 +67,13 @@ describe Simulation::Builder do
       Simulation::Contagion::Group.new(
         name: 'Group 1',
         size: 100
+      )
+    end
+
+    let(:expected_behavior) do
+      Simulation::Contagion::Behavior.new(
+        interactions: 15,
+        contagion_risk: 0.5
       )
     end
 
@@ -99,6 +114,16 @@ describe Simulation::Builder do
     it 'builds groups with attributes' do
       expect(builder.build.settings.groups.to_json)
         .to eq([expected_group].to_json)
+    end
+
+    it 'builds a correct behavior' do
+      expect(builder.build.settings.behaviors)
+        .to all(be_a(Simulation::Contagion::Behavior))
+    end
+
+    it 'builds behaviors with attributes' do
+      expect(builder.build.settings.behaviors.to_json)
+        .to eq([expected_behavior].to_json)
     end
 
     context 'when settings payload and algorithm are missing' do
