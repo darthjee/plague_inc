@@ -26,7 +26,7 @@
       };
     }
     if (!this.data.settings.behaviors) {
-      this.data.settings.behaviors = [{}]
+      this.data.settings.behaviors = [{}];
     } else {
       this.data.settings.behaviors.push({});
     }
@@ -44,7 +44,7 @@
       };
     }
     if (!this.data.settings.groups) {
-      this.data.settings.groups = [{}]
+      this.data.settings.groups = [{}];
     } else {
       this.data.settings.groups.push({});
     }
