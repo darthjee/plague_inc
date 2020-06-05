@@ -13,7 +13,7 @@ class Simulation < ApplicationRecord
     has_many :groups
     has_many :behaviors
 
-    validates_presence_of :simulation, :groups
+    validates_presence_of :simulation, :groups, :behaviors
 
     validates :lethality,
               presence: true,

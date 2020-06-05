@@ -50,6 +50,26 @@ RSpec.describe Simulation::Contagion, type: :model do
       expect(contagion).to validate_presence_of(:groups)
     end
 
+    it do
+      expect(contagion).to validate_presence_of(:behaviors)
+    end
+
+    context 'when group is invalid' do
+      subject(:contagion) { build(:contagion, groups: [group]) }
+
+      let(:group) { build(:contagion_group, size: nil) }
+
+      it { expect(contagion).not_to be_valid }
+    end
+
+    context 'when behavior is invalid' do
+      subject(:contagion) { build(:contagion, behaviors: [behavior]) }
+
+      let(:behavior) { build(:contagion_behavior, interactions: nil) }
+
+      it { expect(contagion).not_to be_valid }
+    end
+
     context 'when days_till_sympthoms is bigger than days_till_recovery' do
       subject(:contagion) do
         build(:contagion,
