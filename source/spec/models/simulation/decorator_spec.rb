@@ -129,6 +129,8 @@ describe Simulation::Decorator do
 
       let(:expected_json) do
         object.map do |simulation|
+          group = simulation.settings.groups.first
+          behavior = simulation.settings.behaviors.first
           simulation
             .as_json
             .slice(*attributes)
@@ -136,12 +138,12 @@ describe Simulation::Decorator do
               settings: simulation.settings
             .as_json.slice(*settings_attributes)
             .merge(groups: [
-                     name: simulation.settings.groups.first.name,
-                     size: simulation.settings.groups.first.size
+                     name: group.name,
+                     size: group.size
                    ])
             .merge(behaviors: [
-                     interactions: simulation.settings.behaviors.first.interactions,
-                     contagion_risk: simulation.settings.behaviors.first.contagion_risk
+                     interactions: behavior.interactions,
+                     contagion_risk: behavior.contagion_risk
                    ])
             )
         end.as_json
@@ -176,6 +178,8 @@ describe Simulation::Decorator do
 
         let(:expected_json) do
           object.map do |simulation|
+            group = simulation.settings.groups.first
+            behavior = simulation.settings.behaviors.first
             simulation
               .as_json
               .slice(*attributes)
@@ -185,13 +189,13 @@ describe Simulation::Decorator do
               .settings
               .as_json.slice(*settings_attributes)
               .merge(groups: [
-                       name: simulation.settings.groups.first.name,
-                       size: simulation.settings.groups.first.size
+                       name: group.name,
+                       size: group.size
                      ])
-            .merge(behaviors: [
-                     interactions: simulation.settings.behaviors.first.interactions,
-                     contagion_risk: simulation.settings.behaviors.first.contagion_risk
-                   ])
+              .merge(behaviors: [
+                       interactions: behavior.interactions,
+                       contagion_risk: behavior.contagion_risk
+                     ])
               )
           end.as_json
         end
