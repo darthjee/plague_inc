@@ -6,6 +6,7 @@ class Settings
   settings_prefix 'PLAGUE_INC'
 
   with_settings(
+    title: 'Plague Simulations',
     cache_age: 10.seconds
   )
 end
