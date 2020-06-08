@@ -1,5 +1,11 @@
-<div class="card-deck mb-12 col-lg-12 col-12">
-  <%= render partial: 'base', locals: { form: form } %>
-  <%= render partial: 'contagion_groups_form', locals: { form: form } %>
-  <%= render partial: 'contagion_behaviors_form', locals: { form: form } %>
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-lg-4">
+    <%= render partial: 'base', locals: { form: form } %>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-4">
+    <%= render partial: 'contagion_groups_form', locals: { form: form } %>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-4">
+    <%= render partial: 'contagion_behaviors_form', locals: { form: form } %>
+  </div>
 </div>
