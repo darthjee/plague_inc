@@ -19,39 +19,37 @@
     }
   };
 
-  fn.addBehavior = function() {
-    if (!this.data.settings) {
+  fn.addObject = function(key) {
+   if (!this.data.settings) {
       this.data.settings = {
         behaviors: []
       };
-    }
-    if (!this.data.settings.behaviors) {
-      this.data.settings.behaviors = [{}];
+   }
+    if (!this.data.settings[key]) {
+      this.data.settings[key] = [{}];
     } else {
-      this.data.settings.behaviors.push({});
+      this.data.settings[key].push({});
     }
+  };
+
+  fn.removeObject = function(key, index) {
+    this.data.settings[key].splice(index, 1);
+  };
+
+  fn.addBehavior = function() {
+    this.addObject('behaviors');
   };
 
   fn.removeBehavior = function(index) {
-    this.data.settings.behaviors.splice(index, 1);
+    this.removeObject('behaviors', index);
   };
 
-
   fn.addGroup = function() {
-    if (!this.data.settings) {
-      this.data.settings = {
-        groups: []
-      };
-    }
-    if (!this.data.settings.groups) {
-      this.data.settings.groups = [{}];
-    } else {
-      this.data.settings.groups.push({});
-    }
+    this.addObject('groups');
   };
 
   fn.removeGroup = function(index) {
-    this.data.settings.groups.splice(index, 1);
+    this.removeObject('groups', index);
   };
 
   app.controller('Simulation.NewController', [

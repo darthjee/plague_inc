@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>MyTitle</title>
+    <title><%= Settings.title %></title>
+    <link rel="icon" type="image/png" href="<%= Settings.favicon %>">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 
@@ -15,7 +16,7 @@
 
     <%= render 'layouts/header' %>
 
-    <div class="container" ng-view>
+    <div class="container-fluid" ng-view>
       <%= yield %>
     </div>
 
