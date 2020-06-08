@@ -30,6 +30,9 @@ case $ACTION in
   "signin")
     heroku container:login
     ;;
+  "build-test")
+    make PROJECT=circleci_plague_inc build
+    ;;
   "build")
     make PROJECT=production_plague_inc build
     ;;

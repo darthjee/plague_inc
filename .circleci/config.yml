@@ -3,7 +3,12 @@ workflows:
   version: 2
   test:
     jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
       - test:
+          requires: [build]
           filters:
             tags:
               only: /.*/
@@ -16,9 +21,16 @@ workflows:
               only:
                 - master
 jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Make Build
+          command: scripts/release.sh build-test
   test:
     docker:
-      - image: darthjee/circleci_plague_inc-base:0.3.0
+      - image: darthjee/circleci_plague_inc:0.3.0
         environment:
           PLAGUE_INC_MYSQL_HOST: mysql
           PLAGUE_INC_MYSQL_PORT: 3306
