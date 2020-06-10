@@ -24,7 +24,7 @@ describe Simulation::Decorator do
           .groups
           .first
           .as_json
-          .slice('name', 'size', 'reference')
+          .slice(*%w[name size reference])
       end
 
       let(:behavior_json) do
@@ -33,7 +33,7 @@ describe Simulation::Decorator do
           .behaviors
           .first
           .as_json
-          .slice('interactions', 'contagion_risk', 'reference')
+          .slice(*%w[name interactions contagion_risk reference])
       end
 
       let(:settings_json) do
@@ -143,6 +143,7 @@ describe Simulation::Decorator do
                      reference: group.reference
                    ])
             .merge(behaviors: [
+                     name: behavior.name,
                      interactions: behavior.interactions,
                      contagion_risk: behavior.contagion_risk,
                      reference: behavior.reference
@@ -196,6 +197,7 @@ describe Simulation::Decorator do
                        reference: group.reference
                      ])
               .merge(behaviors: [
+                       name: behavior.name,
                        interactions: behavior.interactions,
                        contagion_risk: behavior.contagion_risk,
                        reference: behavior.reference
