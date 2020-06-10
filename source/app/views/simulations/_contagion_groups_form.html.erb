@@ -11,11 +11,11 @@
     </div>
     <ul class="list-group mt-3 mb-4">
       <li class="list-group-item" ng-repeat="group in gnc.data.settings.groups">
-        <% magicka_form('group') do |form| %>
-          <%= form.input(:name, placeholder: "General") %>
-          <%= form.input(:size, placeholder: "1000") %>
-          <%= form.input(:reference) %>
-          <%= form.button(
+        <% form.with_model(:group, base: nil) do |f| %>
+          <%= f.input(:name, placeholder: "General") %>
+          <%= f.input(:size, placeholder: "1000") %>
+          <%= f.input(:reference) %>
+          <%= f.button(
             ng_click: 'gnc.removeGroup($index)',
             classes: 'btn-secondary',
             text: '-'
