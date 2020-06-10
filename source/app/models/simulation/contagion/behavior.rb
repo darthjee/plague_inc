@@ -8,6 +8,7 @@ class Simulation < ApplicationRecord
       belongs_to :contagion
 
       validates_presence_of :contagion
+      validates :reference, length: { maximum: 10 }
       validates :interactions,
                 presence: true,
                 numericality: { greater_than_or_equal_to: 0 }

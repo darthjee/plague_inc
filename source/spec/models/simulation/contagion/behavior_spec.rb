@@ -19,5 +19,10 @@ RSpec.describe Simulation::Contagion::Behavior, type: :model do
       expect(behavior).to validate_inclusion_of(:contagion_risk)
         .in_range((0.0..1.0))
     end
+
+    it do
+      expect(behavior).to validate_length_of(:reference)
+        .is_at_most(10)
+    end
   end
 end
