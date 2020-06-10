@@ -33,14 +33,16 @@ describe Simulation::Builder do
   let(:group_params) do
     {
       name: 'Group 1',
-      size: 100
+      size: 100,
+      reference: 'group-1'
     }
   end
 
   let(:behavior_params) do
     {
       interactions: 15,
-      contagion_risk: 0.5
+      contagion_risk: 0.5,
+      reference: 'behavior-1'
     }
   end
 
@@ -66,14 +68,16 @@ describe Simulation::Builder do
     let(:expected_group) do
       Simulation::Contagion::Group.new(
         name: 'Group 1',
-        size: 100
+        size: 100,
+        reference: 'group-1'
       )
     end
 
     let(:expected_behavior) do
       Simulation::Contagion::Behavior.new(
         interactions: 15,
-        contagion_risk: 0.5
+        contagion_risk: 0.5,
+        reference: 'behavior-1'
       )
     end
 
