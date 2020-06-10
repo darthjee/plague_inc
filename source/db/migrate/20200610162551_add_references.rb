@@ -9,7 +9,9 @@ class AddReferences < ActiveRecord::Migration[5.2]
 
     change_table :simulation_contagion_behaviors do |t|
       t.string :reference, size: 10
-      t.index %i[reference contagion_id], unique: true, name: :contagion_behaviors_reference_contagion_id
+      t.index %i[reference contagion_id],
+              unique: true,
+              name: :contagion_behaviors_reference_contagion_id
     end
   end
 end
