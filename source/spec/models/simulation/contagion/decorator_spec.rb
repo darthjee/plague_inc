@@ -22,7 +22,7 @@ describe Simulation::Contagion::Decorator do
           .groups
           .first
           .as_json
-          .slice(*%w[name size reference])
+          .slice('name', 'size', 'reference')
       end
 
       let(:behavior_json) do
@@ -30,7 +30,7 @@ describe Simulation::Contagion::Decorator do
           .behaviors
           .first
           .as_json
-          .slice(*%w[name interactions contagion_risk reference])
+          .slice('name', 'interactions', 'contagion_risk', 'reference')
       end
 
       let(:expected_json) do
