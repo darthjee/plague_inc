@@ -11,13 +11,16 @@
     </div>
     <ul class="list-group mt-3 mb-4">
       <li class="list-group-item" ng-repeat="behavior in gnc.data.settings.behaviors">
-        <%= form.input(:interactions, placeholder: '15', model: 'behavior') %>
-        <%= form.input(:contagion_risk, placeholder: '0.5', model: 'behavior') %>
-        <%= form.button(
-          ng_click: 'gnc.removeBehavior($index)',
-          classes: 'btn-secondary',
-          text: '-'
-        )%>
+        <% magicka_form('behavior') do |form| %>
+          <%= form.input(:interactions, placeholder: '15') %>
+          <%= form.input(:contagion_risk, placeholder: '0.5') %>
+          <%= form.input(:reference) %>
+          <%= form.button(
+            ng_click: 'gnc.removeBehavior($index)',
+            classes: 'btn-secondary',
+            text: '-'
+          )%>
+        <% end %>
       </li>
     </ul>
     <%= form.button(ng_click: 'gnc.addBehavior()', classes: 'btn-secondary', text: '+')%>
