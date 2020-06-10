@@ -15,6 +15,11 @@ RSpec.describe Simulation::Contagion::Group, type: :model do
     end
 
     it do
+      expect(group).to validate_length_of(:name)
+        .is_at_most(255)
+    end
+
+    it do
       expect(group).to validate_numericality_of(:size)
         .is_greater_than_or_equal_to(1)
     end
