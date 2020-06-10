@@ -12,6 +12,7 @@
     <ul class="list-group mt-3 mb-4">
       <li class="list-group-item" ng-repeat="behavior in gnc.data.settings.behaviors">
         <% form.with_model(:behavior, base: nil) do |f| %>
+          <%= f.input(:name, placeholder: "General") %>
           <%= f.input(:interactions, placeholder: '15') %>
           <%= f.input(:contagion_risk, placeholder: '0.5') %>
           <%= f.input(:reference) %>
