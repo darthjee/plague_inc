@@ -115,3 +115,6 @@ jobs:
       - run:
           name: Migrate
           command: scripts/release.sh migrate
+      - run:
+          name: Populate fields
+          command: scripts/release.sh populate
