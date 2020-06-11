@@ -12,8 +12,8 @@ namespace :populate do
       group.update(reference: SecureRandom.hex(5))
     end
 
-    Simulation::Contagion::Behavior.where(reference: nil).find_each do |behavior|
-      behavior.update(reference: SecureRandom.hex(5))
+    Simulation::Contagion::Behavior.where(reference: nil).find_each do |behav|
+      behav.update(reference: SecureRandom.hex(5))
     end
   end
 end
