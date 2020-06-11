@@ -1,6 +1,7 @@
 namespace :populate do
   desc 'Populate all that needs populating'
   task all: :environment do
+    Rake::Task['populate:reference'].invoke
   end
 
   desc 'Populate references in Groups and Behaviors'
