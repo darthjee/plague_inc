@@ -9,8 +9,8 @@ namespace :populate do
       group.update(reference: SecureRandom.hex(5))
     end
 
-    Simulation::Contagion::Reference.find_each do |reference|
-      reference.update(reference: SecureRandom.hex(5))
+    Simulation::Contagion::Behavior.find_each do |behavior|
+      behavior.update(reference: SecureRandom.hex(5))
     end
   end
 end
