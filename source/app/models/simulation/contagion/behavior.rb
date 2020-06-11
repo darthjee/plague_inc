@@ -3,11 +3,13 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Behavior < ApplicationRecord
-      ALLOWED_ATTRIBUTES = %i[interactions contagion_risk].freeze
+      ALLOWED_ATTRIBUTES = %i[name interactions contagion_risk reference].freeze
 
       belongs_to :contagion
 
       validates_presence_of :contagion
+      validates :name, length: { maximum: 255 }
+      validates :reference, length: { maximum: 10 }
       validates :interactions,
                 presence: true,
                 numericality: { greater_than_or_equal_to: 0 }

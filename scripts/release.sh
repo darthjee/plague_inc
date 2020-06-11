@@ -42,6 +42,9 @@ case $ACTION in
   "migrate")
     heroku run rake db:migrate
     ;;
+  "populate")
+    heroku run rake populate:all
+    ;;
   *)
     echo Usage:
     echo "$0 build # builds gem"

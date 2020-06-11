@@ -11,6 +11,11 @@ RSpec.describe Simulation, type: :model do
     end
 
     it do
+      expect(simulation).to validate_length_of(:name)
+        .is_at_most(255)
+    end
+
+    it do
       expect(simulation).to validate_presence_of(:algorithm)
     end
 

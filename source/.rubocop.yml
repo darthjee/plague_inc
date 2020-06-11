@@ -16,12 +16,16 @@ Style/MixinUsage:
   Exclude:
     - 'bin/*'
 
-Metrics/LineLength:
+Layout/LineLength:
   Exclude:
     - 'db/schema.rb'
     - 'spec/spec_helper.rb'
     - 'config/environments/*.rb'
     - 'config/initializers/content_security_policy.rb'
+
+Style/WordArray:
+  Exclude:
+    - 'db/schema.rb'
 
 Style/StringLiterals:
   Exclude:

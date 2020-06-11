@@ -20,16 +20,19 @@
   };
 
   fn.addObject = function(key) {
-   if (!this.data.settings) {
+    if (!this.data.settings) {
       this.data.settings = {
-        behaviors: []
+        behaviors: [],
+        groups: []
       };
-   }
-    if (!this.data.settings[key]) {
-      this.data.settings[key] = [{}];
-    } else {
-      this.data.settings[key].push({});
     }
+    if (!this.data.settings[key]) {
+      this.data.settings[key] = [];
+    }
+
+    this.data.settings[key].push({
+      reference: Math.floor(Math.random() * 1e10)
+    });
   };
 
   fn.removeObject = function(key, index) {

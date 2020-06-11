@@ -10,13 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_04_205535) do
+ActiveRecord::Schema.define(version: 2020_06_10_230703) do
 
   create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
     t.integer "interactions", null: false
     t.float "contagion_risk", null: false
+    t.string "reference", limit: 10
+    t.string "name"
     t.index ["contagion_id"], name: "fk_rails_2f5e4f0f2a"
+    t.index ["reference", "contagion_id"], name: "contagion_behaviors_reference_contagion_id", unique: true
   end
 
   create_table "simulation_contagion_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -24,7 +27,9 @@ ActiveRecord::Schema.define(version: 2020_06_04_205535) do
     t.bigint "contagion_id", null: false
     t.float "lethality_override"
     t.integer "size", null: false
+    t.string "reference", limit: 10
     t.index ["contagion_id"], name: "fk_rails_feaa742918"
+    t.index ["reference", "contagion_id"], name: "index_simulation_contagion_groups_on_reference_and_contagion_id", unique: true
   end
 
   create_table "simulation_contagions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

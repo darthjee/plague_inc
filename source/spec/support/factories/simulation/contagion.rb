@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :contagion, class: 'Simulation::Contagion' do
-    simulation
+    simulation            { build(:simulation, settings: nil) }
     lethality             { 0.5 }
     days_till_recovery    { 10 }
     days_till_sympthoms   { 10 }
