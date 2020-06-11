@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_230703) do
+ActiveRecord::Schema.define(version: 2020_06_11_141424) do
 
   create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 2020_06_10_230703) do
     t.float "lethality_override"
     t.integer "size", null: false
     t.string "reference", limit: 10
+    t.bigint "behavior_id"
+    t.index ["behavior_id"], name: "fk_rails_31dbcf6ede"
     t.index ["contagion_id"], name: "fk_rails_feaa742918"
     t.index ["reference", "contagion_id"], name: "index_simulation_contagion_groups_on_reference_and_contagion_id", unique: true
   end
@@ -49,6 +51,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_230703) do
   end
 
   add_foreign_key "simulation_contagion_behaviors", "simulation_contagions", column: "contagion_id"
+  add_foreign_key "simulation_contagion_groups", "simulation_contagion_behaviors", column: "behavior_id"
   add_foreign_key "simulation_contagion_groups", "simulation_contagions", column: "contagion_id"
   add_foreign_key "simulation_contagions", "simulations"
 end
