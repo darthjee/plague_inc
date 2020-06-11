@@ -8,11 +8,11 @@ namespace :populate do
 
   desc 'Populate references in Groups and Behaviors'
   task reference: :environment do
-    Simulation::Contagion::Group.find_each do |group|
+    Simulation::Contagion::Group.where(reference: nil).find_each do |group|
       group.update(reference: SecureRandom.hex(5))
     end
 
-    Simulation::Contagion::Behavior.find_each do |behavior|
+    Simulation::Contagion::Behavior.where(reference: nil).find_each do |behavior|
       behavior.update(reference: SecureRandom.hex(5))
     end
   end
