@@ -43,7 +43,11 @@ class Simulation < ApplicationRecord
         settings_params, Simulation::Contagion,
         groups: groups,
         behaviors: behaviors
-      )
+      ).tap do |contagion|
+        behaviors.each do |behavior|
+          behavior.contagion = contagion
+        end
+      end
     end
 
     def build_group(group_params)
