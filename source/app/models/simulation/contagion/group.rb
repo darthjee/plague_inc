@@ -6,9 +6,9 @@ class Simulation < ApplicationRecord
       ALLOWED_ATTRIBUTES = %i[name size reference].freeze
 
       belongs_to :contagion
-      belongs_to :behavior
+      belongs_to :behavior, optional: true
 
-      validates_presence_of :contagion, :behavior
+      validates_presence_of :contagion
       validates :reference, length: { maximum: 10 }
       validates :name,
                 presence: true,

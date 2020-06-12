@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe Simulation::Contagion::Group, type: :model do
-  subject(:group) { build(:contagion_group, :with_behavior) }
+  subject(:group) { build(:contagion_group) }
 
   describe 'validations' do
     it do
@@ -11,7 +11,7 @@ RSpec.describe Simulation::Contagion::Group, type: :model do
     end
 
     it do
-      expect(group).to validate_presence_of(:behavior)
+      expect(group).not_to validate_presence_of(:behavior)
     end
 
     it do

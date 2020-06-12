@@ -9,7 +9,7 @@ describe Simulation::Contagion::Group::Decorator do
 
   describe '#to_json' do
     context 'when object is one entity' do
-      let(:object) { create(:contagion_group) }
+      let(:object) { build(:contagion_group) }
 
       let(:expected_json) do
         object
