@@ -6,5 +6,11 @@ FactoryBot.define do
     size            { 100 }
     reference       { SecureRandom.hex(5) }
     contagion
+
+    trait :with_behavior do
+      after(:build) do |group|
+        group.behavior = group&.contagion&.behaviors&.first unless group.behavior
+      end
+    end
   end
 end

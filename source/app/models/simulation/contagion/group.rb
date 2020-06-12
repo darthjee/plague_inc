@@ -8,7 +8,7 @@ class Simulation < ApplicationRecord
       belongs_to :contagion
       belongs_to :behavior
 
-      validates_presence_of :contagion
+      validates_presence_of :contagion, :behavior
       validates :reference, length: { maximum: 10 }
       validates :name,
                 presence: true,
