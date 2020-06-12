@@ -13,8 +13,7 @@ class Simulation < ApplicationRecord
                         default: []
     expose :behaviors,  path: 'simulation.settings',
                         after_each: :build_behavior,
-                        default: [],
-                        cached: true
+                        default: []
 
     def initialize(params, simulations)
       @params      = params
