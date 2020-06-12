@@ -9,12 +9,14 @@ describe Simulation::Contagion::Group::Decorator do
 
   describe '#to_json' do
     context 'when object is one entity' do
-      let(:object) { build(:contagion_group) }
+      let(:object)   { build(:contagion_group, behavior: behavior) }
+      let(:behavior) { build(:contagion_behavior) }
 
       let(:expected_json) do
         object
           .as_json
           .slice('name', 'size', 'reference')
+          .merge('behavior' => behavior.reference)
       end
 
       it 'returns expected json' do
@@ -23,7 +25,7 @@ describe Simulation::Contagion::Group::Decorator do
 
       context 'when object is invalid but object has not been validated' do
         let(:object) do
-          build(:contagion_group, size: nil)
+          build(:contagion_group, size: nil, behavior: behavior)
         end
 
         it 'returns expected json without errors' do
@@ -47,6 +49,7 @@ describe Simulation::Contagion::Group::Decorator do
             .as_json
             .slice('name', 'size', 'reference')
             .merge('errors' => expected_errors)
+            .merge('behavior' => nil)
         end
 
         before { object.valid? }
@@ -65,6 +68,7 @@ describe Simulation::Contagion::Group::Decorator do
           group
             .as_json
             .slice('name', 'size', 'reference')
+            .merge('behavior' => nil)
         end.as_json
       end
 
@@ -97,6 +101,7 @@ describe Simulation::Contagion::Group::Decorator do
               .as_json
               .slice('name', 'size', 'reference')
               .merge(errors: expected_errors)
+              .merge(behavior: nil)
           end.as_json
         end
 
