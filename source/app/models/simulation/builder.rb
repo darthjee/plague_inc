@@ -13,7 +13,8 @@ class Simulation < ApplicationRecord
                         default: []
     expose :behaviors,  path: 'simulation.settings',
                         after_each: :build_behavior,
-                        default: []
+                        default: [],
+                        cached: true
 
     def initialize(params, simulations)
       @params      = params
@@ -49,7 +50,11 @@ class Simulation < ApplicationRecord
     def build_group(group_params)
       build_object(
         group_params, Simulation::Contagion::Group
-      )
+      ).tap do |group|
+        group.behavior = behaviors.find do |behavior|
+          behavior.reference == group_params[:behavior]
+        end
+      end
     end
 
     def build_behavior(behavior_params)
