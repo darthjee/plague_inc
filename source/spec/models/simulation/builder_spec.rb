@@ -25,7 +25,7 @@ describe Simulation::Builder do
       days_till_recovery: 13,
       days_till_sympthoms: 12,
       days_till_start_death: 11,
-      groups: [group_params],
+      groups: [group_params].compact,
       behaviors: [behavior_params].compact
     }
   end
@@ -135,6 +135,49 @@ describe Simulation::Builder do
     it 'builds behaviors with attributes' do
       expect(builder.build.settings.behaviors.to_json)
         .to eq([expected_behavior].to_json)
+    end
+
+    context 'when there is no group' do
+      let(:group_params) { nil }
+
+      it { expect(builder.build).to be_a(Simulation) }
+
+      it { expect(builder.build).not_to be_valid }
+
+      it do
+        expect(builder.build.as_json)
+          .to eq(expected_simulation.as_json)
+      end
+
+      it 'builds settings' do
+        expect(builder.build.settings)
+          .not_to be_nil
+      end
+
+      it 'builds a contagion' do
+        expect(builder.build.settings)
+          .to be_a(Simulation::Contagion)
+      end
+
+      it 'builds settings with attributes' do
+        expect(builder.build.settings.to_json)
+          .to eq(expected_settings.to_json)
+      end
+
+      it 'builds no group' do
+        expect(builder.build.settings.groups)
+          .to be_empty
+      end
+
+      it 'builds a correct behavior' do
+        expect(builder.build.settings.behaviors)
+          .to all(be_a(Simulation::Contagion::Behavior))
+      end
+
+      it 'builds behaviors with attributes' do
+        expect(builder.build.settings.behaviors.to_json)
+          .to eq([expected_behavior].to_json)
+      end
     end
 
     context 'when group misses behavior' do
