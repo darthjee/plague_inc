@@ -40,7 +40,7 @@ describe Simulation::Contagion::Group::Decorator do
 
         let(:expected_errors) do
           {
-            "size"=>["can't be blank", "is not a number"]
+            'size' => ["can't be blank", 'is not a number']
           }
         end
 
@@ -89,7 +89,7 @@ describe Simulation::Contagion::Group::Decorator do
 
         let(:expected_errors) do
           {
-            "size"=>["can't be blank", "is not a number"]
+            'size' => ["can't be blank", 'is not a number']
           }
         end
 
@@ -112,4 +112,3 @@ describe Simulation::Contagion::Group::Decorator do
     end
   end
 end
-

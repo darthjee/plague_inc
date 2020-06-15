@@ -37,7 +37,7 @@ class Simulation < ApplicationRecord
 
     def build_settings(settings_params)
       return unless algorithm
-      return  simulation.build_contagion unless settings_params
+      return simulation.build_contagion unless settings_params
 
       simulation.build_contagion(
         settings_params.permit(Simulation::Contagion::ALLOWED_ATTRIBUTES)
@@ -45,14 +45,14 @@ class Simulation < ApplicationRecord
     end
 
     def build_group(group_params)
-      behavior = behaviors.find do |behavior|
+      group_behavior = behaviors.find do |behavior|
         behavior.reference == group_params[:behavior]
       end
 
       build_object(
         group_params, settings.groups,
         Simulation::Contagion::Group,
-        behavior: behavior
+        behavior: group_behavior
       )
     end
 

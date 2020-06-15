@@ -185,7 +185,7 @@ describe Simulation::Builder do
         {
           name: 'Group 1',
           size: 100,
-          reference: 'group-1',
+          reference: 'group-1'
         }
       end
 
