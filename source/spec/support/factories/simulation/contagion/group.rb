@@ -5,6 +5,6 @@ FactoryBot.define do
     sequence(:name) { |n| "Group##{n}" }
     size            { 100 }
     reference       { SecureRandom.hex(5) }
-    contagion
+    contagion       { build(:contagion, groups: []) }
   end
 end

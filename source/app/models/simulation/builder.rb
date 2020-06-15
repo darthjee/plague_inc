@@ -21,6 +21,9 @@ class Simulation < ApplicationRecord
     end
 
     def build
+      groups
+      behaviors
+      settings
       simulation
     end
 
@@ -29,37 +32,39 @@ class Simulation < ApplicationRecord
     attr_reader :params, :simulations
 
     def build_simulation(simulation_params)
-      simulations.new(
-        simulation_params.permit(Simulation::ALLOWED_ATTRIBUTES)
-        .merge(settings: settings)
-      )
+      build_object(simulation_params, simulations, Simulation)
     end
 
     def build_settings(settings_params)
       return unless algorithm
-      return Simulation::Contagion.new unless settings_params
+      return simulation.build_contagion unless settings_params
 
-      build_object(
-        settings_params, Simulation::Contagion,
-        groups: groups,
-        behaviors: behaviors
+      simulation.build_contagion(
+        settings_params.permit(Simulation::Contagion::ALLOWED_ATTRIBUTES)
       )
     end
 
     def build_group(group_params)
+      group_behavior = behaviors.find do |behavior|
+        behavior.reference == group_params[:behavior]
+      end
+
       build_object(
-        group_params, Simulation::Contagion::Group
+        group_params, settings.groups,
+        Simulation::Contagion::Group,
+        behavior: group_behavior
       )
     end
 
     def build_behavior(behavior_params)
       build_object(
-        behavior_params, Simulation::Contagion::Behavior
+        behavior_params, settings.behaviors, Simulation::Contagion::Behavior,
+        contagion: settings
       )
     end
 
-    def build_object(params, klass, **attributes)
-      klass.new(
+    def build_object(params, collection, klass, **attributes)
+      collection.build(
         params.permit(klass::ALLOWED_ATTRIBUTES)
         .merge(**attributes)
       )

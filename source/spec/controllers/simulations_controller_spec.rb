@@ -111,14 +111,17 @@ describe SimulationsController do
       let(:group_payload) do
         {
           name: 'Group 1',
-          size: 100
+          size: 100,
+          behavior: 'behavior-1',
+          reference: 'group-1'
         }
       end
 
       let(:behavior_payload) do
         {
           interactions: 15,
-          contagion_risk: 0.5
+          contagion_risk: 0.5,
+          reference: 'behavior-1'
         }
       end
 

@@ -25,6 +25,7 @@ describe Simulation::Decorator do
           .first
           .as_json
           .slice('name', 'size', 'reference')
+          .merge('behavior' => nil)
       end
 
       let(:behavior_json) do
@@ -140,7 +141,8 @@ describe Simulation::Decorator do
             .merge(groups: [
                      name: group.name,
                      size: group.size,
-                     reference: group.reference
+                     reference: group.reference,
+                     behavior: nil
                    ])
             .merge(behaviors: [
                      name: behavior.name,
@@ -194,7 +196,8 @@ describe Simulation::Decorator do
               .merge(groups: [
                        name: group.name,
                        size: group.size,
-                       reference: group.reference
+                       reference: group.reference,
+                       behavior: nil
                      ])
               .merge(behaviors: [
                        name: behavior.name,

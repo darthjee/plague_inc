@@ -5,6 +5,12 @@ class Simulation < ApplicationRecord
     class Group < ApplicationRecord
       class Decorator < ::Decorator
         ALLOWED_ATTRIBUTES.each(&method(:expose))
+
+        expose :behavior
+
+        def behavior
+          object.behavior&.reference
+        end
       end
     end
   end
