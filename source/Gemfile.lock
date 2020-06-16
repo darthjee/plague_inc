@@ -121,7 +121,7 @@ GEM
     loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    magicka (0.5.3)
+    magicka (0.5.4)
       activesupport (~> 5.2.4.3)
       sinclair (>= 1.6.7)
     mail (2.7.1)
@@ -329,7 +329,7 @@ DEPENDENCIES
   factory_bot (= 5.1.1)
   jbuilder (~> 2.5)
   listen (= 3.2.1)
-  magicka (~> 0.5.3)
+  magicka (~> 0.5.4)
   mysql2
   newrelic_rpm (~> 6.8.0.360)
   nokogiri (= 1.10.9)
