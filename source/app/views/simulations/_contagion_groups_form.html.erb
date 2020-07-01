@@ -17,7 +17,8 @@
           <%= f.ng_select(
             :behavior,
             options: 'gnc.data.settings.behaviors',
-            reference_key: :reference
+            reference_key: :reference,
+            text_field: :name
           ) %>
           <%= f.input(:reference) %>
           <%= f.button(
