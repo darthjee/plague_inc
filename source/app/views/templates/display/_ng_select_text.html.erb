@@ -2,5 +2,5 @@
   <div class="col-5">
     <label for="<%= field %>" class="control-label"><%= label %></label>
   </div>
-  <div class="col-7">{{<%= ng_model %> | select_transformer:<%= options %>:'reference' | dig:'name' }}</div>
+  <div class="col-7">{{<%= ng_model %> | select_transformer:<%= options %>:'<%= reference_key %>' | dig:'name' }}</div>
 </div>

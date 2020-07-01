@@ -15,7 +15,9 @@
           <%= f.input(:name, placeholder: "General") %>
           <%= f.input(:size, placeholder: "1000") %>
           <%= f.ng_select(
-            :behavior, options: 'gnc.data.settings.behaviors'
+            :behavior,
+            options: 'gnc.data.settings.behaviors',
+            reference_key: :reference
           ) %>
           <%= f.input(:reference) %>
           <%= f.button(
