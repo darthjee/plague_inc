@@ -1,2 +1,2 @@
-Magicka::Form.with_element(Magicka::Select, :ng_select, template: 'templates/forms/ng_select')
+Magicka::Form.with_element(Magicka::NgSelect)
 Magicka::Display.with_element(Magicka::NgSelectText, :ng_select)
