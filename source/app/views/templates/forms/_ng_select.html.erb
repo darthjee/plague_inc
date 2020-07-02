@@ -1,0 +1,20 @@
+<div class="form-group row">
+  <div class="col-5">
+    <label for="<%= field %>" class="control-label"><%= label %></label>
+  </div>
+  <div class="col-7">
+    <select
+       id="<%= field %>"
+       name="<%= field %>"
+       ng-model="<%= ng_model %>"
+       class="form-control"
+       ng-class="{'is-invalid': <%= ng_errors %>}">
+       <option value="">Select</option>
+       <option ng-repeat="option in <%= options %>" value="{{option.<%= reference_key %>}}">{{option.<%= text_field %>}}</option>
+    </select>
+
+    <div class="invalid-feedback" ng-repeat="error in <%= ng_errors %>">
+      {{error}}
+    </div>
+  </div>
+</div>

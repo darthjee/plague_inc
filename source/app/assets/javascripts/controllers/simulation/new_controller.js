@@ -31,9 +31,25 @@
     }
 
     this.data.settings[key].push({
-      reference: Math.floor(Math.random() * 1e10)
+      reference: this.buildReference(key)
     });
   };
+
+  fn.buildReference = function(key) {
+    var collection = this.data.settings[key];
+
+    while(true) {
+      var reference = Math.floor(Math.random() * 1e10);
+
+      var other = _.find(collection, function(object) {
+        return  object.reference === reference;
+      });
+
+      if (! other) {
+        return reference;
+      }
+    }
+  }
 
   fn.removeObject = function(key, index) {
     this.data.settings[key].splice(index, 1);

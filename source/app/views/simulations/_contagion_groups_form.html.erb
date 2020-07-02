@@ -14,7 +14,12 @@
         <% form.with_model(:group, base: nil) do |f| %>
           <%= f.input(:name, placeholder: "General") %>
           <%= f.input(:size, placeholder: "1000") %>
-          <%= f.input(:reference) %>
+          <%= f.ng_select(
+            :behavior,
+            options: 'gnc.data.settings.behaviors',
+            reference_key: :reference,
+            text_field: :name
+          ) %>
           <%= f.button(
             ng_click: 'gnc.removeGroup($index)',
             classes: 'btn-secondary',
