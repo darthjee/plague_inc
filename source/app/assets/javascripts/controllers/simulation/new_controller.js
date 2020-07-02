@@ -34,7 +34,7 @@
       reference: this.buildReference(key)
     });
   };
-  
+
   fn.buildReference = function(key) {
     var collection = this.data.settings[key];
 
