@@ -23,6 +23,6 @@
   angular
     .module("plague_inc")
     .filter("select_transformer", function() {
-      return Finder.find
+      return Finder.find;
     });
 }(window.angular, window._));
