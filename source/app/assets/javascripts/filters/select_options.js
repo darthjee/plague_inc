@@ -1,11 +1,11 @@
-(function(angular) {
+(function(angular, _) {
   angular
-    .module('plague_inc')
-    .filter('select_transformer', function() {
+    .module("plague_inc")
+    .filter("select_transformer", function() {
       return function(input, mappings, key) {
         return _.find(mappings, function(object) {
-          return object[key] == input
+          return object[key] === input;
         })
       };
     });
-}(window.angular));
+}(window.angular, window._));
