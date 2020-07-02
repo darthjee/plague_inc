@@ -36,10 +36,14 @@
   };
   
   fn.buildReference = function(key) {
+    var collection = this.data.settings[key];
+
     while(true) {
       var reference = Math.floor(Math.random() * 1e10);
 
-      previous = _.find(this.data.settings[key], function(object) { object.reference == reference })
+      previous = _.find(collection, function(object) {
+        return  object.reference == reference
+      });
 
       if (! previous) {
         return reference;
