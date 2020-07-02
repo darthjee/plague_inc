@@ -10,7 +10,7 @@
        class="form-control"
        ng-class="{'is-invalid': <%= ng_errors %>}">
        <option value="">Select</option>
-       <option ng-repeat="behavior in <%= options %>" value="{{behavior.reference}}">{{behavior.name}}</option>
+       <option ng-repeat="option in <%= options %>" value="{{option.<%= reference_key %>}}">{{option.<%= text_field %>}}</option>
     </select>
 
     <div class="invalid-feedback" ng-repeat="error in <%= ng_errors %>">
