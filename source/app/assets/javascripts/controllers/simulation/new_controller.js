@@ -41,11 +41,11 @@
     while(true) {
       var reference = Math.floor(Math.random() * 1e10);
 
-      previous = _.find(collection, function(object) {
-        return  object.reference == reference
+      var other = _.find(collection, function(object) {
+        return  object.reference === reference;
       });
 
-      if (! previous) {
+      if (! other) {
         return reference;
       }
     }
