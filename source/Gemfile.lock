@@ -91,7 +91,7 @@ GEM
     execjs (2.7.0)
     factory_bot (5.1.1)
       activesupport (>= 4.2.0)
-    ffi (1.12.2)
+    ffi (1.13.1)
     flay (2.12.1)
       erubis (~> 2.7.0)
       path_expander (~> 1.0)
