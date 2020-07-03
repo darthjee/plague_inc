@@ -55,7 +55,6 @@ group :development do
   gem 'spring-watcher-listen', '2.0.1'
   gem 'web-console',           '3.7.0'
 
-  gem 'bundler-audit',         '0.6.1'
   gem 'factory_bot',           '5.1.1'
   gem 'pry',                   '0.12.2'
   gem 'pry-nav',               '0.3.0'
