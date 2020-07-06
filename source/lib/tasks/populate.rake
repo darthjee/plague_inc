@@ -18,4 +18,12 @@ namespace :populate do
       behav.save(validate: false)
     end
   end
+
+  desc 'Populate Behavior in Groups'
+  task reference: :environment do
+    Simulation::Contagion::Group.where(behavior_id: nil).find_each do |group|
+      group.behavior = group.contagion.behaviors.first
+      group.save(validate: false)
+    end
+  end
 end
