@@ -11,6 +11,10 @@ RSpec.describe Simulation::Contagion::Behavior, type: :model do
     end
 
     it do
+      expect(behavior).to validate_presence_of(:reference)
+    end
+
+    it do
       expect(behavior).to validate_length_of(:name)
         .is_at_most(255)
     end
