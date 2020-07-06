@@ -191,7 +191,7 @@ describe Simulation::Builder do
 
       it { expect(builder.build).to be_a(Simulation) }
 
-      it { expect(builder.build).to be_valid }
+      it { expect(builder.build).not_to be_valid }
 
       it do
         expect(builder.build.as_json)
