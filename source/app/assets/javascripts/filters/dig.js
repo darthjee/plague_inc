@@ -10,7 +10,7 @@
     }
 
     reduce(result, key) {
-      return result[key];
+      return result && result[key];
     }
   }
 
