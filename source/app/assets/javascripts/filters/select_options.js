@@ -10,7 +10,7 @@
       var input = this.input,
           key = this.key;
 
-      if (input == null) {
+      if (input === null) {
         return null;
       }
 
