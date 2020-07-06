@@ -119,6 +119,7 @@ describe SimulationsController do
 
       let(:behavior_payload) do
         {
+          name: 'My Behavior',
           interactions: 15,
           contagion_risk: 0.5,
           reference: 'behavior-1'
