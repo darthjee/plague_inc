@@ -25,7 +25,7 @@ describe Simulation::Decorator do
           .first
           .as_json
           .slice('name', 'size', 'reference')
-          .merge('behavior' => behavior_json["reference"])
+          .merge('behavior' => behavior_json['reference'])
       end
 
       let(:behavior_json) do

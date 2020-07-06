@@ -12,7 +12,9 @@ describe Simulation::Contagion::Group::Decorator do
     let(:contagion) { build(:contagion) }
 
     context 'when object is one entity' do
-      let(:object)    { build(:contagion_group, behavior: behavior, contagion: contagion) }
+      let(:object) do
+        build(:contagion_group, behavior: behavior, contagion: contagion)
+      end
 
       let(:expected_json) do
         object
@@ -27,7 +29,12 @@ describe Simulation::Contagion::Group::Decorator do
 
       context 'when object is invalid but object has not been validated' do
         let(:object) do
-          build(:contagion_group, size: nil, behavior: behavior, contagion: contagion)
+          build(
+            :contagion_group,
+            size: nil,
+            behavior: behavior,
+            contagion: contagion
+          )
         end
 
         it 'returns expected json without errors' do
@@ -37,7 +44,12 @@ describe Simulation::Contagion::Group::Decorator do
 
       context 'when object is invalid and object has been validated' do
         let(:object) do
-          build(:contagion_group, size: nil, behavior: behavior, contagion: contagion)
+          build(
+            :contagion_group,
+            size: nil,
+            behavior: behavior,
+            contagion: contagion
+          )
         end
 
         let(:expected_errors) do
@@ -63,7 +75,13 @@ describe Simulation::Contagion::Group::Decorator do
     end
 
     context 'when object is a collection' do
-      let(:object) { build_list(:contagion_group, 3, contagion: contagion, behavior: behavior) }
+      let(:object) do
+        build_list(
+          :contagion_group, 3,
+          contagion: contagion,
+          behavior: behavior
+        )
+      end
 
       let(:expected_json) do
         object.map do |group|
@@ -79,7 +97,9 @@ describe Simulation::Contagion::Group::Decorator do
       end
 
       context 'when object is a collection of invalid not validated objects' do
-        let(:object) { build_list(:contagion_group, 3, size: nil, behavior: behavior) }
+        let(:object) do
+          build_list(:contagion_group, 3, size: nil, behavior: behavior)
+        end
 
         it 'returns expected json without errors' do
           expect(decorator_json).to eq(expected_json)
@@ -95,7 +115,9 @@ describe Simulation::Contagion::Group::Decorator do
           }
         end
 
-        let(:object) { build_list(:contagion_group, 3, size: nil, behavior: behavior) }
+        let(:object) do
+          build_list(:contagion_group, 3, size: nil, behavior: behavior)
+        end
 
         let(:expected_json) do
           object.map do |group|
