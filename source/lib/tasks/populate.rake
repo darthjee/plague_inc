@@ -4,6 +4,7 @@ namespace :populate do
   desc 'Populate all that needs populating'
   task all: :environment do
     Rake::Task['populate:reference'].invoke
+    Rake::Task['populate:group_behavior'].invoke
   end
 
   desc 'Populate references in Groups and Behaviors'
@@ -20,7 +21,7 @@ namespace :populate do
   end
 
   desc 'Populate Behavior in Groups'
-  task reference: :environment do
+  task group_behavior: :environment do
     Simulation::Contagion::Group.where(behavior_id: nil).find_each do |group|
       group.behavior = group.contagion.behaviors.first
       group.save(validate: false)
