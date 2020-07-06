@@ -11,6 +11,10 @@ RSpec.describe Simulation::Contagion::Group, type: :model do
     end
 
     it do
+      expect(group).to validate_presence_of(:reference)
+    end
+
+    it do
       expect(group).to validate_presence_of(:behavior)
     end
 
