@@ -27,4 +27,12 @@ namespace :populate do
       group.save(validate: false)
     end
   end
+
+  desc 'Populate Name in Behavior'
+  task behavior_name: :environment do
+    Simulation::Contagion::Behavior.where(name: nil).find_each do |behav|
+      behav.name = "Behave ##{behav.id}"
+      behav.save(validate: false)
+    end
+  end
 end
