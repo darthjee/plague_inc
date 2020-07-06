@@ -10,6 +10,10 @@
       var input = this.input,
           key = this.key;
 
+      if (input === null) {
+        return null;
+      }
+
       return _.find(this.mappings, function(object) {
         return object[key] === input;
       });
