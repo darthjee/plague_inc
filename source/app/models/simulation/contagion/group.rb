@@ -18,6 +18,8 @@ class Simulation < ApplicationRecord
       validates :size,
                 presence: true,
                 numericality: { greater_than_or_equal_to: 1 }
+      validates :infected,
+                numericality: { greater_than_or_equal_to: 0 }
     end
   end
 end
