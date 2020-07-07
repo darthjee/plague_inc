@@ -19,7 +19,7 @@ describe Simulation::Contagion::Group::Decorator do
       let(:expected_json) do
         object
           .as_json
-          .slice('name', 'size', 'reference')
+          .slice('name', 'size', 'infected', 'reference')
           .merge('behavior' => behavior.reference)
       end
 
@@ -61,7 +61,7 @@ describe Simulation::Contagion::Group::Decorator do
         let(:expected_json) do
           object
             .as_json
-            .slice('name', 'size', 'reference')
+            .slice('name', 'size', 'infected', 'reference')
             .merge('errors' => expected_errors)
             .merge('behavior' => behavior.reference)
         end
@@ -87,7 +87,7 @@ describe Simulation::Contagion::Group::Decorator do
         object.map do |group|
           group
             .as_json
-            .slice('name', 'size', 'reference')
+            .slice('name', 'size', 'infected', 'reference')
             .merge('behavior' => group.behavior.reference)
         end.as_json
       end
@@ -123,7 +123,7 @@ describe Simulation::Contagion::Group::Decorator do
           object.map do |group|
             group
               .as_json
-              .slice('name', 'size', 'reference')
+              .slice('name', 'size', 'infected', 'reference')
               .merge(errors: expected_errors)
               .merge(behavior: group.behavior.reference)
           end.as_json
