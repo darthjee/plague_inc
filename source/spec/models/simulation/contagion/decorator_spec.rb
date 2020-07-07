@@ -22,7 +22,7 @@ describe Simulation::Contagion::Decorator do
       let(:group_json) do
         group
           .as_json
-          .slice('name', 'size', 'reference')
+          .slice('name', 'size', 'infected', 'reference')
           .merge('behavior' => behavior.reference)
       end
 
@@ -97,6 +97,7 @@ describe Simulation::Contagion::Decorator do
             .merge(groups: [
                      name: group.name,
                      size: group.size,
+                     infected: group.infected,
                      reference: group.reference,
                      behavior: group.behavior.reference
                    ])
@@ -142,6 +143,7 @@ describe Simulation::Contagion::Decorator do
               .merge(groups: [
                        name: group.name,
                        size: group.size,
+                       infected: group.infected,
                        reference: group.reference,
                        behavior: group.behavior.reference
                      ])

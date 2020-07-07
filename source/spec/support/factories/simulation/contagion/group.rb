@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :contagion_group, class: 'Simulation::Contagion::Group' do
     sequence(:name) { |n| "Group##{n}" }
     size            { 100 }
+    infected        { 2 }
     reference       { SecureRandom.hex(5) }
     contagion       { build(:contagion, groups: []) }
   end

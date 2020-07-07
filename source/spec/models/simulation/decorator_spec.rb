@@ -24,7 +24,7 @@ describe Simulation::Decorator do
           .groups
           .first
           .as_json
-          .slice('name', 'size', 'reference')
+          .slice('name', 'size', 'infected', 'reference')
           .merge('behavior' => behavior_json['reference'])
       end
 
@@ -141,6 +141,7 @@ describe Simulation::Decorator do
             .merge(groups: [
                      name: group.name,
                      size: group.size,
+                     infected: group.infected,
                      reference: group.reference,
                      behavior: behavior.reference
                    ])
@@ -196,6 +197,7 @@ describe Simulation::Decorator do
               .merge(groups: [
                        name: group.name,
                        size: group.size,
+                       infected: group.infected,
                        reference: group.reference,
                        behavior: behavior.reference
                      ])
