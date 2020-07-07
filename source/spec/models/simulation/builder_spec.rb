@@ -41,6 +41,7 @@ describe Simulation::Builder do
 
   let(:behavior_params) do
     {
+      name: 'My Behavior',
       interactions: 15,
       contagion_risk: 0.5,
       reference: 'behavior-1'
@@ -77,6 +78,7 @@ describe Simulation::Builder do
 
     let(:expected_behavior) do
       Simulation::Contagion::Behavior.new(
+        name: 'My Behavior',
         interactions: 15,
         contagion_risk: 0.5,
         reference: 'behavior-1'
@@ -191,7 +193,7 @@ describe Simulation::Builder do
 
       it { expect(builder.build).to be_a(Simulation) }
 
-      it { expect(builder.build).to be_valid }
+      it { expect(builder.build).not_to be_valid }
 
       it do
         expect(builder.build.as_json)

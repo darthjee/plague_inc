@@ -15,21 +15,19 @@ describe Simulation::Contagion::Decorator do
 
   describe '#to_json' do
     context 'when object is one entity' do
-      let(:object) { create(:contagion) }
+      let(:object)   { create(:contagion) }
+      let(:group)    { object.groups.first }
+      let(:behavior) { object.behaviors.first }
 
       let(:group_json) do
-        object
-          .groups
-          .first
+        group
           .as_json
           .slice('name', 'size', 'reference')
-          .merge('behavior' => nil)
+          .merge('behavior' => behavior.reference)
       end
 
       let(:behavior_json) do
-        object
-          .behaviors
-          .first
+        behavior
           .as_json
           .slice('name', 'interactions', 'contagion_risk', 'reference')
       end
@@ -100,7 +98,7 @@ describe Simulation::Contagion::Decorator do
                      name: group.name,
                      size: group.size,
                      reference: group.reference,
-                     behavior: nil
+                     behavior: group.behavior.reference
                    ])
             .merge(behaviors: [
                      name: behavior.name,
@@ -145,7 +143,7 @@ describe Simulation::Contagion::Decorator do
                        name: group.name,
                        size: group.size,
                        reference: group.reference,
-                       behavior: nil
+                       behavior: group.behavior.reference
                      ])
               .merge(behaviors: [
                        name: behavior.name,

@@ -11,6 +11,7 @@ Metrics/BlockLength:
     - 'db/**/*.rb'
     - 'spec/**/*_spec.rb'
     - 'spec/support/**/*.rb'
+    - 'lib/tasks/populate.rake'
 
 Style/MixinUsage:
   Exclude:

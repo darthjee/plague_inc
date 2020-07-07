@@ -7,7 +7,11 @@ RSpec.describe Simulation::Contagion::Behavior, type: :model do
 
   describe 'validations' do
     it do
-      expect(behavior).not_to validate_presence_of(:name)
+      expect(behavior).to validate_presence_of(:name)
+    end
+
+    it do
+      expect(behavior).to validate_presence_of(:reference)
     end
 
     it do
