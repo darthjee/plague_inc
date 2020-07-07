@@ -86,9 +86,13 @@ describe Simulation::Contagion::Decorator do
       let(:expected_json) do
         object.map do |settings|
           groups = settings.groups
-          groups_json = Simulation::Contagion::Group::Decorator.new(groups).as_json
+          groups_json = Simulation::Contagion::Group::Decorator.new(
+            groups
+          ).as_json
           behaviors = settings.behaviors
-          behaviors_json = Simulation::Contagion::Behavior::Decorator.new(behaviors).as_json
+          behaviors_json = Simulation::Contagion::Behavior::Decorator.new(
+            behaviors
+          ).as_json
           settings
             .as_json.slice(*settings_attributes)
             .merge(groups: groups_json)
@@ -122,9 +126,13 @@ describe Simulation::Contagion::Decorator do
         let(:expected_json) do
           object.map do |settings|
             groups = settings.groups
-            groups_json = Simulation::Contagion::Group::Decorator.new(groups).as_json
+            groups_json = Simulation::Contagion::Group::Decorator.new(
+              groups
+            ).as_json
             behaviors = settings.behaviors
-            behaviors_json = Simulation::Contagion::Behavior::Decorator.new(behaviors).as_json
+            behaviors_json = Simulation::Contagion::Behavior::Decorator.new(
+              behaviors
+            ).as_json
             settings
               .as_json.slice(*settings_attributes)
               .merge(errors: expected_errors)
