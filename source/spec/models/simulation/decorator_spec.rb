@@ -18,23 +18,15 @@ describe Simulation::Decorator do
     context 'when object is one entity' do
       let(:object) { create(:simulation) }
 
+      let(:group)    { object.settings.groups.first }
+      let(:behavior) { object.settings.behaviors.first }
+
       let(:group_json) do
-        object
-          .settings
-          .groups
-          .first
-          .as_json
-          .slice('name', 'size', 'infected', 'reference')
-          .merge('behavior' => behavior_json['reference'])
+        Simulation::Contagion::Group::Decorator.new(group).as_json
       end
 
       let(:behavior_json) do
-        object
-          .settings
-          .behaviors
-          .first
-          .as_json
-          .slice('name', 'interactions', 'contagion_risk', 'reference')
+        Simulation::Contagion::Behavior::Decorator.new(behavior).as_json
       end
 
       let(:settings_json) do

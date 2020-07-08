@@ -7,6 +7,7 @@ class Simulation < ApplicationRecord
         ALLOWED_ATTRIBUTES.each(&method(:expose))
 
         expose :behavior
+        expose :infected
 
         def behavior
           object.behavior&.reference
