@@ -20,16 +20,11 @@ describe Simulation::Contagion::Decorator do
       let(:behavior) { object.behaviors.first }
 
       let(:group_json) do
-        group
-          .as_json
-          .slice('name', 'size', 'reference')
-          .merge('behavior' => behavior.reference)
+        Simulation::Contagion::Group::Decorator.new(group).as_json
       end
 
       let(:behavior_json) do
-        behavior
-          .as_json
-          .slice('name', 'interactions', 'contagion_risk', 'reference')
+        Simulation::Contagion::Behavior::Decorator.new(behavior).as_json
       end
 
       let(:expected_json) do
@@ -90,22 +85,19 @@ describe Simulation::Contagion::Decorator do
 
       let(:expected_json) do
         object.map do |settings|
-          group = settings.groups.first
-          behavior = settings.behaviors.first
+          groups = settings.groups
+          groups_json = Simulation::Contagion::Group::Decorator.new(
+            groups
+          ).as_json
+          behaviors = settings.behaviors
+          behaviors_json = Simulation::Contagion::Behavior::Decorator.new(
+            behaviors
+          ).as_json
+
           settings
             .as_json.slice(*settings_attributes)
-            .merge(groups: [
-                     name: group.name,
-                     size: group.size,
-                     reference: group.reference,
-                     behavior: group.behavior.reference
-                   ])
-            .merge(behaviors: [
-                     name: behavior.name,
-                     interactions: behavior.interactions,
-                     contagion_risk: behavior.contagion_risk,
-                     reference: behavior.reference
-                   ])
+            .merge(groups: groups_json)
+            .merge(behaviors: behaviors_json)
         end.as_json
       end
 
@@ -134,23 +126,19 @@ describe Simulation::Contagion::Decorator do
 
         let(:expected_json) do
           object.map do |settings|
-            group = settings.groups.first
-            behavior = settings.behaviors.first
+            groups = settings.groups
+            groups_json = Simulation::Contagion::Group::Decorator.new(
+              groups
+            ).as_json
+            behaviors = settings.behaviors
+            behaviors_json = Simulation::Contagion::Behavior::Decorator.new(
+              behaviors
+            ).as_json
             settings
               .as_json.slice(*settings_attributes)
               .merge(errors: expected_errors)
-              .merge(groups: [
-                       name: group.name,
-                       size: group.size,
-                       reference: group.reference,
-                       behavior: group.behavior.reference
-                     ])
-              .merge(behaviors: [
-                       name: behavior.name,
-                       interactions: behavior.interactions,
-                       contagion_risk: behavior.contagion_risk,
-                       reference: behavior.reference
-                     ])
+              .merge(groups: groups_json)
+              .merge(behaviors: behaviors_json)
           end.as_json
         end
 
