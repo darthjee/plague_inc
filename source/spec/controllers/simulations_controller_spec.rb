@@ -113,7 +113,8 @@ describe SimulationsController do
           name: 'Group 1',
           size: 100,
           behavior: 'behavior-1',
-          reference: 'group-1'
+          reference: 'group-1',
+          infection: 10
         }
       end
 
