@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Simulation::Contagion, type: :model do
+describe Simulation::Contagion, type: :model do
   subject(:contagion) { build(:contagion) }
 
   describe 'validations' do
