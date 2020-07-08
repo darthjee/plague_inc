@@ -93,6 +93,7 @@ describe Simulation::Contagion::Decorator do
           behaviors_json = Simulation::Contagion::Behavior::Decorator.new(
             behaviors
           ).as_json
+
           settings
             .as_json.slice(*settings_attributes)
             .merge(groups: groups_json)
