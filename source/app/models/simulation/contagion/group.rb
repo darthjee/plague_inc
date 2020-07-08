@@ -20,6 +20,18 @@ class Simulation < ApplicationRecord
                 numericality: { greater_than_or_equal_to: 1 }
       validates :infected,
                 numericality: { greater_than_or_equal_to: 0 }
+
+      validate :validate_infected
+
+      def validate_infected
+        return unless size
+        return unless infected.to_i > size
+
+        errors.add(
+          :infected,
+          'cannot be greater than group size'
+        )
+      end
     end
   end
 end
