@@ -170,7 +170,8 @@ describe SimulationsController do
 
         let(:simulation_attributes) do
           simulation.attributes.reject do |key, _|
-            key == 'id'
+            %w[id created_at updated_at]
+              .include? key
           end
         end
 
@@ -183,14 +184,14 @@ describe SimulationsController do
 
         let(:group_attributes) do
           group.attributes.reject do |key, _|
-            %w[id contagion_id]
+            %w[id contagion_id created_at updated_at]
               .include? key
           end
         end
 
         let(:behavior_attributes) do
           behavior.attributes.reject do |key, _|
-            %w[id contagion_id]
+            %w[id contagion_id created_at updated_at]
               .include? key
           end
         end
