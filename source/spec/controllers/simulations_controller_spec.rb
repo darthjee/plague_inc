@@ -114,7 +114,8 @@ describe SimulationsController do
           size: 100,
           behavior: 'behavior-1',
           reference: 'group-1',
-          infection: 10
+          lethality_override: nil,
+          infected: 10
         }
       end
 
@@ -159,10 +160,88 @@ describe SimulationsController do
           .by(1)
       end
 
-      it 'returns created simulation' do
-        post :create, params: parameters
+      context 'when the request is completed' do
+        before { post :create, params: parameters }
 
-        expect(response.body).to eq(expected_json)
+        let(:simulation) { Simulation.last }
+        let(:settings)   { simulation.settings }
+        let(:group)      { settings.groups.first }
+        let(:behavior)   { settings.behaviors.first }
+
+        let(:simulation_attributes) do
+          simulation.attributes.reject do |key, _|
+            key == 'id'
+          end
+        end
+
+        let(:settings_attributes) do
+          settings.attributes.reject do |key, _|
+            %w[id simulation_id created_at updated_at]
+              .include? key
+          end
+        end
+
+        let(:group_attributes) do
+          group.attributes.reject do |key, _|
+            %w[id contagion_id]
+              .include? key
+          end
+        end
+
+        let(:behavior_attributes) do
+          behavior.attributes.reject do |key, _|
+            %w[id contagion_id]
+              .include? key
+          end
+        end
+
+        let(:expected_simulation_attributes) do
+          payload.stringify_keys.reject do |key, _|
+            key == 'settings'
+          end
+        end
+
+        let(:expected_settings_attributes) do
+          settings_payload.stringify_keys.reject do |key, _|
+            %w[groups behaviors]
+              .include? key
+          end
+        end
+
+        let(:expected_group_attributes) do
+          group_payload
+            .reject { |key, _| key == :behavior }
+            .merge(behavior_id: behavior.id)
+            .stringify_keys
+        end
+
+        let(:expected_behavior_attributes) do
+          behavior_payload.stringify_keys
+        end
+
+        it 'returns created simulation' do
+          expect(response.body).to eq(expected_json)
+        end
+
+        it 'creates a correct simulation' do
+          expect(simulation_attributes)
+            .to eq(expected_simulation_attributes)
+        end
+
+        it 'creates a correct setting' do
+          expect(settings_attributes)
+            .to eq(expected_settings_attributes)
+        end
+
+        it 'creates a correct group' do
+          expect(group_attributes)
+            .to eq(expected_group_attributes)
+        end
+
+        it 'creates a correct behavior' do
+          expect(behavior_attributes)
+            .to eq(expected_behavior_attributes)
+        end
       end
 
       context 'when there are validation errors' do
