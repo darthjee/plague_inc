@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_08_220935) do
+ActiveRecord::Schema.define(version: 2020_07_09_104856) do
 
   create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -37,6 +37,22 @@ ActiveRecord::Schema.define(version: 2020_07_08_220935) do
     t.index ["behavior_id"], name: "fk_rails_31dbcf6ede"
     t.index ["contagion_id"], name: "fk_rails_feaa742918"
     t.index ["reference", "contagion_id"], name: "index_simulation_contagion_groups_on_reference_and_contagion_id", unique: true
+  end
+
+  create_table "simulation_contagion_instants", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "contagion_id", null: false
+    t.integer "day", null: false
+    t.string "status", default: "created", null: false
+    t.integer "population_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "simulation_contagion_populations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "instant_id", null: false
+    t.integer "infected_days"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "simulation_contagions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
