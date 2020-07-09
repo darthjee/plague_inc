@@ -12,6 +12,7 @@ class Simulation < ApplicationRecord
     belongs_to :simulation
     has_many :groups
     has_many :behaviors
+    has_many :instants, -> { order(:day) }
 
     validates_presence_of :simulation, :groups, :behaviors
 

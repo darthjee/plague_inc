@@ -12,6 +12,8 @@ class Simulation < ApplicationRecord
                  optional: true,
                  class_name: 'Population'
 
+      has_many :populations
+
       validates_presence_of :contagion
 
       validates :day,
