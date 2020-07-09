@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_08_220935) do
+ActiveRecord::Schema.define(version: 2020_07_09_193903) do
 
   create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -39,6 +39,29 @@ ActiveRecord::Schema.define(version: 2020_07_08_220935) do
     t.index ["reference", "contagion_id"], name: "index_simulation_contagion_groups_on_reference_and_contagion_id", unique: true
   end
 
+  create_table "simulation_contagion_instants", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "contagion_id", null: false
+    t.bigint "current_population_id"
+    t.integer "day", null: false
+    t.string "status", default: "created", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contagion_id", "day"], name: "index_simulation_contagion_instants_on_contagion_id_and_day", unique: true
+    t.index ["current_population_id"], name: "fk_rails_e6877570cd"
+  end
+
+  create_table "simulation_contagion_populations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "instant_id", null: false
+    t.bigint "group_id", null: false
+    t.bigint "behavior_id", null: false
+    t.integer "infected_days"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["behavior_id"], name: "fk_rails_8cc87c0981"
+    t.index ["group_id"], name: "fk_rails_ab58ee1256"
+    t.index ["instant_id", "group_id", "infected_days"], name: "simulation_contagion_unique", unique: true
+  end
+
   create_table "simulation_contagions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "simulation_id", null: false
     t.float "lethality", null: false
@@ -60,5 +83,10 @@ ActiveRecord::Schema.define(version: 2020_07_08_220935) do
   add_foreign_key "simulation_contagion_behaviors", "simulation_contagions", column: "contagion_id"
   add_foreign_key "simulation_contagion_groups", "simulation_contagion_behaviors", column: "behavior_id"
   add_foreign_key "simulation_contagion_groups", "simulation_contagions", column: "contagion_id"
+  add_foreign_key "simulation_contagion_instants", "simulation_contagion_populations", column: "current_population_id"
+  add_foreign_key "simulation_contagion_instants", "simulation_contagions", column: "contagion_id"
+  add_foreign_key "simulation_contagion_populations", "simulation_contagion_behaviors", column: "behavior_id"
+  add_foreign_key "simulation_contagion_populations", "simulation_contagion_groups", column: "group_id"
+  add_foreign_key "simulation_contagion_populations", "simulation_contagion_instants", column: "instant_id"
   add_foreign_key "simulation_contagions", "simulations"
 end

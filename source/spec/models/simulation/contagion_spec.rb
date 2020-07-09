@@ -37,13 +37,28 @@ describe Simulation::Contagion, type: :model do
     end
 
     it do
+      expect(contagion).to validate_numericality_of(:days_till_recovery)
+        .only_integer
+    end
+
+    it do
       expect(contagion).to validate_numericality_of(:days_till_sympthoms)
         .is_greater_than_or_equal_to(0)
     end
 
     it do
+      expect(contagion).to validate_numericality_of(:days_till_sympthoms)
+        .only_integer
+    end
+
+    it do
       expect(contagion).to validate_numericality_of(:days_till_start_death)
         .is_greater_than_or_equal_to(0)
+    end
+
+    it do
+      expect(contagion).to validate_numericality_of(:days_till_start_death)
+        .only_integer
     end
 
     it do

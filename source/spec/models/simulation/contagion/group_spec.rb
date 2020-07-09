@@ -39,8 +39,18 @@ RSpec.describe Simulation::Contagion::Group, type: :model do
     end
 
     it do
+      expect(group).to validate_numericality_of(:size)
+        .only_integer
+    end
+
+    it do
       expect(group).to validate_numericality_of(:infected)
         .is_greater_than_or_equal_to(0)
+    end
+
+    it do
+      expect(group).to validate_numericality_of(:infected)
+        .only_integer
     end
 
     it do

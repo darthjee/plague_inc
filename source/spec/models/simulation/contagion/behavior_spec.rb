@@ -29,6 +29,11 @@ RSpec.describe Simulation::Contagion::Behavior, type: :model do
     end
 
     it do
+      expect(behavior).to validate_numericality_of(:interactions)
+        .only_integer
+    end
+
+    it do
       expect(behavior).to validate_inclusion_of(:contagion_risk)
         .in_range((0.0..1.0))
     end

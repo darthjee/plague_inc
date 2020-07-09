@@ -12,6 +12,7 @@ class Simulation < ApplicationRecord
     belongs_to :simulation
     has_many :groups
     has_many :behaviors
+    has_many :instants, -> { order(:day) }
 
     validates_presence_of :simulation, :groups, :behaviors
 
@@ -20,13 +21,22 @@ class Simulation < ApplicationRecord
               inclusion: { in: (0.0..1.0) }
     validates :days_till_recovery,
               presence: true,
-              numericality: { greater_than_or_equal_to: 0 }
+              numericality: {
+                greater_than_or_equal_to: 0,
+                only_integer: true
+              }
     validates :days_till_sympthoms,
               presence: true,
-              numericality: { greater_than_or_equal_to: 0 }
+              numericality: {
+                greater_than_or_equal_to: 0,
+                only_integer: true
+              }
     validates :days_till_start_death,
               presence: true,
-              numericality: { greater_than_or_equal_to: 0 }
+              numericality: {
+                greater_than_or_equal_to: 0,
+                only_integer: true
+              }
 
     validate :validate_days_till_sympthoms
     validate :validate_days_till_start_death
