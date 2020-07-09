@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::Instant, type: :model do
+describe Simulation::Contagion::Instant, type: :model do
   subject(:instant) { build(:contagion_instant) }
 
   describe 'validations' do
@@ -21,6 +21,11 @@ fdescribe Simulation::Contagion::Instant, type: :model do
     it do
       expect(instant).to validate_numericality_of(:day)
         .is_greater_than_or_equal_to(0)
+    end
+
+    it do
+      expect(instant).to validate_inclusion_of(:status)
+        .in_array(described_class::STATUSES)
     end
   end
 end
