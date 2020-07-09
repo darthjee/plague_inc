@@ -4,7 +4,7 @@ class CreateSimulationContagionInstant < ActiveRecord::Migration[5.2]
       t.integer :contagion_id, null: false
       t.integer :day, null: false
       t.string :status, default: :created, null: false
-      t.integer :population_id
+      t.integer :current_population_id
       t.timestamps
     end
 

@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2020_07_09_104856) do
     t.integer "contagion_id", null: false
     t.integer "day", null: false
     t.string "status", default: "created", null: false
-    t.integer "population_id"
+    t.integer "current_population_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
