@@ -8,6 +8,9 @@ class Simulation < ApplicationRecord
       ].freeze
 
       belongs_to :contagion
+      belongs_to :current_population,
+                 optional: true,
+                 class_name: 'Population'
 
       validates_presence_of :contagion
 

@@ -21,6 +21,10 @@ describe Simulation::Contagion::Instant, type: :model do
     end
 
     it do
+      expect(instant).not_to validate_presence_of(:current_population)
+    end
+
+    it do
       expect(instant).to validate_numericality_of(:day)
         .is_greater_than_or_equal_to(0)
     end
