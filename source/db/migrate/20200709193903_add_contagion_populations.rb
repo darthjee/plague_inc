@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddContagionPopulations < ActiveRecord::Migration[5.2]
   def change
     create_table :simulation_contagion_populations do |t|

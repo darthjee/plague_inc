@@ -17,10 +17,6 @@ Metrics/MethodLength:
   Exclude:
     - 'db/**/*.rb'
 
-Metrics/AbcSize:
-  Exclude:
-    - 'db/**/*.rb'
-
 Style/MixinUsage:
   Exclude:
     - 'bin/*'
