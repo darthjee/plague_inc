@@ -16,7 +16,10 @@ class Simulation < ApplicationRecord
                 length: { maximum: 10 }
       validates :interactions,
                 presence: true,
-                numericality: { greater_than_or_equal_to: 0 }
+                numericality: {
+                  greater_than_or_equal_to: 0,
+                  only_integer: true
+                }
       validates :contagion_risk,
                 presence: true,
                 inclusion: { in: (0.0..1.0) }

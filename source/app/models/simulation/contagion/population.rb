@@ -10,7 +10,11 @@ class Simulation < ApplicationRecord
       validates_presence_of :instant, :group, :behavior
 
       validates :infected_days,
-                numericality: { greater_than_or_equal_to: 0 }
+                numericality: {
+                  greater_than_or_equal_to: 0,
+                  only_integer: true,
+                  allow_nil: true
+                }
     end
   end
 end

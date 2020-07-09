@@ -17,9 +17,15 @@ class Simulation < ApplicationRecord
                 length: { maximum: 255 }
       validates :size,
                 presence: true,
-                numericality: { greater_than_or_equal_to: 1 }
+                numericality: {
+                  greater_than_or_equal_to: 1,
+                  only_integer: true
+                }
       validates :infected,
-                numericality: { greater_than_or_equal_to: 0 }
+                numericality: {
+                  greater_than_or_equal_to: 0,
+                  only_integer: true
+                }
 
       validate :validate_infected
 

@@ -6,6 +6,8 @@ describe Simulation::Contagion::Population, type: :model do
   subject(:population) { build(:contagion_population) }
 
   describe 'validations' do
+    it { expect(population).to be_valid }
+
     it do
       expect(population).to validate_presence_of(:instant)
     end
@@ -25,6 +27,11 @@ describe Simulation::Contagion::Population, type: :model do
     it do
       expect(population).to validate_numericality_of(:infected_days)
         .is_greater_than_or_equal_to(0)
+    end
+
+    it do
+      expect(population).to validate_numericality_of(:infected_days)
+        .only_integer
     end
   end
 end

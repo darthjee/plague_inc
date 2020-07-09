@@ -13,7 +13,10 @@ class Simulation < ApplicationRecord
 
       validates :day,
                 presence: true,
-                numericality: { greater_than_or_equal_to: 0 }
+                numericality: {
+                  greater_than_or_equal_to: 0,
+                  only_integer: true
+                }
       validates :status,
                 presence: true,
                 inclusion: { in: STATUSES }
