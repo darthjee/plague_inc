@@ -8,6 +8,9 @@ class Simulation < ApplicationRecord
       belongs_to :behavior
 
       validates_presence_of :instant, :group, :behavior
+
+      validates :infected_days,
+                numericality: { greater_than_or_equal_to: 0 }
     end
   end
 end
