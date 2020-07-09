@@ -11,6 +11,8 @@ class CreateSimulationContagionInstant < ActiveRecord::Migration[5.2]
     create_table :simulation_contagion_populations do |t|
       t.integer :instant_id, null: false
       t.integer :infected_days
+      t.integer :group_id, null: false
+      t.integer :behavior_id, null: false
       t.timestamps
     end
   end

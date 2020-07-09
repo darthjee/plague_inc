@@ -51,6 +51,8 @@ ActiveRecord::Schema.define(version: 2020_07_09_104856) do
   create_table "simulation_contagion_populations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "instant_id", null: false
     t.integer "infected_days"
+    t.integer "group_id", null: false
+    t.integer "behavior_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
