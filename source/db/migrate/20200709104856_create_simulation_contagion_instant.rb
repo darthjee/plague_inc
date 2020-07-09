@@ -9,7 +9,7 @@ class CreateSimulationContagionInstant < ActiveRecord::Migration[5.2]
       t.string :status, default: :created, null: false
       t.timestamps
 
-      t.index [:contagion_id, :day], unique: true
+      t.index %i[contagion_id day], unique: true
       t.foreign_key :simulation_contagions, column: :contagion_id
     end
 
@@ -20,7 +20,7 @@ class CreateSimulationContagionInstant < ActiveRecord::Migration[5.2]
       t.integer :infected_days
       t.timestamps
 
-      t.index [:instant_id, :group_id, :infected_days],
+      t.index %i[instant_id group_id infected_days],
               name: :simulation_contagion_unique,
               unique: true
       t.foreign_key :simulation_contagion_instants,
