@@ -13,7 +13,7 @@ class Simulation < ApplicationRecord
                 presence: true,
                 numericality: {
                   greater_than: 0,
-                  only_integer: true,
+                  only_integer: true
                 }
 
       validates :infected_days,
