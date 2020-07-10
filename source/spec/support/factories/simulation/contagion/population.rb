@@ -5,5 +5,6 @@ FactoryBot.define do
     instant  { build(:contagion_instant) }
     group    { build(:contagion_group) }
     behavior { build(:contagion_behavior) }
+    size     { 100 }
   end
 end

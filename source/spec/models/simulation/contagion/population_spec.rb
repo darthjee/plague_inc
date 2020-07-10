@@ -21,7 +21,21 @@ describe Simulation::Contagion::Population, type: :model do
     end
 
     it do
+      expect(population).to validate_presence_of(:size)
+    end
+
+    it do
       expect(population).not_to validate_presence_of(:infected_days)
+    end
+
+    it do
+      expect(population).to validate_numericality_of(:size)
+        .is_greater_than(0)
+    end
+
+    it do
+      expect(population).to validate_numericality_of(:size)
+        .only_integer
     end
 
     it do
