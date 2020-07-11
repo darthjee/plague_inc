@@ -33,8 +33,6 @@ describe Simulation::Contagion::Starter do
     end
   end
 
-  let(:instants) { contagion.instants }
-
   before { simulation.save }
 
   fdescribe '#process' do
@@ -44,10 +42,30 @@ describe Simulation::Contagion::Starter do
         .by(1)
     end
 
-    it do
-      expect { starter.process }
-        .to change { instants.reload.last&.populations&.count.to_i }
-        .by(4)
+    context "when the proccess is over" do
+      let(:instant) { contagion.instants.last }
+
+      before { starter.process }
+
+      it do
+        expect(instant.populations)
+          .to have(4).elements
+      end
+
+      it "creates populations with the same size of groups" do
+        expect(instant.populations.sum(:size))
+          .to eq(300)
+      end
+
+      it "creates populations for infected" do
+        expect(instant.populations.infected.sum(:size))
+          .to eq(110)
+      end
+
+      it "creates populations for healthy" do
+        expect(instant.populations.healthy.sum(:size))
+          .to eq(190)
+      end
     end
   end
 end
