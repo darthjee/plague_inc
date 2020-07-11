@@ -38,6 +38,18 @@ class Simulation < ApplicationRecord
           'cannot be greater than group size'
         )
       end
+
+      def healthy
+        size - infected
+      end
+
+      def any_infected?
+        !infected.zero?
+      end
+
+      def any_healthy?
+        !healthy.zero?
+      end
     end
   end
 end
