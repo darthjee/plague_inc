@@ -35,7 +35,7 @@ describe Simulation::Contagion::Starter do
 
   before { simulation.save }
 
-  fdescribe '#process' do
+  describe '#process' do
     it do
       expect { starter.process }
         .to change { contagion.reload.instants.size }
