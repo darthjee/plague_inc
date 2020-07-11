@@ -32,6 +32,7 @@ class Simulation < ApplicationRecord
 
       def build_healthy(group)
         return if group.infected >= group.size
+
         instant.populations.create(
           group: group,
           behavior: group.behavior,
@@ -41,6 +42,7 @@ class Simulation < ApplicationRecord
 
       def build_infected(group)
         return if group.infected.zero?
+
         instant.populations.create(
           group: group,
           behavior: group.behavior,

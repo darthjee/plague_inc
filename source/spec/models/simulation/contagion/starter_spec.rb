@@ -42,7 +42,7 @@ describe Simulation::Contagion::Starter do
         .by(1)
     end
 
-    context "when the proccess is over" do
+    context 'when the proccess is over' do
       let(:instant) { contagion.instants.last }
 
       before { starter.process }
@@ -52,27 +52,32 @@ describe Simulation::Contagion::Starter do
           .to have(4).elements
       end
 
-      it "creates populations with the same size of groups" do
+      it 'creates populations for all groups' do
+        expect(instant.populations.map(&:group).uniq)
+          .to eq(groups)
+      end
+
+      it 'creates populations with the same size of groups' do
         expect(instant.populations.sum(:size))
           .to eq(300)
       end
 
-      it "creates populations for infected" do
+      it 'creates populations for infected' do
         expect(instant.populations.infected.sum(:size))
           .to eq(110)
       end
 
-      it "creates populations for infected with 0 days" do
+      it 'creates populations for infected with 0 days' do
         expect(instant.populations.infected.pluck(:infected_days).uniq)
           .to eq([0])
       end
 
-      it "creates populations for healthy" do
+      it 'creates populations for healthy' do
         expect(instant.populations.healthy.sum(:size))
           .to eq(190)
       end
 
-      it "creates populations with right behavior" do
+      it 'creates populations with right behavior' do
         instant.populations.each do |population|
           expect(population.behavior)
             .to eq(population.group.behavior)
