@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::Death do
+describe Simulation::Contagion::Death do
   subject(:death) { described_class.new(population, contagion) }
 
   let(:population) { create(:contagion_population, group: group, behavior: behavior) }

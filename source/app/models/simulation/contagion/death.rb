@@ -9,7 +9,7 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        population.size = new_size
+        population.size = alive
       end
 
       private
@@ -17,14 +17,14 @@ class Simulation < ApplicationRecord
       attr_reader :population, :contagion
       delegate :lethality, to: :contagion
 
-      def killed
-        population.size.times.inject(0) do |total, _|
-          Random.rand < lethality ? total + 1 : total
+      def alive
+        current.times.inject(current) do |people, _|
+          Random.rand < lethality ? people - 1 : people
         end
       end
 
-      def new_size
-        @new_size ||= population.size - killed
+      def current
+        @current ||= population.size
       end
     end
   end
