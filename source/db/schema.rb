@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 2020_07_13_100107) do
     t.integer "days", default: 0, null: false
     t.index ["behavior_id"], name: "fk_rails_8cc87c0981"
     t.index ["group_id"], name: "fk_rails_ab58ee1256"
-    t.index ["instant_id", "group_id", "days"], name: "simulation_contagion_unique_keys", unique: true
+    t.index ["instant_id", "group_id", "state", "days"], name: "simulation_contagion_unique_keys", unique: true
   end
 
   create_table "simulation_contagions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
