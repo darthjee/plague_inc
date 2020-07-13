@@ -21,11 +21,11 @@ class Simulation < ApplicationRecord
                   only_integer: true
                 }
 
-      validates :infected_days,
+      validates :days,
+                presence: true,
                 numericality: {
                   greater_than_or_equal_to: 0,
                   only_integer: true,
-                  allow_nil: true
                 }
 
       validates :state,

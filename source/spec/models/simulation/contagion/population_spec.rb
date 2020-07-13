@@ -25,7 +25,7 @@ describe Simulation::Contagion::Population, type: :model do
     end
 
     it do
-      expect(population).not_to validate_presence_of(:infected_days)
+      expect(population).to validate_presence_of(:days)
     end
 
     it do
@@ -43,12 +43,12 @@ describe Simulation::Contagion::Population, type: :model do
     end
 
     it do
-      expect(population).to validate_numericality_of(:infected_days)
+      expect(population).to validate_numericality_of(:days)
         .is_greater_than_or_equal_to(0)
     end
 
     it do
-      expect(population).to validate_numericality_of(:infected_days)
+      expect(population).to validate_numericality_of(:days)
         .only_integer
     end
 
