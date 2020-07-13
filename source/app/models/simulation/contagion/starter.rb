@@ -8,13 +8,13 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        ActiveRecord::Base.transaction do
-          @instant = instants.create(day: 0)
+        @instant = instants.create(day: 0)
 
-          contagion.groups.each do |group|
-            build_populations(group)
-          end
+        contagion.groups.each do |group|
+          build_populations(group)
         end
+
+        instant.save
       end
 
       private
@@ -33,7 +33,7 @@ class Simulation < ApplicationRecord
       def build_healthy(group)
         return unless group.any_healthy?
 
-        instant.populations.create(
+        instant.populations.build(
           group: group,
           behavior: group.behavior,
           size: group.healthy
@@ -43,7 +43,7 @@ class Simulation < ApplicationRecord
       def build_infected(group)
         return unless group.any_infected?
 
-        instant.populations.create(
+        instant.populations.build(
           group: group,
           behavior: group.behavior,
           size: group.infected,
