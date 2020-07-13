@@ -46,8 +46,7 @@ class Simulation < ApplicationRecord
         instant.populations.infected.build(
           group: group,
           behavior: group.behavior,
-          size: group.infected,
-          infected_days: 0
+          size: group.infected
         )
       end
     end
