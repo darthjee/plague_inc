@@ -29,6 +29,10 @@ describe Simulation::Contagion::Population, type: :model do
     end
 
     it do
+      expect(population).to validate_presence_of(:state)
+    end
+
+    it do
       expect(population).to validate_numericality_of(:size)
         .is_greater_than(0)
     end
@@ -46,6 +50,11 @@ describe Simulation::Contagion::Population, type: :model do
     it do
       expect(population).to validate_numericality_of(:infected_days)
         .only_integer
+    end
+
+    it do
+      expect(population).to validate_inclusion_of(:state)
+        .in_array(described_class::STATES)
     end
   end
 

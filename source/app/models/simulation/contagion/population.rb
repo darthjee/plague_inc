@@ -3,6 +3,8 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Population < ApplicationRecord
+      STATES = %w[healthy infected immune]
+
       scope :infected, -> { where.not(infected_days: nil) }
       scope :healthy, -> { where(infected_days: nil) }
 
@@ -25,6 +27,10 @@ class Simulation < ApplicationRecord
                   only_integer: true,
                   allow_nil: true
                 }
+
+      validates :state,
+                presence: true,
+                inclusion: { in: STATES }
     end
   end
 end
