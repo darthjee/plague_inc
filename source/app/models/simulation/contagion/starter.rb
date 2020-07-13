@@ -33,7 +33,7 @@ class Simulation < ApplicationRecord
       def build_healthy(group)
         return unless group.any_healthy?
 
-        instant.populations.build(
+        instant.populations.healthy.build(
           group: group,
           behavior: group.behavior,
           size: group.healthy
@@ -43,7 +43,7 @@ class Simulation < ApplicationRecord
       def build_infected(group)
         return unless group.any_infected?
 
-        instant.populations.build(
+        instant.populations.infected.build(
           group: group,
           behavior: group.behavior,
           size: group.infected,
