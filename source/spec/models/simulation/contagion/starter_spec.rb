@@ -68,7 +68,7 @@ describe Simulation::Contagion::Starter do
       end
 
       it 'creates populations for infected with 0 days' do
-        expect(instant.populations.infected.pluck(:infected_days).uniq)
+        expect(instant.populations.pluck(:days).uniq)
           .to eq([0])
       end
 

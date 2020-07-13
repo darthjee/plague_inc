@@ -25,7 +25,11 @@ describe Simulation::Contagion::Population, type: :model do
     end
 
     it do
-      expect(population).not_to validate_presence_of(:infected_days)
+      expect(population).to validate_presence_of(:days)
+    end
+
+    it do
+      expect(population).to validate_presence_of(:state)
     end
 
     it do
@@ -39,13 +43,18 @@ describe Simulation::Contagion::Population, type: :model do
     end
 
     it do
-      expect(population).to validate_numericality_of(:infected_days)
+      expect(population).to validate_numericality_of(:days)
         .is_greater_than_or_equal_to(0)
     end
 
     it do
-      expect(population).to validate_numericality_of(:infected_days)
+      expect(population).to validate_numericality_of(:days)
         .only_integer
+    end
+
+    it do
+      expect(population).to validate_inclusion_of(:state)
+        .in_array(described_class::STATES)
     end
   end
 
@@ -54,11 +63,11 @@ describe Simulation::Contagion::Population, type: :model do
     let(:group)      { simulation.contagion.groups.first }
 
     let!(:infected_population) do
-      create(:contagion_population, infected_days: 10, group: group)
+      create(:contagion_population, state: :infected, group: group)
     end
 
     let!(:healthy_population) do
-      create(:contagion_population, infected_days: nil, group: group)
+      create(:contagion_population, state: :healthy, group: group)
     end
 
     describe '.infected' do

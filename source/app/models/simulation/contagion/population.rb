@@ -3,8 +3,10 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Population < ApplicationRecord
-      scope :infected, -> { where.not(infected_days: nil) }
-      scope :healthy, -> { where(infected_days: nil) }
+      STATES = %w[healthy infected immune].freeze
+
+      scope :infected, -> { where(state: :infected) }
+      scope :healthy, -> { where(state: :healthy) }
 
       belongs_to :instant
       belongs_to :group
@@ -19,12 +21,16 @@ class Simulation < ApplicationRecord
                   only_integer: true
                 }
 
-      validates :infected_days,
+      validates :days,
+                presence: true,
                 numericality: {
                   greater_than_or_equal_to: 0,
-                  only_integer: true,
-                  allow_nil: true
+                  only_integer: true
                 }
+
+      validates :state,
+                presence: true,
+                inclusion: { in: STATES }
     end
   end
 end
