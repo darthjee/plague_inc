@@ -19,7 +19,7 @@ class Simulation < ApplicationRecord
 
       def killed
         population.size.times.inject(0) do |total, _|
-          lethality == 0 ? total : total + 1
+          Random.rand < lethality ? total + 1 : total
         end
       end
 
