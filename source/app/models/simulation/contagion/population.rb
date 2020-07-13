@@ -5,8 +5,8 @@ class Simulation < ApplicationRecord
     class Population < ApplicationRecord
       STATES = %w[healthy infected immune]
 
-      scope :infected, -> { where.not(infected_days: nil) }
-      scope :healthy, -> { where(infected_days: nil) }
+      scope :infected, -> { where(state: :infected) }
+      scope :healthy, -> { where(state: :healthy) }
 
       belongs_to :instant
       belongs_to :group

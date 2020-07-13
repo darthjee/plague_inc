@@ -63,11 +63,11 @@ describe Simulation::Contagion::Population, type: :model do
     let(:group)      { simulation.contagion.groups.first }
 
     let!(:infected_population) do
-      create(:contagion_population, infected_days: 10, group: group)
+      create(:contagion_population, state: :infected, group: group)
     end
 
     let!(:healthy_population) do
-      create(:contagion_population, infected_days: nil, group: group)
+      create(:contagion_population, state: :healthy, group: group)
     end
 
     describe '.infected' do
