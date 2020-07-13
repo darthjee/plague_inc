@@ -3,6 +3,9 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Population < ApplicationRecord
+      scope :infected, -> { where.not(infected_days: nil) }
+      scope :healthy, -> { where(infected_days: nil) }
+
       belongs_to :instant
       belongs_to :group
       belongs_to :behavior

@@ -48,4 +48,41 @@ describe Simulation::Contagion::Population, type: :model do
         .only_integer
     end
   end
+
+  describe 'scopes' do
+    let(:simulation) { create(:simulation) }
+    let(:group)      { simulation.contagion.groups.first }
+
+    let!(:infected_population) do
+      create(:contagion_population, infected_days: 10, group: group)
+    end
+
+    let!(:healthy_population) do
+      create(:contagion_population, infected_days: nil, group: group)
+    end
+
+    describe '.infected' do
+      it do
+        expect(described_class.infected)
+          .to include(infected_population)
+      end
+
+      it do
+        expect(described_class.infected)
+          .not_to include(healthy_population)
+      end
+    end
+
+    describe '.healthy' do
+      it do
+        expect(described_class.healthy)
+          .not_to include(infected_population)
+      end
+
+      it do
+        expect(described_class.healthy)
+          .to include(healthy_population)
+      end
+    end
+  end
 end
