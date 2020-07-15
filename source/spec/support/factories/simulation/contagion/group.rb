@@ -7,5 +7,14 @@ FactoryBot.define do
     infected        { 2 }
     reference       { SecureRandom.hex(5) }
     contagion       { build(:contagion, groups: []) }
+
+    trait :with_behavior do
+      behavior do
+        build(
+          :contagion_behavior,
+          contagion: @instance.contagion
+        )
+      end
+    end
   end
 end

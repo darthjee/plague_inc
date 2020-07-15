@@ -31,6 +31,10 @@ class Simulation < ApplicationRecord
       validates :state,
                 presence: true,
                 inclusion: { in: STATES }
+
+      def infected?
+        state == 'infected'
+      end
     end
   end
 end
