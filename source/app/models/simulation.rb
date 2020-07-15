@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require './app/processors/simulation/builder'
+require './app/models/simulation/builder'
 
 class Simulation < ApplicationRecord
   ALGORITHMS = %w[
