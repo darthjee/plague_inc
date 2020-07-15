@@ -7,7 +7,12 @@ describe Simulation::Contagion::PostCreator do
 
   let!(:simulation) { create(:simulation, contagion: contagion) }
   let(:contagion) do
-    build(:contagion, simulation: nil, lethality: lethality)
+    build(
+      :contagion,
+      simulation: nil,
+      lethality: lethality,
+      days_till_recovery: 11
+    )
   end
 
   let!(:instant) do
@@ -19,7 +24,7 @@ describe Simulation::Contagion::PostCreator do
   let(:state) { :infected }
 
   before do
-    [9, 10, 11].map do |day|
+    [7, 10, 16].map do |day|
       create(
         :contagion_population,
         group: group,
@@ -40,14 +45,14 @@ describe Simulation::Contagion::PostCreator do
 
       it 'kills everyone ready to be killed' do
         expect { post_creator.process }
-          .to change { instant.populations.pluck(:size) }
+          .to change { instant.reload.populations.pluck(:size) }
           .to([10, 0, 0])
       end
 
-      it 'persists killing' do
+      it 'recovers those ready to be recovered' do
         expect { post_creator.process }
-          .to change { instant.reload.populations.pluck(:size) }
-          .to([10, 0, 0])
+          .to change { instant.reload.populations.order(:id).map(&:state) }
+          .to(%w[infected infected immune])
       end
     end
 
@@ -59,6 +64,11 @@ describe Simulation::Contagion::PostCreator do
         expect { post_creator.process }
           .not_to(change { instant.populations.pluck(:size) })
       end
+
+      it 'recovers no one' do
+        expect { post_creator.process }
+          .not_to change { instant.reload.populations.map(&:state) }
+      end
     end
 
     context 'when lethality is 0%' do
@@ -67,6 +77,12 @@ describe Simulation::Contagion::PostCreator do
       it 'kills no one to be killed' do
         expect { post_creator.process }
           .not_to(change { instant.populations.pluck(:size) })
+      end
+
+      it 'recovers those ready to be recovered' do
+        expect { post_creator.process }
+          .to change { instant.reload.populations.order(:id).map(&:state) }
+          .to(%w[infected infected immune])
       end
     end
   end

@@ -10,6 +10,13 @@ class Simulation < ApplicationRecord
       def process
         Killer.new(instant, contagion).process
 
+
+        populations.select do |pop|
+          pop.infected? && pop.days >= days_till_recovery
+        end.each do |pop|
+          pop.state = Population::IMMUNE
+        end
+
         instant.save
       end
 
@@ -18,6 +25,8 @@ class Simulation < ApplicationRecord
       attr_reader :instant
 
       delegate :contagion, to: :instant
+      delegate :days_till_recovery, to: :contagion
+      delegate :populations, to: :instant
     end
   end
 end
