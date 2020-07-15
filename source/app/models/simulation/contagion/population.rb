@@ -3,7 +3,11 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Population < ApplicationRecord
-      STATES = %w[healthy infected immune].freeze
+      INFECTED = 'infected'
+      HEALTHY  = 'healthy'
+      IMMUNE   = 'immune'
+
+      STATES = [INFECTED, HEALTHY, IMMUNE].freeze
 
       scope :infected, -> { where(state: :infected) }
       scope :healthy, -> { where(state: :healthy) }
@@ -33,7 +37,7 @@ class Simulation < ApplicationRecord
                 inclusion: { in: STATES }
 
       def infected?
-        state == 'infected'
+        state == INFECTED
       end
     end
   end
