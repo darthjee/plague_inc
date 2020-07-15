@@ -2,7 +2,7 @@
 
 class Simulation < ApplicationRecord
   class Decorator < ::Decorator
-    ALLOWED_ATTRIBUTES.each(&method(:expose))
+    Simulation::ALLOWED_ATTRIBUTES.each(&method(:expose))
 
     expose :id
     expose :settings
