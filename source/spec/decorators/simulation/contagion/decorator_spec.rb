@@ -9,6 +9,7 @@ describe Simulation::Contagion::Decorator do
     %w[
       lethality days_till_recovery
       days_till_sympthoms days_till_start_death
+      days_till_contagion
     ]
   end
   let(:decorator_json) { JSON.parse(decorator.to_json) }

@@ -103,6 +103,7 @@ describe SimulationsController do
           days_till_recovery: 13,
           days_till_sympthoms: 12,
           days_till_start_death: 11,
+          days_till_contagion: 10,
           groups: [group_payload],
           behaviors: [behavior_payload]
         }

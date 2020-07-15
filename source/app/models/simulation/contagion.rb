@@ -7,6 +7,7 @@ class Simulation < ApplicationRecord
       days_till_recovery
       days_till_sympthoms
       days_till_start_death
+      days_till_contagion
     ].freeze
 
     belongs_to :simulation
