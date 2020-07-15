@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require './app/models/simulation/contagion/group'
+
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Group < ApplicationRecord
       class Decorator < ::Decorator
-        ALLOWED_ATTRIBUTES.each(&method(:expose))
+        Group::ALLOWED_ATTRIBUTES.each(&method(:expose))
 
         expose :behavior
 
