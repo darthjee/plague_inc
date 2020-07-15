@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::Killer do
+describe Simulation::Contagion::Killer do
   subject(:killer) { described_class.new(instant, contagion) }
 
   let!(:simulation) { create(:simulation, contagion: contagion) }
@@ -18,7 +18,7 @@ fdescribe Simulation::Contagion::Killer do
 
   let(:state) { :infected }
 
-  let!(:populations) do
+  before do
     [9, 10, 11].map do |day|
       create(
         :contagion_population,
@@ -30,10 +30,8 @@ fdescribe Simulation::Contagion::Killer do
         state: state
       )
     end
-  end
 
-  before do
-    contagion.reload
+    simulation.contagion.reload
   end
 
   describe '#process' do
@@ -48,7 +46,7 @@ fdescribe Simulation::Contagion::Killer do
 
       it 'does not persist killing' do
         expect { killer.process }
-          .not_to change { instant.reload.populations.pluck(:size) }
+          .not_to(change { instant.reload.populations.pluck(:size) })
       end
     end
 
@@ -58,7 +56,7 @@ fdescribe Simulation::Contagion::Killer do
 
       it 'kills no one' do
         expect { killer.process }
-          .not_to change { instant.populations.pluck(:size) }
+          .not_to(change { instant.populations.pluck(:size) })
       end
     end
 
@@ -67,7 +65,7 @@ fdescribe Simulation::Contagion::Killer do
 
       it 'kills no one to be killed' do
         expect { killer.process }
-          .not_to change { instant.populations.pluck(:size) }
+          .not_to(change { instant.populations.pluck(:size) })
       end
     end
   end
