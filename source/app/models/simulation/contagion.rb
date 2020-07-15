@@ -7,6 +7,7 @@ class Simulation < ApplicationRecord
       days_till_recovery
       days_till_sympthoms
       days_till_start_death
+      days_till_contagion
     ].freeze
 
     belongs_to :simulation
@@ -37,9 +38,16 @@ class Simulation < ApplicationRecord
                 greater_than_or_equal_to: 0,
                 only_integer: true
               }
+    validates :days_till_contagion,
+              presence: true,
+              numericality: {
+                greater_than_or_equal_to: 0,
+                only_integer: true
+              }
 
     validate :validate_days_till_sympthoms
     validate :validate_days_till_start_death
+    validate :validate_days_till_contagion
 
     private
 
@@ -59,6 +67,16 @@ class Simulation < ApplicationRecord
 
       errors.add(
         :days_till_start_death,
+        'cannot be greater than days to recovery'
+      )
+    end
+
+    def validate_days_till_contagion
+      return unless days_till_recovery
+      return unless days_till_recovery < days_till_contagion.to_i
+
+      errors.add(
+        :days_till_contagion,
         'cannot be greater than days to recovery'
       )
     end

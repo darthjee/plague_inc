@@ -27,6 +27,10 @@ describe Simulation::Contagion, type: :model do
     end
 
     it do
+      expect(contagion).to validate_presence_of(:days_till_contagion)
+    end
+
+    it do
       expect(contagion).to validate_inclusion_of(:lethality)
         .in_range((0.0..1.0))
     end
@@ -58,6 +62,16 @@ describe Simulation::Contagion, type: :model do
 
     it do
       expect(contagion).to validate_numericality_of(:days_till_start_death)
+        .only_integer
+    end
+
+    it do
+      expect(contagion).to validate_numericality_of(:days_till_contagion)
+        .is_greater_than_or_equal_to(0)
+    end
+
+    it do
+      expect(contagion).to validate_numericality_of(:days_till_contagion)
         .only_integer
     end
 
@@ -116,6 +130,23 @@ describe Simulation::Contagion, type: :model do
         expect(contagion)
           .to have(1)
           .errors_on(:days_till_start_death)
+      end
+    end
+
+    context 'when days_till_contagion is bigger than days_till_recovery' do
+      subject(:contagion) do
+        build(:contagion,
+              days_till_contagion: 11,
+              days_till_recovery: 10)
+      end
+
+      it { expect(contagion).to be_invalid }
+
+      it do
+        contagion.valid?
+        expect(contagion)
+          .to have(1)
+          .errors_on(:days_till_contagion)
       end
     end
   end
