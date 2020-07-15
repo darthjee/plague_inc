@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require './app/models/simulation/contagion/behavior'
+
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Behavior < ApplicationRecord
