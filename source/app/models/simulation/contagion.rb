@@ -47,6 +47,7 @@ class Simulation < ApplicationRecord
 
     validate :validate_days_till_sympthoms
     validate :validate_days_till_start_death
+    validate :validate_days_till_contagion
 
     private
 
@@ -66,6 +67,16 @@ class Simulation < ApplicationRecord
 
       errors.add(
         :days_till_start_death,
+        'cannot be greater than days to recovery'
+      )
+    end
+
+    def validate_days_till_contagion
+      return unless days_till_recovery
+      return unless days_till_recovery < days_till_contagion.to_i
+
+      errors.add(
+        :days_till_contagion,
         'cannot be greater than days to recovery'
       )
     end

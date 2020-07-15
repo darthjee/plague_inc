@@ -132,5 +132,22 @@ describe Simulation::Contagion, type: :model do
           .errors_on(:days_till_start_death)
       end
     end
+
+    context 'when days_till_contagion is bigger than days_till_recovery' do
+      subject(:contagion) do
+        build(:contagion,
+              days_till_contagion: 11,
+              days_till_recovery: 10)
+      end
+
+      it { expect(contagion).to be_invalid }
+
+      it do
+        contagion.valid?
+        expect(contagion)
+          .to have(1)
+          .errors_on(:days_till_contagion)
+      end
+    end
   end
 end
