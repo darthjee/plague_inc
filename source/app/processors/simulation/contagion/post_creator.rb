@@ -9,6 +9,7 @@ class Simulation < ApplicationRecord
 
       def process
         Killer.new(instant, contagion).process
+
         instant.save
       end
 

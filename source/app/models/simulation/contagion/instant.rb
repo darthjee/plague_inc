@@ -12,7 +12,7 @@ class Simulation < ApplicationRecord
                  optional: true,
                  class_name: 'Population'
 
-      has_many :populations
+      has_many :populations, autosave: true
 
       validates_presence_of :contagion
 
