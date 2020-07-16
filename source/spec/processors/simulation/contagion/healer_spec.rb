@@ -52,7 +52,7 @@ describe Simulation::Contagion::Healer do
 
     it 'does not persist change' do
       expect { post_creator.process }
-        .not_to change { instant.reload.populations.map(&:state) }
+        .not_to(change { instant.reload.populations.map(&:state) })
     end
 
     context 'when populations are not infected' do
@@ -65,12 +65,12 @@ describe Simulation::Contagion::Healer do
 
       it 'does not recover anyone' do
         expect { post_creator.process }
-          .not_to change { instant.populations.map(&:state).sort }
+          .not_to(change { instant.populations.map(&:state).sort })
       end
 
       it 'does not reset day counter' do
         expect { post_creator.process }
-          .not_to change { instant.populations.map(&:days) }
+          .not_to(change { instant.populations.map(&:days) })
       end
     end
   end

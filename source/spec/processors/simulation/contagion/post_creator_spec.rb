@@ -79,7 +79,7 @@ describe Simulation::Contagion::PostCreator do
 
       it 'recovers no one' do
         expect { post_creator.process }
-          .not_to change { instant.reload.populations.map(&:state) }
+          .not_to(change { instant.reload.populations.map(&:state) })
       end
     end
 

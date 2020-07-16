@@ -30,4 +30,3 @@ class Simulation < ApplicationRecord
     end
   end
 end
-
