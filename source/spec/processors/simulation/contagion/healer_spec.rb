@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::Healer do
+describe Simulation::Contagion::Healer do
   subject(:post_creator) { described_class.new(instant) }
 
   let!(:simulation) { create(:simulation, contagion: contagion) }
@@ -42,6 +42,13 @@ fdescribe Simulation::Contagion::Healer do
         .to change { instant.populations.map(&:state) }
         .to(%w[immune healthy immune])
     end
+
+    it 'resets day counter' do
+      expect { post_creator.process }
+        .to change { instant.populations.map(&:days) }
+        .to([0, 16, 16])
+    end
+
 
     it 'does not persist change' do
       expect { post_creator.process }

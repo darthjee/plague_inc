@@ -12,6 +12,7 @@ class Simulation < ApplicationRecord
           pop.infected? && pop.days >= days_till_recovery
         end.each do |pop|
           pop.state = Population::IMMUNE
+          pop.days  = 0
         end
       end
 
