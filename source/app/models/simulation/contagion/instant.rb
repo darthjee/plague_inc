@@ -4,7 +4,7 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Instant < ApplicationRecord
       STATUSES = %w[
-        created processing processed
+        created ready processing processed
       ].freeze
 
       belongs_to :contagion
@@ -12,7 +12,7 @@ class Simulation < ApplicationRecord
                  optional: true,
                  class_name: 'Population'
 
-      has_many :populations
+      has_many :populations, autosave: true
 
       validates_presence_of :contagion
 

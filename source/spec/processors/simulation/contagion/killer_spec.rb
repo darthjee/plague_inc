@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Simulation::Contagion::Killer do
-  subject(:killer) { described_class.new(instant, contagion) }
+  subject(:killer) { described_class.new(instant) }
 
   let!(:simulation) { create(:simulation, contagion: contagion) }
   let(:contagion) do

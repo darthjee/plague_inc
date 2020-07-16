@@ -2,27 +2,29 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
-    class Killer
+    class PostCreator
       def initialize(instant)
         @instant = instant
       end
 
       def process
-        populations
-          .select(&:infected?)
-          .select { |pop| pop.days >= days_till_start_death }
-          .each do |population|
-          Death.new(population, contagion).process
+        Killer.new(instant).process
+        Healer.new(instant).process
+
+        instant.status = 'ready'
+
+        ActiveRecord::Base.transaction do
+          instant.save
         end
       end
 
       private
 
-      attr_reader :instant, :contagion
+      attr_reader :instant
 
       delegate :contagion, to: :instant
+      delegate :days_till_recovery, to: :contagion
       delegate :populations, to: :instant
-      delegate :days_till_start_death, to: :contagion
     end
   end
 end

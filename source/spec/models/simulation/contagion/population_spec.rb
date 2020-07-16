@@ -34,7 +34,7 @@ describe Simulation::Contagion::Population, type: :model do
 
     it do
       expect(population).to validate_numericality_of(:size)
-        .is_greater_than(0)
+        .is_greater_than_or_equal_to(0)
     end
 
     it do
@@ -91,6 +91,62 @@ describe Simulation::Contagion::Population, type: :model do
       it do
         expect(described_class.healthy)
           .to include(healthy_population)
+      end
+    end
+  end
+
+  describe '#infected?' do
+    subject(:population) { build(:contagion_population, state: state) }
+
+    context 'when population is infected' do
+      let(:state) { described_class::INFECTED }
+
+      it do
+        expect(population).to be_infected
+      end
+    end
+
+    context 'when population is healthy' do
+      let(:state) { described_class::HEALTHY }
+
+      it do
+        expect(population).not_to be_infected
+      end
+    end
+
+    context 'when population is immune' do
+      let(:state) { described_class::IMMUNE }
+
+      it do
+        expect(population).not_to be_infected
+      end
+    end
+  end
+
+  describe '#health?' do
+    subject(:population) { build(:contagion_population, state: state) }
+
+    context 'when population is infected' do
+      let(:state) { described_class::INFECTED }
+
+      it do
+        expect(population).not_to be_healthy
+      end
+    end
+
+    context 'when population is healthy' do
+      let(:state) { described_class::HEALTHY }
+
+      it do
+        expect(population).to be_healthy
+      end
+    end
+
+    context 'when population is immune' do
+      let(:state) { described_class::IMMUNE }
+
+      it do
+        expect(population).not_to be_healthy
       end
     end
   end
