@@ -35,8 +35,8 @@ class Simulation < ApplicationRecord
 
         Population::Builder.build(
           instant: instant,
-          group:   group,
-          type:    type
+          group: group,
+          type: type
         )
       end
     end

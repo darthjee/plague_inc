@@ -27,12 +27,12 @@ describe Simulation::Contagion::Population::Builder do
     subject(:population) do
       described_class.build(
         instant: instant,
-        group:   group,
-        type:    type
+        group: group,
+        type: type
       )
     end
 
-    context "when type is healthy" do
+    context 'when type is healthy' do
       let(:type) do
         Simulation::Contagion::Population::HEALTHY
       end
@@ -66,7 +66,7 @@ describe Simulation::Contagion::Population::Builder do
       end
     end
 
-    context "when type is infected" do
+    context 'when type is infected' do
       let(:type) do
         Simulation::Contagion::Population::INFECTED
       end

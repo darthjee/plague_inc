@@ -7,8 +7,8 @@ class Simulation < ApplicationRecord
         def self.build(instant:, group:, type:)
           new(
             instant: instant,
-            group:   group,
-            type:    type
+            group: group,
+            type: type
           ).build
         end
 
@@ -23,7 +23,7 @@ class Simulation < ApplicationRecord
         private
 
         attr_reader :group, :instant, :type
-        
+
         delegate :behavior, :infected, :healthy, to: :group
 
         def initialize(instant:, group:, type:)
