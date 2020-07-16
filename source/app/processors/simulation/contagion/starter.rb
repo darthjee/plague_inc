@@ -26,27 +26,17 @@ class Simulation < ApplicationRecord
       delegate :populations, to: :instant
 
       def build_populations(group)
-        build_healthy(group)
-        build_infected(group)
+        build(group, :healthy)
+        build(group, :infected)
       end
 
-      def build_healthy(group)
-        return unless group.any_healthy?
+      def build(group, type)
+        return unless group.public_send("any_#{type}?")
 
-        instant.populations.healthy.build(
+        instant.populations.public_send(type).build(
           group: group,
           behavior: group.behavior,
-          size: group.healthy
-        )
-      end
-
-      def build_infected(group)
-        return unless group.any_infected?
-
-        instant.populations.infected.build(
-          group: group,
-          behavior: group.behavior,
-          size: group.infected
+          size: group.public_send(type)
         )
       end
     end
