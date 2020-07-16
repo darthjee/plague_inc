@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require './app/processors/simulation/contagion/population/builder'
+
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Starter
@@ -33,10 +35,10 @@ class Simulation < ApplicationRecord
       def build(group, type)
         return unless group.public_send("any_#{type}?")
 
-        instant.populations.public_send(type).build(
-          group: group,
-          behavior: group.behavior,
-          size: group.public_send(type)
+        Population::Builder.build(
+          instant: instant,
+          group:   group,
+          type:    type
         )
       end
     end
