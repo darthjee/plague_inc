@@ -94,4 +94,32 @@ describe Simulation::Contagion::Population, type: :model do
       end
     end
   end
+
+  describe '#infected?' do
+    subject(:population) { build(:contagion_population, state: state) }
+
+    context 'when population is infected' do
+      let(:state) { described_class::INFECTED }
+
+      it do
+        expect(population).to be_infected
+      end
+    end
+
+    context 'when population is healthy' do
+      let(:state) { described_class::HEALTHY }
+
+      it do
+        expect(population).not_to be_infected
+      end
+    end
+
+    context 'when population is immune' do
+      let(:state) { described_class::IMMUNE }
+
+      it do
+        expect(population).not_to be_infected
+      end
+    end
+  end
 end
