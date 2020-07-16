@@ -18,10 +18,11 @@ describe Simulation::Contagion::Healer do
     create(:contagion_instant, contagion: contagion)
   end
 
-  let(:group) { contagion.reload.groups.last }
+  let(:group)  { contagion.reload.groups.last }
+  let(:states) { Simulation::Contagion::Population::STATES }
 
   before do
-    Simulation::Contagion::Population::STATES.map do |state|
+    states.map do |state|
       create(
         :contagion_population,
         group: group,
@@ -39,20 +40,38 @@ describe Simulation::Contagion::Healer do
   describe '#process' do
     it 'recovers those ready to be recovered' do
       expect { post_creator.process }
-        .to change { instant.populations.map(&:state) }
-        .to(%w[immune healthy immune])
+        .to change { instant.populations.map(&:state).sort }
+        .to(%w[healthy immune immune])
     end
 
     it 'resets day counter' do
       expect { post_creator.process }
-        .to change { instant.populations.map(&:days) }
+        .to change { instant.populations.map(&:days).sort }
         .to([0, 16, 16])
     end
-
 
     it 'does not persist change' do
       expect { post_creator.process }
         .not_to change { instant.reload.populations.map(&:state) }
+    end
+
+    context 'when populations are not infected' do
+      let(:states) do
+        [
+          Simulation::Contagion::Population::IMMUNE,
+          Simulation::Contagion::Population::HEALTHY
+        ]
+      end
+
+      it 'does not recover anyone' do
+        expect { post_creator.process }
+          .not_to change { instant.populations.map(&:state).sort }
+      end
+
+      it 'does not reset day counter' do
+        expect { post_creator.process }
+          .not_to change { instant.populations.map(&:days) }
+      end
     end
   end
 end
