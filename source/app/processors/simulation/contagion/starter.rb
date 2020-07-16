@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require './app/processors/simulation/contagion/population/builder'
-
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Starter

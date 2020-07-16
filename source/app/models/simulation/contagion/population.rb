@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require './app/processors/simulation/contagion/population/builder'
+
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Population < ApplicationRecord
@@ -38,6 +40,10 @@ class Simulation < ApplicationRecord
 
       def infected?
         state == INFECTED
+      end
+
+      def healthy?
+        state == HEALTHY
       end
     end
   end
