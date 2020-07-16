@@ -60,6 +60,12 @@ describe Simulation::Contagion::PostCreator do
           .to change { instant.reload.populations.order(:id).map(&:days) }
           .to([7, 10, 0])
       end
+
+      it 'update instant status' do
+        expect { post_creator.process }
+          .to change { instant.reload.status }
+          .from('created').to('ready')
+      end
     end
 
     context 'when lethality is 100% but populations are not infected' do

@@ -11,7 +11,11 @@ class Simulation < ApplicationRecord
         Killer.new(instant).process
         Healer.new(instant).process
 
-        instant.save
+        instant.status = 'ready'
+
+        ActiveRecord::Base.transaction do
+          instant.save
+        end
       end
 
       private
