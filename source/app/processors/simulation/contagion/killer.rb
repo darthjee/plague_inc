@@ -3,9 +3,8 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Killer
-      def initialize(instant, contagion)
+      def initialize(instant)
         @instant = instant
-        @contagion = contagion
       end
 
       def process
@@ -21,6 +20,7 @@ class Simulation < ApplicationRecord
 
       attr_reader :instant, :contagion
 
+      delegate :contagion, to: :instant
       delegate :populations, to: :instant
       delegate :days_till_start_death, to: :contagion
     end

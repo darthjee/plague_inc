@@ -8,7 +8,7 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        Killer.new(instant, contagion).process
+        Killer.new(instant).process
         Healer.new(instant).process
 
         instant.save
