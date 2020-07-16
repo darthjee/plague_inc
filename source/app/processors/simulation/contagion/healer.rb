@@ -2,16 +2,17 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
-    class PostCreator
+    class Healer
       def initialize(instant)
         @instant = instant
       end
 
       def process
-        Killer.new(instant, contagion).process
-        Healer.new(instant).process
-
-        instant.save
+        populations.select do |pop|
+          pop.infected? && pop.days >= days_till_recovery
+        end.each do |pop|
+          pop.state = Population::IMMUNE
+        end
       end
 
       private
@@ -24,3 +25,4 @@ class Simulation < ApplicationRecord
     end
   end
 end
+
