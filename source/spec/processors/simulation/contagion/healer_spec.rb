@@ -20,10 +20,8 @@ fdescribe Simulation::Contagion::Healer do
 
   let(:group) { contagion.reload.groups.last }
 
-  let(:state) { :infected }
-
   before do
-    Simulation::Contagion::Population::STATES.map do |sate|
+    Simulation::Contagion::Population::STATES.map do |state|
       create(
         :contagion_population,
         group: group,
@@ -39,13 +37,15 @@ fdescribe Simulation::Contagion::Healer do
   end
 
   describe '#process' do
-    context 'when lethality is 100%' do
-      it 'recovers those ready to be recovered' do
-        expect { post_creator.process }
-          .to change { instant.populations.map(&:state) }
-          .to(%w[infected infected immune])
-      end
+    it 'recovers those ready to be recovered' do
+      expect { post_creator.process }
+        .to change { instant.populations.map(&:state) }
+        .to(%w[immune healthy immune])
+    end
+
+    it 'does not persist change' do
+      expect { post_creator.process }
+        .not_to change { instant.reload.populations.map(&:state) }
     end
   end
 end
-
