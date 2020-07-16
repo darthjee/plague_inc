@@ -54,6 +54,12 @@ describe Simulation::Contagion::PostCreator do
           .to change { instant.reload.populations.order(:id).map(&:state) }
           .to(%w[infected infected immune])
       end
+
+      it 'resets counter of the recovered' do
+        expect { post_creator.process }
+          .to change { instant.reload.populations.order(:id).map(&:days) }
+          .to([7, 10, 0])
+      end
     end
 
     context 'when lethality is 100% but populations are not infected' do
