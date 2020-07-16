@@ -45,7 +45,7 @@ describe Simulation::Contagion::PostCreator do
 
       it 'kills everyone ready to be killed' do
         expect { post_creator.process }
-          .to change { instant.reload.populations.pluck(:size) }
+          .to change { instant.reload.populations.order(:id).pluck(:size) }
           .to([10, 0, 0])
       end
 
