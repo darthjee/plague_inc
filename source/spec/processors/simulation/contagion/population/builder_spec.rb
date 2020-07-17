@@ -69,6 +69,11 @@ describe Simulation::Contagion::Population::Builder do
         it 'sets day to be 0' do
           expect(population.days).to be_zero
         end
+
+        it 'adds interactions' do
+          expect(population.interactions)
+            .to eq(population.size * behavior.interactions)
+        end
       end
 
       context 'when state is infected' do
@@ -106,6 +111,11 @@ describe Simulation::Contagion::Population::Builder do
 
         it 'sets day to be 0' do
           expect(population.days).to be_zero
+        end
+
+        it 'adds interactions' do
+          expect(population.interactions)
+            .to eq(population.size * behavior.interactions)
         end
       end
     end
@@ -158,6 +168,11 @@ describe Simulation::Contagion::Population::Builder do
 
       it 'increment days' do
         expect(population.days).to eq(1)
+      end
+
+      it 'adds interactions' do
+        expect(population.interactions)
+          .to eq(population.size * behavior.interactions)
       end
     end
   end

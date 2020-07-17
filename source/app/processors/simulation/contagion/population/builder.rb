@@ -16,7 +16,8 @@ class Simulation < ApplicationRecord
         def build
           scope.build(
             size: size,
-            days: days
+            days: days,
+            interactions: interactions
           )
         end
 
@@ -55,6 +56,10 @@ class Simulation < ApplicationRecord
 
         def days
           population ? population.days + 1 : 0
+        end
+
+        def interactions
+          size * behavior.interactions
         end
       end
     end
