@@ -40,8 +40,9 @@ class Simulation < ApplicationRecord
         def scope
           instant.populations.where(
             group: group,
-            behavior: behavior
-          ).public_send(state)
+            behavior: behavior,
+            state: state
+          )
         end
 
         def group
