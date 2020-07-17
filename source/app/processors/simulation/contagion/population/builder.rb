@@ -15,9 +15,8 @@ class Simulation < ApplicationRecord
 
         def build
           scope.build(
-            group: group,
-            behavior: behavior,
-            size: size
+            size: size,
+            days: days
           )
         end
 
@@ -39,7 +38,10 @@ class Simulation < ApplicationRecord
         end
 
         def scope
-          instant.populations.public_send(state)
+          instant.populations.where(
+            group: group,
+            behavior: behavior
+          ).public_send(state)
         end
 
         def group
@@ -48,6 +50,10 @@ class Simulation < ApplicationRecord
 
         def state
           @state ||= population.state
+        end
+
+        def days
+          population ? population.days + 1 : 0
         end
       end
     end

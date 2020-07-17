@@ -158,7 +158,7 @@ describe Simulation::Contagion::Population::Builder do
         end
 
         it 'increment days' do
-          expect(population.days).to be_one
+          expect(population.days).to eq(1)
         end
       end
     end
