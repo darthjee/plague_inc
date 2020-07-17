@@ -124,80 +124,40 @@ describe Simulation::Contagion::Population::Builder do
 
       let(:previous_instant) { previour_population.instant }
 
-      context 'when using a healthy population' do
-        let(:state) do
-          Simulation::Contagion::Population::HEALTHY
-        end
-
-        it do
-          expect(population).not_to be_persisted
-        end
-
-        it do
-          expect(population)
-            .to be_a(Simulation::Contagion::Population)
-        end
-
-        it do
-          expect(population.instant)
-            .to eq(instant)
-        end
-
-        it do
-          expect(population.behavior)
-            .to eq(behavior)
-        end
-
-        it 'creates population with right size' do
-          expect(population.size)
-            .to eq(group.healthy)
-        end
-
-        it do
-          expect(population).to be_healthy
-        end
-
-        it 'increment days' do
-          expect(population.days).to eq(1)
-        end
+      let(:state) do
+        Simulation::Contagion::Population::STATES.sample
       end
 
-      context 'when using an infected population' do
-        let(:state) do
-          Simulation::Contagion::Population::INFECTED
-        end
+      it do
+        expect(population).not_to be_persisted
+      end
 
-        it do
-          expect(population).not_to be_persisted
-        end
+      it do
+        expect(population)
+          .to be_a(Simulation::Contagion::Population)
+      end
 
-        it do
-          expect(population)
-            .to be_a(Simulation::Contagion::Population)
-        end
+      it do
+        expect(population.instant)
+          .to eq(instant)
+      end
 
-        it do
-          expect(population.instant)
-            .to eq(instant)
-        end
+      it do
+        expect(population.behavior)
+          .to eq(behavior)
+      end
 
-        it do
-          expect(population.behavior)
-            .to eq(behavior)
-        end
+      it 'creates population with right size' do
+        expect(population.size)
+          .to eq(previous_population.size)
+      end
 
-        it 'creates population with right size' do
-          expect(population.size)
-            .to eq(group.infected)
-        end
+      it do
+        expect(population.state).to eq(state)
+      end
 
-        it do
-          expect(population).to be_infected
-        end
-
-        it 'increment days' do
-          expect(population.days).to eq(1)
-        end
+      it 'increment days' do
+        expect(population.days).to eq(1)
       end
     end
   end

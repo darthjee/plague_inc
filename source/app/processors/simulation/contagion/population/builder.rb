@@ -34,7 +34,7 @@ class Simulation < ApplicationRecord
         end
 
         def size
-          public_send(state)
+          population ? population.size : public_send(state)
         end
 
         def scope
