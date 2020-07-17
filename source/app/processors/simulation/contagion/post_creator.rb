@@ -3,13 +3,13 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class PostCreator
-      def initialize(instant)
-        @instant = instant
+      def self.process(instant)
+        new(instant).process
       end
 
       def process
-        Killer.new(instant).process
-        Healer.new(instant).process
+        Killer.process(instant)
+        Healer.process(instant)
 
         instant.status = 'ready'
 
@@ -25,6 +25,10 @@ class Simulation < ApplicationRecord
       delegate :contagion, to: :instant
       delegate :days_till_recovery, to: :contagion
       delegate :populations, to: :instant
+
+      def initialize(instant)
+        @instant = instant
+      end
     end
   end
 end

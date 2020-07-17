@@ -24,17 +24,108 @@ describe Simulation::Contagion::Population::Builder do
   end
 
   describe '.build' do
-    subject(:population) do
-      described_class.build(
-        instant: instant,
-        group: group,
-        type: type
-      )
+    context 'when building from group' do
+      subject(:population) do
+        described_class.build(
+          instant: instant,
+          group: group,
+          state: state
+        )
+      end
+
+      context 'when state is healthy' do
+        let(:state) do
+          Simulation::Contagion::Population::HEALTHY
+        end
+
+        it do
+          expect(population).not_to be_persisted
+        end
+
+        it do
+          expect(population)
+            .to be_a(Simulation::Contagion::Population)
+        end
+
+        it do
+          expect(population.instant)
+            .to eq(instant)
+        end
+
+        it do
+          expect(population.behavior)
+            .to eq(behavior)
+        end
+
+        it 'creates population with right healthy size' do
+          expect(population.size)
+            .to eq(size - infected)
+        end
+
+        it do
+          expect(population).to be_healthy
+        end
+
+        it 'sets day to be 0' do
+          expect(population.days).to be_zero
+        end
+      end
+
+      context 'when state is infected' do
+        let(:state) do
+          Simulation::Contagion::Population::INFECTED
+        end
+
+        it do
+          expect(population).not_to be_persisted
+        end
+
+        it do
+          expect(population)
+            .to be_a(Simulation::Contagion::Population)
+        end
+
+        it do
+          expect(population.instant)
+            .to eq(instant)
+        end
+
+        it do
+          expect(population.behavior)
+            .to eq(behavior)
+        end
+
+        it 'creates population with right infected size' do
+          expect(population.size)
+            .to eq(infected)
+        end
+
+        it do
+          expect(population).to be_infected
+        end
+
+        it 'sets day to be 0' do
+          expect(population.days).to be_zero
+        end
+      end
     end
 
-    context 'when type is healthy' do
-      let(:type) do
-        Simulation::Contagion::Population::HEALTHY
+    context 'when building from another population' do
+      subject(:population) do
+        described_class.build(
+          instant: instant,
+          population: previous_population
+        )
+      end
+
+      let(:previous_population) do
+        create(:contagion_population, group: group, state: state)
+      end
+
+      let(:previous_instant) { previour_population.instant }
+
+      let(:state) do
+        Simulation::Contagion::Population::STATES.sample
       end
 
       it do
@@ -56,47 +147,17 @@ describe Simulation::Contagion::Population::Builder do
           .to eq(behavior)
       end
 
-      it do
+      it 'creates population with right size' do
         expect(population.size)
-          .to eq(size - infected)
+          .to eq(previous_population.size)
       end
 
       it do
-        expect(population).to be_healthy
-      end
-    end
-
-    context 'when type is infected' do
-      let(:type) do
-        Simulation::Contagion::Population::INFECTED
+        expect(population.state).to eq(state)
       end
 
-      it do
-        expect(population).not_to be_persisted
-      end
-
-      it do
-        expect(population)
-          .to be_a(Simulation::Contagion::Population)
-      end
-
-      it do
-        expect(population.instant)
-          .to eq(instant)
-      end
-
-      it do
-        expect(population.behavior)
-          .to eq(behavior)
-      end
-
-      it do
-        expect(population.size)
-          .to eq(infected)
-      end
-
-      it do
-        expect(population).to be_infected
+      it 'increment days' do
+        expect(population.days).to eq(1)
       end
     end
   end

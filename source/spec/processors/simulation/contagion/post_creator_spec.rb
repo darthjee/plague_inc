@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 describe Simulation::Contagion::PostCreator do
-  subject(:post_creator) { described_class.new(instant) }
-
   let!(:simulation) { create(:simulation, contagion: contagion) }
   let(:contagion) do
     build(
@@ -39,30 +37,30 @@ describe Simulation::Contagion::PostCreator do
     simulation.contagion.reload
   end
 
-  describe '#process' do
+  describe '.process' do
     context 'when lethality is 100%' do
       let(:lethality) { 1 }
 
       it 'kills everyone ready to be killed' do
-        expect { post_creator.process }
+        expect { described_class.process(instant) }
           .to change { instant.reload.populations.order(:id).pluck(:size) }
           .to([10, 0, 0])
       end
 
       it 'recovers those ready to be recovered' do
-        expect { post_creator.process }
+        expect { described_class.process(instant) }
           .to change { instant.reload.populations.order(:id).map(&:state) }
           .to(%w[infected infected immune])
       end
 
       it 'resets counter of the recovered' do
-        expect { post_creator.process }
+        expect { described_class.process(instant) }
           .to change { instant.reload.populations.order(:id).map(&:days) }
           .to([7, 10, 0])
       end
 
       it 'update instant status' do
-        expect { post_creator.process }
+        expect { described_class.process(instant) }
           .to change { instant.reload.status }
           .from('created').to('ready')
       end
@@ -73,12 +71,12 @@ describe Simulation::Contagion::PostCreator do
       let(:state)     { :healthy }
 
       it 'kills no one' do
-        expect { post_creator.process }
+        expect { described_class.process(instant) }
           .not_to(change { instant.populations.pluck(:size) })
       end
 
       it 'recovers no one' do
-        expect { post_creator.process }
+        expect { described_class.process(instant) }
           .not_to(change { instant.reload.populations.map(&:state) })
       end
     end
@@ -87,12 +85,12 @@ describe Simulation::Contagion::PostCreator do
       let(:lethality) { 0 }
 
       it 'kills no one to be killed' do
-        expect { post_creator.process }
+        expect { described_class.process(instant) }
           .not_to(change { instant.populations.pluck(:size) })
       end
 
       it 'recovers those ready to be recovered' do
-        expect { post_creator.process }
+        expect { described_class.process(instant) }
           .to change { instant.reload.populations.order(:id).map(&:state) }
           .to(%w[infected infected immune])
       end

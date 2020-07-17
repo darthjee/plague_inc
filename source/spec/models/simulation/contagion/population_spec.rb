@@ -70,6 +70,10 @@ describe Simulation::Contagion::Population, type: :model do
       create(:contagion_population, state: :healthy, group: group)
     end
 
+    let!(:immune_population) do
+      create(:contagion_population, state: :immune, group: group)
+    end
+
     describe '.infected' do
       it do
         expect(described_class.infected)
@@ -79,6 +83,11 @@ describe Simulation::Contagion::Population, type: :model do
       it do
         expect(described_class.infected)
           .not_to include(healthy_population)
+      end
+
+      it do
+        expect(described_class.infected)
+          .not_to include(immune_population)
       end
     end
 
@@ -91,6 +100,28 @@ describe Simulation::Contagion::Population, type: :model do
       it do
         expect(described_class.healthy)
           .to include(healthy_population)
+      end
+
+      it do
+        expect(described_class.healthy)
+          .not_to include(immune_population)
+      end
+    end
+
+    describe '.immune' do
+      it do
+        expect(described_class.immune)
+          .not_to include(infected_population)
+      end
+
+      it do
+        expect(described_class.immune)
+          .not_to include(healthy_population)
+      end
+
+      it do
+        expect(described_class.immune)
+          .to include(immune_population)
       end
     end
   end

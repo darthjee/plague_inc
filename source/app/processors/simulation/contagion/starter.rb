@@ -3,8 +3,8 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Starter
-      def initialize(simulation)
-        @simulation = simulation
+      def self.process(simulation)
+        new(simulation).process
       end
 
       def process
@@ -21,6 +21,10 @@ class Simulation < ApplicationRecord
 
       attr_reader :simulation, :instant
 
+      def initialize(simulation)
+        @simulation = simulation
+      end
+
       delegate :contagion, to: :simulation
       delegate :instants, to: :contagion
       delegate :populations, to: :instant
@@ -30,13 +34,13 @@ class Simulation < ApplicationRecord
         build(group, :infected)
       end
 
-      def build(group, type)
-        return unless group.public_send("any_#{type}?")
+      def build(group, state)
+        return unless group.public_send("any_#{state}?")
 
         Population::Builder.build(
           instant: instant,
           group: group,
-          type: type
+          state: state
         )
       end
     end

@@ -11,8 +11,9 @@ class Simulation < ApplicationRecord
 
       STATES = [INFECTED, HEALTHY, IMMUNE].freeze
 
-      scope :infected, -> { where(state: :infected) }
-      scope :healthy, -> { where(state: :healthy) }
+      scope :infected, -> { where(state: INFECTED) }
+      scope :healthy, -> { where(state: HEALTHY) }
+      scope :immune, -> { where(state: IMMUNE) }
 
       belongs_to :instant
       belongs_to :group

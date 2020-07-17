@@ -3,8 +3,8 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Healer
-      def initialize(instant)
-        @instant = instant
+      def self.process(instant)
+        new(instant).process
       end
 
       def process
@@ -16,17 +16,21 @@ class Simulation < ApplicationRecord
 
       private
 
-      def population
-        @population ||= populations.find do |pop|
-          pop.infected? && pop.days >= days_till_recovery
-        end
-      end
-
       attr_reader :instant
 
       delegate :contagion, to: :instant
       delegate :days_till_recovery, to: :contagion
       delegate :populations, to: :instant
+
+      def initialize(instant)
+        @instant = instant
+      end
+
+      def population
+        @population ||= populations.find do |pop|
+          pop.infected? && pop.days >= days_till_recovery
+        end
+      end
     end
   end
 end
