@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::Population::Builder do
+describe Simulation::Contagion::Population::Builder do
   let(:simulation) { create(:simulation) }
   let(:contagion)  { simulation.contagion }
   let(:behavior)   { contagion.behaviors.last }
@@ -29,12 +29,12 @@ fdescribe Simulation::Contagion::Population::Builder do
         described_class.build(
           instant: instant,
           group: group,
-          type: type
+          state: state
         )
       end
 
-      context 'when type is healthy' do
-        let(:type) do
+      context 'when state is healthy' do
+        let(:state) do
           Simulation::Contagion::Population::HEALTHY
         end
 
@@ -71,8 +71,8 @@ fdescribe Simulation::Contagion::Population::Builder do
         end
       end
 
-      context 'when type is infected' do
-        let(:type) do
+      context 'when state is infected' do
+        let(:state) do
           Simulation::Contagion::Population::INFECTED
         end
 

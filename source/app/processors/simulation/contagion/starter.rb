@@ -30,13 +30,13 @@ class Simulation < ApplicationRecord
         build(group, :infected)
       end
 
-      def build(group, type)
-        return unless group.public_send("any_#{type}?")
+      def build(group, state)
+        return unless group.public_send("any_#{state}?")
 
         Population::Builder.build(
           instant: instant,
           group: group,
-          type: type
+          state: state
         )
       end
     end

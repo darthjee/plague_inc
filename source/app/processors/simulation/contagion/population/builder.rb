@@ -4,12 +4,12 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Population < ApplicationRecord
       class Builder
-        def self.build(instant:, group: nil, type: nil, population: nil)
+        def self.build(instant:, group: nil, state: nil, population: nil)
           new(
             instant: instant,
             group: group,
             population: population,
-            type: type
+            state: state
           ).build
         end
 
@@ -27,27 +27,27 @@ class Simulation < ApplicationRecord
 
         delegate :behavior, :infected, :healthy, to: :group
 
-        def initialize(instant:, group:, population:, type:)
+        def initialize(instant:, group:, population:, state:)
           @instant    = instant
           @group      = group
-          @type       = type
+          @state      = state
           @population = population
         end
 
         def size
-          public_send(type)
+          public_send(state)
         end
 
         def scope
-          instant.populations.public_send(type)
+          instant.populations.public_send(state)
         end
 
         def group
           @group ||= population.group
         end
 
-        def type
-          @type ||= population.state
+        def state
+          @state ||= population.state
         end
       end
     end
