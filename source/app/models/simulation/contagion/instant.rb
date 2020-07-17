@@ -3,8 +3,13 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Instant < ApplicationRecord
-      STATUSES = %w[
-        created ready processing processed
+      CREATED    = "created"
+      READY      = "ready"
+      PROCESSING = "processing"
+      PROCESSED  = "processed"
+
+      STATUSES = [
+        CREATED, READY, PROCESSING, PROCESSED
       ].freeze
 
       belongs_to :contagion
