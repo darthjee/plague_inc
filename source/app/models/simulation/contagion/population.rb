@@ -39,6 +39,13 @@ class Simulation < ApplicationRecord
                 presence: true,
                 inclusion: { in: STATES }
 
+      validates :interactions,
+                presence: true,
+                numericality: {
+                  greater_than: 0,
+                  only_integer: true
+                }
+
       def infected?
         state == INFECTED
       end

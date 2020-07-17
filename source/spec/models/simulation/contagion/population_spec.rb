@@ -33,6 +33,10 @@ describe Simulation::Contagion::Population, type: :model do
     end
 
     it do
+      expect(population).to validate_presence_of(:interactions)
+    end
+
+    it do
       expect(population).to validate_numericality_of(:size)
         .is_greater_than_or_equal_to(0)
     end
@@ -55,6 +59,16 @@ describe Simulation::Contagion::Population, type: :model do
     it do
       expect(population).to validate_inclusion_of(:state)
         .in_array(described_class::STATES)
+    end
+
+    it do
+      expect(population).to validate_numericality_of(:interactions)
+        .is_greater_than(0)
+    end
+
+    it do
+      expect(population).to validate_numericality_of(:interactions)
+        .only_integer
     end
   end
 
