@@ -34,18 +34,18 @@ describe Simulation::Contagion::Killer do
     simulation.contagion.reload
   end
 
-  describe '#process' do
+  describe '.process' do
     context 'when lethality is 100%' do
       let(:lethality) { 1 }
 
       it 'kills everyone ready to be killed' do
-        expect { killer.process }
+        expect { described_class.new(instant).process }
           .to change { instant.populations.pluck(:size) }
           .to([10, 0, 0])
       end
 
       it 'does not persist killing' do
-        expect { killer.process }
+        expect { described_class.new(instant).process }
           .not_to(change { instant.reload.populations.pluck(:size) })
       end
     end
@@ -55,7 +55,7 @@ describe Simulation::Contagion::Killer do
       let(:state)     { :healthy }
 
       it 'kills no one' do
-        expect { killer.process }
+        expect { described_class.new(instant).process }
           .not_to(change { instant.populations.pluck(:size) })
       end
     end
@@ -64,7 +64,7 @@ describe Simulation::Contagion::Killer do
       let(:lethality) { 0 }
 
       it 'kills no one to be killed' do
-        expect { killer.process }
+        expect { described_class.new(instant).process }
           .not_to(change { instant.populations.pluck(:size) })
       end
     end

@@ -3,8 +3,6 @@
 require 'spec_helper'
 
 describe Simulation::Contagion::Healer do
-  subject(:post_creator) { described_class.new(instant) }
-
   let!(:simulation) { create(:simulation, contagion: contagion) }
   let(:contagion) do
     build(
@@ -37,21 +35,21 @@ describe Simulation::Contagion::Healer do
     simulation.contagion.reload
   end
 
-  describe '#process' do
+  describe '.process' do
     it 'recovers those ready to be recovered' do
-      expect { post_creator.process }
+      expect { described_class.process(instant) }
         .to change { instant.populations.map(&:state).sort }
         .to(%w[healthy immune immune])
     end
 
     it 'resets day counter' do
-      expect { post_creator.process }
+      expect { described_class.process(instant) }
         .to change { instant.populations.map(&:days).sort }
         .to([0, 16, 16])
     end
 
     it 'does not persist change' do
-      expect { post_creator.process }
+      expect { described_class.process(instant) }
         .not_to(change { instant.reload.populations.map(&:state) })
     end
 
@@ -64,12 +62,12 @@ describe Simulation::Contagion::Healer do
       end
 
       it 'does not recover anyone' do
-        expect { post_creator.process }
+        expect { described_class.process(instant) }
           .not_to(change { instant.populations.map(&:state).sort })
       end
 
       it 'does not reset day counter' do
-        expect { post_creator.process }
+        expect { described_class.process(instant) }
           .not_to(change { instant.populations.map(&:days) })
       end
     end

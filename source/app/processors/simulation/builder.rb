@@ -15,9 +15,8 @@ class Simulation < ApplicationRecord
                         after_each: :build_behavior,
                         default: []
 
-    def initialize(params, simulations)
-      @params      = params
-      @simulations = simulations
+    def self.build(params, simulation)
+      new(params, simulation).build
     end
 
     def build
@@ -30,6 +29,11 @@ class Simulation < ApplicationRecord
     private
 
     attr_reader :params, :simulations
+
+    def initialize(params, simulations)
+      @params      = params
+      @simulations = simulations
+    end
 
     def build_simulation(simulation_params)
       build_object(simulation_params, simulations, Simulation)

@@ -3,8 +3,8 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Killer
-      def initialize(instant)
-        @instant = instant
+      def self.process(instant)
+        new(instant).process
       end
 
       def process
@@ -12,13 +12,17 @@ class Simulation < ApplicationRecord
           .select(&:infected?)
           .select { |pop| pop.days >= days_till_start_death }
           .each do |population|
-          Death.new(population, contagion).process
+          Death.process(population, contagion)
         end
       end
 
       private
 
       attr_reader :instant, :contagion
+
+      def initialize(instant)
+        @instant = instant
+      end
 
       delegate :contagion, to: :instant
       delegate :populations, to: :instant

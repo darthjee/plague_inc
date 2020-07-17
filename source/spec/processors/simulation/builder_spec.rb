@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 describe Simulation::Builder do
-  subject(:builder) do
-    described_class.new(parameters, collection)
+  subject(:simulation) do
+    described_class.build(parameters, collection)
   end
 
   let(:collection) { Simulation.all }
@@ -48,7 +48,7 @@ describe Simulation::Builder do
     }
   end
 
-  describe '#build' do
+  describe '.build' do
     let(:expected_simulation) do
       Simulation.new(
         name: 'my simulation',
@@ -85,99 +85,99 @@ describe Simulation::Builder do
       )
     end
 
-    it { expect(builder.build).to be_a(Simulation) }
+    it { expect(simulation).to be_a(Simulation) }
 
-    it { expect(builder.build).to be_valid }
+    it { expect(simulation).to be_valid }
 
     it do
-      expect(builder.build.as_json)
+      expect(simulation.as_json)
         .to eq(expected_simulation.as_json)
     end
 
     it 'builds settings' do
-      expect(builder.build.settings)
+      expect(simulation.settings)
         .not_to be_nil
     end
 
     it 'builds a contagion' do
-      expect(builder.build.settings)
+      expect(simulation.settings)
         .to be_a(Simulation::Contagion)
     end
 
     it 'builds settings with attributes' do
-      expect(builder.build.settings.to_json)
+      expect(simulation.settings.to_json)
         .to eq(expected_settings.to_json)
     end
 
     it 'builds groups' do
-      expect(builder.build.settings.groups)
+      expect(simulation.settings.groups)
         .not_to be_empty
     end
 
     it 'builds a correct group' do
-      expect(builder.build.settings.groups)
+      expect(simulation.settings.groups)
         .to all(be_a(Simulation::Contagion::Group))
     end
 
     it 'connects behavior to group' do
-      expect(builder.build.settings.groups.first.behavior)
-        .to eq(builder.build.settings.behaviors.first)
+      expect(simulation.settings.groups.first.behavior)
+        .to eq(simulation.settings.behaviors.first)
     end
 
     it 'builds groups with attributes' do
-      expect(builder.build.settings.groups.to_json)
+      expect(simulation.settings.groups.to_json)
         .to eq([expected_group].to_json)
     end
 
     it 'builds a correct behavior' do
-      expect(builder.build.settings.behaviors)
+      expect(simulation.settings.behaviors)
         .to all(be_a(Simulation::Contagion::Behavior))
     end
 
     it 'builds behaviors with attributes' do
-      expect(builder.build.settings.behaviors.to_json)
+      expect(simulation.settings.behaviors.to_json)
         .to eq([expected_behavior].to_json)
     end
 
     context 'when there is no group' do
       let(:group_params) { nil }
 
-      it { expect(builder.build).to be_a(Simulation) }
+      it { expect(simulation).to be_a(Simulation) }
 
-      it { expect(builder.build).not_to be_valid }
+      it { expect(simulation).not_to be_valid }
 
       it do
-        expect(builder.build.as_json)
+        expect(simulation.as_json)
           .to eq(expected_simulation.as_json)
       end
 
       it 'builds settings' do
-        expect(builder.build.settings)
+        expect(simulation.settings)
           .not_to be_nil
       end
 
       it 'builds a contagion' do
-        expect(builder.build.settings)
+        expect(simulation.settings)
           .to be_a(Simulation::Contagion)
       end
 
       it 'builds settings with attributes' do
-        expect(builder.build.settings.to_json)
+        expect(simulation.settings.to_json)
           .to eq(expected_settings.to_json)
       end
 
       it 'builds no group' do
-        expect(builder.build.settings.groups)
+        expect(simulation.settings.groups)
           .to be_empty
       end
 
       it 'builds a correct behavior' do
-        expect(builder.build.settings.behaviors)
+        expect(simulation.settings.behaviors)
           .to all(be_a(Simulation::Contagion::Behavior))
       end
 
       it 'builds behaviors with attributes' do
-        expect(builder.build.settings.behaviors.to_json)
+        expect(simulation.settings.behaviors.to_json)
           .to eq([expected_behavior].to_json)
       end
     end
@@ -191,57 +191,57 @@ describe Simulation::Builder do
         }
       end
 
-      it { expect(builder.build).to be_a(Simulation) }
+      it { expect(simulation).to be_a(Simulation) }
 
-      it { expect(builder.build).not_to be_valid }
+      it { expect(simulation).not_to be_valid }
 
       it do
-        expect(builder.build.as_json)
+        expect(simulation.as_json)
           .to eq(expected_simulation.as_json)
       end
 
       it 'builds settings' do
-        expect(builder.build.settings)
+        expect(simulation.settings)
           .not_to be_nil
       end
 
       it 'builds a contagion' do
-        expect(builder.build.settings)
+        expect(simulation.settings)
           .to be_a(Simulation::Contagion)
       end
 
       it 'builds settings with attributes' do
-        expect(builder.build.settings.to_json)
+        expect(simulation.settings.to_json)
           .to eq(expected_settings.to_json)
       end
 
       it 'builds groups' do
-        expect(builder.build.settings.groups)
+        expect(simulation.settings.groups)
           .not_to be_empty
       end
 
       it 'builds a correct group' do
-        expect(builder.build.settings.groups)
+        expect(simulation.settings.groups)
           .to all(be_a(Simulation::Contagion::Group))
       end
 
       it 'does not connect behavior to group' do
-        expect(builder.build.settings.groups.first.behavior)
+        expect(simulation.settings.groups.first.behavior)
           .to be_nil
       end
 
       it 'builds groups with attributes' do
-        expect(builder.build.settings.groups.to_json)
+        expect(simulation.settings.groups.to_json)
           .to eq([expected_group].to_json)
       end
 
       it 'builds a correct behavior' do
-        expect(builder.build.settings.behaviors)
+        expect(simulation.settings.behaviors)
           .to all(be_a(Simulation::Contagion::Behavior))
       end
 
       it 'builds behaviors with attributes' do
-        expect(builder.build.settings.behaviors.to_json)
+        expect(simulation.settings.behaviors.to_json)
           .to eq([expected_behavior].to_json)
       end
     end
@@ -249,52 +249,52 @@ describe Simulation::Builder do
     context 'when there are no behaviors' do
       let(:behavior_params) { nil }
 
-      it { expect(builder.build).to be_a(Simulation) }
+      it { expect(simulation).to be_a(Simulation) }
 
-      it { expect(builder.build).not_to be_valid }
+      it { expect(simulation).not_to be_valid }
 
       it do
-        expect(builder.build.as_json)
+        expect(simulation.as_json)
           .to eq(expected_simulation.as_json)
       end
 
       it 'builds settings' do
-        expect(builder.build.settings)
+        expect(simulation.settings)
           .not_to be_nil
       end
 
       it 'builds a contagion' do
-        expect(builder.build.settings)
+        expect(simulation.settings)
           .to be_a(Simulation::Contagion)
       end
 
       it 'builds settings with attributes' do
-        expect(builder.build.settings.to_json)
+        expect(simulation.settings.to_json)
           .to eq(expected_settings.to_json)
       end
 
       it 'builds groups' do
-        expect(builder.build.settings.groups)
+        expect(simulation.settings.groups)
           .not_to be_empty
       end
 
       it 'builds a correct group' do
-        expect(builder.build.settings.groups)
+        expect(simulation.settings.groups)
           .to all(be_a(Simulation::Contagion::Group))
       end
 
       it 'does not connect behavior to group' do
-        expect(builder.build.settings.groups.first.behavior)
+        expect(simulation.settings.groups.first.behavior)
           .to be_nil
       end
 
       it 'builds groups with attributes' do
-        expect(builder.build.settings.groups.to_json)
+        expect(simulation.settings.groups.to_json)
           .to eq([expected_group].to_json)
       end
 
       it 'does not build behaviors' do
-        expect(builder.build.settings.behaviors)
+        expect(simulation.settings.behaviors)
           .to be_empty
       end
     end
@@ -314,17 +314,17 @@ describe Simulation::Builder do
         )
       end
 
-      it { expect(builder.build).to be_a(Simulation) }
+      it { expect(simulation).to be_a(Simulation) }
 
-      it { expect(builder.build).not_to be_valid }
+      it { expect(simulation).not_to be_valid }
 
       it do
-        expect(builder.build.as_json)
+        expect(simulation.as_json)
           .to eq(expected_simulation.as_json)
       end
 
       it 'does not generate settings' do
-        expect(builder.build.settings).to be_nil
+        expect(simulation.settings).to be_nil
       end
     end
 
@@ -346,17 +346,17 @@ describe Simulation::Builder do
         )
       end
 
-      it { expect(builder.build).to be_a(Simulation) }
+      it { expect(simulation).to be_a(Simulation) }
 
-      it { expect(builder.build).not_to be_valid }
+      it { expect(simulation).not_to be_valid }
 
       it do
-        expect(builder.build.as_json)
+        expect(simulation.as_json)
           .to eq(expected_simulation.as_json)
       end
 
       it 'generate settingsi empty settings' do
-        expect(builder.build.settings).to be_a(Simulation::Contagion)
+        expect(simulation.settings).to be_a(Simulation::Contagion)
       end
     end
 
@@ -379,27 +379,27 @@ describe Simulation::Builder do
         )
       end
 
-      it { expect(builder.build).to be_a(Simulation) }
+      it { expect(simulation).to be_a(Simulation) }
 
-      it { expect(builder.build).not_to be_valid }
+      it { expect(simulation).not_to be_valid }
 
       it do
-        expect(builder.build.as_json)
+        expect(simulation.as_json)
           .to eq(expected_simulation.as_json)
       end
 
       it 'builds a contagion' do
-        expect(builder.build.settings)
+        expect(simulation.settings)
           .to be_a(Simulation::Contagion)
       end
 
       it 'builds settings with attributes' do
-        expect(builder.build.settings.to_json)
+        expect(simulation.settings.to_json)
           .to eq(expected_settings.to_json)
       end
 
       it 'does not generate groups' do
-        expect(builder.build.settings.groups).to be_empty
+        expect(simulation.settings.groups).to be_empty
       end
     end
   end

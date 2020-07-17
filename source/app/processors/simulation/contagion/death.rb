@@ -3,9 +3,8 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Death
-      def initialize(population, contagion)
-        @population = population
-        @contagion  = contagion
+      def self.process(population, contagion)
+        new(population, contagion).process
       end
 
       def process
@@ -16,6 +15,11 @@ class Simulation < ApplicationRecord
 
       attr_reader :population, :contagion
       delegate :lethality, to: :contagion
+
+      def initialize(population, contagion)
+        @population = population
+        @contagion  = contagion
+      end
 
       def alive
         current.times.inject(current) do |people, _|
