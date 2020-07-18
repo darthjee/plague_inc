@@ -4,16 +4,8 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Population < ApplicationRecord
       class Builder
-        def self.build(instant:, group: nil, state: nil, population: nil, behavior: nil, interactions: nil, size: nil)
-          new(
-            instant: instant,
-            group: group,
-            population: population,
-            state: state,
-            behavior: behavior,
-            interactions: interactions,
-            size: size
-          ).build
+        def self.build(*args)
+          new(*args).build
         end
 
         def build
@@ -30,7 +22,7 @@ class Simulation < ApplicationRecord
 
         delegate :infected, :healthy, to: :group
 
-        def initialize(instant:, group:, population:, state:, behavior:, interactions:, size:)
+        def initialize(instant:, group: nil, state: nil, population: nil, behavior: nil, interactions: nil, size: nil)
           @instant      = instant
           @group        = group
           @state        = state
