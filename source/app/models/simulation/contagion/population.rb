@@ -8,8 +8,9 @@ class Simulation < ApplicationRecord
       INFECTED = 'infected'
       HEALTHY  = 'healthy'
       IMMUNE   = 'immune'
+      DEAD     = 'dead'
 
-      STATES = [INFECTED, HEALTHY, IMMUNE].freeze
+      STATES = [INFECTED, HEALTHY, IMMUNE, DEAD].freeze
 
       scope :infected,    -> { where(state: INFECTED) }
       scope :healthy,     -> { where(state: HEALTHY) }

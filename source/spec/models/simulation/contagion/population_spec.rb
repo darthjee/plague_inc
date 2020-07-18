@@ -88,91 +88,43 @@ describe Simulation::Contagion::Population, type: :model do
       create(:contagion_population, state: :immune, group: group)
     end
 
+    let!(:dead_population) do
+      create(:contagion_population, state: :dead, group: group)
+    end
+
     describe '.infected' do
       it do
         expect(described_class.infected)
-          .to include(infected_population)
-      end
-
-      it do
-        expect(described_class.infected)
-          .not_to include(healthy_population)
-      end
-
-      it do
-        expect(described_class.infected)
-          .not_to include(immune_population)
-      end
-
-      it 'returns only the infected' do
-        expect(described_class.infected.count)
-          .to eq(1)
+          .to match_array([infected_population])
       end
     end
 
     describe '.healthy' do
       it do
         expect(described_class.healthy)
-          .not_to include(infected_population)
-      end
-
-      it do
-        expect(described_class.healthy)
-          .to include(healthy_population)
-      end
-
-      it do
-        expect(described_class.healthy)
-          .not_to include(immune_population)
-      end
-
-      it 'returns only the healthy' do
-        expect(described_class.healthy.count)
-          .to eq(1)
+          .to match_array([healthy_population])
       end
     end
 
     describe '.immune' do
       it do
         expect(described_class.immune)
-          .not_to include(infected_population)
-      end
-
-      it do
-        expect(described_class.immune)
-          .not_to include(healthy_population)
-      end
-
-      it do
-        expect(described_class.immune)
-          .to include(immune_population)
-      end
-
-      it 'returns only the immune' do
-        expect(described_class.immune.count)
-          .to eq(1)
+          .to match_array([immune_population])
       end
     end
 
     describe '.not_healthy' do
-      it do
-        expect(described_class.not_healthy)
-          .to include(infected_population)
+      let(:expected) do
+        [
+            immune_population,
+            infected_population,
+            dead_population
+        ]
       end
 
       it do
         expect(described_class.not_healthy)
-          .not_to include(healthy_population)
-      end
-
-      it do
-        expect(described_class.not_healthy)
-          .to include(immune_population)
-      end
-
-      it 'returns only the immune' do
-        expect(described_class.not_healthy.count)
-          .to eq(2)
+          .to match_array(expected)
       end
     end
   end
