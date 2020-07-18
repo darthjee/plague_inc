@@ -8,8 +8,17 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        ready_to_die.each do |population|
-          Death.process(population, contagion)
+        @killed ||= ready_to_die.map do |population|
+          dead = Death.process(population, contagion)
+          next if dead.zero?
+          instant.populations.build(
+            instant: instant,
+            group: population.group,
+            behavior: population.behavior,
+            size: dead,
+            state: :dead,
+            days: 0
+          )
         end
       end
 

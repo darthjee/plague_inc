@@ -41,12 +41,40 @@ describe Simulation::Contagion::Killer do
       it 'kills everyone ready to be killed' do
         expect { described_class.new(instant).process }
           .to change { instant.populations.pluck(:size) }
-          .to([10, 0, 0])
+          .from([10, 10, 10])
+          .to([10, 0, 0, 10, 10])
       end
 
       it 'does not persist killing' do
         expect { described_class.new(instant).process }
           .not_to(change { instant.reload.populations.pluck(:size) })
+      end
+
+      it 'builds a population' do
+        expect { described_class.new(instant).process }
+          .to change { instant.populations.size }
+          .by(2)
+      end
+
+      it 'builds a dead population' do
+        described_class.new(instant).process
+
+        expect(instant.populations.last.state)
+          .to eq('dead')
+      end
+
+      it 'builds a population with 0 days' do
+        described_class.new(instant).process
+
+        expect(instant.populations.last.days)
+          .to eq(0)
+      end
+
+      it 'does not persist new populations' do
+        described_class.new(instant).process
+
+        expect(instant.populations.last)
+          .not_to be_persisted
       end
     end
 
