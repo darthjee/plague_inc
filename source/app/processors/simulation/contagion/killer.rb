@@ -11,7 +11,7 @@ class Simulation < ApplicationRecord
 
       def process
         @killed ||= ready_to_die.map do |population|
-          dead = Death.process(population, contagion)
+          dead = Kill.process(population, contagion)
           next if dead.zero?
           Population::Builder.build(
             instant: instant,

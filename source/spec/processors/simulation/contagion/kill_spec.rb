@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::Death do
+describe Simulation::Contagion::Kill do
   let(:population) do
     create(:contagion_population, group: group, behavior: behavior, size: size)
   end
