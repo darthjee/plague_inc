@@ -11,7 +11,7 @@ class Simulation < ApplicationRecord
         instant.status = Instant::PROCESSING
 
         new_instant.tap do |ins|
-          ins.populations = infected.map do |pop|
+          ins.populations = not_healthy.map do |pop|
             Population::Builder.build(
               instant: ins,
               population: pop
@@ -38,8 +38,8 @@ class Simulation < ApplicationRecord
         )
       end
 
-      def infected
-        instant.populations.infected
+      def not_healthy
+        instant.populations.not_healthy
       end
     end
   end

@@ -91,7 +91,7 @@ describe Simulation::Contagion::Initializer do
 
     it 'makes population for the important populations' do
       expect(described_class.process(instant).populations.pluck(:state))
-        .to eq(%w[infected])
+        .to eq(%w[immune infected])
     end
 
     it 'increments days counters' do
