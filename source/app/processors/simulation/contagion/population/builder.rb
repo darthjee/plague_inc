@@ -3,14 +3,13 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Population < ApplicationRecord
-      class Builder
-        def self.build(instant:, group: nil, state: nil, population: nil)
-          new(
-            instant: instant,
-            group: group,
-            population: population,
-            state: state
-          ).build
+      class Builder < Sinclair::Options
+        with_options :instant, :group, :state,
+                     :population, :behavior, :size,
+                     :interactions
+
+        def self.build(*args)
+          new(*args).build
         end
 
         def build
@@ -25,17 +24,10 @@ class Simulation < ApplicationRecord
 
         attr_reader :population, :instant
 
-        delegate :behavior, :infected, :healthy, to: :group
-
-        def initialize(instant:, group:, population:, state:)
-          @instant    = instant
-          @group      = group
-          @state      = state
-          @population = population
-        end
+        delegate :infected, :healthy, to: :group
 
         def size
-          population ? population.size : public_send(state)
+          @size ||= population ? population.size : public_send(state)
         end
 
         def scope
@@ -59,7 +51,11 @@ class Simulation < ApplicationRecord
         end
 
         def interactions
-          size * behavior.interactions
+          @interactions ||= size * behavior.interactions
+        end
+
+        def behavior
+          @behavior ||= group.behavior
         end
       end
     end

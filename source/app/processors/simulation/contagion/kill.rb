@@ -2,13 +2,14 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
-    class Death
+    class Kill
       def self.process(population, contagion)
         new(population, contagion).process
       end
 
       def process
         population.size = alive
+        current - alive
       end
 
       private

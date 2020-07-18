@@ -2,10 +2,12 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::Death do
+describe Simulation::Contagion::Kill do
   let(:population) do
-    create(:contagion_population, group: group, behavior: behavior)
+    create(:contagion_population, group: group, behavior: behavior, size: size)
   end
+
+  let(:size) { Random.rand(20..39) }
 
   let(:contagion)  { create(:contagion, lethality: lethality) }
   let(:group)      { contagion.groups.first }
@@ -25,6 +27,11 @@ describe Simulation::Contagion::Death do
         expect { described_class.process(population, contagion) }
           .not_to(change { population.reload.size })
       end
+
+      it 'returns all that died' do
+        expect(described_class.process(population, contagion))
+          .to eq(size)
+      end
     end
 
     context 'when death rate is 0%' do
@@ -33,6 +40,11 @@ describe Simulation::Contagion::Death do
       it 'kill all people' do
         expect { described_class.process(population, contagion) }
           .not_to change(population, :size)
+      end
+
+      it 'returns all that died' do
+        expect(described_class.process(population, contagion))
+          .to be_zero
       end
     end
   end

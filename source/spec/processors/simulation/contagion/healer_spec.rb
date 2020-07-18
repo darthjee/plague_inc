@@ -39,13 +39,13 @@ describe Simulation::Contagion::Healer do
     it 'recovers those ready to be recovered' do
       expect { described_class.process(instant) }
         .to change { instant.populations.map(&:state).sort }
-        .to(%w[healthy immune immune])
+        .to(%w[dead healthy immune immune])
     end
 
     it 'resets day counter' do
       expect { described_class.process(instant) }
         .to change { instant.populations.map(&:days).sort }
-        .to([0, 16, 16])
+        .to([0, 16, 16, 16])
     end
 
     it 'does not persist change' do

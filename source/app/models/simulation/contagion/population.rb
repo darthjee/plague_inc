@@ -8,13 +8,15 @@ class Simulation < ApplicationRecord
       INFECTED = 'infected'
       HEALTHY  = 'healthy'
       IMMUNE   = 'immune'
+      DEAD     = 'dead'
 
-      STATES = [INFECTED, HEALTHY, IMMUNE].freeze
+      STATES = [INFECTED, HEALTHY, IMMUNE, DEAD].freeze
 
       scope :infected,    -> { where(state: INFECTED) }
       scope :healthy,     -> { where(state: HEALTHY) }
       scope :immune,      -> { where(state: IMMUNE) }
       scope :not_healthy, -> { where.not(state: HEALTHY) }
+      scope :alive,       -> { where.not(state: DEAD) }
 
       belongs_to :instant
       belongs_to :group
@@ -43,7 +45,7 @@ class Simulation < ApplicationRecord
       validates :interactions,
                 presence: true,
                 numericality: {
-                  greater_than: 0,
+                  greater_than_or_equal_to: 0,
                   only_integer: true
                 }
 
