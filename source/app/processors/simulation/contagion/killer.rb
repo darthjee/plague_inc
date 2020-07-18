@@ -17,7 +17,8 @@ class Simulation < ApplicationRecord
             behavior: population.behavior,
             size: dead,
             state: :dead,
-            days: 0
+            days: 0,
+            interactions: 1
           )
         end
       end
