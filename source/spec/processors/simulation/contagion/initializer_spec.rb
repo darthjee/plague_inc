@@ -12,6 +12,7 @@ describe Simulation::Contagion::Initializer do
   let(:group)    { contagion.groups.last }
   let(:behavior) { group.behavior }
 
+  let(:days) { Random.rand(10) + 1 }
   let!(:infected_population) do
     create(
       :contagion_population,
@@ -20,7 +21,8 @@ describe Simulation::Contagion::Initializer do
       behavior: behavior,
       size: Random.rand(100),
       instant: instant,
-      interactions: 10
+      interactions: 10,
+      days: days
     )
   end
 
@@ -32,7 +34,8 @@ describe Simulation::Contagion::Initializer do
       behavior: behavior,
       size: Random.rand(100),
       instant: instant,
-      interactions: 10
+      interactions: 10,
+      days: days
     )
   end
 
@@ -44,7 +47,8 @@ describe Simulation::Contagion::Initializer do
       behavior: behavior,
       size: Random.rand(100),
       instant: instant,
-      interactions: 10
+      interactions: 10,
+      days: days
     )
   end
 
@@ -83,6 +87,16 @@ describe Simulation::Contagion::Initializer do
     it 'persists all populations' do
       expect(described_class.process(instant).populations)
         .to all(be_persisted)
+    end
+
+    it 'makes population for the important populations' do
+      expect(described_class.process(instant).populations.pluck(:state))
+        .to eq(%w[infected])
+    end
+
+    it 'increments days counters' do
+      expect(described_class.process(instant).populations.pluck(:days))
+        .to all(eq(days + 1))
     end
   end
 end
