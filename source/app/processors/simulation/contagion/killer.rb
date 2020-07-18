@@ -10,23 +10,8 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        ready_to_die.map do |population|
-          dead = Kill.process(population, contagion)
-          next if dead.zero?
-
-          death.kill(population, dead)
-        end
-
-        death.deaths.each do |group, dead|
-          Population::Builder.build(
-            instant: instant,
-            group: group,
-            behavior: death.behavior(group),
-            size: dead,
-            state: :dead,
-            interactions: 0
-          )
-        end
+        calculate_deaths
+        death.deaths.each(&method(:build_dead))
       end
 
       private
@@ -41,6 +26,15 @@ class Simulation < ApplicationRecord
       delegate :populations, to: :instant
       delegate :days_till_start_death, to: :contagion
 
+      def calculate_deaths
+        ready_to_die.map do |population|
+          dead = Kill.process(population, contagion)
+          next if dead.zero?
+
+          death.kill(population, dead)
+        end
+      end
+
       def ready_to_die
         populations
           .select(&:infected?)
@@ -51,6 +45,17 @@ class Simulation < ApplicationRecord
 
       def death
         @death ||= Death.new
+      end
+
+      def build_dead(group, dead)
+        Population::Builder.build(
+          instant: instant,
+          group: group,
+          behavior: death.behavior(group),
+          size: dead,
+          state: :dead,
+          interactions: 0
+        )
       end
     end
   end
