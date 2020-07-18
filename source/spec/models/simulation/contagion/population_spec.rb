@@ -63,7 +63,7 @@ describe Simulation::Contagion::Population, type: :model do
 
     it do
       expect(population).to validate_numericality_of(:interactions)
-        .is_greater_than(0)
+        .is_greater_than_or_equal_to(0)
     end
 
     it do
