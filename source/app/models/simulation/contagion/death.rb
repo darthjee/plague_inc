@@ -6,8 +6,9 @@ class Simulation < ApplicationRecord
       def kill(population, size)
         return if size.zero?
 
-        deaths[population.group] += size
-        behaviors[population.group] = population.behavior
+        group = population.group
+        deaths[group] += size
+        behaviors[group] = population.behavior
       end
 
       def deaths
