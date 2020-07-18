@@ -9,6 +9,7 @@ class Simulation < ApplicationRecord
 
       def process
         population.size = alive
+        current - alive
       end
 
       private
