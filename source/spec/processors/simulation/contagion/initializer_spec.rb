@@ -12,7 +12,7 @@ describe Simulation::Contagion::Initializer do
   let(:group)    { contagion.groups.last }
   let(:behavior) { group.behavior }
 
-  let(:days) { Random.rand(10) + 1 }
+  let(:days) { Random.rand(1..10) }
   let!(:infected_population) do
     create(
       :contagion_population,
