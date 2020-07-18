@@ -35,7 +35,7 @@ describe Simulation::Contagion::Starter do
 
   describe '.process' do
     it do
-      expect { described_class.new(simulation).process }
+      expect { described_class.process(simulation) }
         .to change { contagion.reload.instants.size }
         .by(1)
     end
@@ -43,7 +43,7 @@ describe Simulation::Contagion::Starter do
     context 'when the proccess is over' do
       let(:instant) { contagion.instants.last }
 
-      before { described_class.new(simulation).process }
+      before { described_class.process(simulation) }
 
       it do
         expect(instant.populations)

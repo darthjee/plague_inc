@@ -33,6 +33,10 @@ describe Simulation::Contagion::Population, type: :model do
     end
 
     it do
+      expect(population).to validate_presence_of(:interactions)
+    end
+
+    it do
       expect(population).to validate_numericality_of(:size)
         .is_greater_than_or_equal_to(0)
     end
@@ -55,6 +59,16 @@ describe Simulation::Contagion::Population, type: :model do
     it do
       expect(population).to validate_inclusion_of(:state)
         .in_array(described_class::STATES)
+    end
+
+    it do
+      expect(population).to validate_numericality_of(:interactions)
+        .is_greater_than(0)
+    end
+
+    it do
+      expect(population).to validate_numericality_of(:interactions)
+        .only_integer
     end
   end
 
@@ -89,6 +103,11 @@ describe Simulation::Contagion::Population, type: :model do
         expect(described_class.infected)
           .not_to include(immune_population)
       end
+
+      it 'returns only the infected' do
+        expect(described_class.infected.count)
+          .to eq(1)
+      end
     end
 
     describe '.healthy' do
@@ -106,6 +125,11 @@ describe Simulation::Contagion::Population, type: :model do
         expect(described_class.healthy)
           .not_to include(immune_population)
       end
+
+      it 'returns only the healthy' do
+        expect(described_class.healthy.count)
+          .to eq(1)
+      end
     end
 
     describe '.immune' do
@@ -122,6 +146,33 @@ describe Simulation::Contagion::Population, type: :model do
       it do
         expect(described_class.immune)
           .to include(immune_population)
+      end
+
+      it 'returns only the immune' do
+        expect(described_class.immune.count)
+          .to eq(1)
+      end
+    end
+
+    describe '.not_healthy' do
+      it do
+        expect(described_class.not_healthy)
+          .to include(infected_population)
+      end
+
+      it do
+        expect(described_class.not_healthy)
+          .not_to include(healthy_population)
+      end
+
+      it do
+        expect(described_class.not_healthy)
+          .to include(immune_population)
+      end
+
+      it 'returns only the immune' do
+        expect(described_class.not_healthy.count)
+          .to eq(2)
       end
     end
   end

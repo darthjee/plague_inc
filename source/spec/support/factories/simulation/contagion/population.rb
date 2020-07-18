@@ -7,5 +7,9 @@ FactoryBot.define do
     behavior { build(:contagion_behavior) }
     state    { :healthy }
     size     { 100 }
+
+    interactions do
+      behavior&.interactions.to_i * size
+    end
   end
 end
