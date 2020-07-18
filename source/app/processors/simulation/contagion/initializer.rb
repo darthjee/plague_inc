@@ -9,8 +9,17 @@ class Simulation < ApplicationRecord
 
       def process
         instant.status = Instant::PROCESSING
-        instant.save
-        new_instant
+
+        new_instant.tap do |ins|
+          ins.populations = infected.map do |pop|
+            Population::Builder.build(
+              instant: ins,
+              population: pop
+            )
+          end
+          ins.save
+          instant.save
+        end
       end
 
       private
@@ -24,9 +33,13 @@ class Simulation < ApplicationRecord
       end
 
       def new_instant
-        contagion.instants.create(
+        contagion.instants.build(
           day: instant.day + 1
         )
+      end
+
+      def infected
+        instant.populations.infected
       end
     end
   end
