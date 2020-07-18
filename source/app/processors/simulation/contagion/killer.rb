@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require './app/processors/simulation/contagion/population/builder'
+
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Killer
@@ -11,14 +13,13 @@ class Simulation < ApplicationRecord
         @killed ||= ready_to_die.map do |population|
           dead = Death.process(population, contagion)
           next if dead.zero?
-          instant.populations.build(
+          Population::Builder.build(
             instant: instant,
             group: population.group,
             behavior: population.behavior,
             size: dead,
             state: :dead,
-            days: 0,
-            interactions: 1
+            interactions: 0
           )
         end
       end
