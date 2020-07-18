@@ -116,9 +116,9 @@ describe Simulation::Contagion::Population, type: :model do
     describe '.not_healthy' do
       let(:expected) do
         [
-            immune_population,
-            infected_population,
-            dead_population
+          immune_population,
+          infected_population,
+          dead_population
         ]
       end
 
@@ -131,9 +131,9 @@ describe Simulation::Contagion::Population, type: :model do
     describe '.alive' do
       let(:expected) do
         [
-            immune_population,
-            infected_population,
-            healthy_population
+          immune_population,
+          infected_population,
+          healthy_population
         ]
       end
 
