@@ -127,6 +127,21 @@ describe Simulation::Contagion::Population, type: :model do
           .to match_array(expected)
       end
     end
+
+    describe '.alive' do
+      let(:expected) do
+        [
+            immune_population,
+            infected_population,
+            healthy_population
+        ]
+      end
+
+      it do
+        expect(described_class.alive)
+          .to match_array(expected)
+      end
+    end
   end
 
   describe '#infected?' do
