@@ -3,10 +3,10 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Instant < ApplicationRecord
-      CREATED    = "created"
-      READY      = "ready"
-      PROCESSING = "processing"
-      PROCESSED  = "processed"
+      CREATED    = 'created'
+      READY      = 'ready'
+      PROCESSING = 'processing'
+      PROCESSED  = 'processed'
 
       STATUSES = [
         CREATED, READY, PROCESSING, PROCESSED

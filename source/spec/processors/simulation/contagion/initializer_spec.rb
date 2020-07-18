@@ -65,17 +65,17 @@ describe Simulation::Contagion::Initializer do
         .to be_persisted
     end
 
-    it "creates new instant" do
+    it 'creates new instant' do
       expect(described_class.process(instant))
         .not_to eq(instant)
     end
 
-    it "creates new instant for a new day" do
+    it 'creates new instant for a new day' do
       expect(described_class.process(instant).day)
         .to eq(10)
     end
 
-    it "creates populations for all infected populations" do
+    it 'creates populations for all infected populations' do
       expect(described_class.process(instant).populations)
         .not_to be_empty
     end
