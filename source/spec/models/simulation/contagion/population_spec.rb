@@ -153,6 +153,28 @@ describe Simulation::Contagion::Population, type: :model do
           .to eq(1)
       end
     end
+
+    describe '.not_healthy' do
+      it do
+        expect(described_class.not_healthy)
+          .to include(infected_population)
+      end
+
+      it do
+        expect(described_class.not_healthy)
+          .not_to include(healthy_population)
+      end
+
+      it do
+        expect(described_class.not_healthy)
+          .to include(immune_population)
+      end
+
+      it 'returns only the immune' do
+        expect(described_class.not_healthy.count)
+          .to eq(2)
+      end
+    end
   end
 
   describe '#infected?' do
