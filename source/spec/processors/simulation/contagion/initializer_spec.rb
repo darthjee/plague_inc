@@ -26,10 +26,10 @@ describe Simulation::Contagion::Initializer do
     )
   end
 
-  let!(:healthy_population) do
+  let!(:immune_population) do
     create(
       :contagion_population,
-      state: :healthy,
+      state: :immune,
       group: group,
       behavior: behavior,
       size: Random.rand(100),
@@ -39,10 +39,10 @@ describe Simulation::Contagion::Initializer do
     )
   end
 
-  let!(:immune_population) do
+  before do
     create(
       :contagion_population,
-      state: :immune,
+      state: :healthy,
       group: group,
       behavior: behavior,
       size: Random.rand(100),
@@ -97,6 +97,11 @@ describe Simulation::Contagion::Initializer do
     it 'increments days counters' do
       expect(described_class.process(instant).populations.pluck(:days))
         .to all(eq(days + 1))
+    end
+
+    it 'makes population with correct size' do
+      expect(described_class.process(instant).populations.pluck(:size))
+        .to eq([immune_population.size, infected_population.size])
     end
   end
 end
