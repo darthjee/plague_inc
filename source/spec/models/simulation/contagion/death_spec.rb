@@ -28,10 +28,22 @@ fdescribe Simulation::Contagion::Death do
         .to({ group => 10 })
     end
 
+    it 'stores behavior of killed group' do
+      expect { death.kill(population, 10) }
+        .to change(death, :behaviors)
+        .from({})
+        .to({ group => behavior })
+    end
+
     context 'when size is 0' do
       it do
         expect { death.kill(population, 0) }
           .not_to change(death, :store)
+      end
+
+      it do
+        expect { death.kill(population, 0) }
+          .not_to change(death, :behaviors)
       end
     end
 
@@ -50,11 +62,16 @@ fdescribe Simulation::Contagion::Death do
         death.kill(other_population, 20)
       end
 
-      fit 'stores kill of a group' do
+      it 'stores kill of a group' do
         expect { death.kill(population, 10) }
           .to change(death, :store)
           .from({ group => 20 })
           .to({ group => 30 })
+      end
+
+      it do
+        expect { death.kill(population, 10) }
+          .not_to change(death, :behaviors)
       end
     end
   end
