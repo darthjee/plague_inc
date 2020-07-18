@@ -175,5 +175,63 @@ describe Simulation::Contagion::Population::Builder do
           .to eq(population.size * behavior.interactions)
       end
     end
+
+    context 'when building passing extra params' do
+      subject(:population) do
+        described_class.build(
+          instant: instant,
+          group: group,
+          behavior: new_behavior,
+          state: state,
+          interactions: 0,
+          size: size
+        )
+      end
+
+      let(:size) { Random.rand(20) + 100 }
+      let(:state) do
+        Simulation::Contagion::Population::DEAD
+      end
+
+      let(:new_behavior) do
+        create(:contagion_behavior, contagion: contagion)
+      end
+
+      it do
+        expect(population).not_to be_persisted
+      end
+
+      it do
+        expect(population)
+          .to be_a(Simulation::Contagion::Population)
+      end
+
+      it do
+        expect(population.instant)
+          .to eq(instant)
+      end
+
+      it do
+        expect(population.behavior)
+          .to eq(new_behavior)
+      end
+
+      it 'creates population with given size' do
+        expect(population.size).to eq(size)
+      end
+
+      it 'creates population with given state' do
+        expect(population.state).to eq(state)
+      end
+
+      it 'initialize days' do
+        expect(population.days).to be_zero
+      end
+
+      it 'sets interactions' do
+        expect(population.interactions)
+          .to be_zero
+      end
+    end
   end
 end
