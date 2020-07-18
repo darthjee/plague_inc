@@ -26,7 +26,7 @@ describe Simulation::Contagion::Killer do
         behavior: group.behavior,
         instant: instant,
         days: day,
-        size: 10,
+        size: day,
         state: state
       )
     end
@@ -41,8 +41,8 @@ describe Simulation::Contagion::Killer do
       it 'kills everyone ready to be killed' do
         expect { described_class.new(instant).process }
           .to change { instant.populations.pluck(:size) }
-          .from([10, 10, 10])
-          .to([10, 0, 0, 10, 10])
+          .from([9, 10, 11])
+          .to([9, 0, 0, 21])
       end
 
       it 'does not persist killing' do
@@ -53,7 +53,7 @@ describe Simulation::Contagion::Killer do
       it 'builds a population' do
         expect { described_class.new(instant).process }
           .to change { instant.populations.size }
-          .by(2)
+          .by(1)
       end
 
       it 'builds a dead population' do
@@ -91,7 +91,7 @@ describe Simulation::Contagion::Killer do
     context 'when lethality is 0%' do
       let(:lethality) { 0 }
 
-      it 'kills no one to be killed' do
+      it 'kills no one' do
         expect { described_class.new(instant).process }
           .not_to(change { instant.populations.pluck(:size) })
       end

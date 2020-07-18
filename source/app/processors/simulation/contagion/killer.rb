@@ -10,13 +10,18 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        @killed ||= ready_to_die.map do |population|
+        ready_to_die.map do |population|
           dead = Kill.process(population, contagion)
           next if dead.zero?
+
+          death.kill(population, dead)
+        end
+
+        death.deaths.each do |group, dead|
           Population::Builder.build(
             instant: instant,
-            group: population.group,
-            behavior: population.behavior,
+            group: group,
+            behavior: death.behavior(group),
             size: dead,
             state: :dead,
             interactions: 0
@@ -42,6 +47,10 @@ class Simulation < ApplicationRecord
           .select do |pop|
           pop.days >= days_till_start_death
         end
+      end
+
+      def death
+        @death ||= Death.new
       end
     end
   end

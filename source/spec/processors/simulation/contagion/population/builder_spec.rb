@@ -188,7 +188,7 @@ describe Simulation::Contagion::Population::Builder do
         )
       end
 
-      let(:size) { Random.rand(20) + 100 }
+      let(:size) { Random.rand(100..119) }
       let(:state) do
         Simulation::Contagion::Population::DEAD
       end
