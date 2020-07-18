@@ -44,19 +44,19 @@ describe Simulation::Contagion::PostCreator do
       it 'kills everyone ready to be killed' do
         expect { described_class.process(instant) }
           .to change { instant.reload.populations.order(:id).pluck(:size) }
-          .to([10, 0, 0, 10, 10])
+          .to([10, 0, 0, 20])
       end
 
       it 'recovers those ready to be recovered' do
         expect { described_class.process(instant) }
           .to change { instant.reload.populations.order(:id).map(&:state) }
-          .to(%w[infected infected immune])
+          .to(%w[infected infected immune dead])
       end
 
       it 'resets counter of the recovered' do
         expect { described_class.process(instant) }
           .to change { instant.reload.populations.order(:id).map(&:days) }
-          .to([7, 10, 0])
+          .to([7, 10, 0, 0])
       end
 
       it 'update instant status' do
