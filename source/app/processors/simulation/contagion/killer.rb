@@ -8,10 +8,7 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        populations
-          .select(&:infected?)
-          .select { |pop| pop.days >= days_till_start_death }
-          .each do |population|
+        ready_to_die.each do |population|
           Death.process(population, contagion)
         end
       end
@@ -27,6 +24,14 @@ class Simulation < ApplicationRecord
       delegate :contagion, to: :instant
       delegate :populations, to: :instant
       delegate :days_till_start_death, to: :contagion
+
+      def ready_to_die
+        populations
+          .select(&:infected?)
+          .select do |pop|
+          pop.days >= days_till_start_death
+        end
+      end
     end
   end
 end
