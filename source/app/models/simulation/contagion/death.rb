@@ -5,12 +5,12 @@ class Simulation < ApplicationRecord
     class Death
       def kill(population, size)
         return if size.zero?
-        store[population.group] += size
+        deaths[population.group] += size
         behaviors[population.group] = population.behavior
       end
 
-      def store
-        @store ||= Hash.new { 0 }
+      def deaths
+        @deaths ||= Hash.new { 0 }
       end
 
       def behaviors

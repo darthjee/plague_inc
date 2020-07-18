@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::Death do
+describe Simulation::Contagion::Death do
   subject(:death) { described_class.new }
 
   let(:simulation) { create(:simulation) }
@@ -23,7 +23,7 @@ fdescribe Simulation::Contagion::Death do
   describe 'kill' do
     it 'stores kill of a group' do
       expect { death.kill(population, 10) }
-        .to change(death, :store)
+        .to change(death, :deaths)
         .from({})
         .to({ group => 10 })
     end
@@ -38,7 +38,7 @@ fdescribe Simulation::Contagion::Death do
     context 'when size is 0' do
       it do
         expect { death.kill(population, 0) }
-          .not_to change(death, :store)
+          .not_to change(death, :deaths)
       end
 
       it do
@@ -64,7 +64,7 @@ fdescribe Simulation::Contagion::Death do
 
       it 'stores kill of a group' do
         expect { death.kill(population, 10) }
-          .to change(death, :store)
+          .to change(death, :deaths)
           .from({ group => 20 })
           .to({ group => 30 })
       end
