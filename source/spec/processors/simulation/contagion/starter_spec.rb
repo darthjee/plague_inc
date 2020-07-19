@@ -39,6 +39,16 @@ describe Simulation::Contagion::Starter do
         .by(1)
     end
 
+    it do
+      expect(described_class.process(contagion))
+        .to be_a(Simulation::Contagion::Instant)
+    end
+
+    it do
+      expect(described_class.process(contagion))
+        .to be_persisted
+    end
+
     context 'when the proccess is over' do
       let(:instant) { contagion.instants.last }
 

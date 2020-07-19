@@ -8,13 +8,11 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        @instant = instants.create(day: 0)
-
         contagion.groups.each do |group|
           build_populations(group)
         end
 
-        instant.save
+        instant.tap(&:save)
       end
 
       private
@@ -23,6 +21,10 @@ class Simulation < ApplicationRecord
 
       def initialize(contagion)
         @contagion = contagion
+      end
+
+      def instant
+        @instant ||= instants.create(day: 0)
       end
 
       delegate :instants, to: :contagion
