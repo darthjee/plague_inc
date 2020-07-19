@@ -232,6 +232,31 @@ describe Simulation::Contagion::Population::Builder do
         expect(population.interactions)
           .to be_zero
       end
+
+      context 'when there is already a population for same params' do
+        let!(:previous_population) do
+          described_class.build(
+            instant: instant,
+            group: group,
+            behavior: new_behavior,
+            state: state,
+            interactions: 0,
+            size: initial_size
+          ).tap(&:save!)
+        end
+
+        let(:initial_size) { Random.rand(200) + 50 }
+
+        it 'changes size of preexisting population' do
+          expect(population.id)
+            .not_to be_nil
+        end
+
+        it 'sums sizes' do
+          expect(population.size)
+            .to eq(size + initial_size)
+        end
+      end
     end
   end
 end
