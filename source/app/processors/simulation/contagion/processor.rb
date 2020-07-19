@@ -8,16 +8,21 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        instant = Starter.process(contagion)
         PostCreator.process(instant)
       end
 
       private
 
       attr_reader :contagion
+      delegate :instants, to: :contagion
 
       def initialize(contagion)
         @contagion = contagion
+      end
+
+      def instant
+        @instant ||= (instants.find_by(status: :created) ||
+          Starter.process(contagion))
       end
     end
   end

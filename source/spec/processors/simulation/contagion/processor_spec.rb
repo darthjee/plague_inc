@@ -94,15 +94,15 @@ fdescribe Simulation::Contagion::Processor do
 
       it do
         expect { described_class.process(contagion) }
-          .to change { created_instant.status }
-          .from eq(Simulation::Contagion::Instant::CREATED)
-          .to eq(Simulation::Contagion::Instant::READY)
+          .to change { created_instant.reload.status }
+          .from(Simulation::Contagion::Instant::CREATED)
+          .to(Simulation::Contagion::Instant::READY)
       end
 
       it do
         expect { described_class.process(contagion) }
-          .to change { created_instant.populations.count }
-          .from(0).to(3)
+          .to change { created_instant.reload.populations.count }
+          .from(2).to(3)
       end
 
 
