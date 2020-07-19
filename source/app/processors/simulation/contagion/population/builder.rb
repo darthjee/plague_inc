@@ -13,11 +13,11 @@ class Simulation < ApplicationRecord
         end
 
         def build
-          scope.build(
-            size: size,
-            days: days,
-            interactions: interactions
-          )
+          built_population.size += size
+          built_population.interactions = interactions
+          built_population.behavior = behavior
+
+          built_population
         end
 
         private
@@ -26,6 +26,10 @@ class Simulation < ApplicationRecord
 
         delegate :infected, :healthy, to: :group
 
+        def built_population
+          @built_population ||= scope.first_or_initialize
+        end
+
         def size
           @size ||= population ? population.size : public_send(state)
         end
@@ -33,8 +37,8 @@ class Simulation < ApplicationRecord
         def scope
           instant.populations.where(
             group: group,
-            behavior: behavior,
-            state: state
+            state: state,
+            days: days
           )
         end
 
