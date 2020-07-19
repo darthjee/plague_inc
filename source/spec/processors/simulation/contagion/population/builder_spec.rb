@@ -245,11 +245,11 @@ describe Simulation::Contagion::Population::Builder do
           ).tap(&:save!)
         end
 
-        let(:initial_size) { Random.rand(200) + 50 }
+        let(:initial_size) { Random.rand(50..249) }
 
         it 'changes size of preexisting population' do
           expect(population.id)
-            .not_to be_nil
+            .to eq(previous_population.id)
         end
 
         it 'sums sizes' do
