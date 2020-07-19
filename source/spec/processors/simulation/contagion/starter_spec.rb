@@ -4,7 +4,6 @@ require 'spec_helper'
 
 describe Simulation::Contagion::Starter do
   let(:simulation) { build(:simulation, settings: contagion) }
-
   let(:contagion)  { build(:contagion, groups: [], behaviors: []) }
 
   let!(:groups) do
@@ -35,7 +34,7 @@ describe Simulation::Contagion::Starter do
 
   describe '.process' do
     it do
-      expect { described_class.process(simulation) }
+      expect { described_class.process(contagion) }
         .to change { contagion.reload.instants.size }
         .by(1)
     end
@@ -43,7 +42,7 @@ describe Simulation::Contagion::Starter do
     context 'when the proccess is over' do
       let(:instant) { contagion.instants.last }
 
-      before { described_class.process(simulation) }
+      before { described_class.process(contagion) }
 
       it do
         expect(instant.populations)

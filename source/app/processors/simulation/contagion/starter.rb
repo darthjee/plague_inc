@@ -3,8 +3,8 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Starter
-      def self.process(simulation)
-        new(simulation).process
+      def self.process(contagion)
+        new(contagion).process
       end
 
       def process
@@ -19,13 +19,12 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :simulation, :instant
+      attr_reader :contagion, :instant
 
-      def initialize(simulation)
-        @simulation = simulation
+      def initialize(contagion)
+        @contagion = contagion
       end
 
-      delegate :contagion, to: :simulation
       delegate :instants, to: :contagion
       delegate :populations, to: :instant
 
