@@ -14,6 +14,7 @@ fdescribe Simulation::Contagion::Processor do
       :contagion,
       simulation: simulation,
       days_till_start_death: days_till_start_death,
+      days_till_recovery: days_till_recovery,
       lethality: lethality,
       groups: [],
       behaviors: []
@@ -37,13 +38,15 @@ fdescribe Simulation::Contagion::Processor do
 
   let(:instant) { contagion.reload.instants.last }
 
+  let(:days_till_start_death) { 0 }
+  let(:days_till_recovery)    { 1 }
+  let(:infected)              { 1 }
+
   before { contagion.reload }
 
   describe '.process' do
     context 'when there are no instants' do
-      let(:infected)              { 1 }
-      let(:lethality)             { 1 }
-      let(:days_till_start_death) { 0 }
+      let(:lethality) { 1 }
 
       it do
         expect { described_class.process(contagion) }
@@ -80,9 +83,9 @@ fdescribe Simulation::Contagion::Processor do
     end
 
     context 'when there is a created instant' do
-      let(:infected)              { 1 }
-      let(:lethality)             { 1 }
-      let(:days_till_start_death) { 0 }
+      let(:lethality)          { 0 }
+      let(:days_till_recovery) { 0 }
+
       let!(:created_instant) do
         Simulation::Contagion::Starter.process(contagion)
       end
@@ -101,18 +104,18 @@ fdescribe Simulation::Contagion::Processor do
 
       it do
         expect { described_class.process(contagion) }
-          .to change { created_instant.reload.populations.count }
-          .from(2).to(3)
+          .not_to change { created_instant.reload.populations.count }
       end
 
+      it do
+        expect { described_class.process(contagion) }
+          .to change { created_instant.reload.populations.map(&:state) }
+          .from(%w[healthy infected])
+          .to(%w[healthy immune])
+      end
 
       context 'when processing is complete' do
         before { described_class.process(contagion) }
-
-        it 'builds and kills' do
-          expect(instant.populations.map(&:state))
-            .to eq(["dead", "healthy", "infected"])
-        end
 
         it 'persists all populations' do
           expect(instant.populations)
