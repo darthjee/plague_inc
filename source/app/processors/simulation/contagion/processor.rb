@@ -8,7 +8,8 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        Starter.process(contagion)
+        instant = Starter.process(contagion)
+        PostCreator.process(instant)
       end
 
       private

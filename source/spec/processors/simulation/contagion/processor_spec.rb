@@ -55,12 +55,22 @@ fdescribe Simulation::Contagion::Processor do
         before { described_class.process(contagion) }
 
         it 'generates populations' do
-          expect(instant.populations.size).to eq(2)
+          expect(instant.populations.size).to eq(3)
         end
 
         it 'sets correct status of instant' do
-          expect(instant.status)
-            .to eq(Simulation::Contagion::Instant::CREATED)
+          expect(instant.reload.status)
+            .to eq(Simulation::Contagion::Instant::READY)
+        end
+
+        it 'builds and kills' do
+          expect(instant.populations.map(&:state))
+            .to eq(["dead", "healthy", "infected"])
+        end
+
+        it 'persists all populations' do
+          expect(instant.populations)
+            .to all(be_persisted)
         end
       end
     end
