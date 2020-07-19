@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::Processor do
+describe Simulation::Contagion::Processor do
   let(:simulation) do
     build(:simulation, contagion: nil).tap do |sim|
       sim.save(validate: false)
@@ -122,6 +122,22 @@ fdescribe Simulation::Contagion::Processor do
             .to all(be_persisted)
         end
       end
+    end
+
+    xcontext 'when there is a ready instant' do
+      let!(:ready_instant) do
+        create(:contagion_instant, day: 0, status: :read)
+      end
+      let(:infected_population) do
+        create(
+          :contagion_population,
+          group: group,
+          behavior: behavior,
+          size: 1
+        )
+      end
+
+      it 'adds test here'
     end
   end
 end
