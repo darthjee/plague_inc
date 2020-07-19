@@ -54,14 +54,60 @@ fdescribe Simulation::Contagion::Processor do
       context 'when processing is complete' do
         before { described_class.process(contagion) }
 
-        it 'generates populations' do
-          expect(instant.populations.size).to eq(3)
+        it 'generates instant for day 0' do
+          expect(instant.day).to be_zero
         end
 
         it 'sets correct status of instant' do
           expect(instant.reload.status)
             .to eq(Simulation::Contagion::Instant::READY)
         end
+
+        it 'generates populations' do
+          expect(instant.populations.size).to eq(3)
+        end
+
+        it 'builds and kills' do
+          expect(instant.populations.map(&:state))
+            .to eq(["dead", "healthy", "infected"])
+        end
+
+        it 'persists all populations' do
+          expect(instant.populations)
+            .to all(be_persisted)
+        end
+      end
+    end
+
+    context 'when there is a created instant' do
+      let(:infected)              { 1 }
+      let(:lethality)             { 1 }
+      let(:days_till_start_death) { 0 }
+      let!(:created_instant) do
+        Simulation::Contagion::Starter.process(contagion)
+      end
+
+      it do
+        expect { described_class.process(contagion) }
+          .not_to change { contagion.reload.instants.count }
+      end
+
+      it do
+        expect { described_class.process(contagion) }
+          .to change { created_instant.status }
+          .from eq(Simulation::Contagion::Instant::CREATED)
+          .to eq(Simulation::Contagion::Instant::READY)
+      end
+
+      it do
+        expect { described_class.process(contagion) }
+          .to change { created_instant.populations.count }
+          .from(0).to(3)
+      end
+
+
+      context 'when processing is complete' do
+        before { described_class.process(contagion) }
 
         it 'builds and kills' do
           expect(instant.populations.map(&:state))
