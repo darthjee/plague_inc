@@ -27,7 +27,7 @@ class Simulation < ApplicationRecord
         delegate :infected, :healthy, to: :group
 
         def built_population
-          @built_popolation ||= scope.find_or_initialize
+          @built_popolation ||= scope.first_or_initialize
         end
 
         def size
