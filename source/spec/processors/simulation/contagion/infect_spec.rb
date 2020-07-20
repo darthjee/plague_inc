@@ -108,7 +108,7 @@ describe Simulation::Contagion::Infect do
 
       it 'consumes infected interactions' do
         expect { new_population }
-          .to change { healthy.interactions }
+          .to change(healthy, :interactions)
           .to(0)
       end
 
@@ -116,6 +116,24 @@ describe Simulation::Contagion::Infect do
         expect { new_population }
           .to change { new_instant.populations.size }
           .by(1)
+      end
+    end
+
+    context 'when healthy get protected' do
+      let(:healthy_risk) { 0 }
+
+      it do
+        expect(new_population).to be_nil
+      end
+
+      it 'do not creates new population' do
+        expect { new_population }
+          .not_to change { new_instant.populations.size }
+      end
+
+      it do
+        expect { new_population }
+          .not_to change(healthy, :interactions)
       end
     end
   end

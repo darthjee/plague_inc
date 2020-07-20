@@ -12,6 +12,8 @@ class Simulation < ApplicationRecord
 
       STATES = [INFECTED, HEALTHY, IMMUNE, DEAD].freeze
 
+      delegate :contagion_risk, to: :behavior
+
       scope :infected,    -> { where(state: INFECTED) }
       scope :healthy,     -> { where(state: HEALTHY) }
       scope :immune,      -> { where(state: IMMUNE) }
