@@ -13,18 +13,10 @@ class Simulation < ApplicationRecord
           infect
         end
 
-        @infected = infection_map.keys.size
-
         return if infected.zero?
         healthy.interactions = 0
 
-        Population::Builder.build(
-          instant: instant,
-          group: healthy.group,
-          behavior: healthy.behavior,
-          state: Population::INFECTED,
-          size: infected
-        )
+        build_population
       end
 
       private
@@ -36,6 +28,20 @@ class Simulation < ApplicationRecord
         @infected_population     = infected_population
         @healthy                 = healthy
         @interactions            = interactions
+      end
+
+      def build_population
+        Population::Builder.build(
+          instant: instant,
+          group: healthy.group,
+          behavior: healthy.behavior,
+          state: Population::INFECTED,
+          size: infected
+        )
+      end
+
+      def infected
+        @infected ||= infection_map.keys.size
       end
 
       def random_box
