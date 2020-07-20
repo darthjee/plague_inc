@@ -13,6 +13,10 @@ describe Simulation::Contagion::Infect do
     create(:contagion_instant, contagion: contagion, day: day)
   end
 
+  let(:new_instant) do
+    create(:contagion_instant, contagion: contagion, day: day + 1)
+  end
+
   let(:behavior) { contagion.behaviors.first }
   let(:group) do
     create(
@@ -40,7 +44,7 @@ describe Simulation::Contagion::Infect do
       group: group,
       behavior: healthy_behavior,
       size: healthy_size,
-      interactions: healthy_size * interactions
+      interactions: behavior_interactions - 1
     )
   end
 
@@ -52,26 +56,30 @@ describe Simulation::Contagion::Infect do
     create(
       :contagion_behavior,
       contagion_risk: healthy_risk,
-      interactions: interactions
+      interactions: behavior_interactions
     )
   end
 
-  let(:healthy_size)  { 10 }
-  let(:infected_risk) { 1 }
-  let(:healthy_risk)  { 1 }
-  let(:interactions)  { 2 }
-
-  let(:random_box) { double(RandomBox) }
-
-  before do
-    allow(RandomBox).to receive(:new).and_return(random_box)
+  let(:healthy_size)          { 10 }
+  let(:infected_risk)         { 1 }
+  let(:healthy_risk)          { 1 }
+  let(:behavior_interactions) { 2 }
+  let(:interactions) do
+    behavior_interactions * (healthy_size - 1) + 1
   end
 
   describe 'process' do
-    before do
-      allow(random_box)
-        .to receive(:individual)
-        .and_return(0)
+    let(:new_populations) do
+      described_class.process(new_instant, infected, healthy, interactions)
+    end
+
+    context 'when entire population gets infected' do
+      it 'builds populations for new instant' do
+      end
+
+      xit 'consumes infected interactions' do
+        expect {  }
+      end
     end
   end
 end
