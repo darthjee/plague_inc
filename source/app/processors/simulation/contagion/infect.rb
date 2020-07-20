@@ -18,6 +18,10 @@ class Simulation < ApplicationRecord
         @infected = infected
         @healthy  = healthy
       end
+
+      def random_box
+        @random_box ||= RandomBox.new
+      end
     end
   end
 end

@@ -38,7 +38,9 @@ describe Simulation::Contagion::Infect do
       state: :healthy,
       days: day,
       group: group,
-      behavior: healthy_behavior
+      behavior: healthy_behavior,
+      size: healthy_size,
+      interactions: healthy_size * interactions
     )
   end
 
@@ -50,10 +52,26 @@ describe Simulation::Contagion::Infect do
     create(
       :contagion_behavior,
       contagion_risk: healthy_risk,
-      interactions: 10
+      interactions: interactions
     )
   end
 
+  let(:healthy_size)  { 10 }
   let(:infected_risk) { 1 }
   let(:healthy_risk)  { 1 }
+  let(:interactions)  { 2 }
+
+  let(:random_box) { double(RandomBox) }
+
+  before do
+    allow(RandomBox).to receive(:new).and_return(random_box)
+  end
+
+  describe 'process' do
+    before do
+      allow(random_box)
+        .to receive(:individual)
+        .and_return(0)
+    end
+  end
 end
