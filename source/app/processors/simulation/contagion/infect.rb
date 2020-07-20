@@ -8,10 +8,13 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        interactions.times.each do
-          instant.populations.build(
-          )
-        end
+        Population::Builder.build(
+          instant: instant,
+          group: healthy.group,
+          behavior: healthy.behavior,
+          size: healthy.size,
+          state: Population::INFECTED
+        )
       end
 
       private

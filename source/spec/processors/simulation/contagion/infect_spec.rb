@@ -44,17 +44,22 @@ describe Simulation::Contagion::Infect do
       group: group,
       behavior: healthy_behavior,
       size: healthy_size,
-      interactions: behavior_interactions - 1
+      interactions: population_interactions
     )
   end
 
   let(:infected_behavior) do
-    create(:contagion_behavior, contagion_risk: infected_risk)
+    create(
+      :contagion_behavior, 
+      name: 'infected',
+      contagion_risk: infected_risk
+    )
   end
 
   let(:healthy_behavior) do
     create(
       :contagion_behavior,
+      name: 'healthy',
       contagion_risk: healthy_risk,
       interactions: behavior_interactions
     )
@@ -67,14 +72,38 @@ describe Simulation::Contagion::Infect do
   let(:interactions) do
     behavior_interactions * (healthy_size - 1) + 1
   end
+  let(:population_interactions) do
+    healthy_size * behavior_interactions - interactions
+  end
 
   describe 'process' do
-    let(:new_populations) do
+    let(:new_population) do
       described_class.process(new_instant, infected, healthy, interactions)
     end
 
     context 'when entire population gets infected' do
-      it 'builds populations for new instant' do
+      it 'builds population for new instant' do
+        expect(new_population)
+          .to be_a(Simulation::Contagion::Population)
+      end
+
+      it do
+        expect(new_population).not_to be_persisted
+      end
+
+      it 'initialize days' do
+        expect(new_population.days)
+          .to be_zero
+      end
+
+      it 'sets group' do
+        expect(new_population.group)
+          .to eq(group)
+      end
+
+      it 'sets behavior' do
+        expect(new_population.behavior)
+          .to eq(healthy_behavior)
       end
 
       xit 'consumes infected interactions' do
