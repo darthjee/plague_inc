@@ -96,6 +96,11 @@ describe Simulation::Contagion::Infect do
           .to be_zero
       end
 
+      it 'sets new population size' do
+        expect(new_population.size)
+          .to eq(healthy.size)
+      end
+
       it 'sets group' do
         expect(new_population.group)
           .to eq(group)
@@ -152,6 +157,18 @@ describe Simulation::Contagion::Infect do
       it do
         expect { new_population }
           .not_to change(healthy, :interactions)
+      end
+    end
+
+    context 'when a person is selected more than it should' do
+      let(:healthy_size)            { 10 }
+      let(:behavior_interactions)   { 1 }
+      let(:population_interactions) { 0 }
+      let(:interactions)            { 10 }
+
+      it 'sets new population size' do
+        expect(new_population.size)
+          .to eq(healthy.size)
       end
     end
   end
