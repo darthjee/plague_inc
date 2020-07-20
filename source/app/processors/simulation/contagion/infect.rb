@@ -16,7 +16,7 @@ class Simulation < ApplicationRecord
 
         return if infected.zero?
 
-        healthy.interactions = 0
+        healthy.interactions -= ignored_interactions
 
         build_population
       end
@@ -44,6 +44,12 @@ class Simulation < ApplicationRecord
 
       def infected
         @infected ||= infection_map.keys.size
+      end
+
+      def ignored_interactions
+        infection_map.values.map do |value|
+          healthy.behavior.interactions - value
+        end.sum
       end
 
       def random_box

@@ -171,5 +171,23 @@ describe Simulation::Contagion::Infect do
           .to eq(healthy.size)
       end
     end
+
+    context 'when person is infected but still has interactions' do
+      let(:healthy_size)            { 2 }
+      let(:behavior_interactions)   { 10 }
+      let(:population_interactions) { 19 }
+      let(:interactions)            { 1 }
+
+      it 'sets new population size' do
+        expect(new_population.size)
+          .to eq(1)
+      end
+
+      it 'consumes infected interactions' do
+        expect { new_population }
+          .to change(healthy, :interactions)
+          .to(10)
+      end
+    end
   end
 end
