@@ -106,8 +106,16 @@ describe Simulation::Contagion::Infect do
           .to eq(healthy_behavior)
       end
 
-      xit 'consumes infected interactions' do
-        expect {  }
+      it 'consumes infected interactions' do
+        expect { new_population }
+          .to change { healthy.interactions }
+          .to(0)
+      end
+
+      it 'creates populations on new_instant' do
+        expect { new_population }
+          .to change { new_instant.populations.size }
+          .by(1)
       end
     end
   end

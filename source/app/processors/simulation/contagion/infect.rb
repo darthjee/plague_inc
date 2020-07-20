@@ -8,11 +8,11 @@ class Simulation < ApplicationRecord
       end
 
       def process
+        healthy.interactions = 0
         Population::Builder.build(
           instant: instant,
           group: healthy.group,
           behavior: healthy.behavior,
-          size: healthy.size,
           state: Population::INFECTED
         )
       end
