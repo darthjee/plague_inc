@@ -8,12 +8,14 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        interactions.times.inject(0) do |counter, _|
-          next unless (random_box < contagion_risk)
+        interactions.times.inject(0) do |_counter, _|
+          next unless random_box < contagion_risk
+
           infect
         end
 
         return if infected.zero?
+
         healthy.interactions = 0
 
         build_population
@@ -65,7 +67,7 @@ class Simulation < ApplicationRecord
 
       def contagion_risk
         @contagion_risk ||= healthy.contagion_risk *
-          infected_population.contagion_risk
+                            infected_population.contagion_risk
       end
     end
   end

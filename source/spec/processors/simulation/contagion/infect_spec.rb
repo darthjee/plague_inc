@@ -6,7 +6,7 @@ describe Simulation::Contagion::Infect do
   let(:simulation) { create(:simulation) }
   let(:contagion)  { simulation.contagion }
 
-  let(:day) { Random.rand(20) + 10 }
+  let(:day) { Random.rand(10..29) }
   let(:days) { Random.rand(day + 1) }
 
   let(:instant) do
@@ -50,7 +50,7 @@ describe Simulation::Contagion::Infect do
 
   let(:infected_behavior) do
     create(
-      :contagion_behavior, 
+      :contagion_behavior,
       name: 'infected',
       contagion_risk: infected_risk
     )
