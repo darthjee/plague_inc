@@ -136,5 +136,23 @@ describe Simulation::Contagion::Infect do
           .not_to change(healthy, :interactions)
       end
     end
+
+    context 'when infected get protected' do
+      let(:infected_risk) { 0 }
+
+      it do
+        expect(new_population).to be_nil
+      end
+
+      it 'do not creates new population' do
+        expect { new_population }
+          .not_to change { new_instant.populations.size }
+      end
+
+      it do
+        expect { new_population }
+          .not_to change(healthy, :interactions)
+      end
+    end
   end
 end
