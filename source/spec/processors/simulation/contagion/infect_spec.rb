@@ -117,6 +117,12 @@ describe Simulation::Contagion::Infect do
           .to(0)
       end
 
+      it 'marks the number of infecteds' do
+        expect { new_population }
+          .to change(healthy, :new_infections)
+          .from(0).to(healthy_size)
+      end
+
       it 'creates populations on new_instant' do
         expect { new_population }
           .to change { new_instant.populations.size }
@@ -140,6 +146,11 @@ describe Simulation::Contagion::Infect do
         expect { new_population }
           .not_to change(healthy, :interactions)
       end
+
+      it 'marks the number of infecteds' do
+        expect { new_population }
+          .not_to change(healthy, :new_infections)
+      end
     end
 
     context 'when infected get protected' do
@@ -158,6 +169,11 @@ describe Simulation::Contagion::Infect do
         expect { new_population }
           .not_to change(healthy, :interactions)
       end
+
+      it 'marks the number of infecteds' do
+        expect { new_population }
+          .not_to change(healthy, :new_infections)
+      end
     end
 
     context 'when a person is selected more than it should' do
@@ -169,6 +185,12 @@ describe Simulation::Contagion::Infect do
       it 'sets new population size' do
         expect(new_population.size)
           .to eq(healthy.size)
+      end
+
+      it 'marks the number of infecteds' do
+        expect { new_population }
+          .to change(healthy, :new_infections)
+          .from(0).to(healthy_size)
       end
     end
 
@@ -187,6 +209,12 @@ describe Simulation::Contagion::Infect do
         expect { new_population }
           .to change(healthy, :interactions)
           .to(10)
+      end
+
+      it 'marks the number of infecteds' do
+        expect { new_population }
+          .to change(healthy, :new_infections)
+          .from(0).to(1)
       end
     end
   end

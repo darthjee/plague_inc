@@ -17,6 +17,7 @@ class Simulation < ApplicationRecord
         return if infected.zero?
 
         healthy.interactions -= ignored_interactions
+        healthy.new_infections = infected
 
         build_population
       end
