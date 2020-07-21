@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::Infect do
+describe Simulation::Contagion::PopulationInfector do
   let(:simulation) { create(:simulation) }
   let(:contagion)  { simulation.contagion }
 

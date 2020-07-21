@@ -2,7 +2,7 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
-    class Infect
+    class PopulationInfector
       def self.process(instant, infected_population, healthy, interactions)
         new(instant, infected_population, healthy, interactions).process
       end
