@@ -251,6 +251,11 @@ describe Simulation::Contagion::Infect do
           .not_to change { new_instant.populations.size }
       end
 
+      it 'updates new population size' do
+        expect(new_population.size)
+          .to eq(healthy_size)
+      end
+
       it 'sets new population size' do
         expect(new_population.size)
           .to eq(healthy_size)
