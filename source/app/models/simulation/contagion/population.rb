@@ -51,6 +51,13 @@ class Simulation < ApplicationRecord
                   only_integer: true
                 }
 
+      validates :new_infections,
+                numericality: {
+                  greater_than_or_equal_to: 0,
+                  allow_nil: true,
+                  only_integer: true
+                }
+
       def infected?
         state == INFECTED
       end
