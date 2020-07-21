@@ -9,9 +9,7 @@ class Simulation < ApplicationRecord
 
       def process
         interactions.times.inject(0) do |_counter, _|
-          next unless random_box < contagion_risk
-
-          infect
+          interact
         end
 
         return if infected.zero?
@@ -44,11 +42,11 @@ class Simulation < ApplicationRecord
       end
 
       def infected
-        @infected ||= infection_map.keys.size
+        @infected ||= infection_map.size
       end
 
       def ignored_interactions
-        infection_map.values.map do |value|
+        interaction_map.values.map do |value|
           healthy.behavior.interactions - value
         end.sum
       end
@@ -57,14 +55,24 @@ class Simulation < ApplicationRecord
         @random_box ||= RandomBox.new
       end
 
-      def infect
-        infection_map[next_infected] += 1
+      def interact
+        index = next_interaction
+        interaction_map[index] += 1
+        infect(index) if random_box < contagion_risk
       end
 
-      def next_infected
+      def infect(index)
+        infection_map << index
+      end
+
+      def infection_map
+        @infection_map ||= Set.new
+      end
+
+      def next_interaction
         loop do
           index = random_box.person(healthy_size)
-          return index if infection_map[index] < healthy.behavior.interactions
+          return index if interaction_map[index] < healthy.behavior.interactions
         end
       end
 
@@ -72,8 +80,8 @@ class Simulation < ApplicationRecord
         healthy.size - healthy.new_infections
       end
 
-      def infection_map
-        @infection_map ||= Hash.new { 0 }
+      def interaction_map
+        @interaction_map ||= Hash.new { 0 }
       end
 
       def contagion_risk
