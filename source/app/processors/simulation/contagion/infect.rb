@@ -17,7 +17,7 @@ class Simulation < ApplicationRecord
         return if infected.zero?
 
         healthy.interactions -= ignored_interactions
-        healthy.new_infections = infected
+        healthy.new_infections += infected
 
         build_population
       end
@@ -63,9 +63,13 @@ class Simulation < ApplicationRecord
 
       def next_infected
         loop do
-          index = random_box.person(healthy.size)
+          index = random_box.person(healthy_size)
           return index if infection_map[index] < healthy.behavior.interactions
         end
+      end
+
+      def healthy_size
+        healthy.size - healthy.new_infections
       end
 
       def infection_map

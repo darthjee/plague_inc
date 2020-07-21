@@ -44,7 +44,8 @@ describe Simulation::Contagion::Infect do
       group: group,
       behavior: healthy_behavior,
       size: healthy_size,
-      interactions: population_interactions
+      interactions: population_interactions,
+      new_infections: new_infections
     )
   end
 
@@ -69,6 +70,7 @@ describe Simulation::Contagion::Infect do
   let(:infected_risk)         { 1 }
   let(:healthy_risk)          { 1 }
   let(:behavior_interactions) { 2 }
+  let(:new_infections)        { 0 }
   let(:interactions) do
     behavior_interactions * (healthy_size - 1) + 1
   end
@@ -215,6 +217,55 @@ describe Simulation::Contagion::Infect do
         expect { new_population }
           .to change(healthy, :new_infections)
           .from(0).to(1)
+      end
+    end
+
+    context 'when population has alread been infected' do
+      let(:healthy_size)            { 10 }
+      let(:behavior_interactions)   { 10 }
+      let(:population_interactions) { 4 }
+      let(:interactions)            { 6 }
+      let(:new_infections)          { healthy_size - 1 }
+
+      let!(:existing_population) do
+        create(
+          :contagion_population,
+          state: :infected,
+          days: 0,
+          group: group,
+          behavior: healthy_behavior,
+          size: new_infections,
+          instant: new_instant 
+        )
+      end
+
+      before { new_instant.reload }
+
+      it 'builds population for new instant' do
+        expect(new_population)
+          .to be_a(Simulation::Contagion::Population)
+      end
+
+      it 'does not create populations on new_instant' do
+        expect { new_population }
+          .not_to change { new_instant.populations.size }
+      end
+
+      it 'sets new population size' do
+        expect(new_population.size)
+          .to eq(healthy_size)
+      end
+
+      it 'consumes infected interactions' do
+        expect { new_population }
+          .to change(healthy, :interactions)
+          .to(0)
+      end
+
+      it 'marks the number of infecteds' do
+        expect { new_population }
+          .to change(healthy, :new_infections)
+          .from(new_infections).to(healthy_size)
       end
     end
   end
