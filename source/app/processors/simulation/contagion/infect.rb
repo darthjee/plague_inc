@@ -22,7 +22,8 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :instant, :infected, :infected_population, :healthy, :interactions
+      attr_reader :instant, :healthy,
+                  :infected_population, :interactions
 
       def initialize(instant, infected_population, healthy, interactions)
         @instant                 = instant

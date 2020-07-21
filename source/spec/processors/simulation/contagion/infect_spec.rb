@@ -141,7 +141,7 @@ describe Simulation::Contagion::Infect do
 
       it 'do not creates new population' do
         expect { new_population }
-          .not_to change { new_instant.populations.size }
+          .not_to(change { new_instant.populations.size })
       end
 
       it do
@@ -164,7 +164,7 @@ describe Simulation::Contagion::Infect do
 
       it 'do not creates new population' do
         expect { new_population }
-          .not_to change { new_instant.populations.size }
+          .not_to(change { new_instant.populations.size })
       end
 
       it do
@@ -235,7 +235,7 @@ describe Simulation::Contagion::Infect do
           group: group,
           behavior: healthy_behavior,
           size: new_infections,
-          instant: new_instant 
+          instant: new_instant
         )
       end
 
@@ -246,17 +246,17 @@ describe Simulation::Contagion::Infect do
           .to be_a(Simulation::Contagion::Population)
       end
 
+      it 'retrieves existing population' do
+        expect(new_population)
+          .to eq(existing_population)
+      end
+
       it 'does not create populations on new_instant' do
         expect { new_population }
-          .not_to change { new_instant.populations.size }
+          .not_to(change { new_instant.populations.size })
       end
 
       it 'updates new population size' do
-        expect(new_population.size)
-          .to eq(healthy_size)
-      end
-
-      it 'sets new population size' do
         expect(new_population.size)
           .to eq(healthy_size)
       end
