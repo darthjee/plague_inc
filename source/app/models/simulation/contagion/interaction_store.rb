@@ -3,28 +3,33 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class InteractionStore
-      def initialize(contagion_risk, healthy)
+      def initialize(contagion_risk, population)
         @contagion_risk = contagion_risk
-        @healthy        = healthy
+        @population     = population
       end
 
       def interact
         index = next_interaction
         interaction_map[index] += 1
-        infect(index) if random_box < contagion_risk
+
+        return unless random_box < contagion_risk
+
+        infect(index)
+      end
+
+      def ignored_interactions
+        infection_map.values.map do |value|
+          behavior_interactions - value
+        end.sum
       end
 
       def infected
         @infected ||= infection_map.size
       end
 
-      def infection_map
-        @infection_map ||= Hash.new(0)
-      end
-
       private
 
-      attr_reader :contagion_risk, :healthy
+      attr_reader :contagion_risk, :population
 
       def infect(index)
         infection_map[index] += 1
@@ -32,13 +37,21 @@ class Simulation < ApplicationRecord
 
       def next_interaction
         loop do
-          index = random_box.person(healthy_size)
-          return index if interaction_map[index] < healthy.behavior.interactions
+          index = random_box.person(population_size)
+          return index if interactions?(index)
         end
       end
 
-      def healthy_size
-        healthy.size - healthy.new_infections
+      def interactions?(index)
+        interaction_map[index] < behavior_interactions
+      end
+
+      def population_size
+        population.size - population.new_infections
+      end
+
+      def behavior_interactions
+        population.behavior.interactions
       end
 
       def interaction_map
@@ -47,6 +60,10 @@ class Simulation < ApplicationRecord
 
       def random_box
         @random_box ||= RandomBox.new
+      end
+
+      def infection_map
+        @infection_map ||= Hash.new(0)
       end
     end
   end

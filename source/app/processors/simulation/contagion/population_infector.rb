@@ -8,15 +8,11 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        interactions.times.inject(0) do |_counter, _|
-          interact
-        end
+        interactions.times { interact }
 
         return if infected.zero?
 
-        healthy.interactions -= ignored_interactions
-        healthy.new_infections += infected
-
+        update_healthy
         build_population
       end
 
@@ -25,7 +21,7 @@ class Simulation < ApplicationRecord
       attr_reader :instant, :healthy,
                   :infected_population, :interactions
 
-      delegate :interact, :infected, :infection_map,
+      delegate :interact, :infected, :ignored_interactions,
                to: :interaction_store
 
       def initialize(instant, infected_population, healthy, interactions)
@@ -33,6 +29,11 @@ class Simulation < ApplicationRecord
         @infected_population     = infected_population
         @healthy                 = healthy
         @interactions            = interactions
+      end
+
+      def update_healthy
+        healthy.interactions -= ignored_interactions
+        healthy.new_infections += infected
       end
 
       def build_population
@@ -43,12 +44,6 @@ class Simulation < ApplicationRecord
           state: Population::INFECTED,
           size: infected
         )
-      end
-
-      def ignored_interactions
-        infection_map.values.map do |value|
-          healthy.behavior.interactions - value
-        end.sum
       end
 
       def contagion_risk
