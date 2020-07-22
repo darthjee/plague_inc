@@ -12,6 +12,8 @@ class Simulation < ApplicationRecord
 
       STATES = [INFECTED, HEALTHY, IMMUNE, DEAD].freeze
 
+      delegate :contagion_risk, to: :behavior
+
       scope :infected,    -> { where(state: INFECTED) }
       scope :healthy,     -> { where(state: HEALTHY) }
       scope :immune,      -> { where(state: IMMUNE) }
@@ -46,6 +48,13 @@ class Simulation < ApplicationRecord
                 presence: true,
                 numericality: {
                   greater_than_or_equal_to: 0,
+                  only_integer: true
+                }
+
+      validates :new_infections,
+                numericality: {
+                  greater_than_or_equal_to: 0,
+                  allow_nil: true,
                   only_integer: true
                 }
 
