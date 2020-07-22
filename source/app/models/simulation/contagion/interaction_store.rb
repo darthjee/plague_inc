@@ -24,7 +24,7 @@ class Simulation < ApplicationRecord
       end
 
       def infected
-        @infected ||= infection_map.size
+        infection_map.size
       end
 
       private
