@@ -4,7 +4,16 @@ require './app/processors/simulation/contagion/population/builder'
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # @author darthjee
+    #
+    # Kills people from populations of an instant
     class Killer
+      # Kills people from populations of an instant
+      #
+      # All infected populations that are ready to be killed
+      # (days >= days_till_start_death) is randomly killed
+      #
+      # @param instant [Instant] instant to be processed
       def self.process(instant)
         new(instant).process
       end

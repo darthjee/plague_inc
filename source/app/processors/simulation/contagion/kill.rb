@@ -2,7 +2,14 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # @author darthjee
+    #
+    # Randomly kills people of an infected population
     class Kill
+      # Kills people from an infected population
+      #
+      # Killings happen by trying ot kill randomly,
+      # aiming for the given lethality
       def self.process(population, contagion)
         new(population, contagion).process
       end

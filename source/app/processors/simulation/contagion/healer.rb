@@ -2,7 +2,20 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # @author darthjee
+    #
+    # Heals all populations, ready to be immunized
     class Healer
+
+      # Heals all populations, ready to be immunized
+      #
+      # This is called after all processing of population
+      # killings
+      #
+      # Only populations ready to be killed (days >= days_till_recovery)
+      # are recovered
+      #
+      # @param instant [Instant]
       def self.process(instant)
         new(instant).process
       end

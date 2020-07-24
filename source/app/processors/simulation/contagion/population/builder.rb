@@ -3,13 +3,28 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Population < ApplicationRecord
+      # @author darthjee
+      #
+      # Builds a population from options
       class Builder < Sinclair::Options
         with_options :instant, :group, :state,
                      :population, :behavior, :size,
                      :interactions
 
-        def self.build(*args)
-          new(*args).build
+        # @param options [Hash] options
+        # @option options instant [Instant] instant where new option will
+        #   be created
+        # @option options group [Group] population group
+        # @option options behavior [Behavior] population behavior
+        # @option options state [String,Symbo] initial state of
+        #   population
+        # @option options population [Population] population
+        #   of a previous instant [Instant] to be used as model
+        # @option options size [Integer] size of population
+        # @option options interactions [Integer] ammount of actions
+        #   left
+        def self.build(*options)
+          new(*options).build
         end
 
         def build

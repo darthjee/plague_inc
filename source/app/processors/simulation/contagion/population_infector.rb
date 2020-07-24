@@ -2,7 +2,23 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # @author darthjee
+    #
+    # Infect a healthy population
     class PopulationInfector
+      # Infect healthy population
+      #
+      # infection will happen based on contagion risk
+      # between two populations as a product of their
+      # contagion_risk
+      #
+      # @param instant [Instant] instant where new infected population will
+      #   be created
+      # @param infected_population [Population] poppulation infecting healthy
+      #   population
+      # @param healthy [Population] healthy population being infected
+      # @param interactions [Integer] number of interactions between
+      #   populations
       def self.process(instant, infected_population, healthy, interactions)
         new(instant, infected_population, healthy, interactions).process
       end
