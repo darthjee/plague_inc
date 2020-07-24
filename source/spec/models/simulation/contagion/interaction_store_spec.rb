@@ -51,21 +51,24 @@ fdescribe Simulation::Contagion::InteractionStore do
       end
 
       context 'when called several times' do
-        let(:times)        { 3 }
-        let(:indexes)      { [0,0,1] }
+        let(:times)        { 6 }
+        let(:indexes)      { [0,1,0,1,0,2] }
         let(:interactions) { 10 }
         let(:random_box)   { double(RandomBox) }
+        let(:responses) do
+          [true, true, true, true, true, false]
+        end
 
         before do
           allow(RandomBox).to receive(:new).and_return(random_box)
-          allow(random_box).to receive(:<).and_return(true)
+          allow(random_box).to receive(:<) { responses.shift }
           allow(random_box).to receive(:person) { indexes.shift }
         end
 
         it 'changes ignored_actions' do
           expect { times.times { store.interact } }
             .to change(store, :ignored_interactions)
-            .by(17)
+            .by(15)
         end
       end
     end
