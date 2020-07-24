@@ -49,6 +49,25 @@ fdescribe Simulation::Contagion::InteractionStore do
           .to change(store, :ignored_interactions)
           .by(interactions - 1)
       end
+
+      context 'when called several times' do
+        let(:times)        { 3 }
+        let(:indexes)      { [0,0,1] }
+        let(:interactions) { 10 }
+        let(:random_box)   { double(RandomBox) }
+
+        before do
+          allow(RandomBox).to receive(:new).and_return(random_box)
+          allow(random_box).to receive(:<).and_return(true)
+          allow(random_box).to receive(:person) { indexes.shift }
+        end
+
+        it 'changes ignored_actions' do
+          expect { times.times { store.interact } }
+            .to change(store, :ignored_interactions)
+            .by(17)
+        end
+      end
     end
   end
 end
