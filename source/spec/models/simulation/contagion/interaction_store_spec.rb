@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::InteractionStore do
+describe Simulation::Contagion::InteractionStore do
   subject(:store) { described_class.new(contagion_risk, population) }
 
   let(:simulation) { create(:simulation) }
@@ -21,7 +21,7 @@ fdescribe Simulation::Contagion::InteractionStore do
     create(
       :contagion_group,
       contagion: contagion,
-      behavior: behavior,
+      behavior: behavior
     )
   end
 
@@ -52,7 +52,7 @@ fdescribe Simulation::Contagion::InteractionStore do
 
       context 'when called several times' do
         let(:times)        { 6 }
-        let(:indexes)      { [0,1,0,1,0,2] }
+        let(:indexes)      { [0, 1, 0, 1, 0, 2] }
         let(:interactions) { 10 }
         let(:random_box)   { double(RandomBox) }
         let(:responses) do
