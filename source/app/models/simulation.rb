@@ -2,6 +2,9 @@
 
 require './app/processors/simulation/builder'
 
+# @author darthjee
+#
+# Simulation class/model
 class Simulation < ApplicationRecord
   ALGORITHMS = %w[
     contagion

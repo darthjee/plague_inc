@@ -2,6 +2,7 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # Group of people which will generate populations
     class Group < ApplicationRecord
       ALLOWED_ATTRIBUTES = %i[name size infected reference].freeze
 
