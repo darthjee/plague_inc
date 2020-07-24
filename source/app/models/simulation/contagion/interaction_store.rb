@@ -18,9 +18,7 @@ class Simulation < ApplicationRecord
       end
 
       def ignored_interactions
-        infection_map.map do |index|
-          behavior_interactions - interaction_map[index]
-        end.sum
+        infected_max_interactions - infected_interactions
       end
 
       def infected
@@ -32,7 +30,7 @@ class Simulation < ApplicationRecord
       attr_reader :contagion_risk, :population
 
       def infect(index)
-        infection_map << index
+        infection_map[index] += 1
       end
 
       def next_interaction
@@ -54,6 +52,14 @@ class Simulation < ApplicationRecord
         population.behavior.interactions
       end
 
+      def infected_max_interactions
+        infection_map.size * behavior_interactions
+      end
+
+      def infected_interactions
+        infection_map.values.sum
+      end
+
       def random_box
         @random_box ||= RandomBox.new
       end
@@ -63,7 +69,7 @@ class Simulation < ApplicationRecord
       end
 
       def infection_map
-        @infection_map ||= Set.new
+        @infection_map ||= Hash.new { 0 }
       end
     end
   end
