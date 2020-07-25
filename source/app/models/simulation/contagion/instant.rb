@@ -2,6 +2,7 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # Simulation instant
     class Instant < ApplicationRecord
       CREATED    = 'created'
       READY      = 'ready'

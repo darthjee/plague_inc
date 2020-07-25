@@ -4,6 +4,7 @@ require './app/processors/simulation/contagion/population/builder'
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # Instant population of people
     class Population < ApplicationRecord
       INFECTED = 'infected'
       HEALTHY  = 'healthy'
