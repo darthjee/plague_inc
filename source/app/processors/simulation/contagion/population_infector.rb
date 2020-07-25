@@ -50,6 +50,7 @@ class Simulation < ApplicationRecord
       def update_healthy
         healthy.interactions -= ignored_interactions
         healthy.new_infections += infected
+        healthy.interactions = 0 if healthy.interactions.negative?
       end
 
       def build_population

@@ -241,7 +241,58 @@ describe Simulation::Contagion::PopulationInfector do
 
       before { new_instant.reload }
 
-      it 'builds population for new instant' do
+      it 'returns build instant' do
+        expect(new_population)
+          .to be_a(Simulation::Contagion::Population)
+      end
+
+      it 'retrieves existing population' do
+        expect(new_population)
+          .to eq(existing_population)
+      end
+
+      it 'does not create populations on new_instant' do
+        expect { new_population }
+          .not_to(change { new_instant.populations.size })
+      end
+
+      it 'updates new population size' do
+        expect(new_population.size)
+          .to eq(healthy_size)
+      end
+
+      it 'consumes infected interactions' do
+        expect { new_population }
+          .to change(healthy, :interactions)
+          .to(0)
+      end
+
+      it 'marks the number of infecteds' do
+        expect { new_population }
+          .to change(healthy, :new_infections)
+          .from(new_infections).to(healthy_size)
+      end
+    end
+
+    context 'when population has not many interactions left' do
+      let(:healthy_size)            { 2 }
+      let(:new_infections)          { 1 }
+      let(:population_interactions) { 1 }
+      let(:behavior_interactions)   { 3 }
+      let(:interactions)            { 1 }
+      let!(:existing_population) do
+        create(
+          :contagion_population,
+          state: :infected,
+          days: 0,
+          group: group,
+          behavior: healthy_behavior,
+          size: new_infections,
+          instant: new_instant
+        )
+      end
+
+      it 'returns build instant' do
         expect(new_population)
           .to be_a(Simulation::Contagion::Population)
       end
