@@ -2,7 +2,13 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # @author darthjee
+    #
+    # Processor to be run after creation of an instant
     class PostCreator
+      # Kills and heals populations after creation of instant
+      #
+      # @param instant [Instant] instant being processed
       def self.process(instant)
         new(instant).process
       end

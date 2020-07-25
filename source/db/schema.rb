@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_19_110259) do
+ActiveRecord::Schema.define(version: 2020_07_21_110001) do
 
   create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 2020_07_19_110259) do
     t.string "state", null: false
     t.integer "days", default: 0, null: false
     t.integer "interactions", null: false
+    t.integer "new_infections", default: 0, null: false
     t.index ["behavior_id"], name: "fk_rails_8cc87c0981"
     t.index ["group_id"], name: "fk_rails_ab58ee1256"
     t.index ["instant_id", "group_id", "state", "days"], name: "simulation_contagion_unique_keys", unique: true

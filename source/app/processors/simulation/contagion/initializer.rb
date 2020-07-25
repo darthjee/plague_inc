@@ -2,7 +2,15 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # @author darthjee
+    #
+    # Creates a new instant to start processing
     class Initializer
+      # @param instant [Instant] currently processed instant
+      #
+      # Creates a new instant.copying all not healthy populations
+      #
+      # @return [Instant] newly built and saved instant
       def self.process(instant)
         new(instant).process
       end

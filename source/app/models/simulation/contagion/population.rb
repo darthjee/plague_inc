@@ -4,6 +4,7 @@ require './app/processors/simulation/contagion/population/builder'
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # Instant population of people
     class Population < ApplicationRecord
       INFECTED = 'infected'
       HEALTHY  = 'healthy'
@@ -11,6 +12,8 @@ class Simulation < ApplicationRecord
       DEAD     = 'dead'
 
       STATES = [INFECTED, HEALTHY, IMMUNE, DEAD].freeze
+
+      delegate :contagion_risk, to: :behavior
 
       scope :infected,    -> { where(state: INFECTED) }
       scope :healthy,     -> { where(state: HEALTHY) }
@@ -46,6 +49,13 @@ class Simulation < ApplicationRecord
                 presence: true,
                 numericality: {
                   greater_than_or_equal_to: 0,
+                  only_integer: true
+                }
+
+      validates :new_infections,
+                numericality: {
+                  greater_than_or_equal_to: 0,
+                  allow_nil: true,
                   only_integer: true
                 }
 

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Simulation < ApplicationRecord
+  # @author darthjee
+  #
+  # Model for contagion type simulation
   class Contagion < ApplicationRecord
     ALLOWED_ATTRIBUTES = %i[
       lethality

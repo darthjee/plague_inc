@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Simulation < ApplicationRecord
+  # @author darhtjee
+  #
+  # Builds simulation from ActionController::Parameters
+  # from a request
   class Builder
     include Arstotzka
 
@@ -15,8 +19,17 @@ class Simulation < ApplicationRecord
                         after_each: :build_behavior,
                         default: []
 
-    def self.build(params, simulation)
-      new(params, simulation).build
+    # Builds one simulatiom from params
+    #
+    # Simulation will be built within a certain scope
+    #
+    # @param params [ActionController::Parameters]
+    # @param simulations [Simulation::ActiveRecord_Relation]
+    #   scope of creation
+    #
+    # @return [Simulation]
+    def self.build(params, simulations)
+      new(params, simulations).build
     end
 
     def build

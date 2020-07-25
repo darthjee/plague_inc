@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Class responsible for generaing random numbers
+#
+# This makes mockings easier as all  methods called
+# respond +Random.rand+ but you can controll mocking
+# better by mocking individual methods
 class RandomBox
   delegate :rand, to: :Random
 

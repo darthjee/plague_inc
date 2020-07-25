@@ -2,6 +2,7 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # Behavior followed by a population
     class Behavior < ApplicationRecord
       ALLOWED_ATTRIBUTES = %i[name interactions contagion_risk reference].freeze
 

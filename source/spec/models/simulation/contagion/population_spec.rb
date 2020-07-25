@@ -37,6 +37,10 @@ describe Simulation::Contagion::Population, type: :model do
     end
 
     it do
+      expect(population).not_to validate_presence_of(:new_infections)
+    end
+
+    it do
       expect(population).to validate_numericality_of(:size)
         .is_greater_than_or_equal_to(0)
     end
@@ -68,6 +72,16 @@ describe Simulation::Contagion::Population, type: :model do
 
     it do
       expect(population).to validate_numericality_of(:interactions)
+        .only_integer
+    end
+
+    it do
+      expect(population).to validate_numericality_of(:new_infections)
+        .is_greater_than_or_equal_to(0)
+    end
+
+    it do
+      expect(population).to validate_numericality_of(:new_infections)
         .only_integer
     end
   end

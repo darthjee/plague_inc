@@ -2,7 +2,17 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # @author darthjee
+    #
+    # Creates and populates first instant
     class Starter
+      # Creates and populates firts instant
+      #
+      # Populations are created based on simulation
+      # groups
+      #
+      # @param simulation [Simulation] simulation
+      #   to be processed
       def self.process(contagion)
         new(contagion).process
       end
