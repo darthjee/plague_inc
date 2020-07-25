@@ -54,7 +54,7 @@ describe Simulation::Contagion::InteractionStore do
         let(:times)        { 6 }
         let(:indexes)      { [0, 1, 0, 1, 0, 2] }
         let(:interactions) { 10 }
-        let(:random_box)   { double("RandomBox") }
+        let(:random_box)   { double('RandomBox') }
         let(:responses) do
           [true, true, true, true, true, false]
         end

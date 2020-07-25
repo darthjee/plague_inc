@@ -2,7 +2,7 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
-    # Model to store deaths of groups 
+    # Model to store deaths of groups
     class Death
       # kills people from a population
       #

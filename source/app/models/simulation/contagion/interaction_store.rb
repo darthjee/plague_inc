@@ -2,12 +2,20 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # Store for all interactions happening in a population
     class InteractionStore
+      # @param contagion_risk [Float] risk of contagion
+      # @param population [Population] population to
+      #   perform interactions
       def initialize(contagion_risk, population)
         @contagion_risk = contagion_risk
         @population     = population
       end
 
+      # Simulate an interaction
+      #
+      # stores the result of the simulation
+      # in the map of interactions and infections
       def interact
         index = next_interaction
         interaction_map[index] += 1
@@ -17,6 +25,11 @@ class Simulation < ApplicationRecord
         infect(index)
       end
 
+      # Returns interactions that should be ignored
+      #
+      # interactions are ignored when a person is
+      # infected, as the rest of its interactions
+      # dont need to be simulated
       def ignored_interactions
         infected_max_interactions - infected_interactions
       end

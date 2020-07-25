@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Class responsible for general application settings
 class Settings
   extend Sinclair::EnvSettable
 

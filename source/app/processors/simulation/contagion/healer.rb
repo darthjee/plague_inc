@@ -6,7 +6,6 @@ class Simulation < ApplicationRecord
     #
     # Heals all populations, ready to be immunized
     class Healer
-
       # Heals all populations, ready to be immunized
       #
       # This is called after all processing of population
