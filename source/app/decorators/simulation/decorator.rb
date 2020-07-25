@@ -3,6 +3,7 @@
 require './app/models/simulation'
 
 class Simulation < ApplicationRecord
+  # {Simulation} decoraror
   class Decorator < ::Decorator
     Simulation::ALLOWED_ATTRIBUTES.each(&method(:expose))
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Base decorator
 class Decorator < Azeroth::Decorator
   expose :errors, if: :invalid?
 
