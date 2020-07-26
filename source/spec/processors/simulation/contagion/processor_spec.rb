@@ -124,21 +124,181 @@ describe Simulation::Contagion::Processor do
       end
     end
 
-    xcontext 'when there is a ready instant' do
-      let!(:ready_instant) do
-        create(:contagion_instant, day: 0, status: :read)
+    context 'when there is a ready instant' do
+      let(:lethality)             { 1 }
+      let(:infected_days)         { 0 }
+      let(:days_till_start_death) { 2 }
+      let(:days_till_recovery)    { 3 }
+
+      let(:created_instant) do
+        contagion.reload.instants.last
       end
 
-      let(:infected_population) do
+      let(:created_populations) do
+        created_instant.populations
+      end
+
+      let(:created_infected_populations) do
+        created_populations.infected
+      end
+
+      let(:created_immune_populations) do
+        created_populations.immune
+      end
+
+      let(:created_dead_populations) do
+        created_populations.dead
+      end
+
+      let!(:ready_instant) do
         create(
-          :contagion_population,
-          group: group,
-          behavior: behavior,
-          size: 1
+          :contagion_instant,
+          day: 0,
+          status: :ready,
+          contagion: contagion
         )
       end
 
-      it 'adds test here'
+      let!(:infected_population) do
+        create(
+          :contagion_population,
+          instant: ready_instant,
+          group: group,
+          behavior: behavior,
+          state: Simulation::Contagion::Population::INFECTED,
+          size: 1,
+          days: infected_days
+        )
+      end
+
+      it 'creates a new instant' do
+        expect { described_class.process(contagion) }
+          .to change { contagion.reload.instants.count }
+          .by(1)
+      end
+
+      context 'when death does not start' do
+        before { described_class.process(contagion) }
+
+        it 'creates a new population from infected' do
+          expect(created_infected_populations)
+            .not_to be_empty
+        end
+
+        it 'does not create a new dead population' do
+          expect(created_dead_populations)
+            .to be_empty
+        end
+
+        it 'does not create a new immune population' do
+          expect(created_immune_populations)
+            .to be_empty
+        end
+
+        it 'creates a new population for infected group' do
+          expect(created_infected_populations.first.group)
+            .to eq(group)
+        end
+
+        it 'creates a new population for infected behavior' do
+          expect(created_infected_populations.first.behavior)
+            .to eq(behavior)
+        end
+
+        it 'increases day counter' do
+          expect(created_infected_populations.first.days)
+            .to eq(infected_population.days + 1)
+        end
+
+        it 'keeps size' do
+          expect(created_infected_populations.first.size)
+            .to eq(infected_population.size)
+        end
+      end
+
+      context 'when death kills everyone' do
+        let(:days_till_start_death) { 1 }
+
+        before { described_class.process(contagion) }
+
+        it 'creates a new infected population' do
+          expect(created_infected_populations)
+            .not_to be_empty
+        end
+
+        it 'creates a new dead population' do
+          expect(created_dead_populations)
+            .not_to be_empty
+        end
+
+        it 'does not create a new immune population' do
+          expect(created_immune_populations)
+            .to be_empty
+        end
+
+        it 'increases day counter' do
+          expect(created_infected_populations.first.days)
+            .to eq(infected_population.days + 1)
+        end
+
+        it 'reduces infected size' do
+          expect(created_infected_populations.first.size)
+            .to be_zero
+        end
+
+        it 'creates a new population for infected group' do
+          expect(created_dead_populations.first.group)
+            .to eq(group)
+        end
+
+        it 'creates a new population for infected behavior' do
+          expect(created_dead_populations.first.behavior)
+            .to eq(behavior)
+        end
+
+        it 'resets day counter' do
+          expect(created_dead_populations.first.days)
+            .to be_zero
+        end
+
+        it 'keeps size' do
+          expect(created_dead_populations.first.size)
+            .to eq(infected_population.size)
+        end
+      end
+
+      context 'when death kills no one and and recovery happens' do
+        let(:days_till_start_death) { 1 }
+        let(:days_till_recovery)    { 1 }
+        let(:lethality)             { 0 }
+
+        before { described_class.process(contagion) }
+
+        it 'does not create a new infected population' do
+          expect(created_infected_populations)
+            .to be_empty
+        end
+
+        it 'does not create a new dead population' do
+          expect(created_dead_populations)
+            .to be_empty
+        end
+
+        it 'creates a new immune population' do
+          expect(created_immune_populations)
+            .not_to be_empty
+        end
+
+        it 'resets day counter' do
+          expect(created_immune_populations.first.days)
+            .to be_zero
+        end
+
+        it 'keeps size' do
+          expect(created_immune_populations.first.size)
+            .to eq(infected_population.size)
+        end
+      end
     end
   end
 end

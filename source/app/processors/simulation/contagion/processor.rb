@@ -25,8 +25,18 @@ class Simulation < ApplicationRecord
       end
 
       def find_or_build_instant
+        return Initializer.process(ready_instant) if any_ready?
+
         instants.find_by(status: :created) ||
           Starter.process(contagion)
+      end
+
+      def ready_instant
+        @ready_instant ||= instants.find_by(status: :ready)
+      end
+
+      def any_ready?
+        ready_instant.present?
       end
     end
   end
