@@ -21,10 +21,12 @@ class Simulation < ApplicationRecord
       end
 
       def instant
-        @instant ||= begin
-                       instants.find_by(status: :created) ||
-                         Starter.process(contagion)
-                     end
+        @instant ||= find_or_build_instant
+      end
+
+      def find_or_build_instant
+        instants.find_by(status: :created) ||
+          Starter.process(contagion)
       end
     end
   end
