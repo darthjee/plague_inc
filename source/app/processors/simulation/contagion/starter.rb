@@ -27,7 +27,7 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :contagion, :instant
+      attr_reader :contagion
 
       def initialize(contagion)
         @contagion = contagion

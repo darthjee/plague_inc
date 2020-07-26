@@ -92,7 +92,7 @@ describe Simulation::Contagion::Processor do
 
       it do
         expect { described_class.process(contagion) }
-          .not_to change { contagion.reload.instants.count }
+          .not_to(change { contagion.reload.instants.count })
       end
 
       it do
@@ -104,7 +104,7 @@ describe Simulation::Contagion::Processor do
 
       it do
         expect { described_class.process(contagion) }
-          .not_to change { created_instant.reload.populations.count }
+          .not_to(change { created_instant.reload.populations.count })
       end
 
       it do
@@ -128,6 +128,7 @@ describe Simulation::Contagion::Processor do
       let!(:ready_instant) do
         create(:contagion_instant, day: 0, status: :read)
       end
+
       let(:infected_population) do
         create(
           :contagion_population,
