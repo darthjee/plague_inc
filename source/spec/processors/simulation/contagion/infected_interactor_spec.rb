@@ -74,7 +74,11 @@ fdescribe Simulation::Contagion::InfectedInteractor do
     let(:contagion_risk) { 1 }
 
     let(:process) do
-      described_class.process(infected_population, new_instant)
+      described_class.process(
+        infected_population,
+        current_instant.populations,
+        new_instant
+      )
     end
 
     context 'when person interacts with itself' do
