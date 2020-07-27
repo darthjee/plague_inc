@@ -10,6 +10,6 @@ class SimulationsController < ApplicationController
   private
 
   def build_simulation
-    Simulation::Builder.build(params, simulations)
+    Simulation::Builder.process(params, simulations)
   end
 end
