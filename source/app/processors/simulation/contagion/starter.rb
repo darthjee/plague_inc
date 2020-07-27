@@ -5,18 +5,17 @@ class Simulation < ApplicationRecord
     # @author darthjee
     #
     # Creates and populates first instant
-    class Starter
+    class Starter < ::Processor
+      # @param simulation [Simulation] simulation
+      #   to be processed
+      def initialize(simulation)
+        @simulation = simulation
+      end
+
       # Creates and populates firts instant
       #
       # Populations are created based on simulation
       # groups
-      #
-      # @param simulation [Simulation] simulation
-      #   to be processed
-      def self.process(simulation)
-        new(simulation).process
-      end
-
       def process
         @instant = instants.create(day: 0)
 
@@ -30,10 +29,6 @@ class Simulation < ApplicationRecord
       private
 
       attr_reader :simulation, :instant
-
-      def initialize(simulation)
-        @simulation = simulation
-      end
 
       delegate :contagion, to: :simulation
       delegate :instants, to: :contagion
