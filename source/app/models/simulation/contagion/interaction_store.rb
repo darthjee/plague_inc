@@ -74,7 +74,7 @@ class Simulation < ApplicationRecord
       end
 
       def random_box
-        @random_box ||= RandomBox.new
+        @random_box ||= RandomBox.instance
       end
 
       def interaction_map
