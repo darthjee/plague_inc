@@ -2,17 +2,22 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
-    class PopulationInfector
-      def self.process()
-        new()
-      end
+    class Interactor
+      include ::Processor
 
       def process
+        instant.status = Instant::PROCESSED
+
+        instant.save
       end
 
       private
 
-      def initialize()
+      attr_reader :instant
+
+      def initialize(instant, new_instant)
+        @instant     = instant
+        @new_instant = new_instant
       end
     end
   end
