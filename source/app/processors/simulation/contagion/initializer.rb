@@ -6,15 +6,15 @@ class Simulation < ApplicationRecord
     #
     # Creates a new instant to start processing
     class Initializer
+      include ::Processor
       # @param instant [Instant] currently processed instant
-      #
+      def initialize(instant)
+        @instant = instant
+      end
+
       # Creates a new instant.copying all not healthy populations
       #
       # @return [Instant] newly built and saved instant
-      def self.process(instant)
-        new(instant).process
-      end
-
       def process
         instant.status = Instant::PROCESSING
 
@@ -31,10 +31,6 @@ class Simulation < ApplicationRecord
       delegate :contagion, to: :instant
       delegate :populations, to: :instant
       delegate :not_healthy, to: :populations
-
-      def initialize(instant)
-        @instant = instant
-      end
 
       def new_instant
         @new_instant ||= contagion.instants.build(

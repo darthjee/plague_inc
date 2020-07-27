@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe Simulation::Builder do
   subject(:simulation) do
-    described_class.build(parameters, collection)
+    described_class.process(parameters, collection)
   end
 
   let(:collection) { Simulation.all }

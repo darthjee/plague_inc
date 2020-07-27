@@ -6,6 +6,7 @@ class Simulation < ApplicationRecord
   # Builds simulation from ActionController::Parameters
   # from a request
   class Builder
+    include ::Processor
     include Arstotzka
 
     expose :simulation, after: :build_simulation
@@ -19,20 +20,20 @@ class Simulation < ApplicationRecord
                         after_each: :build_behavior,
                         default: []
 
+    # @param params [ActionController::Parameters]
+    # @param simulations [Simulation::ActiveRecord_Relation]
+    #   scope of creation
+    def initialize(params, simulations)
+      @params      = params
+      @simulations = simulations
+    end
+
     # Builds one simulatiom from params
     #
     # Simulation will be built within a certain scope
     #
-    # @param params [ActionController::Parameters]
-    # @param simulations [Simulation::ActiveRecord_Relation]
-    #   scope of creation
-    #
     # @return [Simulation]
-    def self.build(params, simulations)
-      new(params, simulations).build
-    end
-
-    def build
+    def process
       groups
       behaviors
       settings
@@ -42,11 +43,6 @@ class Simulation < ApplicationRecord
     private
 
     attr_reader :params, :simulations
-
-    def initialize(params, simulations)
-      @params      = params
-      @simulations = simulations
-    end
 
     def build_simulation(simulation_params)
       build_object(simulation_params, simulations, Simulation)
