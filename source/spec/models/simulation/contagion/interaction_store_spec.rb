@@ -55,16 +55,13 @@ describe Simulation::Contagion::InteractionStore do
         let(:indexes)      { [0, 1, 0, 1, 0, 2] }
         let(:interactions) { 10 }
 
-        # rubocop:disable RSpec/VerifiedDoubles
-        let(:random_box) { double('RandomBox') }
-        # rubocop:enable RSpec/VerifiedDoubles
+        let(:random_box) { RandomBox.instance }
 
         let(:responses) do
           [true, true, true, true, true, false]
         end
 
         before do
-          allow(RandomBox).to receive(:new).and_return(random_box)
           allow(random_box).to receive(:<) { responses.shift }
           allow(random_box).to receive(:person) { indexes.shift }
         end
