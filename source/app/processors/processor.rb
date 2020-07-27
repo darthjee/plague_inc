@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Processor
   private_class_method :new
 
@@ -6,6 +8,6 @@ class Processor
   end
 
   def process
-    fail "Not implemented yet"
+    raise 'Not implemented yet'
   end
 end
