@@ -5,7 +5,12 @@ class Simulation < ApplicationRecord
     # @author darthjee
     #
     # Heals all populations, ready to be immunized
-    class Healer
+    class Healer < ::Processor
+      # @param instant [Instant]
+      def initialize(instant)
+        @instant = instant
+      end
+
       # Heals all populations, ready to be immunized
       #
       # This is called after all processing of population
@@ -13,12 +18,6 @@ class Simulation < ApplicationRecord
       #
       # Only populations ready to be killed (days >= days_till_recovery)
       # are recovered
-      #
-      # @param instant [Instant]
-      def self.process(instant)
-        new(instant).process
-      end
-
       def process
         return unless population
 
@@ -33,10 +32,6 @@ class Simulation < ApplicationRecord
       delegate :contagion, to: :instant
       delegate :days_till_recovery, to: :contagion
       delegate :populations, to: :instant
-
-      def initialize(instant)
-        @instant = instant
-      end
 
       def population
         @population ||= populations.find do |pop|
