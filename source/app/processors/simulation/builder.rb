@@ -5,7 +5,8 @@ class Simulation < ApplicationRecord
   #
   # Builds simulation from ActionController::Parameters
   # from a request
-  class Builder < ::Processor
+  class Builder
+    include ::Processor
     include Arstotzka
 
     expose :simulation, after: :build_simulation

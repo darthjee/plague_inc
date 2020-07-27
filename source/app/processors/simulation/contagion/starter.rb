@@ -5,7 +5,8 @@ class Simulation < ApplicationRecord
     # @author darthjee
     #
     # Creates and populates first instant
-    class Starter < ::Processor
+    class Starter
+      include ::Processor
       # @param simulation [Simulation] simulation
       #   to be processed
       def initialize(simulation)

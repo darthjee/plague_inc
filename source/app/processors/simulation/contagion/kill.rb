@@ -5,7 +5,8 @@ class Simulation < ApplicationRecord
     # @author darthjee
     #
     # Randomly kills people of an infected population
-    class Kill < ::Processor
+    class Kill
+      include ::Processor
       # @param population [Population] population to be killed
       # @param contagion [Contagion] Simulation params
       def initialize(population, contagion)

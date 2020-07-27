@@ -7,7 +7,8 @@ class Simulation < ApplicationRecord
     # @author darthjee
     #
     # Kills people from populations of an instant
-    class Killer < ::Processor
+    class Killer
+      include ::Processor
       # @param instant [Instant] instant to be processed
       def initialize(instant)
         @instant = instant

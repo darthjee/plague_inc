@@ -5,7 +5,8 @@ class Simulation < ApplicationRecord
     # @author darthjee
     #
     # Creates a new instant to start processing
-    class Initializer < ::Processor
+    class Initializer
+      include ::Processor
       # @param instant [Instant] currently processed instant
       def initialize(instant)
         @instant = instant

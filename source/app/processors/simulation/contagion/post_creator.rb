@@ -5,7 +5,8 @@ class Simulation < ApplicationRecord
     # @author darthjee
     #
     # Processor to be run after creation of an instant
-    class PostCreator < ::Processor
+    class PostCreator
+      include ::Processor
       # @param instant [Instant] instant being processed
       def initialize(instant)
         @instant = instant

@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
-class Processor
-  private_class_method :new
+module Processor
+  extend ActiveSupport::Concern
 
-  def self.process(*args)
-    new(*args).process
+  included do
+    private_class_method :new
+
+    def self.process(*args)
+      new(*args).process
+    end
   end
 
   def process

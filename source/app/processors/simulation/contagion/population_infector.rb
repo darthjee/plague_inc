@@ -5,7 +5,8 @@ class Simulation < ApplicationRecord
     # @author darthjee
     #
     # Infect a healthy population
-    class PopulationInfector < ::Processor
+    class PopulationInfector
+      include ::Processor
       # @param instant [Instant] instant where new infected population will
       #   be created
       # @param infected_population [Population] poppulation infecting healthy
