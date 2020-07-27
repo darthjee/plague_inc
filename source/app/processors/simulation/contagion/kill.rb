@@ -5,15 +5,18 @@ class Simulation < ApplicationRecord
     # @author darthjee
     #
     # Randomly kills people of an infected population
-    class Kill
+    class Kill < ::Processor
+      # @param population [Population] population to be killed
+      # @param contagion [Contagion] Simulation params
+      def initialize(population, contagion)
+        @population = population
+        @contagion  = contagion
+      end
+
       # Kills people from an infected population
       #
       # Killings happen by trying ot kill randomly,
       # aiming for the given lethality
-      def self.process(population, contagion)
-        new(population, contagion).process
-      end
-
       def process
         population.size = alive
         current - alive
@@ -23,11 +26,6 @@ class Simulation < ApplicationRecord
 
       attr_reader :population, :contagion
       delegate :lethality, to: :contagion
-
-      def initialize(population, contagion)
-        @population = population
-        @contagion  = contagion
-      end
 
       def alive
         current.times.inject(current) do |people, _|
