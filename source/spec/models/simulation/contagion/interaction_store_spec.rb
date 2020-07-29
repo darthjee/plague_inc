@@ -13,7 +13,8 @@ describe Simulation::Contagion::InteractionStore do
     create(
       :contagion_population,
       behavior: behavior,
-      group: group
+      group: group,
+      interactions: population_interactions
     )
   end
 
@@ -33,8 +34,9 @@ describe Simulation::Contagion::InteractionStore do
     )
   end
 
-  let(:contagion_risk) { 1 }
-  let(:interactions)   { Random.rand(2..10) }
+  let(:contagion_risk)          { 1 }
+  let(:interactions)            { Random.rand(2..10) }
+  let(:population_interactions) { 100 }
 
   describe '#interact' do
     context 'when contagion risk is 100%' do
@@ -70,6 +72,24 @@ describe Simulation::Contagion::InteractionStore do
           expect { times.times { store.interact } }
             .to change(store, :ignored_interactions)
             .by(15)
+        end
+      end
+
+      context 'when population interactions is not enough' do
+        let(:interactions)            { 10 }
+        let(:population_interactions) { 1 }
+
+        let(:random_box) { RandomBox.instance }
+
+        before do
+          allow(random_box).to receive(:<).and_return(0)
+          allow(random_box).to receive(:person).and_return(true)
+        end
+
+        it 'caps ignores on poulation interactions' do
+          expect { store.interact }
+            .to change(store, :ignored_interactions)
+            .by(1)
         end
       end
     end
