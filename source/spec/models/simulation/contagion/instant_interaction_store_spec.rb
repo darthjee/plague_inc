@@ -1,0 +1,89 @@
+# frozen_string_literal: true
+
+require 'spec_helper'
+
+describe Simulation::Contagion::InstantInteractionStore do
+  subject(:store) { described_class.new(instant) }
+
+  let(:random_box)  { RandomBox.instance }
+  let(:simulation)  { create(:simulation) }
+  let(:contagion)   { simulation.contagion }
+  let(:instant)     { create(:contagion_instant, contagion: contagion) }
+  let(:populations) { instant.populations }
+
+  let(:group) do
+    create(
+      :contagion_group,
+      behavior: behavior,
+      contagion: contagion
+    )
+  end
+
+  let(:behavior) do
+    create(
+      :contagion_behavior,
+      contagion: contagion,
+      interactions: behavior_interactions
+    )
+  end
+
+  let!(:infected_population) do
+    create(
+      :contagion_population,
+      :infected,
+      group: group,
+      behavior: behavior,
+      instant: instant,
+      size: infected_size,
+      interactions: infected_interactions
+    )
+  end
+
+  let!(:healthy_population) do
+    create(
+      :contagion_population,
+      :healthy,
+      group: group,
+      behavior: behavior,
+      instant: instant,
+      size: healthy_size
+    )
+  end
+
+  let(:behavior_interactions) { 10 }
+  let(:infected_size)          { 1 }
+  let(:healthy_size)           { 10 }
+  let(:infected_interactions) do
+    infected_size * behavior_interactions - 1
+  end
+  let(:healthy_interactions) do
+    healthy_size * behavior_interactions
+  end
+
+  before do
+    allow(random_box).to receive(:interaction) do
+      random_interactions.shift
+    end
+  end
+
+  context "when random choice falls within healthy population" do
+    let(:random_interactions) { [0] }
+
+    it 'register an interaction for healthy_population' do
+      expect { store.interact }
+        .to change(store, :interaction_map)
+        .to({ healthy_population => 1 })
+    end
+
+    it 'consumes healthy population interactions' do
+      expect { store.interact }
+        .to change { populations[0].interactions }
+        .by(-1)
+    end
+
+    it 'does not persist change' do
+      expect { store.interact }
+        .not_to change { populations.reload[0].interactions }
+    end
+  end
+end
