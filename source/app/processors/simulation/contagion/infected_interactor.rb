@@ -20,7 +20,7 @@ class Simulation < ApplicationRecord
 
       def interaction_store
         @interaction_store ||= InstantInteractionStore.new(
-          instant
+          populations
         )
       end
     end

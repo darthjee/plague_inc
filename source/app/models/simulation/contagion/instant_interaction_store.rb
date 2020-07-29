@@ -3,8 +3,8 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class InstantInteractionStore
-      def initialize(instant)
-        @instant = instant
+      def initialize(populations)
+        @populations = populations
       end
 
       def interact
@@ -17,9 +17,7 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :instant
-
-      delegate :populations, to: :instant
+      attr_reader :populations
 
       def interact_with(population)
         interaction_map[population] += 1

@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Simulation::Contagion::InstantInteractionStore do
-  subject(:store) { described_class.new(instant) }
+  subject(:store) { described_class.new(populations) }
 
   let(:random_box)  { RandomBox.instance }
   let(:simulation)  { create(:simulation) }
