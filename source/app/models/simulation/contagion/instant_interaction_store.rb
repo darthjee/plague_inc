@@ -8,9 +8,7 @@ class Simulation < ApplicationRecord
       end
 
       def interact
-        next_interaction
-        interaction_map[populations[0]] += 1
-        populations[0].interactions -= 1
+        interact_with(next_interaction)
       end
 
       def interaction_map
@@ -23,7 +21,22 @@ class Simulation < ApplicationRecord
 
       delegate :populations, to: :instant
 
+      def interact_with(population)
+        interaction_map[population] += 1
+        population.interactions -= 1
+      end
+
       def next_interaction
+        index = next_interaction_index
+
+        populations.inject(0) do |previous_index, pop|
+          (previous_index + pop.interactions).tap do |max|
+            return pop if index < max
+          end
+        end
+      end
+
+      def next_interaction_index
         random_box.interaction(max_interactions)
       end
 
