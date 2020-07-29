@@ -8,6 +8,7 @@ class Simulation < ApplicationRecord
       end
 
       def interact
+        next_interaction
         interaction_map[populations[0]] += 1
         populations[0].interactions -= 1
       end
@@ -22,12 +23,16 @@ class Simulation < ApplicationRecord
 
       delegate :populations, to: :instant
 
-      def random_box
-        @random_box ||= RandomBox.instance
+      def next_interaction
+        random_box.interaction(max_interactions)
       end
 
       def max_interactions
         populations.map(&:interactions).sum
+      end
+
+      def random_box
+        @random_box ||= RandomBox.instance
       end
     end
   end

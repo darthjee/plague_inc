@@ -59,9 +59,13 @@ describe Simulation::Contagion::InstantInteractionStore do
   let(:healthy_interactions) do
     healthy_size * behavior_interactions
   end
+  let(:total_interactions) do
+    healthy_interactions + infected_interactions
+  end
 
   before do
-    allow(random_box).to receive(:interaction) do
+    allow(random_box)
+      .to receive(:interaction) do
       random_interactions.shift
     end
   end
@@ -84,6 +88,44 @@ describe Simulation::Contagion::InstantInteractionStore do
     it 'does not persist change' do
       expect { store.interact }
         .not_to change { populations.reload[0].interactions }
+    end
+
+    it do
+      store.interact
+
+      expect(random_box)
+        .to have_received(:interaction)
+        .with(total_interactions).once
+    end
+  end
+
+  context "when random choice falls within infected population" do
+    let(:random_interactions) { [healthy_interactions] }
+    let(:infected_size)       { 2 }
+
+    it 'register an interaction for healthy_population' do
+      expect { store.interact }
+        .to change(store, :interaction_map)
+        .to({ infected_population => 1 })
+    end
+
+    it 'consumes infected population interactions' do
+      expect { store.interact }
+        .to change { populations[1].interactions }
+        .by(-1)
+    end
+
+    it 'does not persist change' do
+      expect { store.interact }
+        .not_to change { populations.reload[1].interactions }
+    end
+
+    it do
+      store.interact
+
+      expect(random_box)
+        .to have_received(:interaction)
+        .with(total_interactions).once
     end
   end
 end
