@@ -31,7 +31,10 @@ class Simulation < ApplicationRecord
       # infected, as the rest of its interactions
       # dont need to be simulated
       def ignored_interactions
-        infected_max_interactions - infected_interactions
+        [
+          infected_max_interactions - infected_interactions,
+          population.interactions
+        ].min
       end
 
       def infected

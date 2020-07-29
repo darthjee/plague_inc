@@ -44,9 +44,8 @@ class Simulation < ApplicationRecord
                to: :interaction_store
 
       def update_healthy
-        healthy.interactions -= ignored_interactions
         healthy.new_infections += infected
-        healthy.interactions = 0 if healthy.interactions.negative?
+        healthy.interactions -= ignored_interactions
       end
 
       def build_population
