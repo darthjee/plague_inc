@@ -70,7 +70,7 @@ describe Simulation::Contagion::InstantInteractionStore do
     end
   end
 
-  context "when random choice falls within healthy population" do
+  context 'when random choice falls within healthy population' do
     let(:random_interactions) { [healthy_interactions - 1] }
 
     it 'register an interaction for healthy_population' do
@@ -87,7 +87,7 @@ describe Simulation::Contagion::InstantInteractionStore do
 
     it 'does not persist change' do
       expect { store.interact }
-        .not_to change { populations.reload[0].interactions }
+        .not_to(change { populations.reload[0].interactions })
     end
 
     it do
@@ -99,7 +99,7 @@ describe Simulation::Contagion::InstantInteractionStore do
     end
   end
 
-  context "when random choice falls within infected population" do
+  context 'when random choice falls within infected population' do
     let(:random_interactions) { [healthy_interactions] }
     let(:infected_size)       { 2 }
 
@@ -117,7 +117,7 @@ describe Simulation::Contagion::InstantInteractionStore do
 
     it 'does not persist change' do
       expect { store.interact }
-        .not_to change { populations.reload[1].interactions }
+        .not_to(change { populations.reload[1].interactions })
     end
 
     it do
@@ -158,7 +158,7 @@ describe Simulation::Contagion::InstantInteractionStore do
 
       it 'does not persist change on healthy population' do
         expect { 2.times { store.interact } }
-          .not_to change { populations.reload[0].interactions }
+          .not_to(change { populations.reload[0].interactions })
       end
 
       it 'consumes infected population interactions' do
@@ -169,7 +169,7 @@ describe Simulation::Contagion::InstantInteractionStore do
 
       it 'does not persist change on infected population' do
         expect { 2.times { store.interact } }
-          .not_to change { populations.reload[1].interactions }
+          .not_to(change { populations.reload[1].interactions })
       end
 
       it do
