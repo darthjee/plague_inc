@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::InfectedInteractor do
+describe Simulation::Contagion::InfectedInteractor do
   describe '.process' do
     let(:simulation) do
       build(:simulation, contagion: nil).tap do |sim|
