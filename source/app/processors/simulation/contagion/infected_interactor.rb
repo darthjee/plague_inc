@@ -6,15 +6,24 @@ class Simulation < ApplicationRecord
       include ::Processor
 
       def process
+        loop do
+          break if population.interactions.zero?
+          population.interactions -= 1
+          interaction_store.interact
+        end
+
+        instant.save
       end
 
       private
 
-      attr_reader :population, :populations, :new_instant
+      attr_reader :population, :instant, :new_instant
 
-      def initialize(population, populations, new_instant)
+      delegate :populations, to: :instant
+
+      def initialize(population, instant, new_instant)
         @population  = population
-        @populations = populations
+        @instant = instant
         @new_instant = new_instant
       end
 

@@ -66,6 +66,9 @@ describe Simulation::Contagion::InfectedInteractor do
       )
     end
 
+    let(:selected_population) { populations.find(&:infected?) }
+    let(:populations)         { current_instant.populations }
+
     let(:random_box)     { RandomBox.instance }
     let(:day)            { 0 }
     let(:infected)       { 1 }
@@ -75,8 +78,8 @@ describe Simulation::Contagion::InfectedInteractor do
 
     let(:process) do
       described_class.process(
-        infected_population,
-        current_instant.populations,
+        selected_population,
+        current_instant,
         new_instant
       )
     end
