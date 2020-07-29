@@ -12,7 +12,16 @@ class Simulation < ApplicationRecord
           interaction_store.interact
         end
 
-        instant.save
+        interaction_store.interaction_map.each do |pop, interactions|
+          next unless pop.healthy?
+
+          PopulationInfector.process(new_instant, population, pop, interactions)
+        end
+
+        ActiveRecord::Base.transaction do
+          instant.save
+          new_instant.save
+        end
       end
 
       private
