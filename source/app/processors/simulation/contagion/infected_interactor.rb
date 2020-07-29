@@ -6,17 +6,8 @@ class Simulation < ApplicationRecord
       include ::Processor
 
       def process
-        loop do
-          break if population.interactions.zero?
-          population.interactions -= 1
-          interaction_store.interact
-        end
-
-        interaction_store.interaction_map.each do |pop, interactions|
-          next unless pop.healthy?
-
-          PopulationInfector.process(new_instant, population, pop, interactions)
-        end
+        interact
+        infect
 
         ActiveRecord::Base.transaction do
           instant.save
@@ -29,11 +20,29 @@ class Simulation < ApplicationRecord
       attr_reader :population, :instant, :new_instant
 
       delegate :populations, to: :instant
+      delegate :interaction_map, to: :interaction_store
 
       def initialize(population, instant, new_instant)
-        @population  = population
+        @population = population
         @instant = instant
         @new_instant = new_instant
+      end
+
+      def interact
+        loop do
+          break if population.interactions.zero?
+
+          population.interactions -= 1
+          interaction_store.interact
+        end
+      end
+
+      def infect
+        interaction_map.each do |pop, interactions|
+          next unless pop.healthy?
+
+          PopulationInfector.process(new_instant, population, pop, interactions)
+        end
       end
 
       def interaction_store

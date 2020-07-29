@@ -35,8 +35,8 @@ describe Simulation::Contagion::InfectedInteractor do
       create(
         :contagion_behavior,
         contagion: contagion,
-       interactions: interactions,
-       contagion_risk: contagion_risk
+        interactions: interactions,
+        contagion_risk: contagion_risk
       )
     end
 
@@ -61,7 +61,6 @@ describe Simulation::Contagion::InfectedInteractor do
         instant: current_instant,
         group: group,
         size: 1,
-        interactions: interactions,
         state: :infected
       )
     end
@@ -96,7 +95,6 @@ describe Simulation::Contagion::InfectedInteractor do
       let!(:healthy_population) do
         create(
           :contagion_population,
-          interactions: interactions,
           instant: current_instant,
           group: group,
           size: healthy_size,
@@ -106,6 +104,19 @@ describe Simulation::Contagion::InfectedInteractor do
       end
 
       let(:healthy_size) { 10 }
+      let(:new_infected_population) do
+        new_instant
+          .reload.populations
+          .infected.find_by(days: 0)
+      end
+
+      let(:population_creation_check) do
+        proc do
+          new_instant
+            .reload.populations.infected
+            .where(days: 0).count
+        end
+      end
 
       it 'consumes infected interactions' do
         expect { process }
@@ -115,10 +126,20 @@ describe Simulation::Contagion::InfectedInteractor do
 
       it 'infects some healthy people' do
         expect { process }
-          .to change { 
-          new_instant.reload.populations.infected
-            .where(days: 0).count
-        }.by(1)
+          .to change(&population_creation_check)
+          .by(1)
+      end
+
+      it 'register new infections' do
+        expect { process }
+          .to(change { healthy_population.reload.new_infections })
+      end
+
+      it 'register new infections as they were infected' do
+        process
+
+        expect(healthy_population.reload.new_infections)
+          .to eq(new_infected_population.size)
       end
     end
   end
