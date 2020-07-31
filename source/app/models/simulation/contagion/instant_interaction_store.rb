@@ -8,6 +8,8 @@ class Simulation < ApplicationRecord
       end
 
       def interact
+        return unless has_interactions?
+
         interact_with(next_interaction)
       end
 
@@ -22,6 +24,7 @@ class Simulation < ApplicationRecord
       def interact_with(population)
         interaction_map[population] += 1
         population.interactions -= 1
+        @max_interactions -= 2
       end
 
       def next_interaction
@@ -38,8 +41,12 @@ class Simulation < ApplicationRecord
         random_box.interaction(max_interactions)
       end
 
+      def has_interactions?
+        max_interactions > 0
+      end
+
       def max_interactions
-        populations.map(&:interactions).sum
+        @max_interactions ||= populations.map(&:interactions).sum
       end
 
       def random_box

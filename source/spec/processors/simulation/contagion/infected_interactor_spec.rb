@@ -89,6 +89,16 @@ describe Simulation::Contagion::InfectedInteractor do
           .to change { infected_population.reload.interactions }
           .to(0)
       end
+
+      context 'when there is only one interaction left' do
+        let(:interactions) { 1 }
+
+        it 'consumes infected interactions' do
+          expect { process }
+            .to change { infected_population.reload.interactions }
+            .to(0)
+        end
+      end
     end
 
     context 'when there is a healthy population' do
