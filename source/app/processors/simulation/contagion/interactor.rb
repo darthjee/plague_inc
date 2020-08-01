@@ -6,9 +6,6 @@ class Simulation < ApplicationRecord
       include ::Processor
 
       def process
-        instant.status = Instant::PROCESSED
-        new_instant.status = Instant::READY
-
         infected_populations.each do |population|
           InfectedInteractor.process(
             population,
@@ -16,6 +13,9 @@ class Simulation < ApplicationRecord
             new_instant
           )
         end
+
+        instant.status = Instant::PROCESSED
+        new_instant.status = Instant::READY
 
         ActiveRecord::Base.transaction do
           instant.save

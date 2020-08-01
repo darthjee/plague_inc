@@ -238,5 +238,85 @@ describe Simulation::Contagion::Interactor do
           .by(2 * healthy_size)
       end
     end
+
+    fcontext 'when one population has been processed already' do
+      let(:healthy_size)  { infected_size }
+      let(:infected_size) { 2 * Random.rand(3..10) }
+
+      before do
+        create(
+          :contagion_population, :infected,
+          interactions: 0,
+          instant: current_instant,
+          group: second_group,
+          size: infected_size,
+          behavior: behavior
+        )
+        create(
+          :contagion_population, :healthy,
+          interactions: healthy_interactions / 2,
+          instant: current_instant,
+          group: group,
+          size: healthy_size,
+          behavior: behavior,
+          new_infections: healthy_size / 2
+        )
+        create(
+          :contagion_population, :healthy,
+          interactions: healthy_interactions / 2,
+          instant: current_instant,
+          group: second_group,
+          size: healthy_size,
+          behavior: behavior,
+          new_infections: healthy_size / 2
+        )
+
+        create(
+          :contagion_population, :infected,
+          interactions: healthy_interactions / 2,
+          instant: new_instant,
+          group: group,
+          size: healthy_size / 2,
+          behavior: behavior
+        )
+        create(
+          :contagion_population, :infected,
+          interactions: healthy_interactions / 2,
+          instant: new_instant,
+          group: second_group,
+          size: healthy_size / 2,
+          behavior: behavior
+        )
+      end
+
+      before do
+        allow(random_box).to receive(:interaction) do |max|
+          max - 1
+        end
+      end
+
+      it 'consumes interactions' do
+        expect { described_class.process(current_instant, new_instant) }
+          .to change { infected_population_query.reload.sum(:interactions) }
+          .to(0)
+      end
+
+      it 'does not create new populations' do
+        expect { described_class.process(current_instant, new_instant) }
+          .not_to change{ new_instant.populations.reload.count }
+      end
+
+      it 'increases infected populations size' do
+        expect { described_class.process(current_instant, new_instant) }
+          .to change{ new_instant.populations.reload.sum(:size) }
+          .by(healthy_size)
+      end
+
+      it 'increases infected populations interactions' do
+        expect { described_class.process(current_instant, new_instant) }
+          .to change{ new_instant.populations.reload.sum(:interactions) }
+          .by(healthy_interactions)
+      end
+    end
   end
 end
