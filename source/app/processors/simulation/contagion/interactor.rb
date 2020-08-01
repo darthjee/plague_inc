@@ -9,6 +9,12 @@ class Simulation < ApplicationRecord
         instant.status = Instant::PROCESSED
         new_instant.status = Instant::READY
 
+        InfectedInteractor.process(
+          instant.populations.select(&:infected?).first,
+          instant,
+          new_instant
+        )
+
         ActiveRecord::Base.transaction do
           instant.save
           new_instant.save
