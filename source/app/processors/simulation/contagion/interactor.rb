@@ -7,13 +7,17 @@ class Simulation < ApplicationRecord
 
       def process
         instant.status = Instant::PROCESSED
+        new_instant.status = Instant::READY
 
-        instant.save
+        ActiveRecord::Base.transaction do
+          instant.save
+          new_instant.save
+        end
       end
 
       private
 
-      attr_reader :instant
+      attr_reader :instant, :new_instant
 
       def initialize(instant, new_instant)
         @instant     = instant
