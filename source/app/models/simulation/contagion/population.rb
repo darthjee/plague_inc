@@ -20,6 +20,7 @@ class Simulation < ApplicationRecord
       scope :immune,      -> { where(state: IMMUNE) }
       scope :not_healthy, -> { where.not(state: HEALTHY) }
       scope :alive,       -> { where.not(state: DEAD) }
+      default_scope          { order(id: :asc) }
 
       belongs_to :instant
       belongs_to :group
