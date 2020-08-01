@@ -183,5 +183,60 @@ describe Simulation::Contagion::Interactor do
           .not_to change{ new_instant.populations.reload.sum(:size) }
       end
     end
+
+    context 'when there are other populations' do
+      let(:healthy_size) { infected_size }
+
+      before do
+        create(
+          :contagion_population, :infected,
+          interactions: infected_interactions,
+          instant: current_instant,
+          group: second_group,
+          size: infected_size,
+          behavior: behavior
+        )
+        create(
+          :contagion_population, :healthy,
+          interactions: healthy_interactions,
+          instant: current_instant,
+          group: group,
+          size: healthy_size,
+          behavior: behavior,
+        )
+        create(
+          :contagion_population, :healthy,
+          interactions: healthy_interactions,
+          instant: current_instant,
+          group: second_group,
+          size: healthy_size,
+          behavior: behavior
+        )
+      end
+
+      before do
+        allow(random_box).to receive(:interaction) do |max|
+          max - 1
+        end
+      end
+
+      it do
+        expect { described_class.process(current_instant, new_instant) }
+          .to change { infected_population_query.reload.sum(:interactions) }
+          .to(0)
+      end
+
+      it 'creates a new population for the healthy population' do
+        expect { described_class.process(current_instant, new_instant) }
+          .to change{ new_instant.populations.reload.count }
+          .by(2)
+      end
+
+      it 'increases infected populations size' do
+        expect { described_class.process(current_instant, new_instant) }
+          .to change{ new_instant.populations.reload.sum(:size) }
+          .by(2 * healthy_size)
+      end
+    end
   end
 end
