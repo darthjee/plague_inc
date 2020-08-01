@@ -24,7 +24,6 @@ class Simulation < ApplicationRecord
       def interact_with(population)
         interaction_map[population] += 1
         population.interactions -= 1
-        @max_interactions -= 2
       end
 
       def next_interaction
@@ -46,7 +45,7 @@ class Simulation < ApplicationRecord
       end
 
       def max_interactions
-        @max_interactions ||= populations.map(&:interactions).sum
+        populations.map(&:interactions).sum
       end
 
       def random_box

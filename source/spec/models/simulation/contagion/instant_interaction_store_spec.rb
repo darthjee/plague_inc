@@ -185,7 +185,7 @@ describe Simulation::Contagion::InstantInteractionStore do
 
         expect(random_box)
           .to have_received(:interaction)
-          .with(total_interactions - 2).once
+          .with(total_interactions - 1).once
       end
     end
   end

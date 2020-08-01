@@ -45,6 +45,10 @@ class Simulation < ApplicationRecord
         end
       end
 
+      def populations
+        @populations ||= instant.populations.reject(&:dead?)
+      end
+
       def interaction_store
         @interaction_store ||= InstantInteractionStore.new(
           populations

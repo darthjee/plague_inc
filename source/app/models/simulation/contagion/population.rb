@@ -66,6 +66,10 @@ class Simulation < ApplicationRecord
       def healthy?
         state == HEALTHY
       end
+
+      def dead?
+        state == DEAD
+      end
     end
   end
 end

@@ -60,6 +60,7 @@ describe Simulation::Contagion::InfectedInteractor do
         interactions: interactions,
         instant: current_instant,
         group: group,
+        behavior: behavior,
         size: 1,
         state: :infected
       )
@@ -68,7 +69,6 @@ describe Simulation::Contagion::InfectedInteractor do
     let(:selected_population) { populations.find(&:infected?) }
     let(:populations)         { current_instant.populations }
 
-    let(:random_box)     { RandomBox.instance }
     let(:day)            { 0 }
     let(:infected)       { 1 }
     let(:interactions)   { 10 }
@@ -109,6 +109,7 @@ describe Simulation::Contagion::InfectedInteractor do
           group: group,
           size: healthy_size,
           interactions: healthy_size * interactions,
+          behavior: behavior,
           state: :healthy
         )
       end
@@ -150,6 +151,51 @@ describe Simulation::Contagion::InfectedInteractor do
 
         expect(healthy_population.reload.new_infections)
           .to eq(new_infected_population.size)
+      end
+    end
+
+    context 'when there is a dead population' do
+      let!(:healthy_population) do
+        create(
+          :contagion_population, :healthy,
+          instant: current_instant,
+          group: group,
+          size: healthy_size,
+          interactions: healthy_size * interactions,
+          behavior: behavior,
+        )
+      end
+
+      let!(:dead_population) do
+        create(
+          :contagion_population, :dead,
+          instant: current_instant,
+          group: group,
+          size: healthy_size * 100,
+          interactions: healthy_size * interactions * 100,
+          behavior: behavior
+        )
+      end
+
+
+      let(:healthy_size) { 100 }
+      let(:interactions) { 1 }
+
+      it 'consumes infected interactions' do
+        expect { process }
+          .to change { infected_population.reload.interactions }
+          .to(0)
+      end
+
+      it 'consumes healthy population interactions' do
+        expect { process }
+          .to change { healthy_population.reload.interactions }
+          .by(-1)
+      end
+
+      it 'register new infections' do
+        expect { process }
+          .to change { healthy_population.reload.new_infections }.by(1)
       end
     end
   end
