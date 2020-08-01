@@ -31,6 +31,15 @@ describe Simulation::Contagion::Interactor do
       )
     end
 
+    let(:second_group) do
+      create(
+        :contagion_group,
+        infected: infected,
+        behavior: behavior,
+        contagion: contagion
+      )
+    end
+
     let!(:behavior) do
       create(
         :contagion_behavior,
@@ -144,10 +153,34 @@ describe Simulation::Contagion::Interactor do
         expect { described_class.process(current_instant, new_instant) }
           .to change { healthy_population.reload.interactions }
       end
+    end
 
-      it 'create new infected populations' do
+    context 'when there is a another infected population' do
+      let!(:second_population) do
+        create(
+          :contagion_population, :infected,
+          interactions: infected_interactions,
+          instant: current_instant,
+          group: second_group,
+          size: infected_size,
+          behavior: behavior
+        )
+      end
+
+      it do
         expect { described_class.process(current_instant, new_instant) }
-          .to change { healthy_population.reload.interactions }
+          .to change { infected_population_query.reload.sum(:interactions) }
+          .to(0)
+      end
+
+      it 'does not create a new population' do
+        expect { described_class.process(current_instant, new_instant) }
+          .not_to change{ new_instant.populations.reload.count }
+      end
+
+      it 'does not increase infected populations size' do
+        expect { described_class.process(current_instant, new_instant) }
+          .not_to change{ new_instant.populations.reload.sum(:size) }
       end
     end
   end

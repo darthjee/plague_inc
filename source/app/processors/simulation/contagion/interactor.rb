@@ -9,11 +9,13 @@ class Simulation < ApplicationRecord
         instant.status = Instant::PROCESSED
         new_instant.status = Instant::READY
 
-        InfectedInteractor.process(
-          instant.populations.select(&:infected?).first,
-          instant,
-          new_instant
-        )
+        infected_populations.each do |population|
+          InfectedInteractor.process(
+            population,
+            instant,
+            new_instant
+          )
+        end
 
         ActiveRecord::Base.transaction do
           instant.save
@@ -28,6 +30,10 @@ class Simulation < ApplicationRecord
       def initialize(instant, new_instant)
         @instant     = instant
         @new_instant = new_instant
+      end
+
+      def infected_populations
+        instant.populations.select(&:infected?)
       end
     end
   end
