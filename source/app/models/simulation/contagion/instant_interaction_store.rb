@@ -8,7 +8,7 @@ class Simulation < ApplicationRecord
       end
 
       def interact
-        return unless has_interactions?
+        return unless interactions?
 
         interact_with(next_interaction)
       end
@@ -40,8 +40,8 @@ class Simulation < ApplicationRecord
         random_box.interaction(max_interactions)
       end
 
-      def has_interactions?
-        max_interactions > 0
+      def interactions?
+        max_interactions.positive?
       end
 
       def max_interactions

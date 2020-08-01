@@ -162,7 +162,7 @@ describe Simulation::Contagion::InfectedInteractor do
           group: group,
           size: healthy_size,
           interactions: healthy_size * interactions,
-          behavior: behavior,
+          behavior: behavior
         )
       end
 
@@ -176,7 +176,6 @@ describe Simulation::Contagion::InfectedInteractor do
           behavior: behavior
         )
       end
-
 
       let(:healthy_size) { 100 }
       let(:interactions) { 1 }
@@ -196,6 +195,11 @@ describe Simulation::Contagion::InfectedInteractor do
       it 'register new infections' do
         expect { process }
           .to change { healthy_population.reload.new_infections }.by(1)
+      end
+
+      it 'does not consumes dead populations interactions' do
+        expect { process }
+          .not_to(change { dead_population.reload.interactions })
       end
     end
   end
