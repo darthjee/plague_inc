@@ -8,9 +8,11 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        Initializer.process(instant).tap do
-          instant.update(status: Instant::PROCESSED)
-        end
+        Contagion::Interactor.process(instant, new_instant)
+
+        instant.update(status: Instant::PROCESSED)
+
+        new_instant
       end
 
       private
@@ -19,6 +21,10 @@ class Simulation < ApplicationRecord
 
       def initialize(instant)
         @instant = instant
+      end
+
+      def new_instant
+        @new_instant ||= Initializer.process(instant)
       end
     end
   end

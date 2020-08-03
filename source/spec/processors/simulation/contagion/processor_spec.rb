@@ -33,7 +33,11 @@ describe Simulation::Contagion::Processor do
   end
 
   let!(:behavior) do
-    create(:contagion_behavior, contagion: contagion)
+    create(
+      :contagion_behavior,
+      contagion: contagion,
+      interactions: interactions
+    )
   end
 
   let(:instant) { contagion.reload.instants.last }
@@ -41,6 +45,10 @@ describe Simulation::Contagion::Processor do
   let(:days_till_start_death) { 0 }
   let(:days_till_recovery)    { 1 }
   let(:infected)              { 1 }
+  let(:interactions)          { 10 }
+  let(:infected_interactions) do
+    infected_size * interactions
+  end
 
   before { contagion.reload }
 
@@ -129,6 +137,7 @@ describe Simulation::Contagion::Processor do
       let(:infected_days)         { 0 }
       let(:days_till_start_death) { 2 }
       let(:days_till_recovery)    { 3 }
+      let(:infected_size)         { 1 }
 
       let(:created_instant) do
         contagion.reload.instants.last
@@ -165,8 +174,9 @@ describe Simulation::Contagion::Processor do
           instant: ready_instant,
           group: group,
           behavior: behavior,
-          size: 1,
-          days: infected_days
+          size: infected_size,
+          days: infected_days,
+          interactions: infected_interactions
         )
       end
 
@@ -227,6 +237,11 @@ describe Simulation::Contagion::Processor do
           expect(created_infected_populations.first.size)
             .to eq(infected_population.size)
         end
+
+        it 'consumes infected interaction' do
+          infected = ready_instant.reload.populations.infected
+          expect(infected.sum(:interactions)).to be_zero
+        end
       end
 
       context 'when death kills everyone' do
@@ -278,6 +293,11 @@ describe Simulation::Contagion::Processor do
           expect(created_dead_populations.first.size)
             .to eq(infected_population.size)
         end
+
+        it 'consumes infected interaction' do
+          infected = ready_instant.reload.populations.infected
+          expect(infected.sum(:interactions)).to be_zero
+        end
       end
 
       context 'when death kills no one and and recovery happens' do
@@ -310,6 +330,56 @@ describe Simulation::Contagion::Processor do
         it 'keeps size' do
           expect(created_immune_populations.first.size)
             .to eq(infected_population.size)
+        end
+
+        it 'consumes infected interaction' do
+          infected = ready_instant.reload.populations.infected
+          expect(infected.sum(:interactions)).to be_zero
+        end
+      end
+
+      context 'when there is a healthy and an infected population' do
+        let(:infected_size) { Random.rand(3..10) }
+        let(:healthy_size)  { Random.rand(20..30) }
+        let(:healthy_interactions) do
+          healthy_size * interactions
+        end
+
+        let!(:healthy_population) do
+          create(
+            :contagion_population, :healthy,
+            instant: ready_instant,
+            group: group,
+            behavior: behavior,
+            size: healthy_size,
+            interactions: healthy_interactions,
+            days: 0
+          )
+        end
+
+        let(:infected_populations) do
+          ready_instant.reload.populations.infected
+        end
+
+        let(:healthy_populations) do
+          ready_instant.reload.populations.healthy
+        end
+
+        it 'consumes infected interaction' do
+          expect { described_class.process(contagion) }
+            .to change { infected_populations.sum(:interactions) }
+            .to(0)
+        end
+
+        it 'consumes healthy interaction' do
+          expect { described_class.process(contagion) }
+            .to change { healthy_populations.sum(:interactions) }
+        end
+
+        it 'creates a new instant' do
+          expect { described_class.process(contagion) }
+            .to change { contagion.reload.instants.count }
+            .by(1)
         end
       end
     end
