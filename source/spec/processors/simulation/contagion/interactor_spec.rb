@@ -113,12 +113,12 @@ describe Simulation::Contagion::Interactor do
 
       it 'does not create a new population' do
         expect { described_class.process(current_instant, new_instant) }
-          .not_to change{ new_instant.populations.reload.count }
+          .not_to change { new_instant.populations.reload.count }
       end
 
       it 'does not increase infected populations size' do
         expect { described_class.process(current_instant, new_instant) }
-          .not_to change{ new_instant.populations.reload.sum(:size) }
+          .not_to change { new_instant.populations.reload.sum(:size) }
       end
     end
 
@@ -142,13 +142,13 @@ describe Simulation::Contagion::Interactor do
 
       it 'creates a new population' do
         expect { described_class.process(current_instant, new_instant) }
-          .to change{ new_instant.populations.reload.count }
+          .to change { new_instant.populations.reload.count }
           .by(1)
       end
 
       it 'increase infected populations size' do
         expect { described_class.process(current_instant, new_instant) }
-          .to change{ new_instant.populations.reload.sum(:size) }
+          .to change { new_instant.populations.reload.sum(:size) }
       end
 
       it 'consumes interactions from healthy population' do
@@ -177,12 +177,12 @@ describe Simulation::Contagion::Interactor do
 
       it 'does not create a new population' do
         expect { described_class.process(current_instant, new_instant) }
-          .not_to change{ new_instant.populations.reload.count }
+          .not_to change { new_instant.populations.reload.count }
       end
 
       it 'does not increase infected populations size' do
         expect { described_class.process(current_instant, new_instant) }
-          .not_to change{ new_instant.populations.reload.sum(:size) }
+          .not_to change { new_instant.populations.reload.sum(:size) }
       end
     end
 
@@ -205,7 +205,7 @@ describe Simulation::Contagion::Interactor do
           instant: current_instant,
           group: group,
           size: healthy_size,
-          behavior: behavior,
+          behavior: behavior
         )
         create(
           :contagion_population, :healthy,
@@ -229,13 +229,13 @@ describe Simulation::Contagion::Interactor do
 
       it 'creates a new population for the healthy population' do
         expect { described_class.process(current_instant, new_instant) }
-          .to change{ new_instant.populations.reload.count }
+          .to change { new_instant.populations.reload.count }
           .by(2)
       end
 
       it 'increases infected populations size' do
         expect { described_class.process(current_instant, new_instant) }
-          .to change{ new_instant.populations.reload.sum(:size) }
+          .to change { new_instant.populations.reload.sum(:size) }
           .by(2 * healthy_size)
       end
     end
@@ -303,18 +303,18 @@ describe Simulation::Contagion::Interactor do
 
       it 'does not create new populations' do
         expect { described_class.process(current_instant, new_instant) }
-          .not_to change{ new_instant.populations.reload.count }
+          .not_to change { new_instant.populations.reload.count }
       end
 
       it 'increases infected populations size' do
         expect { described_class.process(current_instant, new_instant) }
-          .to change{ new_instant.populations.reload.sum(:size) }
+          .to change { new_instant.populations.reload.sum(:size) }
           .by(healthy_size)
       end
 
       it 'increases infected populations interactions' do
         expect { described_class.process(current_instant, new_instant) }
-          .to change{ new_instant.populations.reload.sum(:interactions) }
+          .to change { new_instant.populations.reload.sum(:interactions) }
           .by(healthy_interactions)
       end
     end
