@@ -239,7 +239,7 @@ describe Simulation::Contagion::Interactor do
       end
     end
 
-    fcontext 'when one population has been processed already' do
+    context 'when one population has been processed already' do
       let(:healthy_size)  { infected_size }
       let(:infected_size) { 2 * Random.rand(3..10) }
 

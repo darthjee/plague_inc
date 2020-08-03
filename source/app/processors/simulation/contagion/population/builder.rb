@@ -42,15 +42,23 @@ class Simulation < ApplicationRecord
         delegate :infected, :healthy, to: :group
 
         def built_population
-          @built_population ||= scope.first_or_initialize
+          @built_population ||= find || build_population
         end
 
         def size
           @size ||= population ? population.size : public_send(state)
         end
 
-        def scope
-          instant.populations.where(
+        def find
+          instant.populations.find do |pop|
+            pop.group == group &&
+              pop.state == state &&
+              pop.days == days
+          end
+        end
+
+        def build_population
+          instant.populations.build(
             group: group,
             state: state,
             days: days

@@ -256,6 +256,12 @@ describe Simulation::Contagion::Population::Builder do
           expect(population.size)
             .to eq(size + initial_size)
         end
+
+        it 'changes instantce population size' do
+          expect { population }
+            .to change { instant.populations.first.size }
+            .by(size)
+        end
       end
     end
   end
