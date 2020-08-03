@@ -72,7 +72,7 @@ describe Simulation::Contagion::Processor do
 
         it 'builds and kills' do
           expect(instant.populations.map(&:state))
-            .to eq(%w[dead healthy infected])
+            .to eq(%w[healthy infected dead])
         end
 
         it 'persists all populations' do
