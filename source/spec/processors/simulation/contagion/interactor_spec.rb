@@ -44,7 +44,8 @@ describe Simulation::Contagion::Interactor do
       create(
         :contagion_behavior,
         contagion: contagion,
-        interactions: interactions
+        interactions: interactions,
+        contagion_risk: contagion_risk
       )
     end
 
@@ -73,12 +74,13 @@ describe Simulation::Contagion::Interactor do
       )
     end
 
-    let(:random_box)    { RandomBox.instance }
-    let(:day)           { 0 }
-    let(:infected)      { 1 }
-    let(:lethality)     { 1 }
-    let(:infected_size) { Random.rand(3..10) }
-    let(:interactions)  { Random.rand(1..10) }
+    let(:random_box)     { RandomBox.instance }
+    let(:day)            { 0 }
+    let(:infected)       { 1 }
+    let(:lethality)      { 1 }
+    let(:infected_size)  { Random.rand(3..10) }
+    let(:interactions)   { Random.rand(1..10) }
+    let(:contagion_risk) { Random.rand(0.2..0.8) }
 
     let(:infected_interactions) { infected_size * interactions }
     let(:healthy_size)          { 100 * infected_size }
@@ -288,6 +290,8 @@ describe Simulation::Contagion::Interactor do
           behavior: behavior
         )
       end
+
+      let(:contagion_risk) { 1 }
 
       before do
         allow(random_box).to receive(:interaction) do |max|
