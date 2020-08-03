@@ -29,7 +29,7 @@ class Simulation < ApplicationRecord
       end
 
       def interact
-        loop do
+        Settings.interaction_block_size.times do
           break if population.interactions.zero?
 
           population.interactions -= 1

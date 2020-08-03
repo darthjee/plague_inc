@@ -101,6 +101,20 @@ describe Simulation::Contagion::InfectedInteractor do
       end
     end
 
+    context 'when interactions are above interaction_block_size' do
+      let(:block_size) { 2 }
+
+      before do
+        allow(Settings).to receive(:interaction_block_size).and_return(block_size)
+      end
+
+      it 'consumes some infected interactions' do
+        expect { process }
+          .to change { infected_population.reload.interactions }
+          .by(-2 * block_size)
+      end
+    end
+
     context 'when there is a healthy population' do
       let!(:healthy_population) do
         create(
