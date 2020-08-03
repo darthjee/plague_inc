@@ -40,7 +40,9 @@ class Simulation < ApplicationRecord
       end
 
       def infected_populations
-        instant.populations.select(&:infected?)
+        instant.populations
+          .select(&:infected?)
+          .select(&:interactions?)
       end
     end
   end

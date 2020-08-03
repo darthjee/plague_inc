@@ -71,6 +71,10 @@ class Simulation < ApplicationRecord
       def dead?
         state == DEAD
       end
+
+      def interactions?
+        interactions.positive?
+      end
     end
   end
 end
