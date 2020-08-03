@@ -5,11 +5,23 @@ FactoryBot.define do
     instant  { build(:contagion_instant) }
     group    { build(:contagion_group) }
     behavior { build(:contagion_behavior) }
-    state    { :healthy }
+    state    { Simulation::Contagion::Population::HEALTHY }
     size     { 100 }
 
     interactions do
       behavior&.interactions.to_i * size
+    end
+
+    trait :infected do
+      state { Simulation::Contagion::Population::INFECTED }
+    end
+
+    trait :healthy do
+      state { Simulation::Contagion::Population::HEALTHY }
+    end
+
+    trait :dead do
+      state { Simulation::Contagion::Population::DEAD }
     end
   end
 end

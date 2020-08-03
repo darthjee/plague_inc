@@ -6,13 +6,13 @@ class Simulation < ApplicationRecord
     #
     # Processor to be run after creation of an instant
     class PostCreator
-      # Kills and heals populations after creation of instant
-      #
+      include ::Processor
       # @param instant [Instant] instant being processed
-      def self.process(instant)
-        new(instant).process
+      def initialize(instant)
+        @instant = instant
       end
 
+      # Kills and heals populations after creation of instant
       def process
         Killer.process(instant)
         Healer.process(instant)
@@ -31,10 +31,6 @@ class Simulation < ApplicationRecord
       delegate :contagion, to: :instant
       delegate :days_till_recovery, to: :contagion
       delegate :populations, to: :instant
-
-      def initialize(instant)
-        @instant = instant
-      end
     end
   end
 end

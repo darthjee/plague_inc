@@ -21,6 +21,7 @@ class Simulation < ApplicationRecord
       scope :dead,        -> { where(state: DEAD) }
       scope :not_healthy, -> { where.not(state: HEALTHY) }
       scope :alive,       -> { where.not(state: DEAD) }
+      default_scope          { order(id: :asc) }
 
       belongs_to :instant
       belongs_to :group
@@ -66,6 +67,14 @@ class Simulation < ApplicationRecord
 
       def healthy?
         state == HEALTHY
+      end
+
+      def dead?
+        state == DEAD
+      end
+
+      def interactions?
+        interactions.positive?
       end
     end
   end

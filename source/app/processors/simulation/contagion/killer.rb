@@ -8,16 +8,16 @@ class Simulation < ApplicationRecord
     #
     # Kills people from populations of an instant
     class Killer
+      include ::Processor
+      # @param instant [Instant] instant to be processed
+      def initialize(instant)
+        @instant = instant
+      end
+
       # Kills people from populations of an instant
       #
       # All infected populations that are ready to be killed
       # (days >= days_till_start_death) is randomly killed
-      #
-      # @param instant [Instant] instant to be processed
-      def self.process(instant)
-        new(instant).process
-      end
-
       def process
         calculate_deaths
         death.deaths.each(&method(:build_dead))
@@ -26,10 +26,6 @@ class Simulation < ApplicationRecord
       private
 
       attr_reader :instant, :contagion
-
-      def initialize(instant)
-        @instant = instant
-      end
 
       delegate :contagion, to: :instant
       delegate :populations, to: :instant

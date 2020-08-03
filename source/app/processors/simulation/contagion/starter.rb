@@ -6,17 +6,17 @@ class Simulation < ApplicationRecord
     #
     # Creates and populates first instant
     class Starter
+      include ::Processor
+      # @param simulation [Simulation] simulation
+      #   to be processed
+      def initialize(simulation)
+        @simulation = simulation
+      end
+
       # Creates and populates firts instant
       #
       # Populations are created based on simulation
       # groups
-      #
-      # @param simulation [Simulation] simulation
-      #   to be processed
-      def self.process(contagion)
-        new(contagion).process
-      end
-
       def process
         contagion.groups.each do |group|
           build_populations(group)
@@ -27,11 +27,7 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :contagion
-
-      def initialize(contagion)
-        @contagion = contagion
-      end
+      attr_reader :simulation
 
       def instant
         @instant ||= instants.create(day: 0)

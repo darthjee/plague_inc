@@ -6,6 +6,10 @@
 # respond +Random.rand+ but you can controll mocking
 # better by mocking individual methods
 class RandomBox
+  def self.instance
+    @instance ||= new
+  end
+
   delegate :rand, to: :Random
 
   delegate :>, :>=, :<, :<=, to: :rand

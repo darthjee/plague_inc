@@ -6,12 +6,7 @@ class Simulation < ApplicationRecord
     #
     # Infect a healthy population
     class PopulationInfector
-      # Infect healthy population
-      #
-      # infection will happen based on contagion risk
-      # between two populations as a product of their
-      # contagion_risk
-      #
+      include ::Processor
       # @param instant [Instant] instant where new infected population will
       #   be created
       # @param infected_population [Population] poppulation infecting healthy
@@ -19,10 +14,18 @@ class Simulation < ApplicationRecord
       # @param healthy [Population] healthy population being infected
       # @param interactions [Integer] number of interactions between
       #   populations
-      def self.process(instant, infected_population, healthy, interactions)
-        new(instant, infected_population, healthy, interactions).process
+      def initialize(instant, infected_population, healthy, interactions)
+        @instant                 = instant
+        @infected_population     = infected_population
+        @healthy                 = healthy
+        @interactions            = interactions
       end
 
+      # Infect healthy population
+      #
+      # infection will happen based on contagion risk
+      # between two populations as a product of their
+      # contagion_risk
       def process
         interactions.times { interact }
 
@@ -40,17 +43,9 @@ class Simulation < ApplicationRecord
       delegate :interact, :infected, :ignored_interactions,
                to: :interaction_store
 
-      def initialize(instant, infected_population, healthy, interactions)
-        @instant                 = instant
-        @infected_population     = infected_population
-        @healthy                 = healthy
-        @interactions            = interactions
-      end
-
       def update_healthy
-        healthy.interactions -= ignored_interactions
         healthy.new_infections += infected
-        healthy.interactions = 0 if healthy.interactions.negative?
+        healthy.interactions -= ignored_interactions
       end
 
       def build_population
