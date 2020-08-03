@@ -187,7 +187,8 @@ describe Simulation::Contagion::Interactor do
     end
 
     context 'when there are other populations' do
-      let(:healthy_size) { infected_size }
+      let(:healthy_size)   { infected_size }
+      let(:contagion_risk) { 1 }
 
       before do
         create(
@@ -214,9 +215,7 @@ describe Simulation::Contagion::Interactor do
           size: healthy_size,
           behavior: behavior
         )
-      end
 
-      before do
         allow(random_box).to receive(:interaction) do |max|
           max - 1
         end
@@ -242,8 +241,9 @@ describe Simulation::Contagion::Interactor do
     end
 
     context 'when one population has been processed already' do
-      let(:healthy_size)  { infected_size }
-      let(:infected_size) { 2 * Random.rand(3..10) }
+      let(:healthy_size)   { infected_size }
+      let(:infected_size)  { 2 * Random.rand(3..10) }
+      let(:contagion_risk) { 1 }
 
       before do
         create(
@@ -289,11 +289,7 @@ describe Simulation::Contagion::Interactor do
           size: healthy_size / 2,
           behavior: behavior
         )
-      end
 
-      let(:contagion_risk) { 1 }
-
-      before do
         allow(random_box).to receive(:interaction) do |max|
           max - 1
         end
