@@ -6,20 +6,11 @@ class Simulation < ApplicationRecord
       include ::Processor
 
       def process
-        infected_populations.each do |population|
-          InfectedInteractor.process(
-            population,
-            instant,
-            new_instant
-          )
-        end
+        interact
 
         instant.status = Instant::PROCESSED
 
-        ActiveRecord::Base.transaction do
-          instant.save
-          new_instant.save
-        end
+        save
       end
 
       private
@@ -29,6 +20,23 @@ class Simulation < ApplicationRecord
       def initialize(instant, new_instant)
         @instant     = instant
         @new_instant = new_instant
+      end
+
+      def interact
+        infected_populations.each do |population|
+          InfectedInteractor.process(
+            population,
+            instant,
+            new_instant
+          )
+        end
+      end
+
+      def save
+        ActiveRecord::Base.transaction do
+          instant.save
+          new_instant.save
+        end
       end
 
       def infected_populations
