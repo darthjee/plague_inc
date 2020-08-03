@@ -365,6 +365,14 @@ describe Simulation::Contagion::Processor do
           ready_instant.reload.populations.healthy
         end
 
+        let(:population_size_block) do
+          proc do
+            contagion
+              .reload.instants
+              .last.populations.sum(:size)
+          end
+        end
+
         it 'consumes infected interaction' do
           expect { described_class.process(contagion) }
             .to change { infected_populations.sum(:interactions) }
@@ -380,6 +388,11 @@ describe Simulation::Contagion::Processor do
           expect { described_class.process(contagion) }
             .to change { contagion.reload.instants.count }
             .by(1)
+        end
+
+        it 'keeps population size' do
+          expect { described_class.process(contagion) }
+            .not_to change(&population_size_block)
         end
       end
     end
