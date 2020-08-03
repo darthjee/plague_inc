@@ -8,7 +8,9 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        Initializer.process(instant)
+        Initializer.process(instant).tap do
+          instant.update(status: Instant::PROCESSED)
+        end
       end
 
       private

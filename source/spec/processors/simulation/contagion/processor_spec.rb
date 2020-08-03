@@ -161,11 +161,10 @@ describe Simulation::Contagion::Processor do
 
       let!(:infected_population) do
         create(
-          :contagion_population,
+          :contagion_population, :infected,
           instant: ready_instant,
           group: group,
           behavior: behavior,
-          state: Simulation::Contagion::Population::INFECTED,
           size: 1,
           days: infected_days
         )
@@ -175,6 +174,20 @@ describe Simulation::Contagion::Processor do
         expect { described_class.process(contagion) }
           .to change { contagion.reload.instants.count }
           .by(1)
+      end
+
+      it 'creates a new ready instant' do
+        described_class.process(contagion)
+
+        expect(created_instant.status)
+          .to eq(Simulation::Contagion::Instant::READY)
+      end
+
+      it 'changes instant status' do
+        expect { described_class.process(contagion) }
+          .to change { ready_instant.reload.status }
+          .from(Simulation::Contagion::Instant::READY)
+          .to(Simulation::Contagion::Instant::PROCESSED)
       end
 
       context 'when death does not start' do
