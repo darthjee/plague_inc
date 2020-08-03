@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Simulation::Contagion::InstantInteractionStore do
-  subject(:store) { described_class.new(instant) }
+  subject(:store) { described_class.new(populations) }
 
   let(:random_box)  { RandomBox.instance }
   let(:simulation)  { create(:simulation) }
@@ -81,7 +81,7 @@ describe Simulation::Contagion::InstantInteractionStore do
 
     it 'consumes healthy population interactions' do
       expect { store.interact }
-        .to change { populations[0].interactions }
+        .to change { populations.find(&:healthy?).interactions }
         .by(-1)
     end
 
@@ -100,7 +100,7 @@ describe Simulation::Contagion::InstantInteractionStore do
   end
 
   context 'when random choice falls within infected population' do
-    let(:random_interactions) { [healthy_interactions] }
+    let(:random_interactions) { [0] }
     let(:infected_size)       { 2 }
 
     it 'register an interaction for healthy_population' do
@@ -111,13 +111,13 @@ describe Simulation::Contagion::InstantInteractionStore do
 
     it 'consumes infected population interactions' do
       expect { store.interact }
-        .to change { populations[1].interactions }
+        .to change { populations.find(&:infected?).interactions }
         .by(-1)
     end
 
     it 'does not persist change' do
       expect { store.interact }
-        .not_to(change { populations.reload[1].interactions })
+        .not_to(change { populations.reload.sum(:interactions) })
     end
 
     it do
@@ -135,7 +135,7 @@ describe Simulation::Contagion::InstantInteractionStore do
     let(:healthy_size)          { 1 }
 
     context 'when first call consumes interactions of one population' do
-      let(:random_interactions) { [0, 0] }
+      let(:random_interactions) { [infected_interactions, 0] }
 
       let(:expected_interactions) do
         {
@@ -152,7 +152,7 @@ describe Simulation::Contagion::InstantInteractionStore do
 
       it 'consumes healthy population interactions' do
         expect { 2.times { store.interact } }
-          .to change { populations[0].interactions }
+          .to change { populations.find(&:healthy?).interactions }
           .by(-1)
       end
 

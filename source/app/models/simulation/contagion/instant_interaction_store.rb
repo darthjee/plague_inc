@@ -3,11 +3,13 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class InstantInteractionStore
-      def initialize(instant)
-        @instant = instant
+      def initialize(populations)
+        @populations = populations
       end
 
       def interact
+        return unless interactions?
+
         interact_with(next_interaction)
       end
 
@@ -17,9 +19,7 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :instant
-
-      delegate :populations, to: :instant
+      attr_reader :populations
 
       def interact_with(population)
         interaction_map[population] += 1
@@ -38,6 +38,10 @@ class Simulation < ApplicationRecord
 
       def next_interaction_index
         random_box.interaction(max_interactions)
+      end
+
+      def interactions?
+        max_interactions.positive?
       end
 
       def max_interactions

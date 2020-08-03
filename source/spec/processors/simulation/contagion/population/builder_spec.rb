@@ -240,12 +240,13 @@ describe Simulation::Contagion::Population::Builder do
             group: group,
             behavior: new_behavior,
             state: state,
-            interactions: 0,
+            interactions: initial_interactions,
             size: initial_size
           ).tap(&:save!)
         end
 
-        let(:initial_size) { Random.rand(50..249) }
+        let(:initial_interactions) { 10 * initial_size }
+        let(:initial_size)         { Random.rand(50..249) }
 
         it 'changes size of preexisting population' do
           expect(population.id)
@@ -255,6 +256,12 @@ describe Simulation::Contagion::Population::Builder do
         it 'sums sizes' do
           expect(population.size)
             .to eq(size + initial_size)
+        end
+
+        it 'changes instantce population size' do
+          expect { population }
+            .to change { instant.populations.first.size }
+            .by(size)
         end
       end
     end
