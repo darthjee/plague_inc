@@ -29,7 +29,7 @@ class Simulation < ApplicationRecord
 
         def build
           built_population.size += size
-          built_population.interactions = interactions
+          built_population.interactions += interactions
           built_population.behavior = behavior
 
           built_population
