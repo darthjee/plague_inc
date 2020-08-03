@@ -105,7 +105,8 @@ describe Simulation::Contagion::InfectedInteractor do
       let(:block_size) { 2 }
 
       before do
-        allow(Settings).to receive(:interaction_block_size).and_return(block_size)
+        allow(Settings).to receive(:interaction_block_size)
+          .and_return(block_size)
       end
 
       it 'consumes some infected interactions' do
