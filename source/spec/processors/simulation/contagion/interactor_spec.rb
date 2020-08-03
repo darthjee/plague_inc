@@ -99,9 +99,7 @@ describe Simulation::Contagion::Interactor do
 
     it do
       expect { described_class.process(current_instant, new_instant) }
-        .to change { new_instant.reload.status }
-        .from(Simulation::Contagion::Instant::CREATED)
-        .to(Simulation::Contagion::Instant::READY)
+        .not_to change { new_instant.reload.status }
     end
 
     context 'when there is only an infected population' do

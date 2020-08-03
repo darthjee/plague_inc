@@ -15,7 +15,6 @@ class Simulation < ApplicationRecord
         end
 
         instant.status = Instant::PROCESSED
-        new_instant.status = Instant::READY
 
         ActiveRecord::Base.transaction do
           instant.save
