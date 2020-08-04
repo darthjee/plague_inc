@@ -184,7 +184,15 @@ describe Simulation::Contagion::InstantProcessor do
           healthy_size * interactions
         end
 
-        let!(:healthy_population) do
+        let(:population_size_block) do
+          proc do
+            contagion
+              .reload.instants
+              .last.populations.sum(:size)
+          end
+        end
+
+        before do
           create(
             :contagion_population, :healthy,
             instant: ready_instant,
@@ -196,14 +204,6 @@ describe Simulation::Contagion::InstantProcessor do
           )
         end
 
-        let(:population_size_block) do
-          proc do
-            contagion
-              .reload.instants
-              .last.populations.sum(:size)
-          end
-        end
-
         it 'consumes infected interaction' do
           expect { described_class.process(ready_instant) }
             .to change { infected_populations.sum(:interactions) }
@@ -212,7 +212,7 @@ describe Simulation::Contagion::InstantProcessor do
 
         it 'consumes healthy interaction' do
           expect { described_class.process(ready_instant) }
-            .to change { healthy_populations.sum(:interactions) }
+            .to(change { healthy_populations.sum(:interactions) })
         end
 
         it 'creates a new instant' do
@@ -229,12 +229,20 @@ describe Simulation::Contagion::InstantProcessor do
 
       context 'when there is an immune and an infected population' do
         let(:infected_size) { Random.rand(3..10) }
-        let(:immune_size)  { Random.rand(20..30) }
+        let(:immune_size) { Random.rand(20..30) }
         let(:immune_interactions) do
           immune_size * interactions
         end
 
-        let!(:immune_population) do
+        let(:population_size_block) do
+          proc do
+            contagion
+              .reload.instants
+              .last.populations.sum(:size)
+          end
+        end
+
+        before do
           create(
             :contagion_population, :immune,
             instant: ready_instant,
@@ -246,14 +254,6 @@ describe Simulation::Contagion::InstantProcessor do
           )
         end
 
-        let(:population_size_block) do
-          proc do
-            contagion
-              .reload.instants
-              .last.populations.sum(:size)
-          end
-        end
-
         it 'consumes infected interaction' do
           expect { described_class.process(ready_instant) }
             .to change { infected_populations.sum(:interactions) }
@@ -262,7 +262,7 @@ describe Simulation::Contagion::InstantProcessor do
 
         it 'consumes immune interaction' do
           expect { described_class.process(ready_instant) }
-            .to change { immune_populations.sum(:interactions) }
+            .to(change { immune_populations.sum(:interactions) })
         end
 
         it 'creates a new instant' do

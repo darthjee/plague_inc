@@ -253,12 +253,12 @@ describe Simulation::Contagion::InfectedInteractor do
 
       it 'does not register new infections' do
         expect { process }
-          .not_to change { immune_population.reload.new_infections }
+          .not_to(change { immune_population.reload.new_infections })
       end
 
       it 'do not generate an infected population' do
         expect { process }
-          .not_to change { new_instant.reload.populations.count }
+          .not_to(change { new_instant.reload.populations.count })
       end
     end
   end
