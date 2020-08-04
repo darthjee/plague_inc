@@ -10,7 +10,14 @@ class Simulation < ApplicationRecord
       def process
         Contagion::Interactor.process(instant, new_instant)
 
-        instant.update(status: Instant::PROCESSED)
+        instant.status = Instant::PROCESSED
+        finish_population
+
+        ActiveRecord::Base.transaction do
+          instant.save
+
+          new_instant.save
+        end
 
         new_instant
       end
@@ -21,6 +28,16 @@ class Simulation < ApplicationRecord
 
       def initialize(instant)
         @instant = instant
+      end
+
+      def finish_population
+        instant.populations.healthy.each do |pop|
+          new_pop = Population::Builder.build(
+            instant: new_instant,
+            population: pop,
+            size: pop.remaining_size
+          )
+        end
       end
 
       def new_instant
