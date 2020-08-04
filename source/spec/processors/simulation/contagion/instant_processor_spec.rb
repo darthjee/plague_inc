@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::InstantProcessor do
+describe Simulation::Contagion::InstantProcessor do
   let(:simulation) do
     build(:simulation, contagion: nil).tap do |sim|
       sim.save(validate: false)

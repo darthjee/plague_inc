@@ -8,10 +8,8 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        Contagion::Interactor.process(instant, new_instant)
-
-        instant.status = Instant::PROCESSED
-        finish_population
+        interact
+        build_healthy
 
         ActiveRecord::Base.transaction do
           instant.save
@@ -30,7 +28,13 @@ class Simulation < ApplicationRecord
         @instant = instant
       end
 
-      def finish_population
+      def interact
+        Contagion::Interactor.process(instant, new_instant)
+
+        instant.status = Instant::PROCESSED
+      end
+
+      def build_healthy
         healthy_populations.each do |pop|
           Population::Builder.build(
             instant: new_instant,
