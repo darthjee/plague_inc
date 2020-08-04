@@ -23,5 +23,9 @@ FactoryBot.define do
     trait :dead do
       state { Simulation::Contagion::Population::DEAD }
     end
+
+    trait :immune do
+      state { Simulation::Contagion::Population::IMMUNE }
+    end
   end
 end
