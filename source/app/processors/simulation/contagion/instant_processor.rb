@@ -10,12 +10,7 @@ class Simulation < ApplicationRecord
       def process
         interact
         build_healthy
-
-        ActiveRecord::Base.transaction do
-          instant.save
-
-          new_instant.save
-        end
+        save
 
         new_instant
       end
@@ -41,6 +36,14 @@ class Simulation < ApplicationRecord
             population: pop,
             size: pop.remaining_size
           )
+        end
+      end
+
+      def save
+        ActiveRecord::Base.transaction do
+          instant.save
+
+          new_instant.save
         end
       end
 
