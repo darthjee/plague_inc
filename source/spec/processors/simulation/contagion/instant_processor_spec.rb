@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::InstantProcessor do
+fdescribe Simulation::Contagion::InstantProcessor do
   let(:simulation) do
     build(:simulation, contagion: nil).tap do |sim|
       sim.save(validate: false)
@@ -78,6 +78,18 @@ describe Simulation::Contagion::InstantProcessor do
 
       let(:created_dead_populations) do
         created_populations.dead
+      end
+
+      let(:infected_populations) do
+        ready_instant.reload.populations.infected
+      end
+
+      let(:healthy_populations) do
+        ready_instant.reload.populations.healthy
+      end
+
+      let(:immune_populations) do
+        ready_instant.reload.populations.immune
       end
 
       let!(:ready_instant) do
@@ -184,14 +196,6 @@ describe Simulation::Contagion::InstantProcessor do
           )
         end
 
-        let(:infected_populations) do
-          ready_instant.reload.populations.infected
-        end
-
-        let(:healthy_populations) do
-          ready_instant.reload.populations.healthy
-        end
-
         let(:population_size_block) do
           proc do
             contagion
@@ -209,6 +213,56 @@ describe Simulation::Contagion::InstantProcessor do
         it 'consumes healthy interaction' do
           expect { described_class.process(ready_instant) }
             .to change { healthy_populations.sum(:interactions) }
+        end
+
+        it 'creates a new instant' do
+          expect { described_class.process(ready_instant) }
+            .to change { contagion.reload.instants.count }
+            .by(1)
+        end
+
+        it 'keeps population size' do
+          expect { described_class.process(ready_instant) }
+            .not_to change(&population_size_block)
+        end
+      end
+
+      context 'when there is an immune and an infected population' do
+        let(:infected_size) { Random.rand(3..10) }
+        let(:immune_size)  { Random.rand(20..30) }
+        let(:immune_interactions) do
+          immune_size * interactions
+        end
+
+        let!(:immune_population) do
+          create(
+            :contagion_population, :immune,
+            instant: ready_instant,
+            group: group,
+            behavior: behavior,
+            size: immune_size,
+            interactions: immune_interactions,
+            days: 0
+          )
+        end
+
+        let(:population_size_block) do
+          proc do
+            contagion
+              .reload.instants
+              .last.populations.sum(:size)
+          end
+        end
+
+        it 'consumes infected interaction' do
+          expect { described_class.process(ready_instant) }
+            .to change { infected_populations.sum(:interactions) }
+            .to(0)
+        end
+
+        it 'consumes immune interaction' do
+          expect { described_class.process(ready_instant) }
+            .to change { immune_populations.sum(:interactions) }
         end
 
         it 'creates a new instant' do
