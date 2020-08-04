@@ -31,8 +31,8 @@ class Simulation < ApplicationRecord
       end
 
       def finish_population
-        instant.populations.healthy.each do |pop|
-          new_pop = Population::Builder.build(
+        healthy_populations.each do |pop|
+          Population::Builder.build(
             instant: new_instant,
             population: pop,
             size: pop.remaining_size
@@ -42,6 +42,10 @@ class Simulation < ApplicationRecord
 
       def new_instant
         @new_instant ||= Initializer.process(instant)
+      end
+
+      def healthy_populations
+        instant.populations.healthy
       end
     end
   end
