@@ -344,18 +344,6 @@ describe Simulation::Contagion::Processor do
           healthy_size * interactions
         end
 
-        let!(:healthy_population) do
-          create(
-            :contagion_population, :healthy,
-            instant: ready_instant,
-            group: group,
-            behavior: behavior,
-            size: healthy_size,
-            interactions: healthy_interactions,
-            days: 0
-          )
-        end
-
         let(:infected_populations) do
           ready_instant.reload.populations.infected
         end
@@ -372,6 +360,18 @@ describe Simulation::Contagion::Processor do
           end
         end
 
+        before do
+          create(
+            :contagion_population, :healthy,
+            instant: ready_instant,
+            group: group,
+            behavior: behavior,
+            size: healthy_size,
+            interactions: healthy_interactions,
+            days: 0
+          )
+        end
+
         it 'consumes infected interaction' do
           expect { described_class.process(contagion) }
             .to change { infected_populations.sum(:interactions) }
@@ -380,7 +380,7 @@ describe Simulation::Contagion::Processor do
 
         it 'consumes healthy interaction' do
           expect { described_class.process(contagion) }
-            .to change { healthy_populations.sum(:interactions) }
+            .to(change { healthy_populations.sum(:interactions) })
         end
 
         it 'creates a new instant' do

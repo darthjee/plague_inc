@@ -32,7 +32,7 @@ class Simulation < ApplicationRecord
       end
 
       def ready_instant
-        @ready_instant ||= instants.find_by(status: [:ready, :processing])
+        @ready_instant ||= instants.find_by(status: %i[ready processing])
       end
 
       def any_ready?
