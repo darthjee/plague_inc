@@ -340,12 +340,23 @@ describe Simulation::Contagion::InstantProcessor do
         end
       end
 
-      it "does not create a new instant" do
+      it 'does not create a new instant' do
         expect { described_class.process(processing_instant) }
           .not_to change(Simulation::Contagion::Instant, :count)
       end
 
-      it "infects populations" do
+      it 'consumes infected interactions' do
+        expect { described_class.process(processing_instant) }
+          .to change { infected_population.reload.interactions }
+          .to(0)
+      end
+
+      it 'consumes healthy interactions' do
+        expect { described_class.process(processing_instant) }
+          .to(change { healthy_population.reload.interactions })
+      end
+
+      it 'infects populations' do
         expect { described_class.process(processing_instant) }
           .to change { created_instant.reload.populations.infected.count }
           .by(1)
