@@ -61,6 +61,10 @@ class Simulation < ApplicationRecord
                   only_integer: true
                 }
 
+      def remaining_size
+        size - new_infections
+      end
+
       def infected?
         state == INFECTED
       end

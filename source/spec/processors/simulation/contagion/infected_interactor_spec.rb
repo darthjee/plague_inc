@@ -216,6 +216,50 @@ describe Simulation::Contagion::InfectedInteractor do
         expect { process }
           .not_to(change { dead_population.reload.interactions })
       end
+
+      it 'generates an infected population' do
+        expect { process }
+          .to change { new_instant.reload.populations.count }
+          .by(1)
+      end
+    end
+
+    context 'when there is an immune population' do
+      let!(:immune_population) do
+        create(
+          :contagion_population, :immune,
+          instant: current_instant,
+          group: group,
+          size: immune_size * 100,
+          interactions: immune_size * interactions * 100,
+          behavior: behavior
+        )
+      end
+
+      let(:immune_size) { 100 }
+      let(:interactions) { 1 }
+
+      it 'consumes infected interactions' do
+        expect { process }
+          .to change { infected_population.reload.interactions }
+          .to(0)
+      end
+
+      it 'consumes immune population interactions' do
+        expect { process }
+          .to change { immune_population.reload.interactions }
+          .by(-1)
+      end
+
+      it 'does not register new infections' do
+        expect { process }
+          .not_to(change { immune_population.reload.new_infections })
+      end
+
+      it 'do not generate an infected population' do
+        expect { process }
+          .not_to(change { new_instant.reload.populations.count })
+      end
     end
   end
 end
