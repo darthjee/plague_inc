@@ -48,11 +48,19 @@ class Simulation < ApplicationRecord
       end
 
       def new_instant
-        @new_instant ||= Initializer.process(instant)
+        @new_instant ||= find_or_create_instant
       end
 
       def healthy_populations
         instant.populations.healthy
+      end
+
+      def find_or_create_instant
+        created_instant || Initializer.process(instant)
+      end
+
+      def created_instant
+        instant.contagion.instants.created.last
       end
     end
   end

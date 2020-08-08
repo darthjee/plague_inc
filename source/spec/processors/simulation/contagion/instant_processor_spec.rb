@@ -42,10 +42,12 @@ describe Simulation::Contagion::InstantProcessor do
 
   let(:instant) { contagion.reload.instants.last }
 
+  let(:lethality)             { 1 }
   let(:days_till_start_death) { 0 }
   let(:days_till_recovery)    { 1 }
   let(:infected)              { 1 }
   let(:interactions)          { 10 }
+  let(:infected_days)         { 0 }
   let(:infected_interactions) do
     infected_size * interactions
   end
@@ -54,8 +56,6 @@ describe Simulation::Contagion::InstantProcessor do
 
   describe '.process' do
     context 'when there is a ready instant' do
-      let(:lethality)             { 1 }
-      let(:infected_days)         { 0 }
       let(:days_till_start_death) { 2 }
       let(:days_till_recovery)    { 3 }
       let(:infected_size)         { 1 }
@@ -275,6 +275,80 @@ describe Simulation::Contagion::InstantProcessor do
           expect { described_class.process(ready_instant) }
             .not_to change(&population_size_block)
         end
+      end
+    end
+
+    context 'when instant is already being processed' do
+      let!(:processing_instant) do
+        create(
+          :contagion_instant,
+          day: 0,
+          status: :processing,
+          contagion: contagion
+        )
+      end
+
+      let!(:created_instant) do
+        create(
+          :contagion_instant,
+          day: 1,
+          status: :created,
+          contagion: contagion
+        )
+      end
+
+      let!(:infected_population) do
+        create(
+          :contagion_population, :infected,
+          instant: processing_instant,
+          group: group,
+          behavior: behavior,
+          size: infected_size,
+          days: infected_days,
+          interactions: infected_interactions
+        )
+      end
+
+      let!(:healthy_population) do
+        create(
+          :contagion_population, :healthy,
+          instant: processing_instant,
+          group: group,
+          behavior: behavior,
+          size: healthy_size,
+          days: 0,
+          interactions: healthy_interactions
+        )
+      end
+
+      let(:populations) do
+        processing_instant.reload.populations
+      end
+
+      let(:infected_size) { Random.rand(3..10) }
+      let(:healthy_size)  { 100 * infected_size }
+      let(:healthy_interactions) do
+        100 * infected_interactions
+      end
+
+      before do
+        populations.not_healthy do |pop|
+          Simulation::Contagion::Population::Builder.build(
+            instant: created_instant,
+            population: pop
+          )
+        end
+      end
+
+      it "does not create a new instant" do
+        expect { described_class.process(processing_instant) }
+          .not_to change(Simulation::Contagion::Instant, :count)
+      end
+
+      it "infects populations" do
+        expect { described_class.process(processing_instant) }
+          .to change { created_instant.reload.populations.infected.count }
+          .by(1)
       end
     end
   end
