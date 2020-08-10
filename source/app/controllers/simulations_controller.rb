@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Controller for creating, listing and viewing {Simulation}
+#
+# This controller use basic CRUD methods
 class SimulationsController < ApplicationController
   include OnePageApplication
 

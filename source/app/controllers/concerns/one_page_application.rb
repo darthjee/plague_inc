@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# Concern for all controllers that will act in single page application
+#
+# Requests that arrive are splitted by format and ajax parameter
+# - json : process the request (create, update, or fetch) returning a json
+# - html : splitted by the presence of ajax parameter
+#   - false : redirect to /#path
+#     so it is dealt with inside the angular application
+#     eg: +GET /simulations+, redirects to +GET /#simulations+
+#   - true : returns just the inner HTML template
 module OnePageApplication
   extend ActiveSupport::Concern
   include Tarquinn

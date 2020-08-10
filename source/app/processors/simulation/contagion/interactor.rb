@@ -2,6 +2,11 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # Runs all interactions of an instant
+    #
+    # All infected populations go through interactions
+    # with other populations generating new infected populations
+    # in the new_instant
     class Interactor
       include ::Processor
 
@@ -17,6 +22,9 @@ class Simulation < ApplicationRecord
 
       attr_reader :instant, :new_instant
 
+      # @param instant {Instant} Instant being processed
+      # @param new_instant [Instant] instant where the new
+      #   infected population will be created
       def initialize(instant, new_instant)
         @instant     = instant
         @new_instant = new_instant

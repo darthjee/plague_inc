@@ -2,10 +2,19 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # Process a simulation
+    #
+    # When the simulation is new, then the first instant
+    # will be created and pupulated
+    #
+    # when the simulation is already in process then
+    # the presence of a processing instant indicates that
+    # it's processing needs to be finished.
+    #
+    # The prsence of a ready instant means that a new instant
+    # processing can begin
     class Processor
-      def self.process(contagion)
-        new(contagion).process
-      end
+      include ::Processor
 
       def process
         PostCreator.process(instant)
