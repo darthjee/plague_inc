@@ -310,10 +310,9 @@ describe Simulation::Contagion::Interactor do
           .by(healthy_size)
       end
 
-      it 'increases infected populations interactions' do
+      it 'ignores new infected populations interactions' do
         expect { described_class.process(current_instant, new_instant) }
-          .to change { new_instant.populations.reload.sum(:interactions) }
-          .by(healthy_interactions)
+          .not_to change { new_instant.populations.reload.sum(:interactions) }
       end
     end
   end
