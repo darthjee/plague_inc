@@ -16,11 +16,9 @@ class Simulation < ApplicationRecord
       def process
         Killer.process(instant)
         Healer.process(instant)
+        update_interactions
 
         instant.status = 'ready'
-        instant.populations.each do |pop|
-          pop.interactions = pop.behavior.interactions * pop.size
-        end
 
         ActiveRecord::Base.transaction do
           instant.save
@@ -34,6 +32,12 @@ class Simulation < ApplicationRecord
       delegate :contagion, to: :instant
       delegate :days_till_recovery, to: :contagion
       delegate :populations, to: :instant
+
+      def update_interactions
+        populations.each do |pop|
+          pop.interactions = pop.behavior.interactions * pop.size
+        end
+      end
     end
   end
 end
