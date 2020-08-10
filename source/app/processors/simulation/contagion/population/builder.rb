@@ -8,8 +8,7 @@ class Simulation < ApplicationRecord
       # Builds a population from options
       class Builder < Sinclair::Options
         with_options :instant, :group, :state,
-                     :population, :behavior, :size,
-                     :interactions
+                     :population, :behavior, :size
 
         # @param options [Hash] options
         # @option options instant [Instant] instant where new option will
@@ -21,8 +20,6 @@ class Simulation < ApplicationRecord
         # @option options population [Population] population
         #   of a previous instant [Instant] to be used as model
         # @option options size [Integer] size of population
-        # @option options interactions [Integer] ammount of actions
-        #   left
         def self.build(*options)
           new(*options).build
         end
@@ -74,10 +71,6 @@ class Simulation < ApplicationRecord
 
         def days
           population ? population.days + 1 : 0
-        end
-
-        def interactions
-          @interactions ||= size * behavior.interactions
         end
 
         def behavior

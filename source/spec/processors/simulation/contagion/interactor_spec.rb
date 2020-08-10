@@ -312,7 +312,7 @@ describe Simulation::Contagion::Interactor do
 
       it 'ignores new infected populations interactions' do
         expect { described_class.process(current_instant, new_instant) }
-          .not_to change { new_instant.populations.reload.sum(:interactions) }
+          .not_to(change { new_instant.populations.reload.sum(:interactions) })
       end
     end
   end

@@ -58,8 +58,7 @@ class Simulation < ApplicationRecord
           group: group,
           behavior: death.behavior(group),
           size: dead,
-          state: :dead,
-          interactions: 0
+          state: :dead
         )
       end
     end
