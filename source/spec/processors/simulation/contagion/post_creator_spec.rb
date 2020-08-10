@@ -20,17 +20,21 @@ describe Simulation::Contagion::PostCreator do
   let(:group) { contagion.reload.groups.last }
 
   let(:state) { :infected }
+  let(:size)  { Random.rand(10..20) }
+  let(:expected_interactions) do
+    size * 15
+  end
 
   before do
     [7, 10, 16].map do |day|
       create(
-        :contagion_population,
+        :contagion_population, state,
         group: group,
         behavior: group.behavior,
         instant: instant,
         days: day,
-        size: 10,
-        state: state
+        size: size,
+        interactions: 0
       )
     end
 
@@ -44,7 +48,7 @@ describe Simulation::Contagion::PostCreator do
       it 'kills everyone ready to be killed' do
         expect { described_class.process(instant) }
           .to change { instant.reload.populations.order(:id).pluck(:size) }
-          .to([10, 0, 0, 20])
+          .to([size, 0, 0, 2 * size])
       end
 
       it 'recovers those ready to be recovered' do
@@ -64,6 +68,12 @@ describe Simulation::Contagion::PostCreator do
           .to change { instant.reload.status }
           .from('created').to('ready')
       end
+
+      it 'sets population interactions' do
+        expect { described_class.process(instant) }
+          .to change { instant.reload.populations.map(&:interactions) }
+          .to([expected_interactions, 0, 0, 2 * expected_interactions])
+      end
     end
 
     context 'when lethality is 100% but populations are not infected' do
@@ -79,6 +89,12 @@ describe Simulation::Contagion::PostCreator do
         expect { described_class.process(instant) }
           .not_to(change { instant.reload.populations.map(&:state) })
       end
+
+      it 'sets population interactions' do
+        expect { described_class.process(instant) }
+          .to change { instant.reload.populations.map(&:interactions) }
+          .to(3.times.map { expected_interactions })
+      end
     end
 
     context 'when lethality is 0%' do
@@ -93,6 +109,12 @@ describe Simulation::Contagion::PostCreator do
         expect { described_class.process(instant) }
           .to change { instant.reload.populations.order(:id).map(&:state) }
           .to(%w[infected infected immune])
+      end
+
+      it 'sets population interactions' do
+        expect { described_class.process(instant) }
+          .to change { instant.reload.populations.map(&:interactions) }
+          .to(3.times.map { expected_interactions })
       end
     end
   end

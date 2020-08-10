@@ -18,6 +18,9 @@ class Simulation < ApplicationRecord
         Healer.process(instant)
 
         instant.status = 'ready'
+        instant.populations.each do |pop|
+          pop.interactions = pop.behavior.interactions * pop.size
+        end
 
         ActiveRecord::Base.transaction do
           instant.save
