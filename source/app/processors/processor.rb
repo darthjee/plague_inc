@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Base methods for a processor
+#
+# processors have only one public class
+# method, whcich, after execution,
+# returns no instance of the class
 module Processor
   extend ActiveSupport::Concern
 

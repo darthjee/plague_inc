@@ -2,6 +2,13 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # process one instant
+    #
+    # an interaction is forced infecting
+    # some members of healthy populations into
+    # a new instant, after that, the remaining
+    # healthy population is then copied into the
+    # new instant
     class InstantProcessor
       def self.process(instant)
         new(instant).process

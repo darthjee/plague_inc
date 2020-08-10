@@ -7,33 +7,34 @@ class Simulation < ApplicationRecord
     # Creates and populates first instant
     class Starter
       include ::Processor
-      # @param simulation [Simulation] simulation
+      # @param contagion [Contagion] contagion
       #   to be processed
-      def initialize(simulation)
-        @simulation = simulation
+      def initialize(contagion)
+        @contagion = contagion
       end
 
       # Creates and populates firts instant
       #
-      # Populations are created based on simulation
+      # Populations are created based on contagion
       # groups
       def process
-        @instant = instants.create(day: 0)
-
         contagion.groups.each do |group|
           build_populations(group)
         end
 
-        instant.save
+        instant.tap(&:save)
       end
 
       private
 
-      attr_reader :simulation, :instant
+      attr_reader :contagion
 
-      delegate :contagion, to: :simulation
       delegate :instants, to: :contagion
       delegate :populations, to: :instant
+
+      def instant
+        @instant ||= instants.create(day: 0)
+      end
 
       def build_populations(group)
         build(group, :healthy)

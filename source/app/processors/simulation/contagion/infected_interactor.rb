@@ -2,6 +2,15 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # Consumes all interactions of a population
+    #
+    # Given an infected population, all it's interactions are
+    # consumed by interactions with other populations (randomly)
+    #
+    # After the first interaction distribuition, all populations
+    # that have interacted go through the process of infecting
+    #
+    # @see PopulationInfector
     class InfectedInteractor
       include ::Processor
 

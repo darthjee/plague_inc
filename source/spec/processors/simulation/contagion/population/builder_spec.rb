@@ -70,9 +70,9 @@ describe Simulation::Contagion::Population::Builder do
           expect(population.days).to be_zero
         end
 
-        it 'adds interactions' do
+        it 'does not add interactions' do
           expect(population.interactions)
-            .to eq(population.size * behavior.interactions)
+            .to be_zero
         end
       end
 
@@ -113,9 +113,9 @@ describe Simulation::Contagion::Population::Builder do
           expect(population.days).to be_zero
         end
 
-        it 'adds interactions' do
+        it 'does not add interactions' do
           expect(population.interactions)
-            .to eq(population.size * behavior.interactions)
+            .to be_zero
         end
       end
     end
@@ -170,9 +170,9 @@ describe Simulation::Contagion::Population::Builder do
         expect(population.days).to eq(1)
       end
 
-      it 'adds interactions' do
+      it 'does not add interactions' do
         expect(population.interactions)
-          .to eq(population.size * behavior.interactions)
+          .to be_zero
       end
     end
 
@@ -183,7 +183,6 @@ describe Simulation::Contagion::Population::Builder do
           group: group,
           behavior: new_behavior,
           state: state,
-          interactions: 0,
           size: size
         )
       end
@@ -240,13 +239,11 @@ describe Simulation::Contagion::Population::Builder do
             group: group,
             behavior: new_behavior,
             state: state,
-            interactions: initial_interactions,
             size: initial_size
           ).tap(&:save!)
         end
 
-        let(:initial_interactions) { 10 * initial_size }
-        let(:initial_size)         { Random.rand(50..249) }
+        let(:initial_size) { Random.rand(50..249) }
 
         it 'changes size of preexisting population' do
           expect(population.id)
