@@ -45,6 +45,7 @@ describe Simulation::Decorator do
           .slice(*attributes)
           .merge(settings: settings_json)
           .as_json
+          .merge('status' => 'created')
       end
 
       it 'returns expected json' do
@@ -108,6 +109,7 @@ describe Simulation::Decorator do
             .merge(settings: settings_json)
             .merge(errors: expected_errors)
             .deep_stringify_keys
+            .merge('status' => 'created')
         end
 
         before { object.valid? }
@@ -136,6 +138,7 @@ describe Simulation::Decorator do
             .as_json
             .slice(*attributes)
             .merge(
+              status: :created,
               settings: simulation.settings
               .as_json.slice(*settings_attributes)
               .merge(groups: groups_json)
@@ -186,6 +189,7 @@ describe Simulation::Decorator do
               .as_json
               .slice(*attributes)
               .merge(
+                status: :created,
                 errors: expected_errors,
                 settings: simulation.settings
                   .as_json.slice(*settings_attributes)

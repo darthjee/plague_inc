@@ -86,9 +86,11 @@ describe SimulationsController do
   describe 'POST create' do
     context 'when requesting json format' do
       let(:simulation) { Simulation.last }
+
       let(:parameters) do
         { format: :json, simulation: payload }
       end
+
       let(:payload) do
         {
           name: 'my simulation',
@@ -200,7 +202,7 @@ describe SimulationsController do
         let(:expected_simulation_attributes) do
           payload.stringify_keys.reject do |key, _|
             key == 'settings'
-          end
+          end.merge('status' => 'created')
         end
 
         let(:expected_settings_attributes) do
