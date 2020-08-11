@@ -21,6 +21,7 @@ class Simulation < ApplicationRecord
         ActiveRecord::Base.transaction do
           instant.save
           new_instant.save
+          simulation.touch
         end
       end
 
@@ -30,6 +31,8 @@ class Simulation < ApplicationRecord
 
       delegate :populations, to: :instant
       delegate :interaction_map, to: :interaction_store
+      delegate :contagion, to: :instant
+      delegate :simulation, to: :contagion
 
       def initialize(population, instant, new_instant)
         @population = population
