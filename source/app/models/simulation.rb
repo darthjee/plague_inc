@@ -10,12 +10,15 @@ class Simulation < ApplicationRecord
     contagion
   ].freeze
 
+  CREATED = 'created'
   ALLOWED_ATTRIBUTES = %i[name algorithm].freeze
+  STATUSES = [CREATED].freeze
 
   has_one :contagion
 
-  validates_presence_of :algorithm, :settings
+  validates_presence_of :algorithm, :settings, :status
   validates_inclusion_of :algorithm, in: ALGORITHMS
+  validates_inclusion_of :status, in: STATUSES
   validates_associated :settings
   validates :name,
             presence: true,
