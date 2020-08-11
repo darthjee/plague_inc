@@ -95,7 +95,8 @@ describe SimulationsController do
         {
           name: 'my simulation',
           algorithm: 'contagion',
-          settings: settings_payload
+          settings: settings_payload,
+          status: 'processing'
         }
       end
 
