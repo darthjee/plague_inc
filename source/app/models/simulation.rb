@@ -11,8 +11,14 @@ class Simulation < ApplicationRecord
   ].freeze
 
   CREATED = 'created'
+  PROCESSING = 'processing'
+  PROCESSED = 'processed'
+  FINISHED = 'finished'
+
   ALLOWED_ATTRIBUTES = %i[name algorithm].freeze
-  STATUSES = [CREATED].freeze
+  STATUSES = [
+    CREATED, PROCESSING, PROCESSED, FINISHED
+  ].freeze
 
   has_one :contagion
 
