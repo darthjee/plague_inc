@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe Simulation::Contagion::InstantProcessor do
   let(:simulation) do
-    build(:simulation, contagion: nil).tap do |sim|
+    build(:simulation, :processing, contagion: nil).tap do |sim|
       sim.save(validate: false)
     end
   end
@@ -113,6 +113,16 @@ describe Simulation::Contagion::InstantProcessor do
         )
       end
 
+      it 'updates simulation' do
+        expect { described_class.process(ready_instant) }
+          .to change { simulation.reload.updated_at }
+      end
+
+      it 'does not update simulation status' do
+        expect { described_class.process(ready_instant) }
+          .not_to(change { simulation.reload.status })
+      end
+
       it 'creates a new instant' do
         expect { described_class.process(ready_instant) }
           .to change { contagion.reload.instants.count }
@@ -204,6 +214,16 @@ describe Simulation::Contagion::InstantProcessor do
           )
         end
 
+        it 'updates simulation' do
+          expect { described_class.process(ready_instant) }
+            .to change { simulation.reload.updated_at }
+        end
+
+        it 'does not update simulation status' do
+          expect { described_class.process(ready_instant) }
+            .not_to(change { simulation.reload.status })
+        end
+
         it 'consumes infected interaction' do
           expect { described_class.process(ready_instant) }
             .to change { infected_populations.sum(:interactions) }
@@ -252,6 +272,16 @@ describe Simulation::Contagion::InstantProcessor do
             interactions: immune_interactions,
             days: 0
           )
+        end
+
+        it 'updates simulation' do
+          expect { described_class.process(ready_instant) }
+            .to change { simulation.reload.updated_at }
+        end
+
+        it 'does not update simulation status' do
+          expect { described_class.process(ready_instant) }
+            .not_to(change { simulation.reload.status })
         end
 
         it 'consumes infected interaction' do
@@ -338,6 +368,16 @@ describe Simulation::Contagion::InstantProcessor do
             population: pop
           )
         end
+      end
+
+      it 'updates simulation' do
+        expect { described_class.process(processing_instant) }
+          .to change { simulation.reload.updated_at }
+      end
+
+      it 'does not update simulation status' do
+        expect { described_class.process(processing_instant) }
+          .not_to(change { simulation.reload.status })
       end
 
       it 'does not create a new instant' do

@@ -26,6 +26,9 @@ class Simulation < ApplicationRecord
 
       attr_reader :instant
 
+      delegate :simulation, to: :contagion
+      delegate :contagion, to: :instant
+
       def initialize(instant)
         @instant = instant
       end
@@ -49,8 +52,8 @@ class Simulation < ApplicationRecord
       def save
         ActiveRecord::Base.transaction do
           instant.save
-
           new_instant.save
+          simulation.touch
         end
       end
 
