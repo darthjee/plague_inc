@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Simulation::Contagion::Interactor do
   describe '.process' do
     let(:simulation) do
-      build(:simulation, contagion: nil).tap do |sim|
+      build(:simulation, :processing, contagion: nil).tap do |sim|
         sim.save(validate: false)
       end
     end
@@ -88,6 +88,17 @@ describe Simulation::Contagion::Interactor do
         size: infected_size,
         behavior: behavior
       )
+      simulation.reload.update(updated_at: 1.days.ago)
+    end
+
+    it 'updates simulation' do
+      expect { described_class.process(current_instant, new_instant) }
+        .to change { simulation.reload.updated_at }
+    end
+
+    it 'does not update simulation status' do
+      expect { described_class.process(current_instant, new_instant) }
+        .not_to(change { simulation.reload.status })
     end
 
     it do
@@ -132,6 +143,16 @@ describe Simulation::Contagion::Interactor do
         )
       end
 
+      it 'updates simulation' do
+        expect { described_class.process(current_instant, new_instant) }
+          .to change { simulation.reload.updated_at }
+      end
+
+      it 'does not update simulation status' do
+        expect { described_class.process(current_instant, new_instant) }
+          .not_to(change { simulation.reload.status })
+      end
+
       it do
         expect { described_class.process(current_instant, new_instant) }
           .to change { infected_population_query.reload.sum(:interactions) }
@@ -165,6 +186,16 @@ describe Simulation::Contagion::Interactor do
           size: infected_size,
           behavior: behavior
         )
+      end
+
+      it 'updates simulation' do
+        expect { described_class.process(current_instant, new_instant) }
+          .to change { simulation.reload.updated_at }
+      end
+
+      it 'does not update simulation status' do
+        expect { described_class.process(current_instant, new_instant) }
+          .not_to(change { simulation.reload.status })
       end
 
       it do
@@ -217,6 +248,16 @@ describe Simulation::Contagion::Interactor do
         allow(random_box).to receive(:interaction) do |max|
           max - 1
         end
+      end
+
+      it 'updates simulation' do
+        expect { described_class.process(current_instant, new_instant) }
+          .to change { simulation.reload.updated_at }
+      end
+
+      it 'does not update simulation status' do
+        expect { described_class.process(current_instant, new_instant) }
+          .not_to(change { simulation.reload.status })
       end
 
       it do
@@ -291,6 +332,16 @@ describe Simulation::Contagion::Interactor do
         allow(random_box).to receive(:interaction) do |max|
           max - 1
         end
+      end
+
+      it 'updates simulation' do
+        expect { described_class.process(current_instant, new_instant) }
+          .to change { simulation.reload.updated_at }
+      end
+
+      it 'does not update simulation status' do
+        expect { described_class.process(current_instant, new_instant) }
+          .not_to(change { simulation.reload.status })
       end
 
       it 'consumes interactions' do

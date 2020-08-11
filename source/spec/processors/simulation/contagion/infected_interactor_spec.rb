@@ -83,6 +83,10 @@ describe Simulation::Contagion::InfectedInteractor do
       )
     end
 
+    before do
+      simulation.reload.update(updated_at: 1.days.ago)
+    end
+
     context 'when person interacts with itself' do
       it 'updates simulation' do
         expect { process }
