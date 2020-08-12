@@ -80,6 +80,10 @@ class Simulation < ApplicationRecord
       def interactions?
         interactions.positive?
       end
+
+      def setup_interactions
+        self.interactions = behavior.interactions * size
+      end
     end
   end
 end

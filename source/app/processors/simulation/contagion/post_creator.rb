@@ -16,14 +16,9 @@ class Simulation < ApplicationRecord
       def process
         Killer.process(instant)
         Healer.process(instant)
-        update_interactions
+        populations.each(&:setup_interactions)
 
-        instant.status = 'ready'
-
-        ActiveRecord::Base.transaction do
-          instant.save
-          simulation.touch
-        end
+        finalize
       end
 
       private
@@ -35,9 +30,12 @@ class Simulation < ApplicationRecord
       delegate :populations, to: :instant
       delegate :simulation, to: :contagion
 
-      def update_interactions
-        populations.each do |pop|
-          pop.interactions = pop.behavior.interactions * pop.size
+      def finalize
+        instant.status = Instant::READY
+
+        ActiveRecord::Base.transaction do
+          instant.save
+          simulation.touch
         end
       end
     end
