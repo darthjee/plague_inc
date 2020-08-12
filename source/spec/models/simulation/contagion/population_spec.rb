@@ -184,6 +184,14 @@ describe Simulation::Contagion::Population, type: :model do
         expect(population).not_to be_infected
       end
     end
+
+    context 'when population is dead' do
+      let(:state) { described_class::DEAD }
+
+      it do
+        expect(population).not_to be_infected
+      end
+    end
   end
 
   describe '#health?' do
@@ -211,6 +219,109 @@ describe Simulation::Contagion::Population, type: :model do
       it do
         expect(population).not_to be_healthy
       end
+    end
+
+    context 'when population is dead' do
+      let(:state) { described_class::DEAD }
+
+      it do
+        expect(population).not_to be_healthy
+      end
+    end
+  end
+
+  describe '#dead?' do
+    subject(:population) { build(:contagion_population, state: state) }
+
+    context 'when population is infected' do
+      let(:state) { described_class::INFECTED }
+
+      it do
+        expect(population).not_to be_dead
+      end
+    end
+
+    context 'when population is healthy' do
+      let(:state) { described_class::HEALTHY }
+
+      it do
+        expect(population).not_to be_dead
+      end
+    end
+
+    context 'when population is immune' do
+      let(:state) { described_class::IMMUNE }
+
+      it do
+        expect(population).not_to be_dead
+      end
+    end
+
+    context 'when population is dead' do
+      let(:state) { described_class::DEAD }
+
+      it do
+        expect(population).to be_dead
+      end
+    end
+  end
+
+  describe '#remaining_size' do
+    subject(:population) do
+      build(:contagion_population, size: 100, new_infections: 20)
+    end
+
+    it 'returns remaining population size' do
+      expect(population.remaining_size).to eq(80)
+    end
+  end
+
+  describe '#interactions?' do
+    subject(:population) do
+      build(:contagion_population, interactions: interactions)
+    end
+
+    context 'when there are interactions' do
+      let(:interactions) { Random.rand(1..10) }
+
+      it do
+        expect(population).to be_interactions
+      end
+    end
+
+    context 'when there are no interactions' do
+      let(:interactions) { 0 }
+
+      it do
+        expect(population).not_to be_interactions
+      end
+    end
+  end
+
+  describe '#setup_interactions' do
+    subject(:population) do
+      build(
+        :contagion_population,
+        size: size,
+        behavior: behavior,
+        interactions: 0
+      )
+    end
+
+    let(:behavior) do
+      build(:contagion_behavior, interactions: interactions)
+    end
+
+    let(:size)         { Random.rand(10..100) }
+    let(:interactions) { Random.rand(10..100) }
+    let(:expected_interactions) do
+      interactions * size
+    end
+
+    it do
+      expect { population.setup_interactions }
+        .to change(population, :interactions)
+        .from(0).to(expected_interactions)
     end
   end
 end
