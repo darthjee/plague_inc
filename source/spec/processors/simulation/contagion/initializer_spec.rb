@@ -72,7 +72,7 @@ describe Simulation::Contagion::Initializer do
   describe '.process' do
     it 'updates simulation' do
       expect { described_class.process(instant) }
-        .to change { simulation.reload.updated_at }
+        .to(change { simulation.reload.updated_at })
     end
 
     it 'does not update simulation status' do

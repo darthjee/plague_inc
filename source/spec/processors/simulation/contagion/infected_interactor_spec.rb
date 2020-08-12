@@ -90,7 +90,7 @@ describe Simulation::Contagion::InfectedInteractor do
     context 'when person interacts with itself' do
       it 'updates simulation' do
         expect { process }
-          .to change { simulation.reload.updated_at }
+          .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do
@@ -125,7 +125,7 @@ describe Simulation::Contagion::InfectedInteractor do
 
       it 'updates simulation' do
         expect { process }
-          .to change { simulation.reload.updated_at }
+          .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do
@@ -170,7 +170,7 @@ describe Simulation::Contagion::InfectedInteractor do
 
       it 'updates simulation' do
         expect { process }
-          .to change { simulation.reload.updated_at }
+          .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do
@@ -231,7 +231,7 @@ describe Simulation::Contagion::InfectedInteractor do
 
       it 'updates simulation' do
         expect { process }
-          .to change { simulation.reload.updated_at }
+          .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do
@@ -285,7 +285,7 @@ describe Simulation::Contagion::InfectedInteractor do
 
       it 'updates simulation' do
         expect { process }
-          .to change { simulation.reload.updated_at }
+          .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do

@@ -115,7 +115,7 @@ describe Simulation::Contagion::InstantProcessor do
 
       it 'updates simulation' do
         expect { described_class.process(ready_instant) }
-          .to change { simulation.reload.updated_at }
+          .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do
@@ -216,7 +216,7 @@ describe Simulation::Contagion::InstantProcessor do
 
         it 'updates simulation' do
           expect { described_class.process(ready_instant) }
-            .to change { simulation.reload.updated_at }
+            .to(change { simulation.reload.updated_at })
         end
 
         it 'does not update simulation status' do
@@ -276,7 +276,7 @@ describe Simulation::Contagion::InstantProcessor do
 
         it 'updates simulation' do
           expect { described_class.process(ready_instant) }
-            .to change { simulation.reload.updated_at }
+            .to(change { simulation.reload.updated_at })
         end
 
         it 'does not update simulation status' do
@@ -372,7 +372,7 @@ describe Simulation::Contagion::InstantProcessor do
 
       it 'updates simulation' do
         expect { described_class.process(processing_instant) }
-          .to change { simulation.reload.updated_at }
+          .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do
