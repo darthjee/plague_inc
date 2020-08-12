@@ -17,9 +17,9 @@ class Simulation < ApplicationRecord
       include ::Processor
 
       def process
-        simulation.update(status: Simulation::PROCESSING)
-        PostCreator.process(instant)
-        simulation.update(status: Simulation::PROCESSED)
+        StatusKeeper.process(simulation) do
+          PostCreator.process(instant)
+        end
       end
 
       private
