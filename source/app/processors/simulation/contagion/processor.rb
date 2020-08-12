@@ -19,6 +19,7 @@ class Simulation < ApplicationRecord
       def process
         simulation.update(status: Simulation::PROCESSING)
         PostCreator.process(instant)
+        simulation.update(status: Simulation::PROCESSED)
       end
 
       private
