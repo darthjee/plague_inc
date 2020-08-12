@@ -17,6 +17,7 @@ class Simulation < ApplicationRecord
       include ::Processor
 
       def process
+        simulation.update(status: Simulation::PROCESSING)
         PostCreator.process(instant)
       end
 
@@ -24,6 +25,7 @@ class Simulation < ApplicationRecord
 
       attr_reader :contagion
       delegate :instants, to: :contagion
+      delegate :simulation, to: :contagion
 
       def initialize(contagion)
         @contagion = contagion
