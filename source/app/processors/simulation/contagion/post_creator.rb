@@ -22,6 +22,7 @@ class Simulation < ApplicationRecord
 
         ActiveRecord::Base.transaction do
           instant.save
+          simulation.touch
         end
       end
 
@@ -32,6 +33,7 @@ class Simulation < ApplicationRecord
       delegate :contagion, to: :instant
       delegate :days_till_recovery, to: :contagion
       delegate :populations, to: :instant
+      delegate :simulation, to: :contagion
 
       def update_interactions
         populations.each do |pop|

@@ -3,7 +3,10 @@
 require 'spec_helper'
 
 describe Simulation::Contagion::PostCreator do
-  let!(:simulation) { create(:simulation, contagion: contagion) }
+  let!(:simulation) do
+    create(:simulation, :processing, contagion: contagion)
+  end
+
   let(:contagion) do
     build(
       :contagion,
@@ -45,6 +48,16 @@ describe Simulation::Contagion::PostCreator do
     context 'when lethality is 100%' do
       let(:lethality) { 1 }
 
+      it 'updates simulation' do
+        expect { described_class.process(instant) }
+          .to change { simulation.reload.updated_at }
+      end
+
+      it 'does not update simulation status' do
+        expect { described_class.process(instant) }
+          .not_to(change { simulation.reload.status })
+      end
+
       it 'kills everyone ready to be killed' do
         expect { described_class.process(instant) }
           .to change { instant.reload.populations.order(:id).pluck(:size) }
@@ -80,6 +93,16 @@ describe Simulation::Contagion::PostCreator do
       let(:lethality) { 1 }
       let(:state)     { :healthy }
 
+      it 'updates simulation' do
+        expect { described_class.process(instant) }
+          .to change { simulation.reload.updated_at }
+      end
+
+      it 'does not update simulation status' do
+        expect { described_class.process(instant) }
+          .not_to(change { simulation.reload.status })
+      end
+
       it 'kills no one' do
         expect { described_class.process(instant) }
           .not_to(change { instant.populations.pluck(:size) })
@@ -99,6 +122,16 @@ describe Simulation::Contagion::PostCreator do
 
     context 'when lethality is 0%' do
       let(:lethality) { 0 }
+
+      it 'updates simulation' do
+        expect { described_class.process(instant) }
+          .to change { simulation.reload.updated_at }
+      end
+
+      it 'does not update simulation status' do
+        expect { described_class.process(instant) }
+          .not_to(change { simulation.reload.status })
+      end
 
       it 'kills no one to be killed' do
         expect { described_class.process(instant) }
