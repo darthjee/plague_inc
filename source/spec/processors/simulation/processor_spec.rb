@@ -68,10 +68,14 @@ describe Simulation::Processor do
         expect { described_class.process(simulation) }
           .to change { simulation.reload.status }
           .from(Simulation::CREATED)
-          .to(Simulation::PROCESSED)
+          .to(Simulation::FINISHED)
       end
 
       context 'when calling for more times' do
+        let(:days_till_start_death) { 10 }
+        let(:days_till_recovery)    { 10 }
+        let(:infected)              { 1 }
+
         let(:times) { Random.rand(3..6) }
 
         let(:expected_statuses) do
