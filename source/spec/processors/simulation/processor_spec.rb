@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe Simulation::Processor do
   let(:simulation) do
-    build(:simulation, contagion: nil).tap do |sim|
+    build(:simulation, contagion: nil, status: current_status).tap do |sim|
       sim.save(validate: false)
     end
   end
@@ -43,6 +43,7 @@ describe Simulation::Processor do
 
   let(:instant) { contagion.reload.instants.last }
 
+  let(:current_status)        { Simulation::CREATED }
   let(:days_till_start_death) { 0 }
   let(:days_till_recovery)    { 1 }
   let(:days_till_sympthoms)   { 0 }
@@ -92,6 +93,36 @@ describe Simulation::Processor do
             .to eq(expected_statuses)
         end
       end
+
+      context 'when it is finished' do
+        let(:current_status) { Simulation::FINISHED }
+
+        it do
+          expect { described_class.process(simulation) }
+            .not_to change { contagion.reload.instants.count }
+        end
+      end
+
+      context 'when it becomes finished' do
+        let!(:group) do
+          create(
+            :contagion_group,
+            infected: infected,
+            behavior: behavior,
+            contagion: contagion,
+            size: 100,
+            infected: 100
+          )
+        end
+
+        it do
+          expect { described_class.process(simulation, times: 10) }
+            .to change { contagion.reload.instants.count }
+            .by(1)
+        end
+      end
+
+
 
       context 'when processing is complete' do
         before { described_class.process(simulation) }

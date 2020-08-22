@@ -11,6 +11,7 @@ class Simulation < ApplicationRecord
 
     def process
       times.times do
+        break if simulation.reload.finished?
         settings.process
       end
     end
