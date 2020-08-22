@@ -22,13 +22,17 @@ class Simulation < ApplicationRecord
           build_populations(group)
         end
 
-        instant.tap(&:save)
+        ActiveRecord::Base.transaction do
+          simulation.touch
+          instant.tap(&:save)
+        end
       end
 
       private
 
       attr_reader :contagion
 
+      delegate :simulation, to: :contagion
       delegate :instants, to: :contagion
       delegate :populations, to: :instant
 

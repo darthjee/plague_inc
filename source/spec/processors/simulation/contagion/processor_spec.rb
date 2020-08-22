@@ -15,6 +15,7 @@ describe Simulation::Contagion::Processor do
       simulation: simulation,
       days_till_start_death: days_till_start_death,
       days_till_recovery: days_till_recovery,
+      days_till_sympthoms: days_till_sympthoms,
       lethality: lethality,
       groups: [],
       behaviors: []
@@ -44,6 +45,7 @@ describe Simulation::Contagion::Processor do
 
   let(:days_till_start_death) { 0 }
   let(:days_till_recovery)    { 1 }
+  let(:days_till_sympthoms)   { 0 }
   let(:infected)              { 1 }
   let(:interactions)          { 10 }
   let(:lethality)             { 1 }
@@ -59,6 +61,13 @@ describe Simulation::Contagion::Processor do
         expect { described_class.process(contagion) }
           .to change { contagion.reload.instants.count }
           .by(1)
+      end
+
+      it do
+        expect { described_class.process(contagion) }
+          .to change { simulation.reload.status }
+          .from(Simulation::CREATED)
+          .to(Simulation::PROCESSED)
       end
 
       context 'when processing is complete' do

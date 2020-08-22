@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Simulation::Contagion::Starter do
-  let(:simulation) { build(:simulation, settings: contagion) }
+  let(:simulation) { build(:simulation, :processing, settings: contagion) }
   let(:contagion)  { build(:contagion, groups: [], behaviors: []) }
 
   let!(:groups) do
@@ -33,6 +33,16 @@ describe Simulation::Contagion::Starter do
   before { simulation.save }
 
   describe '.process' do
+    it 'updates simulation' do
+      expect { described_class.process(contagion) }
+        .to(change { simulation.reload.updated_at })
+    end
+
+    it 'does not update simulation status' do
+      expect { described_class.process(contagion) }
+        .not_to(change { simulation.reload.status })
+    end
+
     it do
       expect { described_class.process(contagion) }
         .to change { contagion.reload.instants.size }

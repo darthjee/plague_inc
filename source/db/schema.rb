@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_03_171127) do
+ActiveRecord::Schema.define(version: 2020_08_11_101242) do
 
   create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_171127) do
     t.string "algorithm", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", default: "created", null: false
   end
 
   add_foreign_key "simulation_contagion_behaviors", "simulation_contagions", column: "contagion_id"

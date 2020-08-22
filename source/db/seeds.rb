@@ -11,14 +11,19 @@ params = ActionController::Parameters.new(
       days_till_start_death: 11,
       groups: [{
         name: 'Group 1',
-        size: 100
+        size: 100,
+        behavior: 'behavior',
+        reference: 'group',
+        infected: 1
       }],
       behaviors: [{
+        name: 'Behavior',
         interactions: 15,
-        contagion_risk: 0.5
+        contagion_risk: 0.5,
+        reference: 'behavior'
       }]
     }
   }
 )
 
-Simulation::Builder.new(params, Simulation.all).build.save
+Simulation::Builder.process(params, Simulation.all).save

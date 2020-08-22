@@ -31,6 +31,7 @@ class Simulation < ApplicationRecord
       delegate :contagion, to: :instant
       delegate :populations, to: :instant
       delegate :not_healthy, to: :populations
+      delegate :simulation, to: :contagion
 
       def new_instant
         @new_instant ||= contagion.instants.build(
@@ -51,6 +52,7 @@ class Simulation < ApplicationRecord
         ActiveRecord::Base.transaction do
           new_instant.save
           instant.save
+          simulation.touch
         end
       end
     end

@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Simulation::Contagion::InfectedInteractor do
   describe '.process' do
     let(:simulation) do
-      build(:simulation, contagion: nil).tap do |sim|
+      build(:simulation, :processing, contagion: nil).tap do |sim|
         sim.save(validate: false)
       end
     end
@@ -83,7 +83,21 @@ describe Simulation::Contagion::InfectedInteractor do
       )
     end
 
+    before do
+      simulation.reload.update(updated_at: 1.days.ago)
+    end
+
     context 'when person interacts with itself' do
+      it 'updates simulation' do
+        expect { process }
+          .to(change { simulation.reload.updated_at })
+      end
+
+      it 'does not update simulation status' do
+        expect { process }
+          .not_to(change { simulation.reload.status })
+      end
+
       it 'consumes infected interactions' do
         expect { process }
           .to change { infected_population.reload.interactions }
@@ -107,6 +121,16 @@ describe Simulation::Contagion::InfectedInteractor do
       before do
         allow(Settings).to receive(:interaction_block_size)
           .and_return(block_size)
+      end
+
+      it 'updates simulation' do
+        expect { process }
+          .to(change { simulation.reload.updated_at })
+      end
+
+      it 'does not update simulation status' do
+        expect { process }
+          .not_to(change { simulation.reload.status })
       end
 
       it 'consumes some infected interactions' do
@@ -142,6 +166,16 @@ describe Simulation::Contagion::InfectedInteractor do
             .reload.populations.infected
             .where(days: 0).count
         end
+      end
+
+      it 'updates simulation' do
+        expect { process }
+          .to(change { simulation.reload.updated_at })
+      end
+
+      it 'does not update simulation status' do
+        expect { process }
+          .not_to(change { simulation.reload.status })
       end
 
       it 'consumes infected interactions' do
@@ -195,6 +229,16 @@ describe Simulation::Contagion::InfectedInteractor do
       let(:healthy_size) { 100 }
       let(:interactions) { 1 }
 
+      it 'updates simulation' do
+        expect { process }
+          .to(change { simulation.reload.updated_at })
+      end
+
+      it 'does not update simulation status' do
+        expect { process }
+          .not_to(change { simulation.reload.status })
+      end
+
       it 'consumes infected interactions' do
         expect { process }
           .to change { infected_population.reload.interactions }
@@ -238,6 +282,16 @@ describe Simulation::Contagion::InfectedInteractor do
 
       let(:immune_size) { 100 }
       let(:interactions) { 1 }
+
+      it 'updates simulation' do
+        expect { process }
+          .to(change { simulation.reload.updated_at })
+      end
+
+      it 'does not update simulation status' do
+        expect { process }
+          .not_to(change { simulation.reload.status })
+      end
 
       it 'consumes infected interactions' do
         expect { process }

@@ -17,13 +17,16 @@ class Simulation < ApplicationRecord
       include ::Processor
 
       def process
-        PostCreator.process(instant)
+        StatusKeeper.process(simulation) do
+          PostCreator.process(instant)
+        end
       end
 
       private
 
       attr_reader :contagion
       delegate :instants, to: :contagion
+      delegate :simulation, to: :contagion
 
       def initialize(contagion)
         @contagion = contagion

@@ -22,6 +22,9 @@ class Simulation < ApplicationRecord
 
       attr_reader :instant, :new_instant
 
+      delegate :simulation, to: :contagion
+      delegate :contagion, to: :instant
+
       # @param instant {Instant} Instant being processed
       # @param new_instant [Instant] instant where the new
       #   infected population will be created
@@ -44,6 +47,7 @@ class Simulation < ApplicationRecord
         ActiveRecord::Base.transaction do
           instant.save
           new_instant.save
+          simulation.touch
         end
       end
 

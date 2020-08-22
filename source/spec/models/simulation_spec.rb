@@ -27,6 +27,15 @@ RSpec.describe Simulation, type: :model do
     it do
       expect(simulation).to validate_presence_of(:settings)
     end
+
+    it do
+      expect(simulation).to validate_presence_of(:status)
+    end
+
+    it do
+      expect(simulation).to validate_inclusion_of(:status)
+        .in_array(described_class::STATUSES)
+    end
   end
 
   describe '#settings' do

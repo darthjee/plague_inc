@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Simulation::Contagion::Initializer do
-  let(:simulation) { create(:simulation) }
+  let(:simulation) { create(:simulation, :processing) }
   let(:contagion)  { simulation.contagion }
   let(:instant) do
     create(:contagion_instant, contagion: contagion, day: 9)
@@ -11,8 +11,7 @@ describe Simulation::Contagion::Initializer do
 
   let(:group)    { contagion.groups.last }
   let(:behavior) { group.behavior }
-
-  let(:days) { Random.rand(1..10) }
+  let(:days)     { Random.rand(1..10) }
 
   let(:interesting_populations) do
     [infected_population, immune_population, dead_population]
@@ -71,6 +70,16 @@ describe Simulation::Contagion::Initializer do
   end
 
   describe '.process' do
+    it 'updates simulation' do
+      expect { described_class.process(instant) }
+        .to(change { simulation.reload.updated_at })
+    end
+
+    it 'does not update simulation status' do
+      expect { described_class.process(instant) }
+        .not_to(change { simulation.reload.status })
+    end
+
     it do
       expect { described_class.process(instant) }
         .to change { instant.reload.status }

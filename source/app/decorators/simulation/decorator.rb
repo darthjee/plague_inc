@@ -9,6 +9,7 @@ class Simulation < ApplicationRecord
 
     expose :id
     expose :settings
+    expose :status
     expose :errors, if: :invalid?
   end
 end
