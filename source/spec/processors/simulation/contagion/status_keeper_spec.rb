@@ -29,12 +29,14 @@ describe Simulation::Contagion::StatusKeeper do
           :contagion_population, state,
           group: group,
           behavior: behavior,
+          size: size,
           instant: nil
         )
       end
     end
 
     let(:test_double) { processor_class.new }
+    let(:size)        { 100 }
 
     let(:processor_class) do
       Class.new do
@@ -56,6 +58,16 @@ describe Simulation::Contagion::StatusKeeper do
       expect { described_class.process(simulation, &block) }
         .to change { simulation.reload.status }
         .to(Simulation::PROCESSED)
+    end
+
+    context 'when infected population has size 0' do
+      let(:size) { 0 }
+
+      it do
+        expect { described_class.process(simulation, &block) }
+          .to change { simulation.reload.status }
+          .to(Simulation::FINISHED)
+      end
     end
 
     context 'when simulation is left with no infected' do
