@@ -29,7 +29,8 @@ describe Simulation::Processor do
       :contagion_group,
       infected: infected,
       behavior: behavior,
-      contagion: contagion
+      contagion: contagion,
+      size: size
     )
   end
 
@@ -43,6 +44,7 @@ describe Simulation::Processor do
 
   let(:instant) { contagion.reload.instants.last }
 
+  let(:size)                  { 100 }
   let(:current_status)        { Simulation::CREATED }
   let(:days_till_start_death) { 0 }
   let(:days_till_recovery)    { 1 }
@@ -103,21 +105,12 @@ describe Simulation::Processor do
 
         it do
           expect { described_class.process(simulation) }
-            .not_to change { contagion.reload.instants.count }
+            .not_to(change { contagion.reload.instants.count })
         end
       end
 
       context 'when it becomes finished' do
-        let!(:group) do
-          create(
-            :contagion_group,
-            infected: infected,
-            behavior: behavior,
-            contagion: contagion,
-            size: 100,
-            infected: 100
-          )
-        end
+        let(:infected) { size }
 
         it do
           expect { described_class.process(simulation, times: 10) }
@@ -125,8 +118,6 @@ describe Simulation::Processor do
             .by(1)
         end
       end
-
-
 
       context 'when processing is complete' do
         before { described_class.process(simulation) }
@@ -550,4 +541,3 @@ describe Simulation::Processor do
     end
   end
 end
-

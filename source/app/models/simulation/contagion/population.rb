@@ -23,7 +23,7 @@ class Simulation < ApplicationRecord
       scope :not_healthy, -> { where.not(state: HEALTHY) }
       scope :alive,       -> { where.not(state: DEAD) }
 
-      scope :with_population, -> { where("size > ?", 0) }
+      scope :with_population, -> { where('size > ?', 0) }
 
       belongs_to :instant
       belongs_to :group
