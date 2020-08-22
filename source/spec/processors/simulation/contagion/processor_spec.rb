@@ -67,7 +67,24 @@ describe Simulation::Contagion::Processor do
         expect { described_class.process(contagion) }
           .to change { simulation.reload.status }
           .from(Simulation::CREATED)
-          .to(Simulation::PROCESSED)
+          .to(Simulation::FINISHED)
+      end
+
+      context 'when death does not start' do
+        let(:days_till_start_death) { 1 }
+
+        it do
+          expect { described_class.process(contagion) }
+            .to change { contagion.reload.instants.count }
+            .by(1)
+        end
+
+        it do
+          expect { described_class.process(contagion) }
+            .to change { simulation.reload.status }
+            .from(Simulation::CREATED)
+            .to(Simulation::PROCESSED)
+        end
       end
 
       context 'when processing is complete' do
