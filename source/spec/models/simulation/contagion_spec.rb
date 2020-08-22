@@ -150,4 +150,22 @@ describe Simulation::Contagion, type: :model do
       end
     end
   end
+
+  describe '#process' do
+    subject(:contagion) { simulation.contagion }
+
+    let(:simulation) { create(:simulation) }
+
+    it do
+      expect { contagion.process }
+        .to change { contagion.reload.instants.count }
+        .by(1)
+    end
+
+    it do
+      expect { contagion.process }
+        .to change { simulation.reload.status }
+        .to(Simulation::PROCESSED)
+    end
+  end
 end
