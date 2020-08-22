@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::StatusKeeper do
+describe Simulation::Contagion::StatusKeeper do
   let(:simulation) { create :simulation }
   let(:contagion)  { simulation.contagion }
   let(:group)      { contagion.groups.last }
@@ -13,6 +13,7 @@ fdescribe Simulation::Contagion::StatusKeeper do
     let!(:current_instant) do
       create(
         :contagion_instant, :ready,
+        contagion: contagion,
         day: 0,
         populations: current_populations
       )
@@ -37,8 +38,7 @@ fdescribe Simulation::Contagion::StatusKeeper do
 
     let(:processor_class) do
       Class.new do
-        def process
-        end
+        def process; end
       end
     end
 
@@ -58,10 +58,11 @@ fdescribe Simulation::Contagion::StatusKeeper do
         .to(Simulation::PROCESSED)
     end
 
-    context 'when, simulation is left with no infected' do
+    context 'when simulation is left with no infected' do
       let(:new_instant) do
         create(
           :contagion_instant, :ready,
+          contagion: contagion,
           day: 1,
           populations: new_populations
         )

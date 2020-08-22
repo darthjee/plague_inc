@@ -15,6 +15,7 @@ class Simulation < ApplicationRecord
       ].freeze
 
       scope :created, -> { where(status: CREATED) }
+      scope :ready,   -> { where(status: READY) }
 
       belongs_to :contagion
       belongs_to :current_population,
