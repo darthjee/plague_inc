@@ -8,12 +8,14 @@ class Simulation < ApplicationRecord
       READY      = 'ready'
       PROCESSING = 'processing'
       PROCESSED  = 'processed'
+      FINISHED   = 'finished'
 
       STATUSES = [
-        CREATED, READY, PROCESSING, PROCESSED
+        CREATED, READY, PROCESSING, PROCESSED, FINISHED
       ].freeze
 
       scope :created, -> { where(status: CREATED) }
+      scope :ready,   -> { where(status: READY) }
 
       belongs_to :contagion
       belongs_to :current_population,
