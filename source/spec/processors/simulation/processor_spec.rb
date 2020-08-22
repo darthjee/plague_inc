@@ -2,9 +2,9 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::Processor do
+describe Simulation::Processor do
   let(:simulation) do
-    build(:simulation, contagion: nil).tap do |sim|
+    build(:simulation, contagion: nil, status: current_status).tap do |sim|
       sim.save(validate: false)
     end
   end
@@ -29,7 +29,8 @@ describe Simulation::Contagion::Processor do
       :contagion_group,
       infected: infected,
       behavior: behavior,
-      contagion: contagion
+      contagion: contagion,
+      size: size
     )
   end
 
@@ -43,6 +44,8 @@ describe Simulation::Contagion::Processor do
 
   let(:instant) { contagion.reload.instants.last }
 
+  let(:size)                  { 100 }
+  let(:current_status)        { Simulation::CREATED }
   let(:days_till_start_death) { 0 }
   let(:days_till_recovery)    { 1 }
   let(:days_till_sympthoms)   { 0 }
@@ -58,37 +61,66 @@ describe Simulation::Contagion::Processor do
   describe '.process' do
     context 'when there are no instants' do
       it do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .to change { contagion.reload.instants.count }
           .by(1)
       end
 
       it do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .to change { simulation.reload.status }
           .from(Simulation::CREATED)
           .to(Simulation::FINISHED)
       end
 
-      context 'when death does not start' do
-        let(:days_till_start_death) { 1 }
+      context 'when calling for more times' do
+        let(:days_till_start_death) { 10 }
+        let(:days_till_recovery)    { 10 }
+        let(:infected)              { 1 }
 
-        it do
-          expect { described_class.process(contagion) }
-            .to change { contagion.reload.instants.count }
-            .by(1)
+        let(:times) { Random.rand(3..6) }
+
+        let(:expected_statuses) do
+          (times - 1).times.map do
+            Simulation::Contagion::Instant::PROCESSED
+          end.push(Simulation::Contagion::Instant::READY)
         end
 
         it do
-          expect { described_class.process(contagion) }
-            .to change { simulation.reload.status }
-            .from(Simulation::CREATED)
-            .to(Simulation::PROCESSED)
+          expect { described_class.process(simulation, times: times) }
+            .to change { contagion.reload.instants.count }
+            .by(times)
+        end
+
+        it 'makes instants with correct states' do
+          described_class.process(simulation, times: times)
+
+          expect(contagion.reload.instants.pluck(:status))
+            .to eq(expected_statuses)
+        end
+      end
+
+      context 'when it is finished' do
+        let(:current_status) { Simulation::FINISHED }
+
+        it do
+          expect { described_class.process(simulation) }
+            .not_to(change { contagion.reload.instants.count })
+        end
+      end
+
+      context 'when it becomes finished' do
+        let(:infected) { size }
+
+        it do
+          expect { described_class.process(simulation, times: 10) }
+            .to change { contagion.reload.instants.count }
+            .by(1)
         end
       end
 
       context 'when processing is complete' do
-        before { described_class.process(contagion) }
+        before { described_class.process(simulation) }
 
         it 'generates instant for day 0' do
           expect(instant.day).to be_zero
@@ -124,31 +156,31 @@ describe Simulation::Contagion::Processor do
       end
 
       it do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .not_to(change { contagion.reload.instants.count })
       end
 
       it do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .to change { created_instant.reload.status }
           .from(Simulation::Contagion::Instant::CREATED)
           .to(Simulation::Contagion::Instant::READY)
       end
 
       it do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .not_to(change { created_instant.reload.populations.count })
       end
 
       it do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .to change { created_instant.reload.populations.map(&:state) }
           .from(%w[healthy infected])
           .to(%w[healthy immune])
       end
 
       context 'when processing is complete' do
-        before { described_class.process(contagion) }
+        before { described_class.process(simulation) }
 
         it 'persists all populations' do
           expect(instant.populations)
@@ -206,27 +238,27 @@ describe Simulation::Contagion::Processor do
       end
 
       it 'creates a new instant' do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .to change { contagion.reload.instants.count }
           .by(1)
       end
 
       it 'creates a new ready instant' do
-        described_class.process(contagion)
+        described_class.process(simulation)
 
         expect(created_instant.status)
           .to eq(Simulation::Contagion::Instant::READY)
       end
 
       it 'changes instant status' do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .to change { ready_instant.reload.status }
           .from(Simulation::Contagion::Instant::READY)
           .to(Simulation::Contagion::Instant::PROCESSED)
       end
 
       context 'when death does not start' do
-        before { described_class.process(contagion) }
+        before { described_class.process(simulation) }
 
         it 'creates a new population from infected' do
           expect(created_infected_populations)
@@ -272,7 +304,7 @@ describe Simulation::Contagion::Processor do
       context 'when death kills everyone' do
         let(:days_till_start_death) { 1 }
 
-        before { described_class.process(contagion) }
+        before { described_class.process(simulation) }
 
         it 'creates a new infected population' do
           expect(created_infected_populations)
@@ -330,7 +362,7 @@ describe Simulation::Contagion::Processor do
         let(:days_till_recovery)    { 1 }
         let(:lethality)             { 0 }
 
-        before { described_class.process(contagion) }
+        before { described_class.process(simulation) }
 
         it 'does not create a new infected population' do
           expect(created_infected_populations)
@@ -399,24 +431,24 @@ describe Simulation::Contagion::Processor do
         end
 
         it 'consumes infected interaction' do
-          expect { described_class.process(contagion) }
+          expect { described_class.process(simulation) }
             .to change { infected_populations.sum(:interactions) }
             .to(0)
         end
 
         it 'consumes healthy interaction' do
-          expect { described_class.process(contagion) }
+          expect { described_class.process(simulation) }
             .to(change { healthy_populations.sum(:interactions) })
         end
 
         it 'creates a new instant' do
-          expect { described_class.process(contagion) }
+          expect { described_class.process(simulation) }
             .to change { contagion.reload.instants.count }
             .by(1)
         end
 
         it 'keeps population size' do
-          expect { described_class.process(contagion) }
+          expect { described_class.process(simulation) }
             .not_to change(&population_size_block)
         end
       end
@@ -486,23 +518,23 @@ describe Simulation::Contagion::Processor do
       end
 
       it 'does not create a new instant' do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .not_to change(Simulation::Contagion::Instant, :count)
       end
 
       it 'consumes infected interactions' do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .to change { infected_population.reload.interactions }
           .to(0)
       end
 
       it 'consumes healthy interactions' do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .to(change { healthy_population.reload.interactions })
       end
 
       it 'infects populations' do
-        expect { described_class.process(contagion) }
+        expect { described_class.process(simulation) }
           .to change { created_instant.reload.populations.infected.count }
           .by(1)
       end

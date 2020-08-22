@@ -32,7 +32,7 @@ class Simulation < ApplicationRecord
       end
 
       def infected?
-        populations.infected.any?
+        populations.infected.with_population.any?
       end
     end
   end

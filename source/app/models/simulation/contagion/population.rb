@@ -15,13 +15,15 @@ class Simulation < ApplicationRecord
 
       delegate :contagion_risk, to: :behavior
 
+      default_scope          { order(id: :asc) }
       scope :infected,    -> { where(state: INFECTED) }
       scope :healthy,     -> { where(state: HEALTHY) }
       scope :immune,      -> { where(state: IMMUNE) }
       scope :dead,        -> { where(state: DEAD) }
       scope :not_healthy, -> { where.not(state: HEALTHY) }
       scope :alive,       -> { where.not(state: DEAD) }
-      default_scope          { order(id: :asc) }
+
+      scope :with_population, -> { where('size > ?', 0) }
 
       belongs_to :instant
       belongs_to :group

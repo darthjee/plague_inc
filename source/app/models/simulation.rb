@@ -37,4 +37,8 @@ class Simulation < ApplicationRecord
   def settings=(settings)
     self.contagion = settings
   end
+
+  def finished?
+    status == FINISHED
+  end
 end
