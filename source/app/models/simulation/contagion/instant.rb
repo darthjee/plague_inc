@@ -8,9 +8,10 @@ class Simulation < ApplicationRecord
       READY      = 'ready'
       PROCESSING = 'processing'
       PROCESSED  = 'processed'
+      FINISHED   = 'finished'
 
       STATUSES = [
-        CREATED, READY, PROCESSING, PROCESSED
+        CREATED, READY, PROCESSING, PROCESSED, FINISHED
       ].freeze
 
       scope :created, -> { where(status: CREATED) }
