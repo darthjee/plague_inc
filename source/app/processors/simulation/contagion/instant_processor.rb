@@ -10,9 +10,7 @@ class Simulation < ApplicationRecord
     # healthy population is then copied into the
     # new instant
     class InstantProcessor
-      def self.process(instant, options = nil)
-        new(instant, options).process
-      end
+      include ::Processor
 
       def process
         interact
