@@ -10,9 +10,7 @@ class Simulation < ApplicationRecord
     # healthy population is then copied into the
     # new instant
     class InstantProcessor
-      def self.process(instant)
-        new(instant).process
-      end
+      include ::Processor
 
       def process
         interact
@@ -24,17 +22,18 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :instant
+      attr_reader :instant, :options
 
       delegate :simulation, to: :contagion
       delegate :contagion, to: :instant
 
-      def initialize(instant)
+      def initialize(instant, options)
         @instant = instant
+        @options = options
       end
 
       def interact
-        Contagion::Interactor.process(instant, new_instant)
+        Contagion::Interactor.process(instant, new_instant, options)
 
         instant.status = Instant::PROCESSED
       end

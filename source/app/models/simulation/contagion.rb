@@ -52,8 +52,8 @@ class Simulation < ApplicationRecord
     validate :validate_days_till_start_death
     validate :validate_days_till_contagion
 
-    def process
-      Contagion::Processor.process(self)
+    def process(options)
+      Contagion::Processor.process(self, options)
     end
 
     private

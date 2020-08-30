@@ -63,6 +63,10 @@ describe Simulation::Contagion::Interactor do
       )
     end
 
+    let(:options) do
+      Simulation::Processor::Options.new
+    end
+
     let(:random_box)     { RandomBox.instance }
     let(:day)            { 0 }
     let(:infected)       { 1 }
@@ -79,6 +83,10 @@ describe Simulation::Contagion::Interactor do
       current_instant.populations.infected
     end
 
+    let(:process) do
+      described_class.process(current_instant, new_instant, options)
+    end
+
     before do
       create(
         :contagion_population, :infected,
@@ -92,41 +100,41 @@ describe Simulation::Contagion::Interactor do
     end
 
     it 'updates simulation' do
-      expect { described_class.process(current_instant, new_instant) }
+      expect { process }
         .to(change { simulation.reload.updated_at })
     end
 
     it 'does not update simulation status' do
-      expect { described_class.process(current_instant, new_instant) }
+      expect { process }
         .not_to(change { simulation.reload.status })
     end
 
     it do
-      expect { described_class.process(current_instant, new_instant) }
+      expect { process }
         .to change { current_instant.reload.status }
         .from(Simulation::Contagion::Instant::PROCESSING)
         .to(Simulation::Contagion::Instant::PROCESSED)
     end
 
     it do
-      expect { described_class.process(current_instant, new_instant) }
+      expect { process }
         .not_to(change { new_instant.reload.status })
     end
 
     context 'when there is only an infected population' do
       it do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to change { infected_population_query.reload.sum(:interactions) }
           .to(0)
       end
 
       it 'does not create a new population' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .not_to(change { new_instant.populations.reload.count })
       end
 
       it 'does not increase infected populations size' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .not_to(change { new_instant.populations.reload.sum(:size) })
       end
     end
@@ -144,34 +152,34 @@ describe Simulation::Contagion::Interactor do
       end
 
       it 'updates simulation' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .not_to(change { simulation.reload.status })
       end
 
       it do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to change { infected_population_query.reload.sum(:interactions) }
           .to(0)
       end
 
       it 'creates a new population' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to change { new_instant.populations.reload.count }
           .by(1)
       end
 
       it 'increase infected populations size' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to(change { new_instant.populations.reload.sum(:size) })
       end
 
       it 'consumes interactions from healthy population' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to(change { healthy_population.reload.interactions })
       end
     end
@@ -189,28 +197,28 @@ describe Simulation::Contagion::Interactor do
       end
 
       it 'updates simulation' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .not_to(change { simulation.reload.status })
       end
 
       it do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to change { infected_population_query.reload.sum(:interactions) }
           .to(0)
       end
 
       it 'does not create a new population' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .not_to(change { new_instant.populations.reload.count })
       end
 
       it 'does not increase infected populations size' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .not_to(change { new_instant.populations.reload.sum(:size) })
       end
     end
@@ -251,29 +259,29 @@ describe Simulation::Contagion::Interactor do
       end
 
       it 'updates simulation' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .not_to(change { simulation.reload.status })
       end
 
       it do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to change { infected_population_query.reload.sum(:interactions) }
           .to(0)
       end
 
       it 'creates a new population for the healthy population' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to change { new_instant.populations.reload.count }
           .by(2)
       end
 
       it 'increases infected populations size' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to change { new_instant.populations.reload.sum(:size) }
           .by(2 * healthy_size)
       end
@@ -335,34 +343,34 @@ describe Simulation::Contagion::Interactor do
       end
 
       it 'updates simulation' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to(change { simulation.reload.updated_at })
       end
 
       it 'does not update simulation status' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .not_to(change { simulation.reload.status })
       end
 
       it 'consumes interactions' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to change { infected_population_query.reload.sum(:interactions) }
           .to(0)
       end
 
       it 'does not create new populations' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .not_to(change { new_instant.populations.reload.count })
       end
 
       it 'increases infected populations size' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .to change { new_instant.populations.reload.sum(:size) }
           .by(healthy_size)
       end
 
       it 'ignores new infected populations interactions' do
-        expect { described_class.process(current_instant, new_instant) }
+        expect { process }
           .not_to(change { new_instant.populations.reload.sum(:interactions) })
       end
     end

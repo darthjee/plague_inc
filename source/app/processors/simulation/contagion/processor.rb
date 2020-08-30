@@ -24,12 +24,13 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :contagion
+      attr_reader :contagion, :options
       delegate :instants, to: :contagion
       delegate :simulation, to: :contagion
 
-      def initialize(contagion)
+      def initialize(contagion, options)
         @contagion = contagion
+        @options   = options
       end
 
       def instant
@@ -37,7 +38,7 @@ class Simulation < ApplicationRecord
       end
 
       def find_or_build_instant
-        return InstantProcessor.process(ready_instant) if any_ready?
+        return InstantProcessor.process(ready_instant, options) if any_ready?
 
         instants.find_by(status: :created) ||
           Starter.process(contagion)

@@ -74,12 +74,16 @@ describe Simulation::Contagion::InfectedInteractor do
     let(:interactions)   { 10 }
     let(:lethality)      { 1 }
     let(:contagion_risk) { 1 }
+    let(:options) do
+      Simulation::Processor::Options.new
+    end
 
     let(:process) do
       described_class.process(
         selected_population,
         current_instant,
-        new_instant
+        new_instant,
+        options
       )
     end
 
@@ -118,9 +122,10 @@ describe Simulation::Contagion::InfectedInteractor do
     context 'when interactions are above interaction_block_size' do
       let(:block_size) { 2 }
 
-      before do
-        allow(Settings).to receive(:interaction_block_size)
-          .and_return(block_size)
+      let(:options) do
+        Simulation::Processor::Options.new(
+          interaction_block_size: block_size
+        )
       end
 
       it 'updates simulation' do

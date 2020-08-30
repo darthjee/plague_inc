@@ -4,22 +4,23 @@ class Simulation < ApplicationRecord
   class Processor
     include ::Processor
 
-    def initialize(simulation, times: 1)
+    def initialize(simulation, options = {})
       @simulation = simulation
-      @times      = times
+      @options    = Processor::Options.new(options)
     end
 
     def process
       times.times do
         break if simulation.reload.finished?
 
-        settings.process
+        settings.process(options)
       end
     end
 
     private
 
-    attr_reader :simulation, :times
+    attr_reader :simulation, :options
     delegate :settings, to: :simulation
+    delegate :times, to: :options
   end
 end
