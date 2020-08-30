@@ -24,12 +24,13 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :contagion
+      attr_reader :contagion, :options
       delegate :instants, to: :contagion
       delegate :simulation, to: :contagion
 
-      def initialize(contagion)
+      def initialize(contagion, options = nil)
         @contagion = contagion
+        @options   = options
       end
 
       def instant

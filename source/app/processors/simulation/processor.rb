@@ -13,7 +13,7 @@ class Simulation < ApplicationRecord
       times.times do
         break if simulation.reload.finished?
 
-        settings.process
+        settings.process(options)
       end
     end
 
