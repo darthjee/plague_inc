@@ -4,9 +4,9 @@ class Simulation < ApplicationRecord
   class Processor
     include ::Processor
 
-    def initialize(simulation, times: 1)
+    def initialize(simulation, **options)
       @simulation = simulation
-      @times      = times
+      @options    = Processor::Options.new(options)
     end
 
     def process
@@ -19,7 +19,8 @@ class Simulation < ApplicationRecord
 
     private
 
-    attr_reader :simulation, :times
+    attr_reader :simulation, :options
     delegate :settings, to: :simulation
+    delegate :times, to: :options
   end
 end
