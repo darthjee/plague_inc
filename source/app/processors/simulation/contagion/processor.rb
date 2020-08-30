@@ -38,7 +38,7 @@ class Simulation < ApplicationRecord
       end
 
       def find_or_build_instant
-        return InstantProcessor.process(ready_instant) if any_ready?
+        return InstantProcessor.process(ready_instant, options) if any_ready?
 
         instants.find_by(status: :created) ||
           Starter.process(contagion)

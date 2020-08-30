@@ -27,7 +27,7 @@ class Simulation < ApplicationRecord
       delegate :simulation, to: :contagion
       delegate :contagion, to: :instant
 
-      def initialize(instant, options = nil)
+      def initialize(instant, options)
         @instant = instant
         @options = options
       end
