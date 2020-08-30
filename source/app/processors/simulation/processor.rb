@@ -4,7 +4,7 @@ class Simulation < ApplicationRecord
   class Processor
     include ::Processor
 
-    def initialize(simulation, **options)
+    def initialize(simulation, options = {})
       @simulation = simulation
       @options    = Processor::Options.new(options)
     end
