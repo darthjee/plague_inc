@@ -20,7 +20,7 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :instant, :new_instant
+      attr_reader :instant, :new_instant, :options
 
       delegate :simulation, to: :contagion
       delegate :contagion, to: :instant
@@ -28,9 +28,10 @@ class Simulation < ApplicationRecord
       # @param instant {Instant} Instant being processed
       # @param new_instant [Instant] instant where the new
       #   infected population will be created
-      def initialize(instant, new_instant)
+      def initialize(instant, new_instant, options = nil)
         @instant     = instant
         @new_instant = new_instant
+        @options     = options
       end
 
       def interact
@@ -38,7 +39,8 @@ class Simulation < ApplicationRecord
           InfectedInteractor.process(
             population,
             instant,
-            new_instant
+            new_instant,
+            options
           )
         end
       end
