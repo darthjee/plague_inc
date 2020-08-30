@@ -27,17 +27,19 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :population, :instant, :new_instant
+      attr_reader :population, :instant,
+        :new_instant, :options
 
       delegate :populations, to: :instant
       delegate :interaction_map, to: :interaction_store
       delegate :contagion, to: :instant
       delegate :simulation, to: :contagion
 
-      def initialize(population, instant, new_instant)
-        @population = population
-        @instant = instant
+      def initialize(population, instant, new_instant, options = nil)
+        @population  = population
+        @instant     = instant
         @new_instant = new_instant
+        @options     = options
       end
 
       def interact

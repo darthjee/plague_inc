@@ -74,12 +74,16 @@ describe Simulation::Contagion::InfectedInteractor do
     let(:interactions)   { 10 }
     let(:lethality)      { 1 }
     let(:contagion_risk) { 1 }
+    let(:options) do
+      Simulation::Processor::Options.new
+    end
 
     let(:process) do
       described_class.process(
         selected_population,
         current_instant,
-        new_instant
+        new_instant,
+        options
       )
     end
 
