@@ -3,16 +3,20 @@
 require 'spec_helper'
 
 describe Simulation::Processor::Options do
-  subject(:options) { described_class.new }
-  subject(:hash_options) do
-    described_class.new(
-      times: times,
-      interaction_block_size: block_size
-    )
-  end
+  subject(:options)        { described_class.new }
+  subject(:hash_options)   { described_class.new(hash) }
+  subject(:params_options) { described_class.new(params) }
 
   let(:times)      { Random.rand(10..20) }
   let(:block_size) { Random.rand(1000..2000) }
+  let(:params)     { ActionController::Parameters.new(hash) }
+  let(:hash) do
+    {
+      times: times,
+      interaction_block_size: block_size,
+      invalid_key: 1
+    }
+  end
 
   describe '#times' do
     it 'returns default' do
@@ -22,6 +26,12 @@ describe Simulation::Processor::Options do
     context 'when initialized with hash' do
       it 'returns given value' do
         expect(hash_options.times).to eq(times)
+      end
+    end
+
+    context 'when initialized with params' do
+      it 'returns given value' do
+        expect(params_options.times).to eq(times)
       end
     end
   end
@@ -35,6 +45,13 @@ describe Simulation::Processor::Options do
     context 'when initialized with hash' do
       it 'returns given value' do
         expect(hash_options.interaction_block_size)
+          .to eq(block_size)
+      end
+    end
+
+    context 'when initialized with params' do
+      it 'returns given value' do
+        expect(params_options.interaction_block_size)
           .to eq(block_size)
       end
     end

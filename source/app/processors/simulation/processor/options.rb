@@ -3,6 +3,8 @@
 class Simulation < ApplicationRecord
   class Processor
     class Options < Sinclair::Options
+      skip_validation
+
       with_options(
         times: 1,
         interaction_block_size: Settings.interaction_block_size
