@@ -51,7 +51,7 @@ describe Simulation::Contagion::InstantProcessor do
   let(:infected_interactions) do
     infected_size * interactions
   end
-  
+
   let(:options) do
     Simulation::Processor::Options.new
   end

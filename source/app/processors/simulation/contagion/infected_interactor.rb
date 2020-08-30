@@ -28,7 +28,7 @@ class Simulation < ApplicationRecord
       private
 
       attr_reader :population, :instant,
-        :new_instant, :options
+                  :new_instant, :options
 
       delegate :populations, to: :instant
       delegate :interaction_map, to: :interaction_store
