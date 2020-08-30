@@ -28,7 +28,7 @@ class Simulation < ApplicationRecord
       # @param instant {Instant} Instant being processed
       # @param new_instant [Instant] instant where the new
       #   infected population will be created
-      def initialize(instant, new_instant, options = nil)
+      def initialize(instant, new_instant, options)
         @instant     = instant
         @new_instant = new_instant
         @options     = options
