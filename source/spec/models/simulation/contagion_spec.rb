@@ -155,15 +155,18 @@ describe Simulation::Contagion, type: :model do
     subject(:contagion) { simulation.contagion }
 
     let(:simulation) { create(:simulation) }
+    let(:options) do
+      Simulation::Processor::Options.new
+    end
 
     it do
-      expect { contagion.process }
+      expect { contagion.process(options) }
         .to change { contagion.reload.instants.count }
         .by(1)
     end
 
     it do
-      expect { contagion.process }
+      expect { contagion.process(options) }
         .to change { simulation.reload.status }
         .to(Simulation::PROCESSED)
     end
