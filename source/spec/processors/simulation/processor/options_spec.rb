@@ -3,9 +3,11 @@
 require 'spec_helper'
 
 describe Simulation::Processor::Options do
-  subject(:options)        { described_class.new }
-  subject(:hash_options)   { described_class.new(hash) }
   subject(:params_options) { described_class.new(params) }
+
+  let(:options)        { described_class.new }
+
+  let(:hash_options)   { described_class.new(hash) }
 
   let(:times)      { Random.rand(10..20) }
   let(:block_size) { Random.rand(1000..2000) }
