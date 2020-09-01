@@ -73,6 +73,16 @@ describe Simulation::Processor do
           .to(Simulation::FINISHED)
       end
 
+      it do
+        expect(described_class.process(simulation))
+          .to be_a(Array)
+      end
+
+      it do
+        expect(described_class.process(simulation))
+          .to all(be_a(Simulation::Contagion::Instant))
+      end
+
       context 'when calling for more times' do
         let(:days_till_start_death) { 10 }
         let(:days_till_recovery)    { 10 }
