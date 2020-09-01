@@ -10,7 +10,7 @@ class Simulation < ApplicationRecord
     end
 
     def process
-      times.times do
+      times.times.map do
         break if simulation.reload.finished?
 
         settings.process(options)
