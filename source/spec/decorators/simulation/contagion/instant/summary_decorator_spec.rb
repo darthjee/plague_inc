@@ -127,4 +127,8 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
   describe '#dead' do
     it_behaves_like 'a contagion instant summary count of population', :dead
   end
+
+  describe '#immune' do
+    it_behaves_like 'a contagion instant summary count of population', :immune
+  end
 end

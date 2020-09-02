@@ -15,6 +15,10 @@ class Simulation < ApplicationRecord
           scoped_size(:dead)
         end
 
+        def immune
+          scoped_size(:immune)
+        end
+
         private
 
         def scoped_size(scope)
