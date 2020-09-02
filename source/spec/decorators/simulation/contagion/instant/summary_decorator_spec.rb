@@ -89,6 +89,57 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
     create(:contagion_instant, contagion: contagion)
   end
 
+  describe 'as_json' do
+    context 'when there are no populations' do
+      let(:expected) do
+        {
+          total: 0,
+          dead: 0,
+          healthy: 0,
+          immune: 0,
+          infected: 0
+        }.stringify_keys
+      end
+
+      it 'returns 0 values' do
+        expect(decorator.as_json).to eq(expected)
+      end
+    end
+
+    context 'when there are populations' do
+      let(:states) do
+        Simulation::Contagion::Population::STATES
+      end
+
+      let(:expected) do
+        {
+          total: 10,
+          dead: 4,
+          healthy: 2,
+          immune: 3,
+          infected: 1
+        }.stringify_keys
+      end
+
+      before do
+        states.each.with_index do |state, size|
+          create(
+            :contagion_population,
+            state: state,
+            instant: instant,
+            group: group,
+            behavior: behavior,
+            size: size + 1
+          )
+        end
+      end
+
+      it 'returns the counters values' do
+        expect(decorator.as_json).to eq(expected)
+      end
+    end
+  end
+
   describe '#total' do
     context 'when there is no population' do
       it { expect(decorator.total).to be_zero }
