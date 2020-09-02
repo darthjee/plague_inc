@@ -74,6 +74,16 @@ describe Simulation::Contagion::Processor do
           .to(Simulation::FINISHED)
       end
 
+      it do
+        expect(described_class.process(contagion, options))
+          .to be_a(Simulation::Contagion::Instant)
+      end
+
+      it do
+        expect(described_class.process(contagion, options))
+          .to eq(instant)
+      end
+
       context 'when death does not start' do
         let(:days_till_start_death) { 1 }
 
