@@ -20,6 +20,8 @@ class Simulation < ApplicationRecord
         StatusKeeper.process(simulation) do
           PostCreator.process(instant)
         end
+
+        instant
       end
 
       private
