@@ -3,6 +3,9 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Instant < ApplicationRecord
+      # @author darthjee
+      #
+      # Exposes a summary of an instant
       class SummaryDecorator < Azeroth::Decorator
         expose :day
         expose :total

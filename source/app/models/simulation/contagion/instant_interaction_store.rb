@@ -2,6 +2,9 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # @author darthjee
+    #
+    # Stores interactions of populations in an instant
     class InstantInteractionStore
       def initialize(populations)
         @populations = populations

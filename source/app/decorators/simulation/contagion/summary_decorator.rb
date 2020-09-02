@@ -2,6 +2,9 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # @author darthjee
+    #
+    # Exposes a summary of a contagion simulation
     class SummaryDecorator < Azeroth::Decorator
       expose :status
       expose :instants, decorator: Instant::SummaryDecorator

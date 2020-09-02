@@ -2,6 +2,9 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # @author darthjee
+    #
+    # Responsible to toggling a simulation as processed/processing
     class StatusKeeper
       include ::Processor
 
