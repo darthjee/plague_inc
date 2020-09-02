@@ -80,11 +80,11 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
       it { expect(decorator.dead).to be_zero }
     end
 
-    context 'when there are dead and alive populations' do
-      let(:alive_populations) { Random.rand(2..10) }
-      let(:dead_populations) { Random.rand(2..10) }
-      let(:dead_sizes) do
-        dead_populations.times.map { Random.rand(100..500) }
+    context 'when there are dead and non-dead populations' do
+      let(:other_populations) { Random.rand(2..10) }
+      let(:populations) { Random.rand(2..10) }
+      let(:sizes) do
+        populations.times.map { Random.rand(100..500) }
       end
       let(:alive_states) do
         Simulation::Contagion::Population::STATES -
@@ -92,7 +92,7 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
       end
 
       before do
-        alive_populations.times.each do |days|
+        other_populations.times.each do |days|
           create(
             :contagion_population,
             state: alive_states.sample,
@@ -103,7 +103,7 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
           )
         end
 
-        dead_sizes.each.with_index do |size, days|
+        sizes.each.with_index do |size, days|
           create(
             :contagion_population, :dead,
             instant: instant,
@@ -117,7 +117,7 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
 
 
       it 'returns the sum of dead sizes' do
-        expect(decorator.dead).to eq(dead_sizes.sum)
+        expect(decorator.dead).to eq(sizes.sum)
       end
     end
   end
