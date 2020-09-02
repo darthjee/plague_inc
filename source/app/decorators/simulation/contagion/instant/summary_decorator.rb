@@ -5,9 +5,22 @@ class Simulation < ApplicationRecord
     class Instant < ApplicationRecord
       class SummaryDecorator < Azeroth::Decorator
         expose :total
+        expose :dead
 
         def total
-          populations.sum(:size)
+          scoped_size(:all)
+        end
+
+        def dead
+          scoped_size(:dead)
+        end
+
+        private
+
+        def scoped_size(scope)
+          populations
+            .public_send(scope)
+            .sum(:size)
         end
       end
     end
