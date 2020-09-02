@@ -56,11 +56,8 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
     context 'when there are only alive populations' do
       let(:populations) { Random.rand(2..10) }
       let(:states) do
-        [
-          Simulation::Contagion::Population::INFECTED,
-          Simulation::Contagion::Population::HEALTHY,
-          Simulation::Contagion::Population::IMMUNE
-        ]
+        Simulation::Contagion::Population::STATES -
+          [Simulation::Contagion::Population::DEAD]
       end
       let(:sizes) do
         populations.times.map { Random.rand(100..500) }
@@ -90,11 +87,8 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
         dead_populations.times.map { Random.rand(100..500) }
       end
       let(:alive_states) do
-        [
-          Simulation::Contagion::Population::INFECTED,
-          Simulation::Contagion::Population::HEALTHY,
-          Simulation::Contagion::Population::IMMUNE
-        ]
+        Simulation::Contagion::Population::STATES -
+          [Simulation::Contagion::Population::DEAD]
       end
 
       before do
