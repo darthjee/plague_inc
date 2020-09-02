@@ -6,6 +6,9 @@ class Simulation < ApplicationRecord
       class SummaryDecorator < Azeroth::Decorator
         expose :total
         expose :dead
+        expose :infected
+        expose :immune
+        expose :healthy
 
         def total
           scoped_size(:all)
@@ -15,8 +18,16 @@ class Simulation < ApplicationRecord
           scoped_size(:dead)
         end
 
+        def infected
+          scoped_size(:infected)
+        end
+
         def immune
           scoped_size(:immune)
+        end
+
+        def healthy
+          scoped_size(:healthy)
         end
 
         private

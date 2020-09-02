@@ -71,7 +71,6 @@ shared_examples 'a contagion instant summary count of population' do |state|
       end
     end
 
-
     it 'returns the sum of dead sizes' do
       expect(result).to eq(sizes.sum)
     end
@@ -128,7 +127,15 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
     it_behaves_like 'a contagion instant summary count of population', :dead
   end
 
+  describe '#infected' do
+    it_behaves_like 'a contagion instant summary count of population', :infected
+  end
+
   describe '#immune' do
     it_behaves_like 'a contagion instant summary count of population', :immune
+  end
+
+  describe '#healthy' do
+    it_behaves_like 'a contagion instant summary count of population', :healthy
   end
 end
