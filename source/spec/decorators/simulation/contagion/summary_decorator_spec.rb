@@ -13,9 +13,10 @@ describe Simulation::Contagion::SummaryDecorator do
   let(:group)      { contagion.groups.first }
   let(:behavior)   { contagion.behaviors.first }
   let(:instants)   { [instant] }
+  let(:day)        { Random.rand(10) }
 
   let!(:instant) do
-    create(:contagion_instant, contagion: contagion)
+    create(:contagion_instant, contagion: contagion, day: day)
   end
 
   describe 'as_json' do
@@ -39,6 +40,7 @@ describe Simulation::Contagion::SummaryDecorator do
         {
           status: simulation.status,
           instants: [{
+            day: day,
             dead: 0,
             healthy: 0,
             immune: 0,

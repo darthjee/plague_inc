@@ -4,6 +4,7 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Instant < ApplicationRecord
       class SummaryDecorator < Azeroth::Decorator
+        expose :day
         expose :total
         expose :dead
         expose :infected
