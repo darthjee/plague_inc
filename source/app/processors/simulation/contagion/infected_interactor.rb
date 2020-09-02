@@ -19,9 +19,7 @@ class Simulation < ApplicationRecord
         infect
 
         ActiveRecord::Base.transaction do
-          instant.save
-          new_instant.save
-          simulation.touch
+          save
         end
       end
 
@@ -34,6 +32,7 @@ class Simulation < ApplicationRecord
       delegate :interaction_map, to: :interaction_store
       delegate :contagion, to: :instant
       delegate :simulation, to: :contagion
+      delegate :interactions, to: :population
 
       def initialize(population, instant, new_instant, options)
         @population  = population
@@ -44,7 +43,7 @@ class Simulation < ApplicationRecord
 
       def interact
         options.interaction_block_size.times do
-          break if population.interactions.zero?
+          break if interactions.zero?
 
           population.interactions -= 1
           interaction_store.interact
@@ -67,6 +66,12 @@ class Simulation < ApplicationRecord
         @interaction_store ||= InstantInteractionStore.new(
           populations
         )
+      end
+
+      def save
+        instant.save
+        new_instant.save
+        simulation.touch
       end
     end
   end

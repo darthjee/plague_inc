@@ -2,6 +2,13 @@
 
 class Simulation < ApplicationRecord
   class Processor
+    # @author darthjee
+    #
+    # Processing options
+    #
+    # Options available are:
+    # - times Number of instants to be generated / processed
+    # - interaction_block_size blocks of interactions to be processed between
     class Options < Sinclair::Options
       skip_validation
 
