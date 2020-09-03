@@ -15,10 +15,11 @@ describe Simulation::Contagion::SummaryDecorator do
       updated_at: updated_at
     )
   end
-  let(:contagion)  { simulation.contagion }
-  let(:group)      { contagion.groups.first }
-  let(:behavior)   { contagion.behaviors.first }
-  let(:instants)   { [instant] }
+
+  let(:contagion) { simulation.contagion }
+  let(:group)     { contagion.groups.first }
+  let(:behavior)  { contagion.behaviors.first }
+  let(:instants)  { [instant] }
 
   let(:status)     { Simulation::STATUSES.sample }
   let(:created_at) { 2.days.ago }
