@@ -7,12 +7,22 @@ describe Simulation::Contagion::SummaryDecorator do
     described_class.new(simulation, instants)
   end
 
-  let(:status)     { Simulation::STATUSES.sample }
-  let(:simulation) { create(:simulation, status: status) }
+  let(:simulation) do
+    create(
+      :simulation,
+      status: status,
+      created_at: created_at,
+      updated_at: updated_at
+    )
+  end
   let(:contagion)  { simulation.contagion }
   let(:group)      { contagion.groups.first }
   let(:behavior)   { contagion.behaviors.first }
   let(:instants)   { [instant] }
+
+  let(:status)     { Simulation::STATUSES.sample }
+  let(:created_at) { 2.days.ago }
+  let(:updated_at) { 1.second.ago }
   let(:day)        { Random.rand(10) }
 
   let!(:instant) do
@@ -26,6 +36,7 @@ describe Simulation::Contagion::SummaryDecorator do
       let(:expected) do
         {
           status: simulation.status,
+          stale: false,
           instants: []
         }.stringify_keys
       end
@@ -39,6 +50,7 @@ describe Simulation::Contagion::SummaryDecorator do
       let(:expected) do
         {
           status: simulation.status,
+          stale: false,
           instants: [{
             id: instant.id,
             status: instant.status,
@@ -52,8 +64,42 @@ describe Simulation::Contagion::SummaryDecorator do
         }.as_json
       end
 
-      it 'returns simulation with no instants' do
+      it 'returns simulation with instant instants' do
         expect(decorator.as_json).to eq(expected)
+      end
+    end
+
+    context 'when simulation is processing' do
+      let(:status)   { Simulation::PROCESSING }
+      let(:instants) { [] }
+
+      context 'when it has been updated recently' do
+        let(:expected) do
+          {
+            status: simulation.status,
+            stale: false,
+            instants: []
+          }.as_json
+        end
+
+        it 'returns simulation not stale' do
+          expect(decorator.as_json).to eq(expected)
+        end
+      end
+
+      context 'when it hasnt been updated recently' do
+        let(:updated_at) { 10.minutes.ago }
+        let(:expected) do
+          {
+            status: simulation.status,
+            stale: true,
+            instants: []
+          }.as_json
+        end
+
+        it 'returns simulation not stale' do
+          expect(decorator.as_json).to eq(expected)
+        end
       end
     end
   end

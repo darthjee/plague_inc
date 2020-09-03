@@ -41,4 +41,8 @@ class Simulation < ApplicationRecord
   def finished?
     status == FINISHED
   end
+
+  def processing?
+    status == PROCESSING
+  end
 end
