@@ -7,6 +7,7 @@ class Simulation < ApplicationRecord
       #
       # Exposes a summary of an instant
       class SummaryDecorator < Azeroth::Decorator
+        expose :id
         expose :day
         expose :total
         expose :dead

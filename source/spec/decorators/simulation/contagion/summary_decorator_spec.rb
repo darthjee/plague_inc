@@ -40,6 +40,7 @@ describe Simulation::Contagion::SummaryDecorator do
         {
           status: simulation.status,
           instants: [{
+            id: instant.id,
             day: day,
             dead: 0,
             healthy: 0,
