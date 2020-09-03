@@ -95,6 +95,7 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
       let(:expected) do
         {
           id: instant.id,
+          status: instant.status,
           day: day,
           total: 0,
           dead: 0,
@@ -117,6 +118,7 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
       let(:expected) do
         {
           id: instant.id,
+          status: instant.status,
           day: day,
           total: 10,
           dead: 4,
