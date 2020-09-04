@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :simulations, only: %i[index create new show] do
     resource :contagion, only: %i[], controller: :contagion do
       get :summary
-      post'process' => 'contagion#run_process'
+      post 'process' => 'contagion#run_process'
     end
   end
 end

@@ -186,7 +186,7 @@ describe ContagionController do
 
         let(:expected_instants) do
           simulation.reload.contagion.instants
-            .offset(previous_instants_count)
+                    .offset(previous_instants_count)
         end
 
         before do
@@ -238,7 +238,7 @@ describe ContagionController do
 
         let(:expected_instants) do
           simulation.reload.contagion.instants
-            .offset(previous_instants_count)
+                    .offset(previous_instants_count)
         end
 
         before do
@@ -250,7 +250,8 @@ describe ContagionController do
         end
 
         it 'returns the created instants' do
-          expect(response.body).to eq(expected_json) end
+          expect(response.body).to eq(expected_json)
+        end
       end
     end
   end
