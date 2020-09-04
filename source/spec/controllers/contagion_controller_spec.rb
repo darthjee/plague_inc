@@ -16,6 +16,8 @@ describe ContagionController do
         simulation_id: simulation.id
       }
     end
+
+    let!(:expected_instants) { [] }
     
     let(:decorator) do
       Simulation::Contagion::SummaryDecorator.new(
@@ -32,8 +34,6 @@ describe ContagionController do
     end
 
     context 'when simulation has no instants' do
-      let(:expected_instants) { [] }
-
       it do
         expect(response.body).to eq(expected_json)
       end
