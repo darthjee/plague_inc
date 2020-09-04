@@ -18,7 +18,7 @@ describe ContagionController do
     end
 
     let!(:expected_instants) { [] }
-    
+
     let(:decorator) do
       Simulation::Contagion::SummaryDecorator.new(
         simulation, expected_instants
@@ -58,7 +58,9 @@ describe ContagionController do
     end
 
     context 'simulation has more instants than pagination' do
-      let(:instants) { Settings.contagion_instants_pagination + 2 }
+      let(:instants) do
+        Settings.contagion_instants_pagination + 2
+      end
 
       let!(:expected_instants) do
         instants.times.map do |day|
@@ -68,6 +70,41 @@ describe ContagionController do
             day: day
           )
         end.take(Settings.contagion_instants_pagination)
+      end
+
+      it do
+        expect(response.body).to eq(expected_json)
+      end
+    end
+
+    context 'simulation has more instants than pagination' do
+      let(:instants_count) do
+        Settings.contagion_instants_pagination + 1
+      end
+
+      let(:instants) do
+        instants_count.times.map do |day|
+          create(
+            :contagion_instant,
+            contagion: contagion,
+            day: day
+          )
+        end
+      end
+
+      let(:first_instant) { instants.first }
+
+      let!(:expected_instants) do
+        instants[1..Settings.contagion_instants_pagination]
+      end
+
+      let(:parameters) do
+        {
+          simulation_id: simulation.id,
+          pagination: {
+            last_instant_id: first_instant.id
+          }
+        }
       end
 
       it do
