@@ -77,7 +77,7 @@ describe ContagionController do
       end
     end
 
-    context 'simulation has more instants than pagination' do
+    context 'paginating with offset' do
       let(:instants_count) do
         Settings.contagion_instants_pagination + 1
       end
@@ -103,6 +103,39 @@ describe ContagionController do
           simulation_id: simulation.id,
           pagination: {
             last_instant_id: first_instant.id
+          }
+        }
+      end
+
+      it do
+        expect(response.body).to eq(expected_json)
+      end
+    end
+
+    context 'sending custom pagination' do
+      let(:limit) do
+        Random.rand(1..Settings.contagion_instants_pagination)
+      end
+
+      let(:instants) do
+        Settings.contagion_instants_pagination + 2
+      end
+
+      let!(:expected_instants) do
+        instants.times.map do |day|
+          create(
+            :contagion_instant,
+            contagion: contagion,
+            day: day
+          )
+        end.take(limit)
+      end
+
+      let(:parameters) do
+        {
+          simulation_id: simulation.id,
+          pagination: {
+            limit: limit
           }
         }
       end

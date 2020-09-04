@@ -29,7 +29,8 @@ class ContagionController < ApplicationController
 
   def scoped_instants
     return contagion.instants unless pagination_last_instant_id
-    contagion.instants.where("id > ?", pagination_last_instant_id)
+
+    contagion.instants.where('id > ?', pagination_last_instant_id)
   end
 
   def pagination_last_instant_id
@@ -37,7 +38,7 @@ class ContagionController < ApplicationController
   end
 
   def limit
-    Settings.contagion_instants_pagination
+    params.dig(:pagination, :limit) ||
+      Settings.contagion_instants_pagination
   end
 end
-
