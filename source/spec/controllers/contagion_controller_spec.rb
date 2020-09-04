@@ -17,7 +17,7 @@ describe ContagionController do
       }
     end
 
-    let!(:expected_instants) { [] }
+    let(:expected_instants) { instants }
 
     let(:decorator) do
       Simulation::Contagion::SummaryDecorator.new(
@@ -29,6 +29,8 @@ describe ContagionController do
       decorator.to_json
     end
 
+    let!(:instants) { [] }
+
     before do
       get :summary, params: parameters
     end
@@ -39,11 +41,11 @@ describe ContagionController do
       end
     end
 
-    context 'simulation has instants' do
-      let(:instants) { 3 }
+    context 'when simulation has instants' do
+      let(:instants_count) { 3 }
 
-      let!(:expected_instants) do
-        instants.times.map do |day|
+      let(:instants) do
+        instants_count.times.map do |day|
           create(
             :contagion_instant,
             contagion: contagion,
@@ -57,19 +59,23 @@ describe ContagionController do
       end
     end
 
-    context 'simulation has more instants than pagination' do
-      let(:instants) do
+    context 'when simulation has more instants than pagination' do
+      let(:instants_count) do
         Settings.contagion_instants_pagination + 2
       end
 
-      let!(:expected_instants) do
-        instants.times.map do |day|
+      let(:expected_instants) do
+        instants.take(Settings.contagion_instants_pagination)
+      end
+
+      let(:instants) do
+        instants_count.times.map do |day|
           create(
             :contagion_instant,
             contagion: contagion,
             day: day
           )
-        end.take(Settings.contagion_instants_pagination)
+        end
       end
 
       it do
@@ -77,7 +83,7 @@ describe ContagionController do
       end
     end
 
-    context 'paginating with offset' do
+    context 'with paginating with offset' do
       let(:instants_count) do
         Settings.contagion_instants_pagination + 1
       end
@@ -94,7 +100,7 @@ describe ContagionController do
 
       let(:first_instant) { instants.first }
 
-      let!(:expected_instants) do
+      let(:expected_instants) do
         instants[1..Settings.contagion_instants_pagination]
       end
 
@@ -112,23 +118,27 @@ describe ContagionController do
       end
     end
 
-    context 'sending custom pagination' do
+    context 'when sending custom pagination' do
       let(:limit) do
         Random.rand(1..Settings.contagion_instants_pagination)
       end
 
-      let(:instants) do
+      let(:instants_count) do
         Settings.contagion_instants_pagination + 2
       end
 
-      let!(:expected_instants) do
-        instants.times.map do |day|
+      let!(:instants) do
+        instants_count.times.map do |day|
           create(
             :contagion_instant,
             contagion: contagion,
             day: day
           )
-        end.take(limit)
+        end
+      end
+
+      let(:expected_instants) do
+        instants.take(limit)
       end
 
       let(:parameters) do
