@@ -24,7 +24,7 @@ class ContagionController < ApplicationController
   end
 
   def instants
-    contagion.instants
+    contagion.instants.limit(Settings.contagion_instants_pagination)
   end
 end
 

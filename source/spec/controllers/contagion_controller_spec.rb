@@ -40,14 +40,34 @@ describe ContagionController do
     end
 
     context 'simulation has instants' do
+      let(:instants) { 3 }
+
       let!(:expected_instants) do
-        3.times.map do |day|
+        instants.times.map do |day|
           create(
             :contagion_instant,
             contagion: contagion,
             day: day
           )
         end
+      end
+
+      it do
+        expect(response.body).to eq(expected_json)
+      end
+    end
+
+    context 'simulation has more instants than pagination' do
+      let(:instants) { Settings.contagion_instants_pagination + 2 }
+
+      let!(:expected_instants) do
+        instants.times.map do |day|
+          create(
+            :contagion_instant,
+            contagion: contagion,
+            day: day
+          )
+        end.take(Settings.contagion_instants_pagination)
       end
 
       it do
