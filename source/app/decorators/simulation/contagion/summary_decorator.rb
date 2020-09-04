@@ -18,9 +18,7 @@ class Simulation < ApplicationRecord
       end
 
       def stale
-        return false unless processing?
-
-        updated_at < Settings.processing_timeout.seconds.ago
+        stale?
       end
     end
   end

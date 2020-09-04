@@ -104,4 +104,56 @@ RSpec.describe Simulation, type: :model do
       it { expect(simulation).not_to be_processing }
     end
   end
+
+  describe '#processable' do
+    subject(:simulation) do
+      create(
+        :simulation,
+        status: status,
+        created_at: 1.hour.ago,
+        updated_at: updated_at
+      )
+    end
+
+    let(:updated_at) { Time.now }
+
+    context 'when it is processing' do
+      let(:status) { described_class::PROCESSING }
+
+      context 'when it has just been updated' do
+
+        it { expect(simulation).not_to be_processable }
+      end
+
+      context 'when it has just been updated a second ago' do
+        let(:updated_at) { 1.second.ago }
+
+        it { expect(simulation).not_to be_processable }
+      end
+
+      context 'when it has been updated a long time ago' do
+        let(:updated_at) { Settings.processing_timeout.ago }
+
+        it { expect(simulation).to be_processable }
+      end
+    end
+
+    context 'when it is not processing' do
+      let(:status) { statuses.sample }
+      let(:statuses) do
+        described_class::STATUSES - 
+          [described_class::PROCESSING]
+      end
+
+      context 'when it has just been updated' do
+        it { expect(simulation).not_to be_processable }
+      end
+
+      context 'when it has just been updated a second agou' do
+        let(:updated_at) { 1.second.ago }
+
+        it { expect(simulation).to be_processable }
+      end
+    end
+  end
 end
