@@ -5,6 +5,12 @@ class ContagionController < ApplicationController
     render json: decoratad_simulation
   end
 
+  def run_process
+    Simulation::Processor.process(simulation, processing_options)
+
+    render json: decoratad_simulation
+  end
+
   private
 
   delegate :contagion, to: :simulation
@@ -24,7 +30,11 @@ class ContagionController < ApplicationController
   end
 
   def instants
-    scoped_instants.limit(limit)
+    @instants ||= scoped_instants.limit(limit)
+  end
+
+  def processing_options
+    params.fetch(:options, {})
   end
 
   def scoped_instants

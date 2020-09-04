@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe ContagionController do
+fdescribe ContagionController do
   let(:simulation) { create(:simulation, status: status) }
   let(:contagion)  { simulation.contagion }
 
@@ -152,6 +152,41 @@ describe ContagionController do
 
       it do
         expect(response.body).to eq(expected_json)
+      end
+    end
+  end
+
+  describe 'POST process' do
+    context 'when no options are given' do
+      let(:parameters) do
+        {
+          simulation_id: simulation.id
+        }
+      end
+
+      it do
+        expect { post :run_process, params: parameters }
+          .to change { simulation.reload.contagion.instants.size }
+          .by(Settings.processing_iteractions)
+      end
+    end
+
+    context 'when times options are given' do
+      let(:parameters) do
+        {
+          simulation_id: simulation.id,
+          options: {
+            times: times
+          }
+        }
+      end
+
+      let(:times) { Random.rand(2..5) }
+
+      it do
+        expect { post :run_process, params: parameters }
+          .to change { simulation.reload.contagion.instants.size }
+          .by(times)
       end
     end
   end
