@@ -84,4 +84,24 @@ RSpec.describe Simulation, type: :model do
       it { expect(simulation).not_to be_finished }
     end
   end
+
+  describe '#processing?' do
+    subject(:simulation) { create(:simulation, status: status) }
+
+    context 'when it is processing' do
+      let(:status) { described_class::PROCESSING }
+
+      it { expect(simulation).to be_processing }
+    end
+
+    context 'when it is not processing' do
+      let(:status) { statuses.sample }
+      let(:statuses) do
+        described_class::STATUSES - 
+          [described_class::PROCESSING]
+      end
+
+      it { expect(simulation).not_to be_processing }
+    end
+  end
 end
