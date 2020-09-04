@@ -5,7 +5,7 @@ require './app/models/simulation/contagion'
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     # {Simulation::Contagion} decoraror
-    class Decorator < ::Decorator
+    class Decorator < ::ModelDecorator
       Contagion::ALLOWED_ATTRIBUTES.each(&method(:expose))
 
       expose :groups

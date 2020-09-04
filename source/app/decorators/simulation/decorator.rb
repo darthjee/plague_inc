@@ -4,7 +4,7 @@ require './app/models/simulation'
 
 class Simulation < ApplicationRecord
   # {Simulation} decoraror
-  class Decorator < ::Decorator
+  class Decorator < ::ModelDecorator
     Simulation::ALLOWED_ATTRIBUTES.each(&method(:expose))
 
     expose :id
