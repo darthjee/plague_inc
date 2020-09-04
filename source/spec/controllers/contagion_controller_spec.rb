@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe ContagionController do
+describe ContagionController do
   let(:simulation)    { create(:simulation, status: status) }
   let(:contagion)     { simulation.contagion }
   let(:expected_json) { decorator.to_json }
@@ -219,6 +219,38 @@ fdescribe ContagionController do
         expect { post :run_process, params: parameters }
           .to change { simulation.reload.contagion.instants.size }
           .by(times)
+      end
+
+      context 'when the request is done' do
+        let(:expected_instants) do
+          simulation.reload.contagion.instants
+        end
+
+        before { post :run_process, params: parameters }
+
+        it 'returns the created instants' do
+          expect(response.body).to eq(expected_json)
+        end
+      end
+
+      context 'when there were instants and the request is done' do
+        let(:previous_instants_count) { Random.rand(2..4) }
+
+        let(:expected_instants) do
+          simulation.reload.contagion.instants
+            .offset(previous_instants_count)
+        end
+
+        before do
+          previous_instants_count.times do
+            Simulation::Processor.process(simulation)
+          end
+
+          post :run_process, params: parameters
+        end
+
+        it 'returns the created instants' do
+          expect(response.body).to eq(expected_json) end
       end
     end
   end

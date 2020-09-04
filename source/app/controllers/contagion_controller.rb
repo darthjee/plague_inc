@@ -6,7 +6,9 @@ class ContagionController < ApplicationController
   end
 
   def run_process
-    @instants = Simulation::Processor.process(simulation, processing_options)
+    @instants = Simulation::Processor
+      .process(simulation, processing_options)
+      .map(&:reload)
 
     render json: decoratad_simulation
   end
