@@ -3,11 +3,18 @@
 require 'spec_helper'
 
 fdescribe ContagionController do
-  let(:simulation) { create(:simulation, status: status) }
-  let(:contagion)  { simulation.contagion }
+  let(:simulation)    { create(:simulation, status: status) }
+  let(:contagion)     { simulation.contagion }
+  let(:expected_json) { decorator.to_json }
 
   let(:status) do
     Simulation::STATUSES.sample
+  end
+
+  let(:decorator) do
+    Simulation::Contagion::SummaryDecorator.new(
+      simulation, expected_instants
+    )
   end
 
   describe 'GET summary' do
@@ -18,16 +25,6 @@ fdescribe ContagionController do
     end
 
     let(:expected_instants) { instants }
-
-    let(:decorator) do
-      Simulation::Contagion::SummaryDecorator.new(
-        simulation, expected_instants
-      )
-    end
-
-    let(:expected_json) do
-      decorator.to_json
-    end
 
     let!(:instants) { [] }
 
@@ -157,6 +154,8 @@ fdescribe ContagionController do
   end
 
   describe 'POST process' do
+    let(:status) { Simulation::CREATED }
+
     context 'when no options are given' do
       let(:parameters) do
         {
@@ -168,6 +167,39 @@ fdescribe ContagionController do
         expect { post :run_process, params: parameters }
           .to change { simulation.reload.contagion.instants.size }
           .by(Settings.processing_iteractions)
+      end
+
+      context 'when the request is done' do
+        let(:expected_instants) do
+          simulation.reload.contagion.instants
+        end
+
+        before { post :run_process, params: parameters }
+
+        it 'returns the created instants' do
+          expect(response.body).to eq(expected_json)
+        end
+      end
+
+      context 'when there were instants and the request is done' do
+        let(:previous_instants_count) { Random.rand(2..4) }
+
+        let(:expected_instants) do
+          simulation.reload.contagion.instants
+            .offset(previous_instants_count)
+        end
+
+        before do
+          previous_instants_count.times do
+            Simulation::Processor.process(simulation)
+          end
+
+          post :run_process, params: parameters
+        end
+
+        it 'returns the created instants' do
+          expect(response.body).to eq(expected_json)
+        end
       end
     end
 
