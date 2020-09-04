@@ -64,4 +64,24 @@ RSpec.describe Simulation, type: :model do
       end
     end
   end
+
+  describe '#finished?' do
+    subject(:simulation) { create(:simulation, status: status) }
+
+    context 'when it is finished' do
+      let(:status) { described_class::FINISHED }
+
+      it { expect(simulation).to be_finished }
+    end
+
+    context 'when it is not finished' do
+      let(:status) { statuses.sample }
+      let(:statuses) do
+        described_class::STATUSES - 
+          [described_class::FINISHED]
+      end
+
+      it { expect(simulation).not_to be_finished }
+    end
+  end
 end
