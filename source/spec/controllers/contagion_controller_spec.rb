@@ -3,7 +3,14 @@
 require 'spec_helper'
 
 describe ContagionController do
-  let(:simulation)    { create(:simulation, status: status) }
+  let(:simulation) do
+    create(
+      :simulation,
+      status: status,
+      created_at: 1.second.ago,
+      updated_at: 1.second.ago
+    )
+  end
   let(:contagion)     { simulation.contagion }
   let(:expected_json) { decorator.to_json }
 

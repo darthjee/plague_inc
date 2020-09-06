@@ -21,7 +21,12 @@ describe Simulation::Contagion::SummaryDecorator do
   let(:behavior)  { contagion.behaviors.first }
   let(:instants)  { [instant] }
 
-  let(:status)     { Simulation::STATUSES.sample }
+  let(:statuses) do
+    Simulation::STATUSES -
+      [Simulation::PROCESSING]
+  end
+
+  let(:status)     { statuses.sample }
   let(:created_at) { 2.days.ago }
   let(:updated_at) { 1.second.ago }
   let(:day)        { Random.rand(10) }
@@ -37,7 +42,7 @@ describe Simulation::Contagion::SummaryDecorator do
       let(:expected) do
         {
           status: simulation.status,
-          stale: false,
+          processable: true,
           instants: []
         }.stringify_keys
       end
@@ -51,7 +56,7 @@ describe Simulation::Contagion::SummaryDecorator do
       let(:expected) do
         {
           status: simulation.status,
-          stale: false,
+          processable: true,
           instants: [{
             id: instant.id,
             status: instant.status,
@@ -78,7 +83,7 @@ describe Simulation::Contagion::SummaryDecorator do
         let(:expected) do
           {
             status: simulation.status,
-            stale: false,
+            processable: false,
             instants: []
           }.as_json
         end
@@ -93,7 +98,7 @@ describe Simulation::Contagion::SummaryDecorator do
         let(:expected) do
           {
             status: simulation.status,
-            stale: true,
+            processable: true,
             instants: []
           }.as_json
         end

@@ -7,7 +7,7 @@ class Simulation < ApplicationRecord
     # Exposes a summary of a contagion simulation
     class SummaryDecorator < Azeroth::Decorator
       expose :status
-      expose :stale
+      expose :processable?, as: :processable
       expose :instants, decorator: Instant::SummaryDecorator
 
       attr_reader :instants
@@ -15,10 +15,6 @@ class Simulation < ApplicationRecord
       def initialize(simulation, instants)
         super(simulation)
         @instants = instants
-      end
-
-      def stale
-        stale?
       end
     end
   end
