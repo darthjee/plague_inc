@@ -50,10 +50,4 @@ class Simulation < ApplicationRecord
     processing? && updated_at < Settings.processing_timeout.ago ||
     ! processing? && updated_at < 1.second.ago
   end
-
-  def stale?
-    return false unless processing?
-
-    updated_at < Settings.processing_timeout.seconds.ago
-  end
 end
