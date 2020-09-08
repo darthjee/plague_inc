@@ -36,6 +36,12 @@ describe ContagionController do
     let!(:instants) { [] }
 
     before do
+      # rubocop:RSpec/AnyInstance disable
+      allow_any_instance_of(Simulation)
+        .to receive(:processable_in)
+        .and_return(60)
+      # rubocop:RSpec/AnyInstance enable
+
       get :summary, params: parameters
     end
 
