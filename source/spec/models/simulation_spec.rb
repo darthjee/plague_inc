@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Simulation, type: :model do
+describe Simulation, type: :model do
   subject(:simulation) { build(:simulation) }
 
   describe 'validations' do
@@ -77,7 +77,7 @@ RSpec.describe Simulation, type: :model do
     context 'when it is not finished' do
       let(:status) { statuses.sample }
       let(:statuses) do
-        described_class::STATUSES - 
+        described_class::STATUSES -
           [described_class::FINISHED]
       end
 
@@ -97,7 +97,7 @@ RSpec.describe Simulation, type: :model do
     context 'when it is not processing' do
       let(:status) { statuses.sample }
       let(:statuses) do
-        described_class::STATUSES - 
+        described_class::STATUSES -
           [described_class::PROCESSING]
       end
 
@@ -121,7 +121,6 @@ RSpec.describe Simulation, type: :model do
       let(:status) { described_class::PROCESSING }
 
       context 'when it has just been updated' do
-
         it { expect(simulation).not_to be_processable }
       end
 
@@ -141,7 +140,7 @@ RSpec.describe Simulation, type: :model do
     context 'when it is not processing' do
       let(:status) { statuses.sample }
       let(:statuses) do
-        described_class::STATUSES - 
+        described_class::STATUSES -
           [described_class::PROCESSING]
       end
 
@@ -204,7 +203,7 @@ RSpec.describe Simulation, type: :model do
     context 'when it is not processing' do
       let(:status) { statuses.sample }
       let(:statuses) do
-        described_class::STATUSES - 
+        described_class::STATUSES -
           [described_class::PROCESSING]
       end
 
