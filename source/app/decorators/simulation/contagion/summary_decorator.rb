@@ -8,6 +8,7 @@ class Simulation < ApplicationRecord
     class SummaryDecorator < Azeroth::Decorator
       expose :status
       expose :processable?, as: :processable
+      expose :processable_in
       expose :instants, decorator: Instant::SummaryDecorator
 
       attr_reader :instants

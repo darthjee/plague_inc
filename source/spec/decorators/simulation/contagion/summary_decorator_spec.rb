@@ -43,6 +43,7 @@ describe Simulation::Contagion::SummaryDecorator do
         {
           status: simulation.status,
           processable: true,
+          processable_in: 0,
           instants: []
         }.stringify_keys
       end
@@ -57,6 +58,7 @@ describe Simulation::Contagion::SummaryDecorator do
         {
           status: simulation.status,
           processable: true,
+          processable_in: 0,
           instants: [{
             id: instant.id,
             status: instant.status,
@@ -84,8 +86,16 @@ describe Simulation::Contagion::SummaryDecorator do
           {
             status: simulation.status,
             processable: false,
+            processable_in: processable_in,
             instants: []
           }.as_json
+        end
+        let(:processable_in) { 120 }
+
+        before do
+          allow_any_instance_of(Simulation)
+            .to receive(:processable_in)
+            .and_return(processable_in)
         end
 
         it 'returns simulation not stale' do
@@ -99,6 +109,7 @@ describe Simulation::Contagion::SummaryDecorator do
           {
             status: simulation.status,
             processable: true,
+            processable_in: 0,
             instants: []
           }.as_json
         end
