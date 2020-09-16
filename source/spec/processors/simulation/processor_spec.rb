@@ -4,9 +4,18 @@ require 'spec_helper'
 
 describe Simulation::Processor do
   let(:simulation) do
-    build(:simulation, contagion: nil, status: current_status).tap do |sim|
+    build(:simulation, simulation_attributes).tap do |sim|
       sim.save(validate: false)
     end
+  end
+
+  let(:simulation_attributes) do
+    {
+      contagion: nil,
+      status: current_status,
+      created_at: created_at,
+      updated_at: updated_at
+    }
   end
 
   let(:contagion) do
@@ -44,6 +53,8 @@ describe Simulation::Processor do
 
   let(:instant) { contagion.reload.instants.last }
 
+  let(:created_at)            { 2.days.ago }
+  let(:updated_at)            { 1.days.ago }
   let(:size)                  { 100 }
   let(:current_status)        { Simulation::CREATED }
   let(:days_till_start_death) { 0 }
@@ -59,6 +70,21 @@ describe Simulation::Processor do
   before { contagion.reload }
 
   describe '.process' do
+    context 'when simulation is not processable' do
+      let(:current_status) { Simulation::PROCESSING }
+      let(:updated_at)     { 3.seconds.ago }
+
+      it do
+        expect { described_class.process(simulation) }
+          .not_to(change { contagion.reload.instants.count })
+      end
+
+      it do
+        expect(described_class.process(simulation))
+          .to be_empty
+      end
+    end
+
     context 'when there are no instants' do
       it do
         expect { described_class.process(simulation) }
