@@ -3,12 +3,13 @@
     'cyberhawk/notifier'
   ]);
 
-  function Controller(http, $routeParams, $location) {
+  function Controller(http, timeout, $routeParams, $location) {
     this.http     = http.bind(this);
+    this.timeout  = timeout;
     this.id       = $routeParams.id;
     this.location = $location;
 
-    _.bindAll(this, '_summaryPath', '_summaryUrl', '_loadData', '_setSimulation');
+    _.bindAll(this, '_summaryPath', '_summaryUrl', '_loadData', '_setSimulation', '_enqueueProcess', '_process');
     this._loadData();
   }
 
@@ -26,6 +27,8 @@
 
     if (data.instants.length < data.instants_total) {
       this._loadData();
+    } else if (data.status != "finished") {
+      this._enqueueProcess();
     }
   };
 
@@ -33,6 +36,20 @@
     var promisse = this.http.get(this._summaryUrl());
 
     promisse.success(this._setSimulation);
+  };
+
+  fn._enqueueProcess = function() {
+    this.timeout(this._process, this.simulation.processable_in);
+  };
+
+  fn._process = function() {
+    var promisse = this.http.post(this._processingPath(), {});
+
+    promisse.success(this._setSimulation);
+  };
+
+  fn._processingPath = function() {
+    return this.location.$$path + "/contagion/process";
   };
 
   fn._summaryUrl = function() {
@@ -48,11 +65,12 @@
   };
 
   fn._summaryPath = function() {
-    return this.location.$$path + "/contagion/summary"
+    return this.location.$$path + "/contagion/summary";
   };
 
   app.controller('Simulation.GraphController', [
     "binded_http",
+    "$timeout",
     "$routeParams",
     "$location",
     Controller
