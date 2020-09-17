@@ -6,7 +6,7 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Behavior < ApplicationRecord
       # {Simulation::Contagion::Behavior} decoraror
-      class Decorator < ::Decorator
+      class Decorator < ::ModelDecorator
         Behavior::ALLOWED_ATTRIBUTES.each(&method(:expose))
       end
     end

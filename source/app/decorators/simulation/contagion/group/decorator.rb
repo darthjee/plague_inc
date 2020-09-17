@@ -6,7 +6,7 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Group < ApplicationRecord
       # {Simulation::Contagion::Group} decoraror
-      class Decorator < ::Decorator
+      class Decorator < ::ModelDecorator
         Group::ALLOWED_ATTRIBUTES.each(&method(:expose))
 
         expose :behavior

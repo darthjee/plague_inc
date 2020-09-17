@@ -10,6 +10,12 @@ class Settings
     title: 'Plague Simulations',
     favicon: 'http://images.coronasim.xyz/favicon.ico',
     cache_age: 10.seconds,
-    interaction_block_size: 1000
+
+    contagion_instants_pagination: 20,
+
+    interaction_block_size: 1000,
+    processing_iteractions: 1,
+    processing_timeout: 2.minutes,
+    processing_wait_time: 1.second
   )
 end

@@ -7,12 +7,28 @@ describe Simulation::Contagion::SummaryDecorator do
     described_class.new(simulation, instants)
   end
 
-  let(:status)     { Simulation::STATUSES.sample }
-  let(:simulation) { create(:simulation, status: status) }
-  let(:contagion)  { simulation.contagion }
-  let(:group)      { contagion.groups.first }
-  let(:behavior)   { contagion.behaviors.first }
-  let(:instants)   { [instant] }
+  let(:simulation) do
+    create(
+      :simulation,
+      status: status,
+      created_at: created_at,
+      updated_at: updated_at
+    )
+  end
+
+  let(:contagion) { simulation.contagion }
+  let(:group)     { contagion.groups.first }
+  let(:behavior)  { contagion.behaviors.first }
+  let(:instants)  { [instant] }
+
+  let(:statuses) do
+    Simulation::STATUSES -
+      [Simulation::PROCESSING]
+  end
+
+  let(:status)     { statuses.sample }
+  let(:created_at) { 2.days.ago }
+  let(:updated_at) { 1.second.ago }
   let(:day)        { Random.rand(10) }
 
   let!(:instant) do
@@ -26,6 +42,8 @@ describe Simulation::Contagion::SummaryDecorator do
       let(:expected) do
         {
           status: simulation.status,
+          processable: true,
+          processable_in: 0,
           instants: []
         }.stringify_keys
       end
@@ -39,7 +57,11 @@ describe Simulation::Contagion::SummaryDecorator do
       let(:expected) do
         {
           status: simulation.status,
+          processable: true,
+          processable_in: 0,
           instants: [{
+            id: instant.id,
+            status: instant.status,
             day: day,
             dead: 0,
             healthy: 0,
@@ -50,8 +72,53 @@ describe Simulation::Contagion::SummaryDecorator do
         }.as_json
       end
 
-      it 'returns simulation with no instants' do
+      it 'returns simulation with instant instants' do
         expect(decorator.as_json).to eq(expected)
+      end
+    end
+
+    context 'when simulation is processing' do
+      let(:status)   { Simulation::PROCESSING }
+      let(:instants) { [] }
+
+      context 'when it has been updated recently' do
+        let(:expected) do
+          {
+            status: simulation.status,
+            processable: false,
+            processable_in: processable_in,
+            instants: []
+          }.as_json
+        end
+        let(:processable_in) { 120 }
+
+        before do
+          # rubocop:disable RSpec/AnyInstance:
+          allow_any_instance_of(Simulation)
+            .to receive(:processable_in)
+            .and_return(processable_in)
+          # rubocop:enable RSpec/AnyInstance:
+        end
+
+        it 'returns simulation not stale' do
+          expect(decorator.as_json).to eq(expected)
+        end
+      end
+
+      context 'when it hasnt been updated recently' do
+        let(:updated_at) { 10.minutes.ago }
+        let(:expected) do
+          {
+            status: simulation.status,
+            processable: true,
+            processable_in: 0,
+            instants: []
+          }.as_json
+        end
+
+        it 'returns simulation not stale' do
+          expect(decorator.as_json).to eq(expected)
+        end
       end
     end
   end

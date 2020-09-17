@@ -23,7 +23,9 @@ class Simulation < ApplicationRecord
     end
 
     def process
-      times.times.map do
+      return [] unless simulation.processable?
+
+      times.to_i.times.map do
         break if simulation.reload.finished?
 
         settings.process(options)

@@ -13,7 +13,7 @@ class Simulation < ApplicationRecord
       skip_validation
 
       with_options(
-        times: 1,
+        times: Settings.processing_iteractions,
         interaction_block_size: Settings.interaction_block_size
       )
     end
