@@ -38,11 +38,11 @@ describe ContagionController do
     let!(:instants) { [] }
 
     before do
-      # rubocop:RSpec/AnyInstance disable
+      # rubocop:disable RSpec/AnyInstance
       allow_any_instance_of(Simulation)
         .to receive(:processable_in)
         .and_return(60)
-      # rubocop:RSpec/AnyInstance enable
+      # rubocop:enable RSpec/AnyInstance
 
       get :summary, params: parameters
     end
@@ -209,36 +209,37 @@ describe ContagionController do
         end
       end
 
-      context "when simulation is not processable" do
+      context 'when simulation is not processable' do
         let(:status)     { Simulation::PROCESSING }
         let(:updated_at) { 1.second.ago }
 
         it do
           expect { post :run_process, params: parameters }
-            .not_to change { simulation.reload.contagion.instants.size }
+            .not_to(change { simulation.reload.contagion.instants.size })
+        end
+      end
+
+      context 'when simulation is not processable after the request' do
+        let(:status)            { Simulation::PROCESSING }
+        let(:updated_at)        { 1.second.ago }
+        let(:expected_instants) { [] }
+
+        before do
+          # rubocop:disable RSpec/AnyInstance
+          allow_any_instance_of(Simulation)
+            .to receive(:processable_in)
+            .and_return(60)
+          # rubocop:enable RSpec/AnyInstance
+
+          post :run_process, params: parameters
         end
 
-        context 'when the request is done' do
-          let(:expected_instants) { [] }
+        it 'returns the created instants' do
+          expect(response.body).to eq(expected_json)
+        end
 
-          before do
-            # rubocop:RSpec/AnyInstance disable
-            allow_any_instance_of(Simulation)
-              .to receive(:processable_in)
-              .and_return(60)
-            # rubocop:RSpec/AnyInstance enable
-
-            post :run_process, params: parameters
-          end
-
-
-          it 'returns the created instants' do
-            expect(response.body).to eq(expected_json)
-          end
-
-          it do
-            expect(response).not_to be_successful
-          end
+        it do
+          expect(response).not_to be_successful
         end
       end
 
@@ -247,7 +248,7 @@ describe ContagionController do
 
         let(:expected_instants) do
           simulation.reload.contagion.instants
-            .offset(previous_instants_count)
+                    .offset(previous_instants_count)
         end
 
         before do
@@ -311,7 +312,7 @@ describe ContagionController do
 
         let(:expected_instants) do
           simulation.reload.contagion.instants
-            .offset(previous_instants_count)
+                    .offset(previous_instants_count)
         end
 
         before do
