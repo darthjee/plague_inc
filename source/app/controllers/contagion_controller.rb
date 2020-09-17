@@ -8,7 +8,7 @@ class ContagionController < ApplicationController
   def run_process
     @instants = process_simulation
 
-    render json: decoratad_simulation
+    render json: decoratad_simulation, status: processing_header
   end
 
   private
@@ -21,8 +21,16 @@ class ContagionController < ApplicationController
     )
   end
 
+  def processing_header
+    instants_empty? ? :unprocessable_entity : :created
+  end
+
   def simulation
     @simulation ||= Simulation.find(simulation_id)
+  end
+
+  def instants_empty?
+    simulation.contagion.instants.empty?
   end
 
   def simulation_id

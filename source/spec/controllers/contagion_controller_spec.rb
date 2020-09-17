@@ -7,10 +7,12 @@ describe ContagionController do
     create(
       :simulation,
       status: status,
-      created_at: 1.second.ago,
-      updated_at: 1.second.ago
+      created_at: created_at,
+      updated_at: updated_at
     )
   end
+  let(:created_at)    { 1.second.ago }
+  let(:updated_at)    { 1.second.ago }
   let(:contagion)     { simulation.contagion }
   let(:expected_json) { decorator.to_json }
 
@@ -167,7 +169,9 @@ describe ContagionController do
   end
 
   describe 'POST process' do
-    let(:status) { statuses.sample }
+    let(:status)     { statuses.sample }
+    let(:created_at) { 5.second.ago }
+    let(:updated_at) { 5.second.ago }
 
     let(:statuses) do
       [
@@ -206,7 +210,8 @@ describe ContagionController do
       end
 
       context "when simulation is not processable" do
-        let(:status) { Simulation::PROCESSING }
+        let(:status)     { Simulation::PROCESSING }
+        let(:updated_at) { 1.second.ago }
 
         it do
           expect { post :run_process, params: parameters }
