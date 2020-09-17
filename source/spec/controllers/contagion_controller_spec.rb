@@ -167,7 +167,14 @@ describe ContagionController do
   end
 
   describe 'POST process' do
-    let(:status) { Simulation::CREATED }
+    let(:status) { statuses.sample }
+
+    let(:statuses) do
+      [
+        Simulation::CREATED,
+        Simulation::PROCESSED
+      ]
+    end
 
     context 'when no options are given' do
       let(:parameters) do
@@ -195,6 +202,38 @@ describe ContagionController do
 
         it do
           expect(response).to be_successful
+        end
+      end
+
+      context "when simulation is not processable" do
+        let(:status) { Simulation::PROCESSING }
+
+        it do
+          expect { post :run_process, params: parameters }
+            .not_to change { simulation.reload.contagion.instants.size }
+        end
+
+        context 'when the request is done' do
+          let(:expected_instants) { [] }
+
+          before do
+            # rubocop:RSpec/AnyInstance disable
+            allow_any_instance_of(Simulation)
+              .to receive(:processable_in)
+              .and_return(60)
+            # rubocop:RSpec/AnyInstance enable
+
+            post :run_process, params: parameters
+          end
+
+
+          it 'returns the created instants' do
+            expect(response.body).to eq(expected_json)
+          end
+
+          it do
+            expect(response).not_to be_successful
+          end
         end
       end
 
