@@ -3,24 +3,37 @@
     'cyberhawk/notifier'
   ]);
 
-  function Controller(notifier) {
-    console.info(arguments);
-    this.notifier = notifier;
+  function Controller(http, $routeParams, $location) {
+    this.http     = http.bind(this);
+    this.id       = $routeParams.id;
+    this.location = $location;
 
-    _.bindAll(this, '_setSimulation');
-
-    notifier.register('simulation', this._setSimulation);
+    this._loadData();
   }
 
   var fn = Controller.prototype;
 
   fn._setSimulation = function(data) {
-    console.info('data', data);
-    console.info(arguments);
+    if (this.simulation) {
+    } else {
+      this.simulation = data;
+    }
+  };
+
+  fn._loadData = function() {
+    var promisse = this.http.get(this.sumaryPath());
+
+    promisse.success(this._setSimulation);
+  };
+
+  fn.sumaryPath = function() {
+    return this.location.$$path + "/contagion/summary"
   };
 
   app.controller('Simulation.GraphController', [
-    'cyberhawk_notifier',
+    "binded_http",
+    "$routeParams",
+    "$location",
     Controller
   ]);
 }(window._, window.angular, window.Cyberhawk));
