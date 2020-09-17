@@ -16,6 +16,7 @@
   fn._setSimulation = function(data) {
     if (this.simulation) {
     } else {
+      console.info(data)
       this.simulation = data;
     }
   };

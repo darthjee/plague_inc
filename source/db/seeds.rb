@@ -11,7 +11,7 @@ params = ActionController::Parameters.new(
       days_till_start_death: 11,
       groups: [{
         name: 'Group 1',
-        size: 100,
+        size: 5000,
         behavior: 'behavior',
         reference: 'group',
         infected: 1
