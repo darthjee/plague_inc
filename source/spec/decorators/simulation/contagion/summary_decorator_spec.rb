@@ -44,7 +44,8 @@ describe Simulation::Contagion::SummaryDecorator do
           status: simulation.status,
           processable: true,
           processable_in: 0,
-          instants: []
+          instants: [],
+          instants_total: 1
         }.stringify_keys
       end
 
@@ -59,6 +60,7 @@ describe Simulation::Contagion::SummaryDecorator do
           status: simulation.status,
           processable: true,
           processable_in: 0,
+          instants_total: 1,
           instants: [{
             id: instant.id,
             status: instant.status,
@@ -87,6 +89,7 @@ describe Simulation::Contagion::SummaryDecorator do
             status: simulation.status,
             processable: false,
             processable_in: processable_in,
+            instants_total: 1,
             instants: []
           }.as_json
         end
@@ -112,6 +115,7 @@ describe Simulation::Contagion::SummaryDecorator do
             status: simulation.status,
             processable: true,
             processable_in: 0,
+            instants_total: 1,
             instants: []
           }.as_json
         end
