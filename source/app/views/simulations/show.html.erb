@@ -2,6 +2,29 @@
   <% magicka_display('gnc.data') do |display| %>
     <%= render partial: 'form', locals: { form: display } %>
   <% end %>
-  <div ng-controller="Simulation.GraphController">
+  <div ng-controller="Simulation.GraphController as graph">
+    Status {{graph.simulation.status}}
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Healthy</th>
+          <th>Infected</th>
+          <th>Immune</th>
+          <th>Dead</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="instant in graph.simulation.instants">
+          <td>{{instant.day}}</td>
+          <td>{{instant.healthy}}</td>
+          <td>{{instant.infected}}</td>
+          <td>{{instant.immune}}</td>
+          <td>{{instant.dead}}</td>
+          <td>{{instant.total}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
