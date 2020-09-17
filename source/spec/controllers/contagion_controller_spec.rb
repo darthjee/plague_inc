@@ -192,6 +192,10 @@ describe ContagionController do
         it 'returns the created instants' do
           expect(response.body).to eq(expected_json)
         end
+
+        it do
+          expect(response).to be_successful
+        end
       end
 
       context 'when there were instants and the request is done' do
@@ -199,7 +203,7 @@ describe ContagionController do
 
         let(:expected_instants) do
           simulation.reload.contagion.instants
-                    .offset(previous_instants_count)
+            .offset(previous_instants_count)
         end
 
         before do
@@ -212,6 +216,10 @@ describe ContagionController do
 
         it 'returns the created instants' do
           expect(response.body).to eq(expected_json)
+        end
+
+        it do
+          expect(response).to be_successful
         end
       end
     end
@@ -234,6 +242,10 @@ describe ContagionController do
           .by(times)
       end
 
+      it do
+        expect(response).to be_successful
+      end
+
       context 'when the request is done' do
         let(:expected_instants) do
           simulation.reload.contagion.instants
@@ -244,6 +256,10 @@ describe ContagionController do
         it 'returns the created instants' do
           expect(response.body).to eq(expected_json)
         end
+
+        it do
+          expect(response).to be_successful
+        end
       end
 
       context 'when there were instants and the request is done' do
@@ -251,7 +267,7 @@ describe ContagionController do
 
         let(:expected_instants) do
           simulation.reload.contagion.instants
-                    .offset(previous_instants_count)
+            .offset(previous_instants_count)
         end
 
         before do
@@ -264,6 +280,10 @@ describe ContagionController do
 
         it 'returns the created instants' do
           expect(response.body).to eq(expected_json)
+        end
+
+        it do
+          expect(response).to be_successful
         end
       end
     end
