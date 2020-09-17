@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ContagionController < ApplicationController
+  protect_from_forgery except: [:process]
+
   def summary
     render json: decoratad_simulation
   end
