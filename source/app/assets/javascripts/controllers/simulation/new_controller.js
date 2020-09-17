@@ -4,7 +4,6 @@
     'cyberhawk/notifier',
   ]);
 
-
   function Controller(builder, notifier, $location) {
     this.construct(builder.build($location), notifier, $location);
   }
