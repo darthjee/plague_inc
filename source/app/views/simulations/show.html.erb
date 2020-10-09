@@ -11,7 +11,8 @@
       <option value="finished">Finished</option>
     </select>
 
-    <button ng-click="graph.pause()">pause</button>
+    <button ng-click="graph.pause()" ng-hide="graph.mode == 'paused'">pause</button>
+    <button ng-click="graph.unpause()" ng-show="graph.mode == 'paused'">unpause</button>
     <table>
       <thead>
         <tr>

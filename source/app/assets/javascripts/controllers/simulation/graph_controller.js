@@ -32,6 +32,14 @@
     this.mode = "paused";
   };
 
+  fn.unpause = function() {
+    this.mode = "read";
+
+    if (!this.ongoing) {
+      this._loadData();
+    }
+  };
+
   fn._updateMode = function() {
     if (this.mode == "paused") {
       return;
