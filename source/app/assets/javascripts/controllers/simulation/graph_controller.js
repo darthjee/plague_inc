@@ -9,7 +9,7 @@
     this.id       = $routeParams.id;
     this.location = $location;
 
-    _.bindAll(this, '_summaryPath', '_summaryUrl', '_loadData', '_setSimulation', '_enqueueProcess', '_process');
+    _.bindAll(this, '_summaryPath', '_summaryUrl', '_loadData', '_success', '_enqueueProcess', '_process');
     this._loadData();
 
     this.mode = "read"
@@ -17,15 +17,8 @@
 
   var fn = Controller.prototype;
 
-  fn._setSimulation = function(data) {
-    if (this.simulation) {
-      data.instants = this.simulation.instants
-        .concat(data.instants);
-
-      this.simulation = data;
-    } else {
-      this.simulation = data;
-    }
+  fn._success = function(data) {
+    this._setSimulation(data);
 
     if (this.mode == "read") {
       if (data.instants.length < data.instants_total) {
@@ -40,11 +33,22 @@
     }
   };
 
+  fn._setSimulation = function(data) {
+    if (this.simulation) {
+      data.instants = this.simulation.instants
+        .concat(data.instants);
+
+      this.simulation = data;
+    } else {
+      this.simulation = data;
+    }
+  };
+
   fn._loadData = function() {
     this.mode = "read"
     var promisse = this.http.get(this._summaryUrl());
 
-    promisse.success(this._setSimulation);
+    promisse.success(this._success);
   };
 
   fn._enqueueProcess = function() {
@@ -55,7 +59,7 @@
     this.mode = "process"
     var promisse = this.http.post(this._processingPath(), {});
 
-    promisse.success(this._setSimulation);
+    promisse.success(this._success);
   };
 
   fn._processingPath = function() {
