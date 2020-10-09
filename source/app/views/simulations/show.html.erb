@@ -4,6 +4,14 @@
   <% end %>
   <div ng-controller="Simulation.GraphController as graph">
     Status {{graph.simulation.status}}
+    <select ng-model="graph.mode">
+      <option value="paused">Paused</option>
+      <option value="read">Reading</option>
+      <option value="process">Processing</option>
+      <option value="finished">Finished</option>
+    </select>
+
+    <button ng-click="graph.pause()">pause</button>
     <table>
       <thead>
         <tr>

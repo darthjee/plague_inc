@@ -28,7 +28,15 @@
     }
   };
 
+  fn.pause = function() {
+    this.mode = "paused";
+  };
+
   fn._updateMode = function() {
+    if (this.mode == "paused") {
+      return;
+    }
+
     if (this.simulation.instants.length >= this.simulation.instants_total) {
       if (this.simulation.status == "finished") {
         this.mode = "finished";
