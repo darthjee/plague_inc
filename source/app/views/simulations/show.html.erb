@@ -5,50 +5,50 @@
   <div ng-controller="Simulation.GraphController as graph">
     Status {{graph.simulation.status}}
     <% magicka_form('graph') do |form| %>
-    <select ng-model="graph.mode">
-      <option value="paused">Paused</option>
-      <option value="read">Reading</option>
-      <option value="process">Processing</option>
-      <option value="finished">Finished</option>
-    </select>
+      <%=
+        form.select(
+          :mode,
+          options: %w[paused read process finished]
+        )
+      %>
 
-    <%= form.ng_button(
-      nil,
-      ng_click: 'graph.pause()',
-      classes: 'btn-primary',
-      ng_hide: "graph.mode == 'paused'",
-      text: 'Pause'
-    ) %>
+      <%= form.ng_button(
+        nil,
+        ng_click: 'graph.pause()',
+        classes: 'btn-primary',
+        ng_hide: "graph.mode == 'paused'",
+        text: 'Pause'
+      ) %>
 
-    <%= form.ng_button(
-      nil,
-      ng_click: 'graph.unpause()',
-      classes: 'btn-primary',
-      ng_hide: "graph.mode != 'paused'",
-      text: 'Unpause'
-    ) %>
-    <table>
-      <thead>
-        <tr>
-          <th>Day</th>
-          <th>Healthy</th>
-          <th>Infected</th>
-          <th>Immune</th>
-          <th>Dead</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="instant in graph.simulation.instants">
-          <td>{{instant.day}}</td>
-          <td>{{instant.healthy}}</td>
-          <td>{{instant.infected}}</td>
-          <td>{{instant.immune}}</td>
-          <td>{{instant.dead}}</td>
-          <td>{{instant.total}}</td>
-        </tr>
-      </tbody>
-    </table>
-  <% end %>
+      <%= form.ng_button(
+        nil,
+        ng_click: 'graph.unpause()',
+        classes: 'btn-primary',
+        ng_hide: "graph.mode != 'paused'",
+        text: 'Unpause'
+      ) %>
+      <table>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Healthy</th>
+            <th>Infected</th>
+            <th>Immune</th>
+            <th>Dead</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="instant in graph.simulation.instants">
+            <td>{{instant.day}}</td>
+            <td>{{instant.healthy}}</td>
+            <td>{{instant.infected}}</td>
+            <td>{{instant.immune}}</td>
+            <td>{{instant.dead}}</td>
+            <td>{{instant.total}}</td>
+          </tr>
+        </tbody>
+      </table>
+    <% end %>
   </div>
 </div>
