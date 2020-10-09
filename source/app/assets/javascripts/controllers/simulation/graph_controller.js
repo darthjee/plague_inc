@@ -11,6 +11,8 @@
 
     _.bindAll(this, '_summaryPath', '_summaryUrl', '_loadData', '_setSimulation', '_enqueueProcess', '_process');
     this._loadData();
+
+    this.mode = "read"
   }
 
   var fn = Controller.prototype;
@@ -25,14 +27,21 @@
       this.simulation = data;
     }
 
-    if (data.instants.length < data.instants_total) {
-      this._loadData();
-    } else if (data.status != "finished") {
-      this._enqueueProcess();
+    if (this.mode == "read") {
+      if (data.instants.length < data.instants_total) {
+        this._loadData();
+      } else if (data.status != "finished") {
+        this._enqueueProcess();
+      }
+    } else if (this.mode == "process") {
+      if (data.status != "finished") {
+        this._enqueueProcess();
+      }
     }
   };
 
   fn._loadData = function() {
+    this.mode = "read"
     var promisse = this.http.get(this._summaryUrl());
 
     promisse.success(this._setSimulation);
@@ -43,6 +52,7 @@
   };
 
   fn._process = function() {
+    this.mode = "process"
     var promisse = this.http.post(this._processingPath(), {});
 
     promisse.success(this._setSimulation);
