@@ -4,6 +4,7 @@
   <% end %>
   <div ng-controller="Simulation.GraphController as graph">
     Status {{graph.simulation.status}}
+    <% magicka_form('graph') do |form| %>
     <select ng-model="graph.mode">
       <option value="paused">Paused</option>
       <option value="read">Reading</option>
@@ -11,8 +12,21 @@
       <option value="finished">Finished</option>
     </select>
 
-    <button ng-click="graph.pause()" ng-hide="graph.mode == 'paused'">pause</button>
-    <button ng-click="graph.unpause()" ng-show="graph.mode == 'paused'">unpause</button>
+    <%= form.ng_button(
+      nil,
+      ng_click: 'graph.pause()',
+      classes: 'btn-primary',
+      ng_hide: "graph.mode == 'paused'",
+      text: 'Pause'
+    ) %>
+
+    <%= form.ng_button(
+      nil,
+      ng_click: 'graph.unpause()',
+      classes: 'btn-primary',
+      ng_hide: "graph.mode != 'paused'",
+      text: 'Unpause'
+    ) %>
     <table>
       <thead>
         <tr>
@@ -35,5 +49,6 @@
         </tr>
       </tbody>
     </table>
+  <% end %>
   </div>
 </div>
