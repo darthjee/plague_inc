@@ -19,16 +19,21 @@
 
   fn._success = function(data) {
     this._setSimulation(data);
+    this._updateMode();
 
     if (this.mode == "read") {
-      if (data.instants.length < data.instants_total) {
-        this._loadData();
-      } else if (data.status != "finished") {
-        this._enqueueProcess();
-      }
+      this._loadData();
     } else if (this.mode == "process") {
-      if (data.status != "finished") {
-        this._enqueueProcess();
+      this._enqueueProcess();
+    }
+  };
+
+  fn._updateMode = function() {
+    if (this.simulation.instants.length >= this.simulation.instants_total) {
+      if (this.simulation.status == "finished") {
+        this.mode = "finished";
+      } else {
+        this.mode = "process";
       }
     }
   };
@@ -45,7 +50,6 @@
   };
 
   fn._loadData = function() {
-    this.mode = "read"
     var promisse = this.http.get(this._summaryUrl());
 
     promisse.success(this._success);
