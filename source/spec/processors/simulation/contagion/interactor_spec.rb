@@ -175,7 +175,7 @@ describe Simulation::Contagion::Interactor do
 
       it 'increase infected populations size' do
         expect { process }
-          .to(change { new_instant.populations.reload.sum(:size) })
+          .to(change { new_instant.reload.populations.sum(:size) })
       end
 
       it 'consumes interactions from healthy population' do
