@@ -10,12 +10,17 @@ class Simulation < ApplicationRecord
       expose :processable?, as: :processable
       expose :processable_in
       expose :instants, decorator: Instant::SummaryDecorator
+      expose :instants_total
 
       attr_reader :instants
 
       def initialize(simulation, instants)
         super(simulation)
         @instants = instants
+      end
+
+      def instants_total
+        object.contagion.instants.count
       end
     end
   end
