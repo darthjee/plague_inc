@@ -90,7 +90,7 @@
     var path = this._summaryPath();
 
     if (this.simulation && this.simulation.instants.length > 0) {
-      var lastInstanId = this.simulation.instants.slice(-1).pop().id
+      var lastInstanId = this.simulation.instants.slice(-1).pop().id;
 
       return path + "?pagination[last_instant_id]="+lastInstanId;
     } else {
