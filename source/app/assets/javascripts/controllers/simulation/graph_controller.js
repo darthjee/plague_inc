@@ -1,6 +1,6 @@
 (function(_, angular, Cyberhawk) {
-  var app = angular.module('simulation/graph_controller', [
-    'cyberhawk/notifier'
+  var app = angular.module("simulation/graph_controller", [
+    "cyberhawk/notifier"
   ]);
 
   function Controller(http, timeout, $routeParams, $location) {
@@ -9,10 +9,10 @@
     this.id       = $routeParams.id;
     this.location = $location;
 
-    _.bindAll(this, '_summaryPath', '_summaryUrl', '_loadData', '_success', '_enqueueProcess', '_process');
+    _.bindAll(this, "_summaryPath", "_summaryUrl", "_loadData", "_success", "_enqueueProcess", "_process");
     this._loadData();
 
-    this.mode = "read"
+    this.mode = "read";
   }
 
   var fn = Controller.prototype;
@@ -21,9 +21,9 @@
     this._setSimulation(data);
     this._updateMode();
 
-    if (this.mode == "read") {
+    if (this.mode === "read") {
       this._loadData();
-    } else if (this.mode == "process") {
+    } else if (this.mode === "process") {
       this._enqueueProcess();
     }
   };
@@ -41,12 +41,12 @@
   };
 
   fn._updateMode = function() {
-    if (this.mode == "paused") {
+    if (this.mode === "paused") {
       return;
     }
 
     if (this.simulation.instants.length >= this.simulation.instants_total) {
-      if (this.simulation.status == "finished") {
+      if (this.simulation.status === "finished") {
         this.mode = "finished";
       } else {
         this.mode = "process";
@@ -76,7 +76,7 @@
   };
 
   fn._process = function() {
-    this.mode = "process"
+    this.mode = "process";
     var promisse = this.http.post(this._processingPath(), {});
 
     promisse.success(this._success);
@@ -102,7 +102,7 @@
     return this.location.$$path + "/contagion/summary";
   };
 
-  app.controller('Simulation.GraphController', [
+  app.controller("Simulation.GraphController", [
     "binded_http",
     "$timeout",
     "$routeParams",
