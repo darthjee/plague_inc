@@ -5,7 +5,7 @@ function run() {
   heroku config | grep -v "^===" | sed -e "s/^\([^:]*\): */\1=/g" > .env.production
   clean_env & \
     PRODUCTION_IMAGE=$(docker_url) \
-    docker-compose run stachild_production /bin/bash
+    docker-compose run plague_inc_production /bin/bash
 }
 
 function clean_env() {
