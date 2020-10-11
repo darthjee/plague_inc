@@ -7,7 +7,7 @@ describe Simulation::Contagion::Kill do
     create(:contagion_population, group: group, behavior: behavior, size: size)
   end
 
-  let(:size) { Random.rand(20..39) }
+  let(:size) { Random.rand(20..100) }
 
   let(:contagion)  { create(:contagion, lethality: lethality) }
   let(:group)      { contagion.groups.first }
@@ -37,14 +37,33 @@ describe Simulation::Contagion::Kill do
     context 'when death rate is 0%' do
       let(:lethality) { 0 }
 
-      it 'kill all people' do
+      it 'kills no one' do
         expect { described_class.process(population, contagion) }
           .not_to change(population, :size)
       end
 
-      it 'returns all that died' do
+      it 'returns 0' do
         expect(described_class.process(population, contagion))
           .to be_zero
+      end
+    end
+
+    context 'when death rate is between 0 and 1' do
+      let(:lethality) { Random.rand(1..999) / 1000.0 }
+
+      it 'kill some people' do
+        expect { described_class.process(population, contagion) }
+          .to change(population, :size)
+      end
+
+      it 'returns all that died' do
+        expect(described_class.process(population, contagion))
+          .not_to be_zero
+      end
+
+      it 'keeps head count' do
+        expect(described_class.process(population, contagion))
+          .to eq(size - population.size)
       end
     end
   end
