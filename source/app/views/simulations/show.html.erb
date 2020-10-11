@@ -3,14 +3,14 @@
     <%= render partial: 'form', locals: { form: display } %>
   <% end %>
   <div ng-controller="Simulation.GraphController as graph">
-    Status {{graph.simulation.status}}
-    <% magicka_form('graph') do |form| %>
-      <%=
-        form.select(
-          :mode,
-          options: %w[paused read process finished]
-        )
-      %>
+    <% magicka_display('graph') do |form| %>
+      <% form.with_model(:simulation) do |simulation| %>
+        <%= simulation.input(:status, label: 'Processing status') %>
+        <%= simulation.input(:instants_total, label: 'Calculated instants') %>
+        <%= simulation.input('instants.length', label: 'Loaded instants') %>
+      <% end %>
+
+      <%= form.input(:mode) %>
 
       <%= form.ng_button(
         nil,
@@ -27,6 +27,7 @@
         ng_hide: "graph.mode != 'paused'",
         text: 'Unpause'
       ) %>
+
       <table>
         <thead>
           <tr>
