@@ -28,3 +28,4 @@ source/vendor/assets/bower_components/
 source/config/master.key
 source/config/credentials.yml.enc
 **/*.swp
+.env.production
