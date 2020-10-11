@@ -13,6 +13,7 @@ require 'webmock/rspec'
 require 'factory_bot'
 require 'database_cleaner'
 require 'shoulda-matchers'
+require 'rspec/collection_matchers'
 
 # assign a random Timezone to help find problems
 Zonebie.set_random_timezone
