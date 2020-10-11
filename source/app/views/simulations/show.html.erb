@@ -2,5 +2,18 @@
   <% magicka_display('gnc.data') do |display| %>
     <%= render partial: 'form', locals: { form: display } %>
   <% end %>
-  <%= render partial: 'processing' %>
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">
+            Processing information
+          </h4>
+        </div>
+        <div class="card-body">
+          <%= render partial: 'processing' %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
