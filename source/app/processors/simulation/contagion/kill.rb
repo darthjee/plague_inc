@@ -29,6 +29,10 @@ class Simulation < ApplicationRecord
       delegate :lethality, to: :contagion
 
       def alive
+        @alive ||= calculate_alive
+      end
+
+      def calculate_alive
         current.times.inject(current) do |people, _|
           Random.rand < lethality ? people - 1 : people
         end
