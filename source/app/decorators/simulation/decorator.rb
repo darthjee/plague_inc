@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require './app/models/simulation'
-
 class Simulation < ApplicationRecord
   # {Simulation} decoraror
   class Decorator < ::ModelDecorator
