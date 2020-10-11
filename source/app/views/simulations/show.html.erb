@@ -2,54 +2,5 @@
   <% magicka_display('gnc.data') do |display| %>
     <%= render partial: 'form', locals: { form: display } %>
   <% end %>
-  <div ng-controller="Simulation.GraphController as graph">
-    <% magicka_display('graph') do |form| %>
-      <% form.with_model(:simulation) do |simulation| %>
-        <%= simulation.input(:status, label: 'Processing status') %>
-        <%= simulation.input(:instants_total, label: 'Calculated instants') %>
-        <%= simulation.input('instants.length', label: 'Loaded instants') %>
-      <% end %>
-
-      <%= form.input(:mode) %>
-
-      <%= form.ng_button(
-        nil,
-        ng_click: 'graph.pause()',
-        classes: 'btn-primary',
-        ng_hide: "graph.mode == 'paused'",
-        text: 'Pause'
-      ) %>
-
-      <%= form.ng_button(
-        nil,
-        ng_click: 'graph.unpause()',
-        classes: 'btn-primary',
-        ng_hide: "graph.mode != 'paused'",
-        text: 'Unpause'
-      ) %>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Day</th>
-            <th>Healthy</th>
-            <th>Infected</th>
-            <th>Immune</th>
-            <th>Dead</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="instant in graph.simulation.instants">
-            <td>{{instant.day}}</td>
-            <td>{{instant.healthy}}</td>
-            <td>{{instant.infected}}</td>
-            <td>{{instant.immune}}</td>
-            <td>{{instant.dead}}</td>
-            <td>{{instant.total}}</td>
-          </tr>
-        </tbody>
-      </table>
-    <% end %>
-  </div>
+  <%= render partial: 'processing' %>
 </div>
