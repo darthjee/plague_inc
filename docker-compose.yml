@@ -66,11 +66,6 @@ services:
     command: /bin/bash
     depends_on: [base_build]
   plague_inc_production:
-    depends_on: [production_base_build, plague_inc_mysql]
+    env_file: .env.production
     container_name: plague_inc_production
-    image: darthjee/production_plague_inc
-    links:
-      - plague_inc_mysql:mysql
-    env_file: .env
-    environment:
-      RAILS_ENV: production
+    image: $PRODUCTION_IMAGE
