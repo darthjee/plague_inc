@@ -71,9 +71,9 @@ describe Simulation::Contagion::Interactor do
     let(:day)            { 0 }
     let(:infected)       { 1 }
     let(:lethality)      { 1 }
-    let(:infected_size)  { Random.rand(3..10) }
-    let(:interactions)   { Random.rand(1..10) }
-    let(:contagion_risk) { Random.rand(0.2..0.8) }
+    let(:infected_size)  { Random.rand(10..30) }
+    let(:interactions)   { Random.rand(10..30) }
+    let(:contagion_risk) { Random.rand(0.3..0.7) }
 
     let(:infected_interactions) { infected_size * interactions }
     let(:healthy_size)          { 100 * infected_size }
@@ -97,6 +97,7 @@ describe Simulation::Contagion::Interactor do
         behavior: behavior
       )
       simulation.reload.update(updated_at: 1.days.ago)
+      current_instant.reload
     end
 
     it 'updates simulation' do
@@ -253,9 +254,22 @@ describe Simulation::Contagion::Interactor do
           behavior: behavior
         )
 
-        allow(random_box).to receive(:interaction) do |max|
-          max - 1
+        allow(random_box).to receive(:interaction) do
+          index = 0
+          current_instant.populations.find do |population|
+            if population.healthy?
+              true
+            else
+              index += population.interactions
+              false
+            end
+          end
+          index
         end
+      end
+
+      before do
+        current_instant.reload
       end
 
       it 'updates simulation' do

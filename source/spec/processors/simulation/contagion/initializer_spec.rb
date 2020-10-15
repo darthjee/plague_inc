@@ -14,7 +14,7 @@ describe Simulation::Contagion::Initializer do
   let(:days)     { Random.rand(1..10) }
 
   let(:interesting_populations) do
-    [infected_population, immune_population, dead_population]
+    [dead_population, immune_population, infected_population]
   end
 
   let!(:infected_population) do
@@ -117,8 +117,8 @@ describe Simulation::Contagion::Initializer do
     end
 
     it 'makes population for the important populations' do
-      expect(described_class.process(instant).populations.pluck(:state))
-        .to eq(%w[infected immune dead])
+      expect(described_class.process(instant).populations.sort.pluck(:state))
+        .to eq(%w[dead immune infected])
     end
 
     it 'increments days counters' do
@@ -127,7 +127,7 @@ describe Simulation::Contagion::Initializer do
     end
 
     it 'makes population with correct size' do
-      expect(described_class.process(instant).populations.pluck(:size))
+      expect(described_class.process(instant).populations.sort.pluck(:size))
         .to eq(interesting_populations.map(&:size))
     end
   end

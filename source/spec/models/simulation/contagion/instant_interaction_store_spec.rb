@@ -9,7 +9,7 @@ describe Simulation::Contagion::InstantInteractionStore do
   let(:simulation)  { create(:simulation) }
   let(:contagion)   { simulation.contagion }
   let(:instant)     { create(:contagion_instant, contagion: contagion) }
-  let(:populations) { instant.populations }
+  let(:populations) { instant.populations.order(:id) }
 
   let(:group) do
     create(
@@ -71,7 +71,7 @@ describe Simulation::Contagion::InstantInteractionStore do
   end
 
   context 'when random choice falls within healthy population' do
-    let(:random_interactions) { [healthy_interactions - 1] }
+    let(:random_interactions) { [infected_interactions + 1] }
 
     it 'register an interaction for healthy_population' do
       expect { store.interact }
