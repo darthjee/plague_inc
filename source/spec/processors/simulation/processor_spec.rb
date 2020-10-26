@@ -172,7 +172,7 @@ describe Simulation::Processor do
         end
 
         it 'builds and kills' do
-          expect(instant.populations.map(&:state))
+          expect(instant.populations.order(:id).map(&:state))
             .to eq(%w[healthy infected dead])
         end
 

@@ -15,7 +15,6 @@ class Simulation < ApplicationRecord
 
       delegate :contagion_risk, to: :behavior
 
-      default_scope          { order(id: :asc) }
       scope :infected,    -> { where(state: INFECTED) }
       scope :healthy,     -> { where(state: HEALTHY) }
       scope :immune,      -> { where(state: IMMUNE) }
