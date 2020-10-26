@@ -2,6 +2,23 @@
 
 require 'spec_helper'
 
+shared_context 'infected random box', infectted_random_box: true do
+  before do
+    allow(random_box).to receive(:interaction) do
+      index = 0
+      current_instant.populations.find do |population|
+        if population.healthy? && population.interactions.positive?
+          true
+        else
+          index += population.interactions
+          false
+        end
+      end
+      index
+    end
+  end
+end
+
 describe Simulation::Contagion::Interactor do
   describe '.process' do
     let(:simulation) do
@@ -97,7 +114,6 @@ describe Simulation::Contagion::Interactor do
         behavior: behavior
       )
       simulation.reload.update(updated_at: 1.days.ago)
-      current_instant.reload
     end
 
     it 'updates simulation' do
@@ -224,7 +240,7 @@ describe Simulation::Contagion::Interactor do
       end
     end
 
-    context 'when there are other populations' do
+    context 'when there are other populations', :infectted_random_box do
       let(:healthy_size)   { infected_size }
       let(:contagion_risk) { 1 }
 
@@ -253,19 +269,6 @@ describe Simulation::Contagion::Interactor do
           size: healthy_size,
           behavior: behavior
         )
-
-        allow(random_box).to receive(:interaction) do
-          index = 0
-          current_instant.populations.find do |population|
-            if population.healthy?
-              true
-            else
-              index += population.interactions
-              false
-            end
-          end
-          index
-        end
       end
 
       before do
@@ -301,7 +304,7 @@ describe Simulation::Contagion::Interactor do
       end
     end
 
-    context 'when one population has been processed already' do
+    context 'when one population has been processed already', :infectted_random_box do
       let(:healthy_size)   { infected_size }
       let(:infected_size)  { 2 * Random.rand(3..10) }
       let(:contagion_risk) { 1 }
@@ -350,10 +353,6 @@ describe Simulation::Contagion::Interactor do
           size: healthy_size / 2,
           behavior: behavior
         )
-
-        allow(random_box).to receive(:interaction) do |max|
-          max - 1
-        end
       end
 
       it 'updates simulation' do
