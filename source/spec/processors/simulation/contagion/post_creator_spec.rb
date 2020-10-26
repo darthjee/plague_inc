@@ -84,8 +84,9 @@ describe Simulation::Contagion::PostCreator do
 
       it 'sets population interactions' do
         expect { described_class.process(instant) }
-          .to change { instant.reload.populations.order(:id).map(&:interactions) }
-          .to([expected_interactions, 0, 0, 2 * expected_interactions])
+          .to change {
+                instant.reload.populations.order(:id).map(&:interactions)
+              }.to([expected_interactions, 0, 0, 2 * expected_interactions])
       end
     end
 

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-shared_context 'infected random box', infectted_random_box: true do
+shared_context 'with infected random box', mock_random: true do
   before do
     allow(random_box).to receive(:interaction) do
       index = 0
@@ -240,7 +240,7 @@ describe Simulation::Contagion::Interactor do
       end
     end
 
-    context 'when there are other populations', :infectted_random_box do
+    context 'when there are other populations', :mock_random do
       let(:healthy_size)   { infected_size }
       let(:contagion_risk) { 1 }
 
@@ -269,9 +269,7 @@ describe Simulation::Contagion::Interactor do
           size: healthy_size,
           behavior: behavior
         )
-      end
 
-      before do
         current_instant.reload
       end
 
@@ -304,7 +302,7 @@ describe Simulation::Contagion::Interactor do
       end
     end
 
-    context 'when one population has been processed already', :infectted_random_box do
+    context 'when one population has been processed already', :mock_random do
       let(:healthy_size)   { infected_size }
       let(:infected_size)  { 2 * Random.rand(3..10) }
       let(:contagion_risk) { 1 }
