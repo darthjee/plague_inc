@@ -1,4 +1,4 @@
-FROM darthjee/taa:0.6.1 as base
+FROM darthjee/taa:0.6.3 as base
 FROM darthjee/scripts:0.1.8 as scripts
 
 ######################################
