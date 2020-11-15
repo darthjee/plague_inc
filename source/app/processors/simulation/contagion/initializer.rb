@@ -40,20 +40,16 @@ class Simulation < ApplicationRecord
       end
 
       def build_populations
-        [
-          Population::DEAD
-        ].each(&method(:build_aggregated_population_for))
-        [
-          Population::IMMUNE,
-          Population::INFECTED
-        ].each(&method(:build_population_for))
+        build_dead_populations
+        build_population_for(Population::IMMUNE)
+        build_population_for(Population::INFECTED)
       end
 
-      def build_aggregated_population_for(state)
+      def build_dead_populations
         Population::AggregatedBuilder.build(
-          populations: populations,
+          populations: populations.dead,
           instant: new_instant,
-          state: state
+          state: Population::DEAD
         )
       end
 
