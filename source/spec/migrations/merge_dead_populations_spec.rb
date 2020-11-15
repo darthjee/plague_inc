@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe MergeDeadPopulations do
+describe MergeDeadPopulations do
   let(:simulation) { create(:simulation, :processing) }
   let(:contagion)  { simulation.contagion }
   let!(:instant) do
