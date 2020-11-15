@@ -9,10 +9,12 @@ describe Simulation::Contagion::Initializer do
     create(:contagion_instant, contagion: contagion, day: 9)
   end
 
-  let(:group)     { contagion.groups.last }
-  let(:behavior)  { group.behavior }
-  let(:days)      { Random.rand(1..10) }
-  let(:dead_size) { Random.rand(1..100) }
+  let(:group)         { contagion.groups.last }
+  let(:behavior)      { group.behavior }
+  let(:days)          { Random.rand(1..10) }
+  let(:dead_size)     { Random.rand(1..100) }
+  let(:immune_size)   { Random.rand(1..100) }
+  let(:infected_size) { Random.rand(1..100) }
 
   let(:new_instant) { described_class.process(instant) }
 
@@ -26,7 +28,7 @@ describe Simulation::Contagion::Initializer do
       state: :infected,
       group: group,
       behavior: behavior,
-      size: Random.rand(100),
+      size: infected_size,
       instant: instant,
       interactions: 10,
       days: days
@@ -39,7 +41,7 @@ describe Simulation::Contagion::Initializer do
       state: :immune,
       group: group,
       behavior: behavior,
-      size: Random.rand(100),
+      size: immune_size,
       instant: instant,
       interactions: 10,
       days: days
@@ -196,6 +198,84 @@ describe Simulation::Contagion::Initializer do
           expect(new_instant.populations.dead.pluck(:days))
             .to all(eq(1))
         end
+      end
+    end
+
+    context 'when there are more than one immune population' do
+      let(:days)           { 0 }
+      let(:old_size)       { Random.rand(1..100) }
+      let(:expected_sizes) { [immune_size, old_size] }
+      let(:old_group)      { group }
+
+      let(:state) do
+        Simulation::Contagion::Population::IMMUNE
+      end
+
+      before do
+        create(
+          :contagion_population,
+          interactions: 0,
+          instant: instant,
+          group: old_group,
+          behavior: behavior,
+          size: old_size,
+          state: state,
+          days: 1
+        )
+      end
+
+      it 'does not merge populations' do
+        expect(new_instant.populations.immune.size)
+          .to eq(2)
+      end
+
+      it 'does not merge populations sizes' do
+        expect(new_instant.populations.immune.pluck(:size))
+          .to eq(expected_sizes)
+      end
+
+      it 'mark new populations as day 1' do
+        expect(new_instant.populations.immune.pluck(:days))
+          .to eq([1, 2])
+      end
+    end
+
+    context 'when there are more than one infected population' do
+      let(:days)           { 0 }
+      let(:old_size)       { Random.rand(1..100) }
+      let(:expected_sizes) { [infected_size, old_size] }
+      let(:old_group)      { group }
+
+      let(:state) do
+        Simulation::Contagion::Population::INFECTED
+      end
+
+      before do
+        create(
+          :contagion_population,
+          interactions: 0,
+          instant: instant,
+          group: old_group,
+          behavior: behavior,
+          size: old_size,
+          state: state,
+          days: 1
+        )
+      end
+
+      it 'does not merge populations' do
+        expect(new_instant.populations.infected.size)
+          .to eq(2)
+      end
+
+      it 'does not merge populations sizes' do
+        expect(new_instant.populations.infected.pluck(:size))
+          .to eq(expected_sizes)
+      end
+
+      it 'mark new populations as day 1' do
+        expect(new_instant.populations.infected.pluck(:days))
+          .to eq([1, 2])
       end
     end
   end
