@@ -138,6 +138,7 @@ describe Simulation::Contagion::Initializer do
       let(:days)          { 0 }
       let(:old_size)      { Random.rand(1..100) }
       let(:expected_size) { dead_size + old_size }
+      let(:old_group)     { group }
 
       let(:state) do
         Simulation::Contagion::Population::DEAD
@@ -148,7 +149,7 @@ describe Simulation::Contagion::Initializer do
           :contagion_population,
           interactions: 0,
           instant: instant,
-          group: group,
+          group: old_group,
           behavior: behavior,
           size: old_size,
           state: state,
@@ -156,19 +157,45 @@ describe Simulation::Contagion::Initializer do
         )
       end
 
-      it do
+      it 'merge populations' do
         expect(new_instant.populations.dead.size)
           .to eq(1)
       end
 
-      it do
+      it 'merge populations sizes' do
         expect(new_instant.populations.dead.first.size)
           .to eq(expected_size)
       end
 
-      it do
+      it 'mark new population as day 1' do
         expect(new_instant.populations.dead.first.days)
           .to eq(1)
+      end
+
+      context 'when there are different group dead populations' do
+        let(:expected_sizes) { [dead_size, old_size] }
+        let(:old_group) do
+          create(
+            :contagion_group,
+            contagion: contagion,
+            behavior: behavior
+          )
+        end
+
+        it 'does not merge populations' do
+          expect(new_instant.populations.dead.size)
+            .to eq(2)
+        end
+
+        it 'does not merge populations sizes' do
+          expect(new_instant.populations.dead.pluck(:size))
+            .to eq(expected_sizes)
+        end
+
+        it 'mark new populations as day 1' do
+          expect(new_instant.populations.dead.pluck(:days))
+            .to all(eq(1))
+        end
       end
     end
   end
