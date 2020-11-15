@@ -40,7 +40,21 @@ class Simulation < ApplicationRecord
       end
 
       def build_populations
-        not_healthy.map do |pop|
+        build_dead_populations
+        build_population_for(Population::IMMUNE)
+        build_population_for(Population::INFECTED)
+      end
+
+      def build_dead_populations
+        Population::AggregatedBuilder.build(
+          populations: populations.dead,
+          instant: new_instant,
+          state: Population::DEAD
+        )
+      end
+
+      def build_population_for(state)
+        populations.where(state: state).each do |pop|
           Population::Builder.build(
             instant: new_instant,
             population: pop
