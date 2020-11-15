@@ -13,8 +13,6 @@ class Simulation < ApplicationRecord
 
         def build
           grouped_populations.sum(:size).each do |group_id, size|
-            next if size.zero?
-
             build_population(group_id, size)
           end
         end
