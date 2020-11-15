@@ -4,9 +4,20 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Population < ApplicationRecord
       # @author darthjee
+      #
+      # Groups populations to create a new population in
+      # the new instant
       class AggregatedBuilder < Sinclair::Options
         with_options :populations, :instant, :state
 
+        # @param options [Hash] options
+        # @option options populations
+        #   [ActiveRelation<Simulation::Contagion::Population>] base
+        #   scope of populations
+        # @option options instant [Simulation::Contagion::Instant]
+        #   new instant where population will be built
+        # @option options state [Symbol, String] filter of
+        #   state
         def self.build(*options)
           new(*options).build
         end
