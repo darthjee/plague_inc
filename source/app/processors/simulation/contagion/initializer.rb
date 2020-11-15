@@ -41,7 +41,7 @@ class Simulation < ApplicationRecord
 
       def build_populations
         [
-          Population::DEAD,
+          Population::DEAD
         ].each(&method(:build_aggregated_population_for))
         [
           Population::IMMUNE,

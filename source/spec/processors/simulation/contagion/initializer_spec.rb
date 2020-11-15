@@ -13,7 +13,7 @@ describe Simulation::Contagion::Initializer do
   let(:behavior)  { group.behavior }
   let(:days)      { Random.rand(1..10) }
   let(:dead_size) { Random.rand(1..100) }
-  
+
   let(:new_instant) { described_class.process(instant) }
 
   let(:interesting_populations) do
@@ -126,7 +126,7 @@ describe Simulation::Contagion::Initializer do
 
     it 'increments days counters' do
       expect(new_instant.populations.pluck(:days))
-        .to eq([1, days+1, days+1])
+        .to eq([1, days + 1, days + 1])
     end
 
     it 'makes population with correct size' do
@@ -170,7 +170,6 @@ describe Simulation::Contagion::Initializer do
         expect(new_instant.populations.dead.first.days)
           .to eq(1)
       end
-
     end
   end
 end

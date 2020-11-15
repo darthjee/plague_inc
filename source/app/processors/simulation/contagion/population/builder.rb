@@ -71,7 +71,7 @@ class Simulation < ApplicationRecord
         end
 
         def days
-          @days||= (population ? population.days + 1 : 0)
+          @days ||= (population ? population.days + 1 : 0)
         end
 
         def behavior
