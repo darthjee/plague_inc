@@ -16,6 +16,7 @@ fdescribe MergeDeadPopulations do
   describe '.process' do
     let(:all_states) { Simulation::Contagion::Population::STATES }
     let(:state)      { Simulation::Contagion::Population::DEAD }
+    let(:base_days)  { Random.rand(10) }
 
     let(:other_states) do
       all_states - [state]
@@ -56,7 +57,7 @@ fdescribe MergeDeadPopulations do
             size: Random.rand(10..100),
             instant: instant,
             interactions: 10,
-            days: days
+            days: days + base_days
           )
         end
       end
@@ -72,7 +73,7 @@ fdescribe MergeDeadPopulations do
           size: Random.rand(10..100),
           instant: instant,
           interactions: 10,
-          days: days,
+          days: days + base_days,
         )
       end
     end
@@ -87,7 +88,7 @@ fdescribe MergeDeadPopulations do
           size: Random.rand(10..100),
           instant: instant,
           interactions: 10,
-          days: days
+          days: days + base_days
         )
       end
     end
@@ -105,7 +106,7 @@ fdescribe MergeDeadPopulations do
 
     it 'merge populations size for each group' do
       expect { described_class.process }
-        .to change { instant.populations.dead.reload.where(days: 0).pluck(:size) }
+        .to change { instant.populations.dead.reload.where(days: base_days).pluck(:size) }
         .to(expected_sizes)
     end
   end

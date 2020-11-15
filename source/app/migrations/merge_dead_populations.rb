@@ -23,14 +23,17 @@ class MergeDeadPopulations
     ActiveRecord::Base.transaction do
       size = populations
         .where(group_id: group_id).sum(:size)
+      min_days = populations
+        .where(group_id: group_id)
+        .minimum(:days)
       populations
         .where(group_id: group_id)
-        .where(days: 0)
+        .where(days: min_days)
         .update_all(size: size)
       populations
         .where(group_id: group_id)
         .where
-        .not(days: 0)
+        .not(days: min_days)
         .delete_all
     end
   end
