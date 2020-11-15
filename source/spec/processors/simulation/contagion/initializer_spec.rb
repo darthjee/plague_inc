@@ -143,7 +143,7 @@ describe Simulation::Contagion::Initializer do
         Simulation::Contagion::Population::DEAD
       end
 
-      let!(:old_populations) do
+      before do
         create(
           :contagion_population,
           interactions: 0,
