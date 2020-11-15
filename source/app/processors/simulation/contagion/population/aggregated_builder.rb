@@ -12,10 +12,10 @@ class Simulation < ApplicationRecord
         end
 
         def build
-          grouped_populations.sum(:size).each do |(group_id, behavior_id), size|
+          grouped_populations.sum(:size).each do |group_id, size|
             next if size.zero?
 
-            build_population(group_id, behavior_id, size)
+            build_population(group_id, size)
           end
         end
 
@@ -26,14 +26,12 @@ class Simulation < ApplicationRecord
         end
 
         def grouped_populations
-          @grouped_populations ||= filtered_populations.group(
-            :group_id, :behavior_id
-          )
+          @grouped_populations ||= filtered_populations.group(:group_id)
         end
 
-        def build_population(group_id, behavior_id, size)
+        def build_population(group_id, size)
           group = Group.find(group_id)
-          behavior = Behavior.find(behavior_id)
+          behavior = group.behavior
 
           Population::Builder.build(
             instant: instant,
