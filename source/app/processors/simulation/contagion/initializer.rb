@@ -44,9 +44,8 @@ class Simulation < ApplicationRecord
           Population::DEAD,
         ].each(&method(:build_aggregated_population_for))
         [
-          Population::INFECTED,
-          Population::HEALTHY,
-          Population::IMMUNE
+          Population::IMMUNE,
+          Population::INFECTED
         ].each(&method(:build_population_for))
       end
 
@@ -54,6 +53,8 @@ class Simulation < ApplicationRecord
         filtered_populations = populations.where(state: state)
         grouped_populations = filtered_populations.group(:group_id, :behavior_id)
         grouped_populations.sum(:size).each do |(group_id, behavior_id), size|
+          next if size.zero?
+
           group = Group.find(group_id)
           behavior = Behavior.find(behavior_id)
 

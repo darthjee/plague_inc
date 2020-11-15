@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::Initializer do
+describe Simulation::Contagion::Initializer do
   let(:simulation) { create(:simulation, :processing) }
   let(:contagion)  { simulation.contagion }
   let(:instant) do
@@ -126,7 +126,7 @@ fdescribe Simulation::Contagion::Initializer do
 
     it 'increments days counters' do
       expect(new_instant.populations.pluck(:days))
-        .to all(eq(days + 1))
+        .to eq([1, days+1, days+1])
     end
 
     it 'makes population with correct size' do
