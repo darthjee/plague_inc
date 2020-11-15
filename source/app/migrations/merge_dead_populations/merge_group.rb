@@ -3,7 +3,7 @@
 class MergeDeadPopulations
   class MergeGroup < Sinclair::Options
     include Processor
-    
+
     with_options :populations, :group_id, :size
 
     def process

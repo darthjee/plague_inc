@@ -13,6 +13,9 @@ describe MergeDeadPopulations do
   let(:behavior)    { group.behavior }
   let(:populations) { instant.populations }
 
+  let(:dead_populations)  { instant.populations.dead }
+  let(:final_populations) { dead_populations.where(days: base_days) }
+
   describe '.process' do
     let(:all_states) { Simulation::Contagion::Population::STATES }
     let(:state)      { Simulation::Contagion::Population::DEAD }
@@ -37,7 +40,7 @@ describe MergeDeadPopulations do
     let(:expected_target_size) do
       target_populations.map(&:size).sum
     end
-    
+
     let(:expected_other_size) do
       other_group_populations.map(&:size).sum
     end
@@ -73,7 +76,7 @@ describe MergeDeadPopulations do
           size: Random.rand(10..100),
           instant: instant,
           interactions: 10,
-          days: days + base_days,
+          days: days + base_days
         )
       end
     end
@@ -106,7 +109,7 @@ describe MergeDeadPopulations do
 
     it 'merge populations size for each group' do
       expect { described_class.process }
-        .to change { instant.populations.dead.reload.where(days: base_days).pluck(:size) }
+        .to change { final_populations.reload.pluck(:size) }
         .to(expected_sizes)
     end
   end
