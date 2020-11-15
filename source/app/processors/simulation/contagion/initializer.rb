@@ -40,7 +40,36 @@ class Simulation < ApplicationRecord
       end
 
       def build_populations
-        not_healthy.map do |pop|
+        [
+          Population::DEAD,
+        ].each(&method(:build_aggregated_population_for))
+        [
+          Population::INFECTED,
+          Population::HEALTHY,
+          Population::IMMUNE
+        ].each(&method(:build_population_for))
+      end
+
+      def build_aggregated_population_for(state)
+        filtered_populations = populations.where(state: state)
+        grouped_populations = filtered_populations.group(:group_id, :behavior_id)
+        grouped_populations.sum(:size).each do |(group_id, behavior_id), size|
+          group = Group.find(group_id)
+          behavior = Behavior.find(behavior_id)
+
+          Population::Builder.build(
+            instant: new_instant,
+            group: group,
+            behavior: behavior,
+            state: state,
+            size: size,
+            days: 1
+          )
+        end
+      end
+
+      def build_population_for(state)
+        populations.where(state: state).each do |pop|
           Population::Builder.build(
             instant: new_instant,
             population: pop

@@ -8,7 +8,8 @@ class Simulation < ApplicationRecord
       # Builds a population from options
       class Builder < Sinclair::Options
         with_options :instant, :group, :state,
-                     :population, :behavior, :size
+                     :population, :behavior, :size,
+                     :days
 
         # @param options [Hash] options
         # @option options instant [Instant] instant where new option will
@@ -70,7 +71,7 @@ class Simulation < ApplicationRecord
         end
 
         def days
-          population ? population.days + 1 : 0
+          @days||= (population ? population.days + 1 : 0)
         end
 
         def behavior

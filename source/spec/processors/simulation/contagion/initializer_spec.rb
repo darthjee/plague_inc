@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::Initializer do
+fdescribe Simulation::Contagion::Initializer do
   let(:simulation) { create(:simulation, :processing) }
   let(:contagion)  { simulation.contagion }
   let(:instant) do
@@ -160,6 +160,17 @@ describe Simulation::Contagion::Initializer do
         expect(new_instant.populations.dead.size)
           .to eq(1)
       end
+
+      it do
+        expect(new_instant.populations.dead.first.size)
+          .to eq(expected_size)
+      end
+
+      it do
+        expect(new_instant.populations.dead.first.days)
+          .to eq(1)
+      end
+
     end
   end
 end
