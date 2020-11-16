@@ -15,9 +15,16 @@ class CacheStore
     @key ||= klass.name.gsub(/.*::/,'').underscore
   end
 
-  private
+  def ==(other)
+    return false unless other.is_a? self.class
+    self.klass == other.klass
+  end
+
+  protected
 
   attr_reader :klass
+
+  private
 
   def store
     @store ||= Hash.new do |hash, id|
