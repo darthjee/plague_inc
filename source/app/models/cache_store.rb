@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CacheStore
   def initialize(klass)
     @klass = klass
@@ -12,12 +14,13 @@ class CacheStore
   end
 
   def key
-    @key ||= klass.name.gsub(/.*::/,'').underscore
+    @key ||= klass.name.gsub(/.*::/, '').underscore
   end
 
   def ==(other)
     return false unless other.is_a? self.class
-    self.klass == other.klass
+
+    klass == other.klass
   end
 
   protected

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cacheable
   module ClassMethods
     def cache_for(klass)

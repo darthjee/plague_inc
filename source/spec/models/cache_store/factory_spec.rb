@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-fdescribe CacheStore::Factory do
+describe CacheStore::Factory do
   subject(:factory) { described_class.new }
 
   describe '#build' do
     it do
       expect(factory.build).to be_a(Hash)
     end
-    
+
     context 'when nothing has been configured' do
       it { expect(factory.build).to be_empty }
     end

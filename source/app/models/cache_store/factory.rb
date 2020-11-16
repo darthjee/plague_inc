@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CacheStore
   class Factory
     def add_cache(klass)
@@ -5,10 +7,9 @@ class CacheStore
     end
 
     def build
-      configs.inject({}) do |hash, klass|
+      configs.each_with_object({}) do |klass, hash|
         store = CacheStore.new(klass)
         hash[store.key.to_sym] = store
-        hash
       end
     end
 
@@ -19,4 +20,3 @@ class CacheStore
     end
   end
 end
-

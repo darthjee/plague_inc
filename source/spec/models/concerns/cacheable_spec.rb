@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-fdescribe Cacheable do
+describe Cacheable do
   subject(:cached) { cached_class.new }
 
   let(:cached_class) do
