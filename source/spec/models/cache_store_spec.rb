@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-fdescribe CacheStore do
+describe CacheStore do
   subject(:store) { described_class.new(klass) }
 
   let(:klass) { Simulation::Contagion::Group }

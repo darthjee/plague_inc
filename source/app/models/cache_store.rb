@@ -11,6 +11,10 @@ class CacheStore
     store[object.public_send(id_key)]
   end
 
+  def key
+    @key ||= klass.name.gsub(/.*::/,'').underscore
+  end
+
   private
 
   attr_reader :klass
@@ -19,10 +23,6 @@ class CacheStore
     @store ||= Hash.new do |hash, id|
       hash[id] = klass.find(id)
     end
-  end
-
-  def key
-    @key ||= klass.name.gsub(/.*::/,'').underscore
   end
 
   def id_key
