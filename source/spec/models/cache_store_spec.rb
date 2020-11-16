@@ -11,6 +11,12 @@ describe CacheStore do
 
   let!(:group) { contagion.groups.last }
 
+  describe '#key' do
+    it 'returns the name of the class' do
+      expect(store.key).to eq('group')
+    end
+  end
+
   describe '#find' do
     it 'returns correct given group' do
       expect(store.find(group_id))
