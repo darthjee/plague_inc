@@ -39,6 +39,32 @@ describe Cacheable do
         expect(klass).to have_received(:find).once
       end
     end
+  end
 
+  describe 'with_cache' do
+    let(:contagion)    { simulation.contagion }
+    let(:contagion_id) { contagion.id }
+
+    it 'fetch object from database' do
+      expect(cached.with_cache(contagion, :simulation))
+        .to eq(simulation)
+    end
+
+    context 'when cache has been requested before' do
+      before do
+        allow(klass)
+          .to receive(:find)
+          .with(simulation_id)
+          .and_return(simulation).once
+
+        cached.with_cache(contagion, :simulation)
+      end
+
+      it do
+        cached.with_cache(contagion, :simulation)
+
+        expect(klass).to have_received(:find).once
+      end
+    end
   end
 end
