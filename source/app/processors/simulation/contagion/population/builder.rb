@@ -36,7 +36,7 @@ class Simulation < ApplicationRecord
 
         private
 
-        # TODO remove this
+        # TODO: remove this
         def cache
           @cache ||= cache_factory.build
         end

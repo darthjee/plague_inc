@@ -7,7 +7,7 @@ describe Cacheable do
 
   let(:cached_class) do
     Class.new.tap do |clazz|
-      clazz.include Cacheable
+      clazz.include described_class
       clazz.cache_for(klass)
     end
   end
