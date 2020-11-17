@@ -4,12 +4,15 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     # Store for all interactions happening in a population
     class InteractionStore
+      include Contagion::Cacheable
+
       # @param contagion_risk [Float] risk of contagion
       # @param population [Population] population to
       #   perform interactions
-      def initialize(contagion_risk, population)
+      def initialize(contagion_risk, population, cache: nil)
         @contagion_risk = contagion_risk
         @population     = population
+        @cache          = cache
       end
 
       # Simulate an interaction
@@ -65,7 +68,7 @@ class Simulation < ApplicationRecord
       end
 
       def behavior_interactions
-        population.behavior.interactions
+        with_cache(population, :behavior).interactions
       end
 
       def infected_max_interactions

@@ -19,7 +19,7 @@ shared_context 'with infected random box', mock_random: true do
   end
 end
 
-describe Simulation::Contagion::Interactor do
+describe Simulation::Contagion::Interactor, :contagion_cache do
   describe '.process' do
     let(:simulation) do
       build(:simulation, :processing, contagion: nil).tap do |sim|
@@ -76,7 +76,7 @@ describe Simulation::Contagion::Interactor do
 
     let!(:new_instant) do
       Simulation::Contagion::Initializer.process(
-        current_instant
+        current_instant, cache: cache
       )
     end
 
@@ -101,7 +101,9 @@ describe Simulation::Contagion::Interactor do
     end
 
     let(:process) do
-      described_class.process(current_instant, new_instant, options)
+      described_class.process(
+        current_instant, new_instant, options, cache: cache
+      )
     end
 
     before do

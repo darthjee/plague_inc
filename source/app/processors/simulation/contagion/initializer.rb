@@ -7,9 +7,12 @@ class Simulation < ApplicationRecord
     # Creates a new instant to start processing
     class Initializer
       include ::Processor
+      include Contagion::Cacheable
+
       # @param instant [Instant] currently processed instant
-      def initialize(instant)
+      def initialize(instant, cache:)
         @instant = instant
+        @cache   = cache
       end
 
       # Creates a new instant.copying all not healthy populations
@@ -49,7 +52,8 @@ class Simulation < ApplicationRecord
         Population::AggregatedBuilder.build(
           populations: populations.dead,
           instant: new_instant,
-          state: Population::DEAD
+          state: Population::DEAD,
+          cache: cache
         )
       end
 
@@ -57,7 +61,8 @@ class Simulation < ApplicationRecord
         populations.where(state: state).each do |pop|
           Population::Builder.build(
             instant: new_instant,
-            population: pop
+            population: pop,
+            cache: cache
           )
         end
       end

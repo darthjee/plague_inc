@@ -7,9 +7,11 @@ class Simulation < ApplicationRecord
       #
       # Builds a population from options
       class Builder < Sinclair::Options
+        include Contagion::Cacheable
+
         with_options :instant, :group, :state,
                      :population, :behavior, :size,
-                     :days
+                     :days, :cache
 
         # @param options [Hash] options
         # @option options instant [Instant] instant where new option will
@@ -33,6 +35,11 @@ class Simulation < ApplicationRecord
         end
 
         private
+
+        # TODO: remove this
+        def cache
+          @cache ||= cache_factory.build
+        end
 
         attr_reader :population, :instant
 
@@ -63,7 +70,7 @@ class Simulation < ApplicationRecord
         end
 
         def group
-          @group ||= population.group
+          @group ||= with_cache(population, :group)
         end
 
         def state
@@ -75,7 +82,7 @@ class Simulation < ApplicationRecord
         end
 
         def behavior
-          @behavior ||= group.behavior
+          @behavior ||= with_cache(group, :behavior)
         end
       end
     end

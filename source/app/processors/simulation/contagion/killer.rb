@@ -9,9 +9,12 @@ class Simulation < ApplicationRecord
     # Kills people from populations of an instant
     class Killer
       include ::Processor
+      include Contagion::Cacheable
+
       # @param instant [Instant] instant to be processed
-      def initialize(instant)
+      def initialize(instant, cache:)
         @instant = instant
+        @cache   = cache
       end
 
       # Kills people from populations of an instant
@@ -49,7 +52,7 @@ class Simulation < ApplicationRecord
       end
 
       def death
-        @death ||= Death.new
+        @death ||= Death.new(cache: nil)
       end
 
       def build_dead(group, dead)
@@ -58,7 +61,8 @@ class Simulation < ApplicationRecord
           group: group,
           behavior: death.behavior(group),
           size: dead,
-          state: :dead
+          state: :dead,
+          cache: cache
         )
       end
     end

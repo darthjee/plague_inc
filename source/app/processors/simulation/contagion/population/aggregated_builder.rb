@@ -8,7 +8,9 @@ class Simulation < ApplicationRecord
       # Groups populations to create a new population in
       # the new instant
       class AggregatedBuilder < Sinclair::Options
-        with_options :populations, :instant, :state
+        include Contagion::Cacheable
+
+        with_options :populations, :instant, :state, :cache
 
         # @param options [Hash] options
         # @option options populations
@@ -30,6 +32,11 @@ class Simulation < ApplicationRecord
 
         private
 
+        # TODO: remove this
+        def cache
+          @cache ||= cache_factory.build
+        end
+
         def filtered_populations
           @filtered_populations ||= populations.where(state: state)
         end
@@ -39,8 +46,8 @@ class Simulation < ApplicationRecord
         end
 
         def build_population(group_id, size)
-          group = Group.find(group_id)
-          behavior = group.behavior
+          group = from_cache(:group, group_id)
+          behavior = with_cache(group, :behavior)
 
           Population::Builder.build(
             instant: instant,

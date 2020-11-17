@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::Killer do
+describe Simulation::Contagion::Killer, :contagion_cache do
   let!(:simulation) { create(:simulation, contagion: contagion) }
   let(:contagion) do
     build(:contagion, simulation: nil, lethality: lethality)
@@ -37,39 +37,39 @@ describe Simulation::Contagion::Killer do
       let(:lethality) { 1 }
 
       it 'kills everyone ready to be killed' do
-        expect { described_class.process(instant) }
+        expect { described_class.process(instant, cache: cache) }
           .to change { instant.populations.pluck(:size) }
           .from([9, 10, 11])
           .to([9, 0, 0, 21])
       end
 
       it 'does not persist killing' do
-        expect { described_class.process(instant) }
+        expect { described_class.process(instant, cache: cache) }
           .not_to(change { instant.reload.populations.pluck(:size) })
       end
 
       it 'builds a population' do
-        expect { described_class.process(instant) }
+        expect { described_class.process(instant, cache: cache) }
           .to change { instant.populations.size }
           .by(1)
       end
 
       it 'builds a dead population' do
-        described_class.process(instant)
+        described_class.process(instant, cache: cache)
 
         expect(instant.populations.last.state)
           .to eq('dead')
       end
 
       it 'builds a population with 0 days' do
-        described_class.process(instant)
+        described_class.process(instant, cache: cache)
 
         expect(instant.populations.last.days)
           .to eq(0)
       end
 
       it 'does not persist new populations' do
-        described_class.process(instant)
+        described_class.process(instant, cache: cache)
 
         expect(instant.populations.last)
           .not_to be_persisted
@@ -81,7 +81,7 @@ describe Simulation::Contagion::Killer do
       let(:state)     { :healthy }
 
       it 'kills no one' do
-        expect { described_class.process(instant) }
+        expect { described_class.process(instant, cache: cache) }
           .not_to(change { instant.populations.pluck(:size) })
       end
     end
@@ -90,7 +90,7 @@ describe Simulation::Contagion::Killer do
       let(:lethality) { 0 }
 
       it 'kills no one' do
-        expect { described_class.process(instant) }
+        expect { described_class.process(instant, cache: cache) }
           .not_to(change { instant.populations.pluck(:size) })
       end
     end

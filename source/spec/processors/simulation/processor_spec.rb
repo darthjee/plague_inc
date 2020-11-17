@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Processor do
+describe Simulation::Processor, :contagion_cache do
   let(:simulation) do
     build(:simulation, simulation_attributes).tap do |sim|
       sim.save(validate: false)
@@ -188,7 +188,9 @@ describe Simulation::Processor do
       let(:days_till_recovery) { 0 }
 
       let!(:created_instant) do
-        Simulation::Contagion::Starter.process(contagion)
+        Simulation::Contagion::Starter.process(
+          contagion, cache: cache
+        )
       end
 
       it do

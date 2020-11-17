@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::Initializer do
+describe Simulation::Contagion::Initializer, :contagion_cache do
   let(:simulation) { create(:simulation, :processing) }
   let(:contagion)  { simulation.contagion }
   let(:instant) do
@@ -16,7 +16,7 @@ describe Simulation::Contagion::Initializer do
   let(:immune_size)   { Random.rand(1..100) }
   let(:infected_size) { Random.rand(1..100) }
 
-  let(:new_instant) { described_class.process(instant) }
+  let(:new_instant) { described_class.process(instant, cache: cache) }
 
   let(:interesting_populations) do
     [dead_population, immune_population, infected_population]
