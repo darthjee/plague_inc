@@ -11,7 +11,7 @@ class Simulation < ApplicationRecord
 
       # @param contagion [Contagion] contagion
       #   to be processed
-      def initialize(contagion, cache: nil)
+      def initialize(contagion, cache:)
         @contagion = contagion
         @cache     = cache
       end

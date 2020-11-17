@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::Starter do
+describe Simulation::Contagion::Starter, :contagion_cache do
   let(:simulation) { build(:simulation, :processing, settings: contagion) }
   let(:contagion)  { build(:contagion, groups: [], behaviors: []) }
 
@@ -34,35 +34,35 @@ describe Simulation::Contagion::Starter do
 
   describe '.process' do
     it 'updates simulation' do
-      expect { described_class.process(contagion) }
+      expect { described_class.process(contagion, cache: cache) }
         .to(change { simulation.reload.updated_at })
     end
 
     it 'does not update simulation status' do
-      expect { described_class.process(contagion) }
+      expect { described_class.process(contagion, cache: cache) }
         .not_to(change { simulation.reload.status })
     end
 
     it do
-      expect { described_class.process(contagion) }
+      expect { described_class.process(contagion, cache: cache) }
         .to change { contagion.reload.instants.size }
         .by(1)
     end
 
     it do
-      expect(described_class.process(contagion))
+      expect(described_class.process(contagion, cache: cache))
         .to be_a(Simulation::Contagion::Instant)
     end
 
     it do
-      expect(described_class.process(contagion))
+      expect(described_class.process(contagion, cache: cache))
         .to be_persisted
     end
 
     context 'when the proccess is over' do
       let(:instant) { contagion.instants.last }
 
-      before { described_class.process(contagion) }
+      before { described_class.process(contagion, cache: cache) }
 
       it do
         expect(instant.populations)

@@ -28,14 +28,16 @@ class Simulation < ApplicationRecord
       delegate :simulation, to: :contagion
       delegate :contagion, to: :instant
 
-      def initialize(instant, options, cache: nil)
+      def initialize(instant, options, cache:)
         @instant = instant
         @options = options
         @cache   = cache
       end
 
       def interact
-        Contagion::Interactor.process(instant, new_instant, options)
+        Contagion::Interactor.process(
+          instant, new_instant, options, cache: cache
+        )
 
         instant.status = Instant::PROCESSED
       end
@@ -67,7 +69,7 @@ class Simulation < ApplicationRecord
       end
 
       def find_or_create_instant
-        created_instant || Initializer.process(instant)
+        created_instant || Initializer.process(instant, cache: cache)
       end
 
       def created_instant

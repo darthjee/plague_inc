@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::PopulationInfector do
+describe Simulation::Contagion::PopulationInfector, :contagion_cache do
   let(:simulation) { create(:simulation) }
   let(:contagion)  { simulation.contagion }
 
@@ -80,7 +80,9 @@ describe Simulation::Contagion::PopulationInfector do
 
   describe 'process' do
     let(:new_population) do
-      described_class.process(new_instant, infected, healthy, interactions)
+      described_class.process(
+        new_instant, infected, healthy, interactions, cache: cache
+      )
     end
 
     context 'when entire population gets infected' do

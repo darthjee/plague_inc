@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::InfectedInteractor do
+describe Simulation::Contagion::InfectedInteractor, :contagion_cache do
   describe '.process' do
     let(:simulation) do
       build(:simulation, :processing, contagion: nil).tap do |sim|
@@ -50,7 +50,8 @@ describe Simulation::Contagion::InfectedInteractor do
 
     let!(:new_instant) do
       Simulation::Contagion::Initializer.process(
-        current_instant
+        current_instant,
+        cache: cache
       )
     end
 
@@ -83,7 +84,8 @@ describe Simulation::Contagion::InfectedInteractor do
         selected_population,
         current_instant,
         new_instant,
-        options
+        options,
+        cache: cache
       )
     end
 

@@ -10,7 +10,7 @@ class Simulation < ApplicationRecord
       include Contagion::Cacheable
 
       # @param instant [Instant] currently processed instant
-      def initialize(instant, cache: nil)
+      def initialize(instant, cache:)
         @instant = instant
         @cache   = cache
       end

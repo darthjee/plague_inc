@@ -35,7 +35,7 @@ class Simulation < ApplicationRecord
       delegate :simulation, to: :contagion
       delegate :interactions, to: :population
 
-      def initialize(population, instant, new_instant, options, cache: nil)
+      def initialize(population, instant, new_instant, options, cache:)
         @population  = population
         @instant     = instant
         @new_instant = new_instant

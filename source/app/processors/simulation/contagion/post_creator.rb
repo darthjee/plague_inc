@@ -10,14 +10,14 @@ class Simulation < ApplicationRecord
       include Contagion::Cacheable
 
       # @param instant [Instant] instant being processed
-      def initialize(instant, cache: nil)
+      def initialize(instant, cache:)
         @instant = instant
         @cache   = cache
       end
 
       # Kills and heals populations after creation of instant
       def process
-        Killer.process(instant)
+        Killer.process(instant, cache: cache)
         Healer.process(instant)
         populations.each(&:setup_interactions)
 
