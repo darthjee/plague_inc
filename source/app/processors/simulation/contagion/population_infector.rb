@@ -16,7 +16,9 @@ class Simulation < ApplicationRecord
       # @param healthy [Population] healthy population being infected
       # @param interactions [Integer] number of interactions between
       #   populations
-      def initialize(instant, infected_population, healthy, interactions, cache:)
+      def initialize(
+        instant, infected_population, healthy, interactions, cache:
+      )
         @instant              = instant
         @infected_population  = infected_population
         @healthy              = healthy

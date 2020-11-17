@@ -7,7 +7,7 @@ class Simulation < ApplicationRecord
       include Contagion::Cacheable
 
       def initialize(cache: nil)
-        @cache ||= cache
+        @cache = cache
       end
 
       # kills people from a population
