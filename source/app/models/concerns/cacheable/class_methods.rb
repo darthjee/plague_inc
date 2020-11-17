@@ -3,14 +3,11 @@
 module Cacheable
   module ClassMethods
     def cache_for(klass)
-      store = CacheStore.new(klass)
-      cache_store[store.key] = store
+      cache_factory.add_cache(klass)
     end
 
-    # private
-
-    def cache_store
-      @cache_store ||= {}
+    def cache_factory
+      @cache_factory ||= CacheStore::Factory.new
     end
   end
 end
