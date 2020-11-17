@@ -10,8 +10,20 @@ describe CacheStore do
   let(:simulation) { create(:simulation, :processing) }
   let(:contagion)  { simulation.contagion }
   let(:group_id)   { group.id }
+  let!(:group)     { contagion.groups.last }
 
-  let!(:group) { contagion.groups.last }
+  let!(:instant) do
+    create(
+      :contagion_instant,
+      contagion: contagion
+    )
+  end
+  let(:population) do
+    create(
+      :contagion_population,
+      instant: instant, group: group
+    )
+  end
 
   describe '#key' do
     it 'returns the name of the class' do
@@ -41,6 +53,23 @@ describe CacheStore do
         expect(klass).to have_received(:find).once
       end
     end
+
+    context 'when cache has been requested before from relation' do
+      before do
+        allow(klass)
+          .to receive(:find)
+          .with(group_id)
+          .and_return(group).once
+
+        store.fetch_from(population)
+      end
+
+      it do
+        store.find(group_id)
+
+        expect(klass).to have_received(:find).once
+      end
+    end
   end
 
   describe '#fetch_from' do
@@ -61,6 +90,23 @@ describe CacheStore do
           .and_return(behavior).once
 
         store.find(behavior_id)
+      end
+
+      it do
+        store.fetch_from(group)
+
+        expect(klass).to have_received(:find).once
+      end
+    end
+
+    context 'when cache has been requested before from relation' do
+      before do
+        allow(klass)
+          .to receive(:find)
+          .with(behavior_id)
+          .and_return(behavior).once
+
+        store.fetch_from(group)
       end
 
       it do
