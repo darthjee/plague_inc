@@ -9,6 +9,7 @@ class Simulation < ApplicationRecord
     # in the new_instant
     class Interactor
       include ::Processor
+      include Contagion::Cacheable
 
       def process
         interact
@@ -28,10 +29,11 @@ class Simulation < ApplicationRecord
       # @param instant {Instant} Instant being processed
       # @param new_instant [Instant] instant where the new
       #   infected population will be created
-      def initialize(instant, new_instant, options)
+      def initialize(instant, new_instant, options, cache: nil)
         @instant     = instant
         @new_instant = new_instant
         @options     = options
+        @cache       = cache
       end
 
       def interact

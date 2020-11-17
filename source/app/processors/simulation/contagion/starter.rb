@@ -7,10 +7,13 @@ class Simulation < ApplicationRecord
     # Creates and populates first instant
     class Starter
       include ::Processor
+      include Contagion::Cacheable
+
       # @param contagion [Contagion] contagion
       #   to be processed
-      def initialize(contagion)
+      def initialize(contagion, cache: nil)
         @contagion = contagion
+        @cache     = cache
       end
 
       # Creates and populates firts instant

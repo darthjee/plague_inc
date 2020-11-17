@@ -4,6 +4,12 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     # Model to store deaths of groups
     class Death
+      include Contagion::Cacheable
+
+      def initialize(cache: nil)
+        @cache ||= cache
+      end
+
       # kills people from a population
       #
       # After the kill stores the behavior
@@ -15,9 +21,9 @@ class Simulation < ApplicationRecord
       def kill(population, size)
         return if size.zero?
 
-        group = population.group
+        group = with_cache(population, :group)
         deaths[group] += size
-        behaviors[group] = population.behavior
+        behaviors[group] = with_cache(population, :behavior)
       end
 
       def deaths

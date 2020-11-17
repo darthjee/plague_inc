@@ -11,6 +11,7 @@ class Simulation < ApplicationRecord
     # new instant
     class InstantProcessor
       include ::Processor
+      include Contagion::Cacheable
 
       def process
         interact
@@ -27,9 +28,10 @@ class Simulation < ApplicationRecord
       delegate :simulation, to: :contagion
       delegate :contagion, to: :instant
 
-      def initialize(instant, options)
+      def initialize(instant, options, cache: nil)
         @instant = instant
         @options = options
+        @cache   = cache
       end
 
       def interact

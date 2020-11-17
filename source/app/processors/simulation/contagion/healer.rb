@@ -7,6 +7,7 @@ class Simulation < ApplicationRecord
     # Heals all populations, ready to be immunized
     class Healer
       include ::Processor
+
       # @param instant [Instant]
       def initialize(instant)
         @instant = instant

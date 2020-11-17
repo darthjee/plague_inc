@@ -15,10 +15,11 @@ class Simulation < ApplicationRecord
     # processing can begin
     class Processor
       include ::Processor
+      include Contagion::Cacheable
 
       def process
         StatusKeeper.process(simulation) do
-          PostCreator.process(instant)
+          PostCreator.process(instant, cache: cache)
         end
 
         instant
@@ -40,10 +41,14 @@ class Simulation < ApplicationRecord
       end
 
       def find_or_build_instant
-        return InstantProcessor.process(ready_instant, options) if any_ready?
+        return process_ready_instant if any_ready?
 
         instants.find_by(status: :created) ||
-          Starter.process(contagion)
+          Starter.process(contagion, cache: cache)
+      end
+
+      def process_ready_instant
+        InstantProcessor.process(ready_instant, options, cache: cache)
       end
 
       def ready_instant

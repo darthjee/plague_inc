@@ -7,9 +7,12 @@ class Simulation < ApplicationRecord
     # Processor to be run after creation of an instant
     class PostCreator
       include ::Processor
+      include Contagion::Cacheable
+
       # @param instant [Instant] instant being processed
-      def initialize(instant)
+      def initialize(instant, cache: nil)
         @instant = instant
+        @cache   = cache
       end
 
       # Kills and heals populations after creation of instant

@@ -13,6 +13,7 @@ class Simulation < ApplicationRecord
     # @see PopulationInfector
     class InfectedInteractor
       include ::Processor
+      include Contagion::Cacheable
 
       def process
         interact
@@ -34,11 +35,12 @@ class Simulation < ApplicationRecord
       delegate :simulation, to: :contagion
       delegate :interactions, to: :population
 
-      def initialize(population, instant, new_instant, options)
+      def initialize(population, instant, new_instant, options, cache: nil)
         @population  = population
         @instant     = instant
         @new_instant = new_instant
         @options     = options
+        @cache       = cache
       end
 
       def interact
@@ -54,7 +56,10 @@ class Simulation < ApplicationRecord
         interaction_map.each do |pop, interactions|
           next unless pop.healthy?
 
-          PopulationInfector.process(new_instant, population, pop, interactions)
+          PopulationInfector.process(
+            new_instant, population, pop, interactions,
+            cache: cache
+          )
         end
       end
 

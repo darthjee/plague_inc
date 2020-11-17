@@ -7,6 +7,8 @@ class Simulation < ApplicationRecord
     # Infect a healthy population
     class PopulationInfector
       include ::Processor
+      include Contagion::Cacheable
+
       # @param instant [Instant] instant where new infected population will
       #   be created
       # @param infected_population [Population] poppulation infecting healthy
@@ -14,11 +16,12 @@ class Simulation < ApplicationRecord
       # @param healthy [Population] healthy population being infected
       # @param interactions [Integer] number of interactions between
       #   populations
-      def initialize(instant, infected_population, healthy, interactions)
-        @instant                 = instant
-        @infected_population     = infected_population
-        @healthy                 = healthy
-        @interactions            = interactions
+      def initialize(instant, infected_population, healthy, interactions, cache: nil)
+        @instant              = instant
+        @infected_population  = infected_population
+        @healthy              = healthy
+        @interactions         = interactions
+        @cache                = cache
       end
 
       # Infect healthy population
@@ -51,10 +54,11 @@ class Simulation < ApplicationRecord
       def build_population
         Population::Builder.build(
           instant: instant,
-          group: healthy.group,
-          behavior: healthy.behavior,
+          group: with_cache(healthy, :group),
+          behavior: with_cache(healthy, :behavior),
           state: Population::INFECTED,
-          size: infected
+          size: infected,
+          cache: cache
         )
       end
 
@@ -65,7 +69,7 @@ class Simulation < ApplicationRecord
 
       def interaction_store
         @interaction_store ||= InteractionStore.new(
-          contagion_risk, healthy
+          contagion_risk, healthy, cache: cache
         )
       end
     end

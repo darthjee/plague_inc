@@ -18,10 +18,10 @@ module Cacheable
   delegate :cache_factory, to: :class
 
   def cache_store(key)
-    cache_stores[key]
+    cache[key]
   end
 
-  def cache_stores
-    @cache_stores ||= cache_factory.build
+  def cache
+    @cache ||= cache_factory.build
   end
 end
