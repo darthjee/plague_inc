@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Controller responsible for showing and processing
+# contagion simulations
 class ContagionController < ApplicationController
   protect_from_forgery except: [:process]
 
@@ -54,9 +56,13 @@ class ContagionController < ApplicationController
   end
 
   def scoped_instants
-    return contagion.instants unless pagination_last_instant_id
+    return contagion_instants unless pagination_last_instant_id
 
-    contagion.instants.where('id > ?', pagination_last_instant_id)
+    contagion_instants.where('id > ?', pagination_last_instant_id)
+  end
+
+  def contagion_instants
+    contagion.instants
   end
 
   def pagination_last_instant_id

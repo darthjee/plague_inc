@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Path
+  # class responsigle for handling safe_path url builds
   class SafePath
     attr_reader :controller, :method
 
