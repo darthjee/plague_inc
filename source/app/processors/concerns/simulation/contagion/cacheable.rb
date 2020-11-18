@@ -2,6 +2,7 @@
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
+    # Add cache on immutable objects for contagion
     module Cacheable
       extend ActiveSupport::Concern
 

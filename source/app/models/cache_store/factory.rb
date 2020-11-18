@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 class CacheStore
+  # Configure a set of CacheStore and builds it on demand
+  #
+  # @example
+  #   factory = CacheStore.new
+  #   factory.add_cache(Simulation::Contagion::Group)
+  #   factory.add_cache(Simulation::Contagion::Behavior)
+  #
+  #   factory.build # returns
+  #                 #  {
+  #                 #    group: <CacheStore klass=Group>
+  #                 #    behavior: <CacheStore klass=Behavior>
+  #                 #  }
   class Factory
     def add_cache(klass)
       configs << klass

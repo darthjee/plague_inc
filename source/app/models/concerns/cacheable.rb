@@ -2,6 +2,7 @@
 
 require 'concerns/cacheable/class_methods'
 
+# Adds cache capability to a class
 module Cacheable
   extend ActiveSupport::Concern
 

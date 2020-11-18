@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
+# Holds all cache for one specific class
+#
+# @example
+#   store = CacheStore.new(Simulation)
+#   store.find(1) # returns <Simulation id=1>
 class CacheStore
+  # @param klass [Class<ActiveRecord::Base>]
+  #   class to be cached
   def initialize(klass)
     @klass = klass
   end
@@ -10,9 +17,7 @@ class CacheStore
   end
 
   def fetch_from(object)
-    store[object.public_send(id_key)].tap do |value|
-      object.public_send("#{key}=", value)
-    end
+    store[object.public_send(id_key)]
   end
 
   def key
