@@ -51,7 +51,7 @@ class Simulation < ApplicationRecord
 
         def find
           instant.populations.find do |pop|
-            pop.group == group &&
+            with_cache(pop, :group) == group &&
               pop.state == state &&
               pop.days == days
           end
