@@ -11,7 +11,8 @@ class Simulation < ApplicationRecord
 
         with_options :instant, :group, :state,
                      :population, :behavior, :size,
-                     :days, :cache
+                     :days
+        skip_validation
 
         # @param options [Hash] options
         # @option options instant [Instant] instant where new option will
@@ -35,11 +36,6 @@ class Simulation < ApplicationRecord
         end
 
         private
-
-        # TODO: remove this
-        def cache
-          @cache ||= cache_factory.build
-        end
 
         attr_reader :population, :instant
 
