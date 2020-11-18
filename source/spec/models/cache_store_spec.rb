@@ -76,10 +76,29 @@ describe CacheStore do
     let(:klass)       { Simulation::Contagion::Behavior }
     let(:behavior)    { group.behavior }
     let(:behavior_id) { behavior.id }
+    let(:other_behavior) do
+      create(:contagion_behavior, contagion: contagion)
+    end
 
     it 'returns correct given group' do
       expect(store.fetch_from(group))
         .to eq(behavior)
+    end
+
+    context 'when returned value is different from current object value' do
+      before do
+        allow(klass)
+          .to receive(:find)
+          .with(behavior_id)
+          .and_return(other_behavior).once
+      end
+
+      it 'assign attribute' do
+        expect { store.fetch_from(group) }
+          .to change(group, :behavior)
+          .from(behavior)
+          .to(other_behavior)
+      end
     end
 
     context 'when cache has been requested before' do

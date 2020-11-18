@@ -10,7 +10,8 @@ class Simulation < ApplicationRecord
       class AggregatedBuilder < Sinclair::Options
         include Contagion::Cacheable
 
-        with_options :populations, :instant, :state, :cache
+        with_options :populations, :instant, :state
+        skip_validation
 
         # @param options [Hash] options
         # @option options populations
@@ -31,11 +32,6 @@ class Simulation < ApplicationRecord
         end
 
         private
-
-        # TODO: remove this
-        def cache
-          @cache ||= cache_factory.build
-        end
 
         def filtered_populations
           @filtered_populations ||= populations.where(state: state)
