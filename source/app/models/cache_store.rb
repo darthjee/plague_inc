@@ -17,7 +17,9 @@ class CacheStore
   end
 
   def fetch_from(object)
-    store[object.public_send(id_key)]
+    store[object.public_send(id_key)].tap do |value|
+      object.public_send("#{key}=", value)
+    end
   end
 
   def key
