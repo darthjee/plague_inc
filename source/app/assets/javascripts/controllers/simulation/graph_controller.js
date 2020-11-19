@@ -42,7 +42,7 @@
 
   fn.unpause = function() {
     this._triggerLoadData(true);
-  }
+  };
 
   fn._triggerLoadData = function(processing) {
     this.process = processing;
