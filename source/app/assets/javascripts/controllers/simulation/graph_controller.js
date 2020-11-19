@@ -53,14 +53,22 @@
 
   fn._setSimulation = function(data) {
     if (this.simulation) {
+      this._chopInstants(data.instants[0]);
+
       data.instants = this.simulation.instants
         .concat(data.instants);
-
-      this.simulation = data;
-    } else {
-      this.simulation = data;
     }
+
+    this.simulation = data;
   };
+
+  fn._chopInstants = function(new_instant) {
+    if (new_instant) {
+      while(this.simulation.instants.last().day >= new_instant.day) {
+        this.simulation.instants.pop();
+      }
+    }
+  }
 
   fn._loadData = function() {
     var promisse = this.http.get(this._summaryUrl());
