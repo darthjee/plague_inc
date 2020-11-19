@@ -9,6 +9,7 @@ class Simulation < ApplicationRecord
       # the new instant
       class AggregatedBuilder < Sinclair::Options
         include Contagion::Cacheable
+        include ::Processor
 
         with_options :populations, :instant, :state
         skip_validation
@@ -22,10 +23,10 @@ class Simulation < ApplicationRecord
         # @option options state [Symbol, String] filter of
         #   state
         def self.build(*options)
-          new(*options).build
+          process(*options)
         end
 
-        def build
+        def process
           grouped_populations.sum(:size).each do |group_id, size|
             build_population(group_id, size)
           end

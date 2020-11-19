@@ -8,6 +8,7 @@ class Simulation < ApplicationRecord
       # Builds a population from options
       class Builder < Sinclair::Options
         include Contagion::Cacheable
+        include ::Processor
 
         with_options :instant, :group, :state,
                      :population, :behavior, :size,
@@ -25,10 +26,10 @@ class Simulation < ApplicationRecord
         #   of a previous instant [Instant] to be used as model
         # @option options size [Integer] size of population
         def self.build(*options)
-          new(*options).build
+          process(*options)
         end
 
-        def build
+        def process
           built_population.size += size
           built_population.behavior = behavior
 
