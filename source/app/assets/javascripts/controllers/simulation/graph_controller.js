@@ -69,7 +69,7 @@
   };
 
   fn._enqueueProcess = function() {
-    this.timeout(this._process, this.simulation.processable_in * 1000);
+    this.timeout(this._process, this.simulation.processable_in * 1000 + 50);
   };
 
   fn._process = function() {
