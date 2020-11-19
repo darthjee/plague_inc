@@ -9,23 +9,25 @@ class Simulation < ApplicationRecord
       # the new instant
       class AggregatedBuilder < Sinclair::Options
         include Contagion::Cacheable
+        include ::Processor
 
         with_options :populations, :instant, :state
         skip_validation
 
-        # @param options [Hash] options
-        # @option options populations
-        #   [ActiveRelation<Simulation::Contagion::Population>] base
-        #   scope of populations
-        # @option options instant [Simulation::Contagion::Instant]
-        #   new instant where population will be built
-        # @option options state [Symbol, String] filter of
-        #   state
-        def self.build(*options)
-          new(*options).build
+        class << self
+          # @method build
+          # @param options [Hash] options
+          # @option options populations
+          #   [ActiveRelation<Simulation::Contagion::Population>] base
+          #   scope of populations
+          # @option options instant [Simulation::Contagion::Instant]
+          #   new instant where population will be built
+          # @option options state [Symbol, String] filter of
+          #   state
+          alias build process
         end
 
-        def build
+        def process
           grouped_populations.sum(:size).each do |group_id, size|
             build_population(group_id, size)
           end

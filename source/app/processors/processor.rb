@@ -12,6 +12,7 @@ module Processor
     private_class_method :new
 
     def self.process(*args, &block)
+      Rails.logger.debug("Running #{self}")
       new(*args, &block).process
     end
   end
