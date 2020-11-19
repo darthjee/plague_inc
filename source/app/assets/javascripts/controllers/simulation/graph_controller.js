@@ -62,13 +62,13 @@
     this.simulation = data;
   };
 
-  fn._chopInstants = function(new_instant) {
-    if (new_instant && this.simulation.instants.last()) {
-      while(this.simulation.instants.last().day >= new_instant.day) {
+  fn._chopInstants = function(newInstant) {
+    if (newInstant && this.simulation.instants.last()) {
+      while(this.simulation.instants.last().day >= newInstant.day) {
         this.simulation.instants.pop();
       }
     }
-  }
+  };
 
   fn._loadData = function() {
     var promisse = this.http.get(this._summaryUrl());
