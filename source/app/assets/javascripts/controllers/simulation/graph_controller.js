@@ -9,7 +9,10 @@
     this.id       = $routeParams.id;
     this.location = $location;
 
-    _.bindAll(this, "_summaryPath", "_summaryUrl", "_loadData", "_success", "_enqueueProcess", "_process");
+    _.bindAll(
+      this, "_summaryPath", "_summaryUrl", "_loadData",
+      "_success", "_error", "_enqueueProcess", "_process"
+    );
     this._loadData();
 
     this.mode = "read";
@@ -27,6 +30,10 @@
     } else if (this.process && this.mode === "process") {
       this._enqueueProcess();
     }
+  };
+
+  fn._error = function() {
+    console.info(arguments);
   };
 
   fn.pause = function() {
@@ -73,7 +80,7 @@
   fn._loadData = function() {
     var promisse = this.http.get(this._summaryUrl());
 
-    promisse.success(this._success);
+    this._handlePromisse(promisse);
   };
 
   fn._enqueueProcess = function() {
@@ -84,7 +91,13 @@
     this.mode = "process";
     var promisse = this.http.post(this._processingPath(), {});
 
-    promisse.success(this._success);
+    this._handlePromisse(promisse);
+  };
+
+  fn._handlePromisse = function(promisse) {
+    promisse
+      .success(this._success)
+      .error(this._error);
   };
 
   fn._processingPath = function() {
