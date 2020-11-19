@@ -13,6 +13,7 @@
     this._loadData();
 
     this.mode = "read";
+    this.process = false;
   }
 
   var fn = Controller.prototype;
@@ -23,17 +24,17 @@
 
     if (this.mode === "read") {
       this._loadData();
-    } else if (this.mode === "process") {
+    } else if (this.process && this.mode === "process") {
       this._enqueueProcess();
     }
   };
 
   fn.pause = function() {
-    this.mode = "paused";
+    this.process = false;
   };
 
   fn.unpause = function() {
-    this.mode = "read";
+    this.process = true;
 
     if (!this.ongoing) {
       this._loadData();
@@ -41,10 +42,6 @@
   };
 
   fn._updateMode = function() {
-    if (this.mode === "paused") {
-      return;
-    }
-
     if (this.simulation.instants.length >= this.simulation.instants_total) {
       if (this.simulation.status === "finished") {
         this.mode = "finished";
@@ -72,7 +69,7 @@
   };
 
   fn._enqueueProcess = function() {
-    this.timeout(this._process, this.simulation.processable_in);
+    this.timeout(this._process, this.simulation.processable_in * 1000);
   };
 
   fn._process = function() {
