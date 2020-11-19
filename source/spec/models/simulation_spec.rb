@@ -145,7 +145,7 @@ describe Simulation, type: :model do
       end
 
       context 'when it has just been updated' do
-        it { expect(simulation).not_to be_processable }
+        it { expect(simulation).to be_processable }
       end
 
       context 'when it has just been updated a second ago' do
@@ -208,12 +208,6 @@ describe Simulation, type: :model do
       end
 
       context 'when it has just been updated' do
-        it { expect(simulation.processable_in).to eq(1.second) }
-      end
-
-      context 'when it has just been updated a second ago' do
-        let(:updated_at) { 1.second.ago }
-
         it { expect(simulation.processable_in).to be_zero }
       end
     end

@@ -48,7 +48,7 @@ class Simulation < ApplicationRecord
 
   def processable?
     processing? && updated_at < Settings.processing_timeout.ago ||
-      !processing? && updated_at < Settings.processing_wait_time.ago
+      !processing?
   end
 
   def processable_in

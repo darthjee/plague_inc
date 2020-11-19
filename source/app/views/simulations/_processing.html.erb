@@ -12,7 +12,7 @@
       nil,
       ng_click: 'graph.pause()',
       classes: 'btn-primary',
-      ng_hide: "graph.mode == 'paused'",
+      ng_hide: "! graph.process",
       text: 'Pause'
     ) %>
 
@@ -20,8 +20,8 @@
       nil,
       ng_click: 'graph.unpause()',
       classes: 'btn-primary',
-      ng_hide: "graph.mode != 'paused'",
-      text: 'Unpause'
+      ng_hide: "graph.process",
+      text: 'Process'
     ) %>
 
     <table>
