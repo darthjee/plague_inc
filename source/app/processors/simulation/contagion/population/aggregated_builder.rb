@@ -14,16 +14,17 @@ class Simulation < ApplicationRecord
         with_options :populations, :instant, :state
         skip_validation
 
-        # @param options [Hash] options
-        # @option options populations
-        #   [ActiveRelation<Simulation::Contagion::Population>] base
-        #   scope of populations
-        # @option options instant [Simulation::Contagion::Instant]
-        #   new instant where population will be built
-        # @option options state [Symbol, String] filter of
-        #   state
-        def self.build(*options)
-          process(*options)
+        class << self
+          # @method build
+          # @param options [Hash] options
+          # @option options populations
+          #   [ActiveRelation<Simulation::Contagion::Population>] base
+          #   scope of populations
+          # @option options instant [Simulation::Contagion::Instant]
+          #   new instant where population will be built
+          # @option options state [Symbol, String] filter of
+          #   state
+          alias build process
         end
 
         def process

@@ -15,18 +15,19 @@ class Simulation < ApplicationRecord
                      :days
         skip_validation
 
-        # @param options [Hash] options
-        # @option options instant [Instant] instant where new option will
-        #   be created
-        # @option options group [Group] population group
-        # @option options behavior [Behavior] population behavior
-        # @option options state [String,Symbo] initial state of
-        #   population
-        # @option options population [Population] population
-        #   of a previous instant [Instant] to be used as model
-        # @option options size [Integer] size of population
-        def self.build(*options)
-          process(*options)
+        class << self
+          # @method build
+          # @param options [Hash] options
+          # @option options instant [Instant] instant where new option will
+          #   be created
+          # @option options group [Group] population group
+          # @option options behavior [Behavior] population behavior
+          # @option options state [String,Symbo] initial state of
+          #   population
+          # @option options population [Population] population
+          #   of a previous instant [Instant] to be used as model
+          # @option options size [Integer] size of population
+          alias build process
         end
 
         def process
