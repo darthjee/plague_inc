@@ -33,7 +33,7 @@
   };
 
   fn._error = function(_, code) {
-    this.timeout(this._loadData, 3000);
+    this.timeout(this._loadData, 120000);
   };
 
   fn.pause = function() {
