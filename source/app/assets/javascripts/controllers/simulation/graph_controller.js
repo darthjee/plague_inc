@@ -33,12 +33,15 @@
   };
 
   fn._error = function(_, code) {
-
     this.timeout(this._loadData, 3000);
   };
 
   fn.pause = function() {
     this.process = false;
+
+    if (!this.ongoing) {
+      this._loadData();
+    }
   };
 
   fn.unpause = function() {
