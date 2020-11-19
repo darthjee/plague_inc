@@ -37,15 +37,15 @@
   };
 
   fn.pause = function() {
-    this.process = false;
-
-    if (!this.ongoing) {
-      this._loadData();
-    }
+    this._triggerLoadData(false);
   };
 
   fn.unpause = function() {
-    this.process = true;
+    this._triggerLoadData(true);
+  }
+
+  fn._triggerLoadData = function(processing) {
+    this.process = processing;
 
     if (!this.ongoing) {
       this._loadData();
