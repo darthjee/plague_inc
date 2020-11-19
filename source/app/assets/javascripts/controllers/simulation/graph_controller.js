@@ -63,7 +63,7 @@
   };
 
   fn._chopInstants = function(new_instant) {
-    if (new_instant) {
+    if (new_instant && this.simulation.instants.last()) {
       while(this.simulation.instants.last().day >= new_instant.day) {
         this.simulation.instants.pop();
       }
