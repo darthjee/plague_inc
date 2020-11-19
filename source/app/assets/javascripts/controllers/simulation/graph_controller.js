@@ -32,8 +32,9 @@
     }
   };
 
-  fn._error = function() {
-    console.info(arguments);
+  fn._error = function(_, code) {
+
+    this.timeout(this._loadData, 3000);
   };
 
   fn.pause = function() {
