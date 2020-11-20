@@ -64,13 +64,7 @@ class Simulation < ApplicationRecord
 
       def process_ready_instant
         InstantProcessor.process(
-          cached_ready_instant, options, cache: cache
-        )
-      end
-
-      def cached_ready_instant
-        @cached_ready_instant ||= CacheWarmer.process(
-          ready_instant, cache: cache
+          ready_instant, options, cache: cache
         )
       end
 

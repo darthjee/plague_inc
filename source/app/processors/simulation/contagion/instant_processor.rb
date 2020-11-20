@@ -29,7 +29,7 @@ class Simulation < ApplicationRecord
       delegate :contagion, to: :instant
 
       def initialize(instant, options, cache:)
-        @instant = instant
+        @instant = CacheWarmer.process(instant, cache: cache)
         @options = options
         @cache   = cache
       end
