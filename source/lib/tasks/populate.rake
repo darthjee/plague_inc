@@ -3,7 +3,7 @@
 namespace :populate do
   desc 'Populate all that needs populating'
   task all: :environment do
-    Rake::Task['populate:merge_populations'].invoke
+    #Rake::Task['populate:merge_populations'].invoke
   end
 
   desc 'Merge dead populations'
