@@ -52,7 +52,7 @@ class Simulation < ApplicationRecord
       end
 
       def death
-        @death ||= Death.new(cache: nil)
+        @death ||= Death.new(cache: cache)
       end
 
       def build_dead(group, dead)

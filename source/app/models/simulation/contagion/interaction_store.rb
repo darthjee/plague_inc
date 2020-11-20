@@ -9,7 +9,7 @@ class Simulation < ApplicationRecord
       # @param contagion_risk [Float] risk of contagion
       # @param population [Population] population to
       #   perform interactions
-      def initialize(contagion_risk, population, cache: nil)
+      def initialize(contagion_risk, population, cache:)
         @contagion_risk = contagion_risk
         @population     = population
         @cache          = cache

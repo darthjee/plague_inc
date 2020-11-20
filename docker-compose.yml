@@ -65,7 +65,10 @@ services:
     container_name: plague_inc_root
     command: /bin/bash
     depends_on: [base_build]
+
   plague_inc_production:
     env_file: .env.production
     container_name: plague_inc_production
     image: $PRODUCTION_IMAGE
+    environment:
+      - LOG_LEVEL=debug

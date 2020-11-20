@@ -2,8 +2,10 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::InteractionStore do
-  subject(:store) { described_class.new(contagion_risk, population) }
+describe Simulation::Contagion::InteractionStore, :contagion_cache do
+  subject(:store) do
+    described_class.new(contagion_risk, population, cache: cache)
+  end
 
   let(:simulation) { create(:simulation) }
   let(:contagion)  { simulation.contagion }
