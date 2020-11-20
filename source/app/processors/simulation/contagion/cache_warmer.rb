@@ -15,6 +15,7 @@ class Simulation < ApplicationRecord
         instant.populations.each do |population|
           with_cache(population, :group)
           with_cache(population, :behavior)
+          with_cache(population.group, :behavior)
         end
 
         instant
