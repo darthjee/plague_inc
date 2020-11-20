@@ -16,6 +16,8 @@ class Settings
     interaction_block_size: 1000,
     processing_iteractions: 1,
     processing_timeout: 2.minutes,
-    processing_wait_time: 1.second
+    processing_wait_time: 1.second,
+
+    log_level: :info
   )
 end
