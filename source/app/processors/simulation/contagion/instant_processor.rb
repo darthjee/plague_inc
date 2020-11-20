@@ -61,7 +61,10 @@ class Simulation < ApplicationRecord
       end
 
       def new_instant
-        @new_instant ||= find_or_create_instant
+        @new_instant ||= CacheWarmer.process(
+          find_or_create_instant,
+          cache: cache
+        )
       end
 
       def healthy_populations
