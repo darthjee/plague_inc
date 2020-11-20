@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::Death do
-  subject(:death) { described_class.new }
+describe Simulation::Contagion::Death, :contagion_cache do
+  subject(:death) { described_class.new(cache: cache) }
 
   let(:simulation) { create(:simulation) }
   let(:contagion)  { simulation.contagion }

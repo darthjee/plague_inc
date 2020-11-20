@@ -6,7 +6,7 @@ class Simulation < ApplicationRecord
     class Death
       include Contagion::Cacheable
 
-      def initialize(cache: nil)
+      def initialize(cache:)
         @cache = cache
       end
 
