@@ -14,6 +14,7 @@ module Processor
     def self.process(*args, &block)
       Rails.logger.debug("Running #{self}")
       new(*args, &block).process
+      Rails.logger.debug("Finished running #{self}")
     end
   end
 
