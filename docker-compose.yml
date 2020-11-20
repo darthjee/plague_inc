@@ -71,4 +71,4 @@ services:
     container_name: plague_inc_production
     image: $PRODUCTION_IMAGE
     environment:
-      - LOG_LEVEL=debug
+      - PLAGUE_INC_LOG_LEVEL=debug
