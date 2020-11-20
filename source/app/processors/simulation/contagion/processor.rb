@@ -37,7 +37,9 @@ class Simulation < ApplicationRecord
       end
 
       def instant
-        @instant ||= find_or_build_instant
+        @instant ||= CacheWarmer.process(
+          find_or_build_instant, cache: cache
+        )
       end
 
       def find_or_build_instant
