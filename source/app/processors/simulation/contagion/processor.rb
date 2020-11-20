@@ -45,12 +45,35 @@ class Simulation < ApplicationRecord
       def find_or_build_instant
         return process_ready_instant if any_ready?
 
-        instants.find_by(status: :created) ||
-          Starter.process(contagion, cache: cache)
+        cached_created_instant || start_instant
+      end
+
+      def cached_created_instant
+        return unless created_instant
+
+        CacheWarmer.process(
+          created_instant, cache: cache
+        )
+      end
+
+      def created_instant
+        @created_instant ||= instants.find_by(status: :created)
+      end
+
+      def start_instant
+        Starter.process(contagion, cache: cache)
       end
 
       def process_ready_instant
-        InstantProcessor.process(ready_instant, options, cache: cache)
+        InstantProcessor.process(
+          cached_ready_instant, options, cache: cache
+        )
+      end
+
+      def cached_ready_instant
+        @cached_ready_instant ||= CacheWarmer.process(
+          ready_instant, cache: cache
+        )
       end
 
       def ready_instant
