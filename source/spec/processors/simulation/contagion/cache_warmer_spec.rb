@@ -15,11 +15,11 @@ describe Simulation::Contagion::CacheWarmer, :contagion_cache do
     create(:contagion_instant, contagion: contagion)
   end
 
-  let!(:population) do
+  before do
     create(
       :contagion_population,
-      instant:  instant,
-      group:    group,
+      instant: instant,
+      group: group,
       behavior: behavior
     )
   end
