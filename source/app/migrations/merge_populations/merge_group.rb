@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MergeDeadPopulations
+class MergePopulations
   class MergeGroup < Sinclair::Options
     include Processor
 
