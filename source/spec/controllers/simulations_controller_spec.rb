@@ -179,10 +179,16 @@ describe SimulationsController do
           end
         end
 
+        let(:settings_attributes_ignored) do
+          %w[
+            id simulation_id created_at
+            updated_at days_till_immunization_end
+          ]
+        end
+
         let(:settings_attributes) do
           settings.attributes.reject do |key, _|
-            %w[id simulation_id created_at updated_at]
-              .include? key
+            settings_attributes_ignored.include? key
           end
         end
 
