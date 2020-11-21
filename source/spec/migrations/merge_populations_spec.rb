@@ -13,12 +13,15 @@ describe MergePopulations do
   let(:behavior)    { group.behavior }
   let(:populations) { instant.populations }
 
-  let(:dead_populations)  { instant.populations.dead }
-  let(:final_populations) { dead_populations.where(days: base_days) }
+  let(:filtered_populations) do
+    instant.populations.where(state: state)
+  end
+
+  let(:final_populations) { filtered_populations.where(days: base_days) }
 
   describe '.process' do
     let(:all_states) { Simulation::Contagion::Population::STATES }
-    let(:state)      { Simulation::Contagion::Population::DEAD }
+    let(:state)      { all_states .sample }
     let(:base_days)  { Random.rand(10) }
 
     let(:other_states) do
@@ -49,7 +52,7 @@ describe MergePopulations do
       [expected_target_size, expected_other_size]
     end
 
-    let(:process) { described_class.process(state: :dead) }
+    let(:process) { described_class.process(state: state) }
 
     let!(:other_state_populations) do
       other_states.map do |state|
