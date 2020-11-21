@@ -44,17 +44,29 @@ class Simulation < ApplicationRecord
 
       def build_populations
         build_dead_populations
-        build_population_for(Population::IMMUNE)
-        build_population_for(Population::INFECTED)
+        build_immune_populations
+        build_infected_populations
       end
 
       def build_dead_populations
+        aggregate_populations(:dead)
+      end
+
+      def aggregate_populations(state)
         Population::AggregatedBuilder.build(
-          populations: populations.dead,
+          populations: populations.where(state: state),
           instant: new_instant,
           state: Population::DEAD,
           cache: cache
         )
+      end
+
+      def build_immune_populations
+        build_population_for(Population::IMMUNE)
+      end
+
+      def build_infected_populations
+        build_population_for(Population::INFECTED)
       end
 
       def build_population_for(state)
