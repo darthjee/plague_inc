@@ -13,6 +13,7 @@ describe Simulation::Contagion::Initializer, :contagion_cache do
     build(
       :contagion,
       simulation: simulation,
+      days_till_immunization_end: days_till_immunization_end
     ).tap do |con|
       con.save(validate: false)
     end
@@ -28,6 +29,10 @@ describe Simulation::Contagion::Initializer, :contagion_cache do
   let(:dead_size)     { Random.rand(1..100) }
   let(:immune_size)   { Random.rand(1..100) }
   let(:infected_size) { Random.rand(1..100) }
+
+  let(:days_till_immunization_end) do
+    Random.rand(3)
+  end
 
   let(:new_instant) { described_class.process(instant, cache: cache) }
 
@@ -290,6 +295,25 @@ describe Simulation::Contagion::Initializer, :contagion_cache do
         expect(new_instant.populations.infected.pluck(:days))
           .to eq([1, 2])
       end
+    end
+  end
+
+  context 'when population never looses immunization' do
+    let(:days_till_immunization_end) { nil }
+
+    it 'makes population for the important populations' do
+      expect(new_instant.populations.sort.pluck(:state))
+        .to eq(%w[dead immune infected])
+    end
+
+    it 'increments days counters for non aggregated' do
+      expect(new_instant.populations.pluck(:days))
+        .to eq([1, 1, days + 1])
+    end
+
+    it 'makes population with correct size' do
+      expect(new_instant.populations.sort.pluck(:size))
+        .to eq(interesting_populations.map(&:size))
     end
   end
 end

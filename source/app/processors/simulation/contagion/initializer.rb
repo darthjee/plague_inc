@@ -56,13 +56,17 @@ class Simulation < ApplicationRecord
         Population::AggregatedBuilder.build(
           populations: populations.where(state: state),
           instant: new_instant,
-          state: Population::DEAD,
+          state: state,
           cache: cache
         )
       end
 
       def build_immune_populations
-        build_population_for(Population::IMMUNE)
+        if contagion.immunization_ends?
+          build_population_for(Population::IMMUNE)
+        else
+          aggregate_populations(Population::IMMUNE)
+        end
       end
 
       def build_infected_populations
