@@ -3,10 +3,12 @@
 FactoryBot.define do
   factory :contagion, class: 'Simulation::Contagion' do
     simulation            { build(:simulation, settings: nil) }
-    lethality             { 0.5 }
-    days_till_recovery    { 10 }
-    days_till_sympthoms   { 10 }
-    days_till_start_death { 10 }
+
+    lethality                  { 0.5 }
+    days_till_recovery         { 10 }
+    days_till_sympthoms        { 10 }
+    days_till_start_death      { 10 }
+    days_till_immunization_end { 90 }
 
     behaviors { build_list(:contagion_behavior, 1, contagion: @instance) }
 

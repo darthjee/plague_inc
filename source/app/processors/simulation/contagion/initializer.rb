@@ -49,7 +49,7 @@ class Simulation < ApplicationRecord
       end
 
       def build_dead_populations
-        aggregate_populations(:dead)
+        aggregate_populations(Population::DEAD)
       end
 
       def aggregate_populations(state)

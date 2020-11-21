@@ -3,8 +3,21 @@
 require 'spec_helper'
 
 describe Simulation::Contagion::Initializer, :contagion_cache do
-  let(:simulation) { create(:simulation, :processing) }
-  let(:contagion)  { simulation.contagion }
+  let(:simulation) do
+    build(:simulation, contagion: nil).tap do |sim|
+      sim.save(validate: false)
+    end
+  end
+
+  let(:contagion) do
+    build(
+      :contagion,
+      simulation: simulation,
+    ).tap do |con|
+      con.save(validate: false)
+    end
+  end
+
   let(:instant) do
     create(:contagion_instant, contagion: contagion, day: 9)
   end
