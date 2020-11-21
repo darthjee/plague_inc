@@ -49,6 +49,8 @@ describe MergePopulations do
       [expected_target_size, expected_other_size]
     end
 
+    let(:process) { described_class.process(state: :dead) }
+
     let!(:other_state_populations) do
       other_states.map do |state|
         populations_count.times.map do |days|
@@ -102,13 +104,13 @@ describe MergePopulations do
     end
 
     it 'merge populations for each group' do
-      expect { described_class.process }
+      expect { process }
         .to change { instant.populations.size }
         .by(2 - 2 * populations_count)
     end
 
     it 'merge populations size for each group' do
-      expect { described_class.process }
+      expect { process }
         .to change { final_populations.reload.pluck(:size) }
         .to(expected_sizes)
     end
