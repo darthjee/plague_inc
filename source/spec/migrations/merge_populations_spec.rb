@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe MergeDeadPopulations do
+describe MergePopulations do
   let(:simulation) { create(:simulation, :processing) }
   let(:contagion)  { simulation.contagion }
   let!(:instant) do
@@ -13,12 +13,15 @@ describe MergeDeadPopulations do
   let(:behavior)    { group.behavior }
   let(:populations) { instant.populations }
 
-  let(:dead_populations)  { instant.populations.dead }
-  let(:final_populations) { dead_populations.where(days: base_days) }
+  let(:filtered_populations) do
+    instant.populations.where(state: state)
+  end
+
+  let(:final_populations) { filtered_populations.where(days: base_days) }
 
   describe '.process' do
     let(:all_states) { Simulation::Contagion::Population::STATES }
-    let(:state)      { Simulation::Contagion::Population::DEAD }
+    let(:state)      { all_states .sample }
     let(:base_days)  { Random.rand(10) }
 
     let(:other_states) do
@@ -48,6 +51,8 @@ describe MergeDeadPopulations do
     let!(:expected_sizes) do
       [expected_target_size, expected_other_size]
     end
+
+    let(:process) { described_class.process(state: state) }
 
     let!(:other_state_populations) do
       other_states.map do |state|
@@ -102,13 +107,13 @@ describe MergeDeadPopulations do
     end
 
     it 'merge populations for each group' do
-      expect { described_class.process }
+      expect { process }
         .to change { instant.populations.size }
         .by(2 - 2 * populations_count)
     end
 
     it 'merge populations size for each group' do
-      expect { described_class.process }
+      expect { process }
         .to change { final_populations.reload.pluck(:size) }
         .to(expected_sizes)
     end

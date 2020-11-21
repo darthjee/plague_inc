@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class MergeDeadPopulations
+class MergePopulations
   class InstantProcessor < Sinclair::Options
     include Processor
 
-    with_options :instant
+    with_options :instant, :state
 
     def process
       grouped_populations.sum(:size).each do |group_id, size|
@@ -23,7 +23,7 @@ class MergeDeadPopulations
     end
 
     def populations
-      @populations ||= instant.populations.dead
+      @populations ||= instant.populations.where(state: state)
     end
   end
 end
