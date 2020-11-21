@@ -171,4 +171,25 @@ describe Simulation::Contagion, type: :model do
         .to(Simulation::PROCESSED)
     end
   end
+
+  describe '.immunization_ends?' do
+    subject(:contagion) do
+      build(
+        :contagion, 
+        days_till_immunization_end: days_till_immunization_end
+      )
+    end
+
+    context 'when days_till_immunization_end is nil' do
+      let(:days_till_immunization_end) { nil }
+
+      it { expect(subject.immunization_ends?).to be_falsey }
+    end
+
+    context 'when days_till_immunization_end is nil' do
+      let(:days_till_immunization_end) { Random.rand(3) }
+
+      it { expect(subject.immunization_ends?).to be_truthy }
+    end
+  end
 end

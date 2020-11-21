@@ -56,6 +56,10 @@ class Simulation < ApplicationRecord
       Contagion::Processor.process(self, options)
     end
 
+    def immunization_ends?
+      days_till_immunization_end.present?
+    end
+
     private
 
     def validate_days_till_sympthoms
