@@ -175,7 +175,7 @@ describe Simulation::Contagion, type: :model do
   describe '.immunization_ends?' do
     subject(:contagion) do
       build(
-        :contagion, 
+        :contagion,
         days_till_immunization_end: days_till_immunization_end
       )
     end
@@ -183,13 +183,13 @@ describe Simulation::Contagion, type: :model do
     context 'when days_till_immunization_end is nil' do
       let(:days_till_immunization_end) { nil }
 
-      it { expect(subject.immunization_ends?).to be_falsey }
+      it { expect(contagion).not_to be_immunization_ends }
     end
 
-    context 'when days_till_immunization_end is nil' do
+    context 'when days_till_immunization_end is not nil' do
       let(:days_till_immunization_end) { Random.rand(3) }
 
-      it { expect(subject.immunization_ends?).to be_truthy }
+      it { expect(contagion).to be_immunization_ends }
     end
   end
 end
