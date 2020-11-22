@@ -7,63 +7,38 @@ class Simulation < ApplicationRecord
       #
       # Exposes a summary of an instant
       class SummaryDecorator < Azeroth::Decorator
+        class << self
+          def expose_counts(state)
+            send(:expose, state)
+            send(:expose, "#{state}_percentage")
+
+            Sinclair.new(self).tap do |builder|
+              builder.add_method(state, cached: true) do
+                scoped_size(state)
+              end
+
+              builder.add_method("#{state}_percentage") do
+                return 0 unless total.positive?
+
+                send(state).to_f / total
+              end
+            end.tap(&:build)
+          end
+        end
+
         expose :id
         expose :status
         expose :day
 
         expose :total
 
-        expose :dead
-        expose :dead_percentage
-        expose :infected
-        expose :infected_percentage
-        expose :immune
-        expose :immune_percentage
-        expose :healthy
-        expose :healthy_percentage
+        expose_counts :dead
+        expose_counts :infected
+        expose_counts :immune
+        expose_counts :healthy
 
         def total
           @total ||= scoped_size(:all)
-        end
-
-        def dead
-          @dead ||= scoped_size(:dead)
-        end
-
-        def infected
-          @infected ||= scoped_size(:infected)
-        end
-
-        def immune
-          @immune ||= scoped_size(:immune)
-        end
-
-        def healthy
-          @healthy ||= scoped_size(:healthy)
-        end
-
-        def dead_percentage
-          return 0 unless total.positive?
-
-          dead.to_f / total
-        end
-
-        def infected_percentage
-          return 0 unless total.positive?
-
-          infected.to_f / total
-        end
-
-        def immune_percentage
-          return 0 unless total.positive?
-
-          immune.to_f / total
-        end
-
-        def healthy_percentage
-          return 0 unless total.positive?
-
-          healthy.to_f / total
         end
 
         private
