@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SummaryDecorator
   class Builder < Sinclair
     def add_methods(state)
