@@ -65,11 +65,15 @@ describe Simulation::Contagion::SummaryDecorator do
             id: instant.id,
             status: instant.status,
             day: day,
+            total: 0,
             dead: 0,
             healthy: 0,
             immune: 0,
             infected: 0,
-            total: 0
+            dead_percentage: 0,
+            healthy_percentage: 0,
+            immune_percentage: 0,
+            infected_percentage: 0
           }]
         }.as_json
       end

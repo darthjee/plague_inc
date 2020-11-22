@@ -111,12 +111,19 @@
   fn._summaryUrl = function() {
     var path = this._summaryPath();
 
-    if (this.simulation && this.simulation.instants.length > 0) {
-      var lastInstanId = this.simulation.instants.slice(-1).pop().id;
-
-      return path + "?pagination[last_instant_id]="+lastInstanId;
+    var lastInstant = this._lastInstant();
+    if (lastInstant) {
+      return path + "?pagination[last_instant_id]="+lastInstant.id;
     } else {
       return path;
+    }
+  };
+
+  fn._lastInstant = function() {
+    if (this.simulation && this.simulation.instants.length > 0) {
+      return _.find(this.simulation.instants.reverse(), function(instant) {
+        return instant.status === "processed";
+      });
     }
   };
 

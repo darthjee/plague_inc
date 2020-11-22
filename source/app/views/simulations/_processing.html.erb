@@ -27,12 +27,21 @@
     <table>
       <thead>
         <tr>
+          <th></th>
+          <th colspan="5">Count</th>
+          <th colspan="4">Percentage</th>
+        </tr>
+        <tr>
           <th>Day</th>
           <th>Healthy</th>
           <th>Infected</th>
           <th>Immune</th>
           <th>Dead</th>
           <th>Total</th>
+          <th>Healthy</th>
+          <th>Infected</th>
+          <th>Immune</th>
+          <th>Dead</th>
         </tr>
       </thead>
       <tbody>
@@ -43,6 +52,10 @@
           <td>{{instant.immune}}</td>
           <td>{{instant.dead}}</td>
           <td>{{instant.total}}</td>
+          <td>{{instant.healthy_percentage | percentage}}</td>
+          <td>{{instant.infected_percentage | percentage}}</td>
+          <td>{{instant.immune_percentage | percentage}}</td>
+          <td>{{instant.dead_percentage | percentage}}</td>
         </tr>
       </tbody>
     </table>

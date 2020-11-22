@@ -7,33 +7,18 @@ class Simulation < ApplicationRecord
       #
       # Exposes a summary of an instant
       class SummaryDecorator < Azeroth::Decorator
+        include ::SummaryDecorator
+
         expose :id
         expose :status
         expose :day
+
         expose :total
-        expose :dead
-        expose :infected
-        expose :immune
-        expose :healthy
+
+        expose_counts :dead, :infected, :immune, :healthy
 
         def total
-          scoped_size(:all)
-        end
-
-        def dead
-          scoped_size(:dead)
-        end
-
-        def infected
-          scoped_size(:infected)
-        end
-
-        def immune
-          scoped_size(:immune)
-        end
-
-        def healthy
-          scoped_size(:healthy)
+          @total ||= scoped_size(:all)
         end
 
         private
