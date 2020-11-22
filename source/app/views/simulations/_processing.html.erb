@@ -52,10 +52,10 @@
           <td>{{instant.immune}}</td>
           <td>{{instant.dead}}</td>
           <td>{{instant.total}}</td>
-          <td>{{instant.healthy_percentage}}</td>
-          <td>{{instant.infected_percentage}}</td>
-          <td>{{instant.immune_percentage}}</td>
-          <td>{{instant.dead_percentage}}</td>
+          <td>{{instant.healthy_percentage | percentage}}</td>
+          <td>{{instant.infected_percentage | percentage}}</td>
+          <td>{{instant.immune_percentage | percentage}}</td>
+          <td>{{instant.dead_percentage | percentage}}</td>
         </tr>
       </tbody>
     </table>
