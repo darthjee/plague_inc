@@ -14,13 +14,12 @@ class Simulation < ApplicationRecord
         expose :total
 
         expose :dead
-        expose :infected
-        expose :immune
-        expose :healthy
-
         expose :dead_percentage
+        expose :infected
         expose :infected_percentage
+        expose :immune
         expose :immune_percentage
+        expose :healthy
         expose :healthy_percentage
 
         def total
