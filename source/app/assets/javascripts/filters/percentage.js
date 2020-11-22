@@ -6,9 +6,9 @@
 
     toString() {
       if (this.input) {
-        return '' + (this.input * 100).toFixed(2) + ' %'
+        return "" + (this.input * 100).toFixed(2) + " %";
       } else {
-        return '0 %';
+        return "0 %";
       }
     }
   }
@@ -20,7 +20,7 @@
   angular
     .module("plague_inc")
     .filter("percentage", function() {
-      return Percentage.parse
+      return Percentage.parse;
     });
 }(window.angular, window._));
 

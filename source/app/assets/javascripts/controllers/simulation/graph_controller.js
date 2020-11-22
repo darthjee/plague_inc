@@ -122,10 +122,10 @@
   fn._lastInstant = function() {
     if (this.simulation && this.simulation.instants.length > 0) {
       return _.find(this.simulation.instants.reverse(), function(instant) {
-        return instant.status == 'processed';
+        return instant.status === "processed";
       });
     }
-  }
+  };
 
   fn._summaryPath = function() {
     return this.location.$$path + "/contagion/summary";
