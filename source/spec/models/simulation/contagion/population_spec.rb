@@ -89,21 +89,42 @@ describe Simulation::Contagion::Population, type: :model do
   describe 'scopes' do
     let(:simulation) { create(:simulation) }
     let(:group)      { simulation.contagion.groups.first }
+    let(:days)       { Random.rand(10) }
 
     let!(:infected_population) do
-      create(:contagion_population, state: :infected, group: group)
+      create(
+        :contagion_population,
+        state: :infected,
+        group: group,
+        days: days
+      )
     end
 
     let!(:healthy_population) do
-      create(:contagion_population, state: :healthy, group: group)
+      create(
+        :contagion_population,
+        state: :healthy,
+        group: group,
+        days: days
+      )
     end
 
     let!(:immune_population) do
-      create(:contagion_population, state: :immune, group: group)
+      create(
+        :contagion_population,
+        state: :immune,
+        group: group,
+        days: days
+      )
     end
 
     let!(:dead_population) do
-      create(:contagion_population, state: :dead, group: group)
+      create(
+        :contagion_population,
+        state: :dead,
+        group: group,
+        days: days
+      )
     end
 
     describe '.infected' do
@@ -147,13 +168,42 @@ describe Simulation::Contagion::Population, type: :model do
         [
           immune_population,
           infected_population,
-          healthy_population
+          healthy_population,
         ]
       end
 
       it do
         expect(described_class.alive)
           .to match_array(expected)
+      end
+    end
+
+    describe '.recent' do
+      context 'when days is not 0' do
+        let(:days) { Random.rand(1..10) }
+
+        it do
+          expect(described_class.recent)
+            .to be_empty
+        end
+      end
+
+      context 'when days is 0' do
+        let(:days) { 0 }
+
+        let(:expected) do
+          [
+            immune_population,
+            infected_population,
+            healthy_population,
+            dead_population
+          ]
+        end
+
+        it do
+          expect(described_class.recent)
+            .to match_array(expected)
+        end
       end
     end
   end
