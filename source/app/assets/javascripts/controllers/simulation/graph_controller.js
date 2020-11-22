@@ -121,9 +121,15 @@
 
   fn._lastInstant = function() {
     if (this.simulation && this.simulation.instants.length > 0) {
-      return _.find(this.simulation.instants.reverse(), function(instant) {
-        return instant.status === "processed";
-      });
+      var instants = this.simulation.instants;
+
+      for (var index = instants.length - 1; index >= 0; index--) {
+        var instant = instants[index];
+
+        if (instant.status === "processed") {
+          return instant;
+        }
+      }
     }
   };
 
