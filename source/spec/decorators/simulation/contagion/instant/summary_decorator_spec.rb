@@ -105,7 +105,7 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
           dead_percentage: 0,
           healthy_percentage: 0,
           immune_percentage: 0,
-          infected_percentage: 0,
+          infected_percentage: 0
         }.stringify_keys
       end
 
@@ -132,7 +132,7 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
           dead_percentage: 0.4,
           healthy_percentage: 0.2,
           immune_percentage: 0.3,
-          infected_percentage: 0.1,
+          infected_percentage: 0.1
         }.stringify_keys
       end
 

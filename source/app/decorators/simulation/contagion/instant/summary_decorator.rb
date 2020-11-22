@@ -44,21 +44,25 @@ class Simulation < ApplicationRecord
 
         def dead_percentage
           return 0 unless total.positive?
+
           dead.to_f / total
         end
 
         def infected_percentage
           return 0 unless total.positive?
+
           infected.to_f / total
         end
 
         def immune_percentage
           return 0 unless total.positive?
+
           immune.to_f / total
         end
 
         def healthy_percentage
           return 0 unless total.positive?
+
           healthy.to_f / total
         end
 
