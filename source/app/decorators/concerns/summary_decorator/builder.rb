@@ -1,18 +1,11 @@
 module SummaryDecorator
   class Builder < Sinclair
-    def initialize(klass, state)
-      @state = state
-      super(klass)
-    end
-
     def add_methods(state)
       add_count(state)
       add_percentage(state)
     end
 
     private
-
-    attr_reader :state
 
     def add_count(state)
       add_method(state, cached: true) do

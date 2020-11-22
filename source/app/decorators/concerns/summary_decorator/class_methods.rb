@@ -1,11 +1,13 @@
 module SummaryDecorator
   module ClassMethods
-    def expose_counts(state)
-      send(:expose, state)
-      send(:expose, "#{state}_percentage")
+    def expose_counts(*states)
 
-      Builder.new(self, state).tap do |builder|
-        builder.add_methods(state)
+      Builder.new(self).tap do |builder|
+        states.each do |state|
+          send(:expose, state)
+          send(:expose, "#{state}_percentage")
+          builder.add_methods(state)
+        end
       end.tap(&:build)
     end
   end

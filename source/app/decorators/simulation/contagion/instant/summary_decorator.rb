@@ -15,10 +15,7 @@ class Simulation < ApplicationRecord
 
         expose :total
 
-        expose_counts :dead
-        expose_counts :infected
-        expose_counts :immune
-        expose_counts :healthy
+        expose_counts :dead, :infected, :immune, :healthy
 
         def total
           @total ||= scoped_size(:all)
