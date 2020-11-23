@@ -73,7 +73,11 @@ describe Simulation::Contagion::SummaryDecorator do
             dead_percentage: 0,
             healthy_percentage: 0,
             immune_percentage: 0,
-            infected_percentage: 0
+            infected_percentage: 0,
+            recent_dead: 0,
+            recent_healthy: 0,
+            recent_immune: 0,
+            recent_infected: 0
           }]
         }.as_json
       end
