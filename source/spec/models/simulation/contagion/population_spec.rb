@@ -168,7 +168,7 @@ describe Simulation::Contagion::Population, type: :model do
         [
           immune_population,
           infected_population,
-          healthy_population,
+          healthy_population
         ]
       end
 
