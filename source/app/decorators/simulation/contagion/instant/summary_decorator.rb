@@ -24,9 +24,21 @@ class Simulation < ApplicationRecord
         private
 
         def scoped_size(scope)
+          scoped(scope)
+            .sum(:size)
+        end
+
+        def recent_scoped_size(scope)
+          return 0 if object.day.zero?
+
+          scoped(scope)
+            .recent
+            .sum(:size)
+        end
+
+        def scoped(scope)
           populations
             .public_send(scope)
-            .sum(:size)
         end
       end
     end

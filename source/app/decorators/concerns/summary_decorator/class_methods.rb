@@ -7,6 +7,7 @@ module SummaryDecorator
         states.each do |state|
           send(:expose, state)
           send(:expose, "#{state}_percentage")
+          send(:expose, "recent_#{state}")
           builder.add_methods(state)
         end
       end.tap(&:build)
