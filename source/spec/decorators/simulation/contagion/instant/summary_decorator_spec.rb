@@ -84,7 +84,7 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
   let(:contagion)  { simulation.contagion }
   let(:group)      { contagion.groups.first }
   let(:behavior)   { contagion.behaviors.first }
-  let(:day)        { Random.rand(10) }
+  let(:day)        { Random.rand(1..10) }
 
   let(:instant) do
     create(:contagion_instant, contagion: contagion, day: day)
@@ -105,7 +105,11 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
           dead_percentage: 0,
           healthy_percentage: 0,
           immune_percentage: 0,
-          infected_percentage: 0
+          infected_percentage: 0,
+          recent_dead: 0,
+          recent_healthy: 0,
+          recent_immune: 0,
+          recent_infected: 0
         }.stringify_keys
       end
 
@@ -119,23 +123,6 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
         Simulation::Contagion::Population::STATES
       end
 
-      let(:expected) do
-        {
-          id: instant.id,
-          status: instant.status,
-          day: day,
-          total: 10,
-          dead: 4,
-          healthy: 2,
-          immune: 3,
-          infected: 1,
-          dead_percentage: 0.4,
-          healthy_percentage: 0.2,
-          immune_percentage: 0.3,
-          infected_percentage: 0.1
-        }.stringify_keys
-      end
-
       before do
         states.each.with_index do |state, size|
           create(
@@ -144,13 +131,98 @@ describe Simulation::Contagion::Instant::SummaryDecorator do
             instant: instant,
             group: group,
             behavior: behavior,
-            size: size + 1
+            size: size + 1,
+            days: days
           )
         end
       end
 
-      it 'returns the counters values' do
-        expect(decorator.as_json).to eq(expected)
+      context 'when there are recent populations' do
+        let(:days) { 0 }
+
+        let(:expected) do
+          {
+            id: instant.id,
+            status: instant.status,
+            day: day,
+            total: 10,
+            dead: 4,
+            healthy: 2,
+            immune: 3,
+            infected: 1,
+            dead_percentage: 0.4,
+            healthy_percentage: 0.2,
+            immune_percentage: 0.3,
+            infected_percentage: 0.1,
+            recent_dead: 4,
+            recent_healthy: 2,
+            recent_immune: 3,
+            recent_infected: 1
+          }.stringify_keys
+        end
+
+        it 'returns the counters values' do
+          expect(decorator.as_json).to eq(expected)
+        end
+      end
+
+      context 'when there are recent populations and its first day' do
+        let(:days) { 0 }
+        let(:day)  { 0 }
+
+        let(:expected) do
+          {
+            id: instant.id,
+            status: instant.status,
+            day: day,
+            total: 10,
+            dead: 4,
+            healthy: 2,
+            immune: 3,
+            infected: 1,
+            dead_percentage: 0.4,
+            healthy_percentage: 0.2,
+            immune_percentage: 0.3,
+            infected_percentage: 0.1,
+            recent_dead: 0,
+            recent_healthy: 0,
+            recent_immune: 0,
+            recent_infected: 0
+          }.stringify_keys
+        end
+
+        it 'returns the counters values' do
+          expect(decorator.as_json).to eq(expected)
+        end
+      end
+
+      context 'when there are no recent population' do
+        let(:days) { Random.rand(1..10) }
+
+        let(:expected) do
+          {
+            id: instant.id,
+            status: instant.status,
+            day: day,
+            total: 10,
+            dead: 4,
+            healthy: 2,
+            immune: 3,
+            infected: 1,
+            dead_percentage: 0.4,
+            healthy_percentage: 0.2,
+            immune_percentage: 0.3,
+            infected_percentage: 0.1,
+            recent_dead: 0,
+            recent_healthy: 0,
+            recent_immune: 0,
+            recent_infected: 0
+          }.stringify_keys
+        end
+
+        it 'returns the counters values' do
+          expect(decorator.as_json).to eq(expected)
+        end
       end
     end
   end
