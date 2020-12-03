@@ -1,5 +1,7 @@
 (function(_, angular) {
-  var module = angular.module("simulation/process", []);
+  var module = angular.module("simulation/process", [
+    "binded_http"
+  ]);
 
   class Processor {
     constructor(http, $location) {

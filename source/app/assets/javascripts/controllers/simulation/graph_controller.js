@@ -4,16 +4,13 @@
     "simulation/process"
   ]);
 
-  function Controller(http, timeout, $routeParams, $location, processor) {
-    this.http     = http.bind(this);
+  function Controller(timeout, $routeParams, processor) {
     this.timeout  = timeout;
     this.id       = $routeParams.id;
-    this.location = $location;
     this.processor = processor.bind(this);
 
     _.bindAll(
-      this, "_loadData",
-      "_success", "_error", "_enqueueProcess", "_process"
+      this, "_loadData", "_success", "_error", "_enqueueProcess", "_process"
     );
     this._loadData();
 
@@ -108,10 +105,8 @@
   };
 
   app.controller("Simulation.GraphController", [
-    "binded_http",
     "$timeout",
     "$routeParams",
-    "$location",
     "simulation_processor",
     Controller
   ]);
