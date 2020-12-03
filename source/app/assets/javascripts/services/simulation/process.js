@@ -62,7 +62,7 @@
     }
   }
 
-  ProcessorServiceFactory = function(http, $location) {
+  var ProcessorServiceFactory = function(http, $location) {
     return new Processor(http, $location);
   };
 
