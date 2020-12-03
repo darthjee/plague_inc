@@ -1,13 +1,15 @@
 (function(_, angular, Cyberhawk) {
   var app = angular.module("simulation/graph_controller", [
-    "cyberhawk/notifier"
+    "cyberhawk/notifier",
+    "simulation/process"
   ]);
 
-  function Controller(http, timeout, $routeParams, $location) {
+  function Controller(http, timeout, $routeParams, $location, processor) {
     this.http     = http.bind(this);
     this.timeout  = timeout;
     this.id       = $routeParams.id;
     this.location = $location;
+    this.processor = processor.bind(this);
 
     _.bindAll(
       this, "_summaryPath", "_summaryUrl", "_loadData",
@@ -93,7 +95,8 @@
 
   fn._process = function() {
     this.mode = "process";
-    var promisse = this.http.post(this._processingPath(), {});
+
+    var promisse = this.processor.process();
 
     this._handlePromisse(promisse);
   };
@@ -102,10 +105,6 @@
     promisse
       .success(this._success)
       .error(this._error);
-  };
-
-  fn._processingPath = function() {
-    return this.location.$$path + "/contagion/process";
   };
 
   fn._summaryUrl = function() {
@@ -142,6 +141,7 @@
     "$timeout",
     "$routeParams",
     "$location",
+    "simulation_processor",
     Controller
   ]);
 }(window._, window.angular, window.Cyberhawk));
