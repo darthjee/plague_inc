@@ -47,14 +47,16 @@
       var simulation = this.controller.simulation;
 
       if (simulation && simulation.instants.length > 0) {
-        var instants = simulation.instants;
+        return this._findLastInstant(simulation.instants);
+      }
+    }
 
-        for (var index = instants.length - 1; index >= 0; index--) {
-          var instant = instants[index];
+    _findLastInstant(instants) {
+      for (var index = instants.length - 1; index >= 0; index--) {
+        var instant = instants[index];
 
-          if (instant.status === "processed") {
-            return instant;
-          }
+        if (instant.status === "processed") {
+          return instant;
         }
       }
     }
