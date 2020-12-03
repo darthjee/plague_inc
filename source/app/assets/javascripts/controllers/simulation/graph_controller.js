@@ -12,7 +12,7 @@
     this.processor = processor.bind(this);
 
     _.bindAll(
-      this, "_summaryPath", "_summaryUrl", "_loadData",
+      this, "_loadData",
       "_success", "_error", "_enqueueProcess", "_process"
     );
     this._loadData();
@@ -84,7 +84,7 @@
   };
 
   fn._loadData = function() {
-    var promisse = this.http.get(this._summaryUrl());
+    var promisse = this.processor.read();
 
     this._handlePromisse(promisse);
   };
@@ -105,35 +105,6 @@
     promisse
       .success(this._success)
       .error(this._error);
-  };
-
-  fn._summaryUrl = function() {
-    var path = this._summaryPath();
-
-    var lastInstant = this._lastInstant();
-    if (lastInstant) {
-      return path + "?pagination[last_instant_id]="+lastInstant.id;
-    } else {
-      return path;
-    }
-  };
-
-  fn._lastInstant = function() {
-    if (this.simulation && this.simulation.instants.length > 0) {
-      var instants = this.simulation.instants;
-
-      for (var index = instants.length - 1; index >= 0; index--) {
-        var instant = instants[index];
-
-        if (instant.status === "processed") {
-          return instant;
-        }
-      }
-    }
-  };
-
-  fn._summaryPath = function() {
-    return this.location.$$path + "/contagion/summary";
   };
 
   app.controller("Simulation.GraphController", [

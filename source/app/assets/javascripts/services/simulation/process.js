@@ -18,9 +18,44 @@
       return this.http.post(this._processingPath(), {});
     }
 
+    read() {
+      return this.http.get(this._summaryUrl());
+    }
+
     _processingPath() {
       return this.location.$$path + "/contagion/process";
-    };
+    }
+
+    _summaryUrl() {
+      var path = this._summaryPath();
+
+      var lastInstant = this._lastInstant();
+      if (lastInstant) {
+        return path + "?pagination[last_instant_id]="+lastInstant.id;
+      } else {
+        return path;
+      }
+    }
+
+    _summaryPath() {
+      return this.location.$$path + "/contagion/summary";
+    }
+
+    _lastInstant() {
+      var simulation = this.controller.simulation;
+
+      if (simulation && simulation.instants.length > 0) {
+        var instants = simulation.instants;
+
+        for (var index = instants.length - 1; index >= 0; index--) {
+          var instant = instants[index];
+
+          if (instant.status === "processed") {
+            return instant;
+          }
+        }
+      }
+    }
   }
 
   ProcessorServiceFactory = function(http, $location) {
