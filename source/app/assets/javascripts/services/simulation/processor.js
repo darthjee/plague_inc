@@ -7,6 +7,8 @@
     constructor(http, $location) {
       this.http     = http;
       this.location = $location;
+
+      _.bindAll(this, "_success");
     }
 
     bind(controller) {
@@ -16,12 +18,28 @@
       return this;
     }
 
-    process = function() {
-      return this.http.post(this._processingPath(), {});
+    process() {
+      return this._addHandlers(
+        this.http.post(this._processingPath(), {})
+      );
     }
 
     read() {
-      return this.http.get(this._summaryUrl());
+      return this._addHandlers(
+        this.http.get(this._summaryUrl())
+      );
+    }
+
+    _addHandlers(promisse) {
+      return promisse.success(this._success);
+    }
+
+    _success(data) {
+      var newInstant = this._findLastInstant(data.instants);
+
+      if (newInstant) {
+        this.lastInstant = newInstant;
+      }
     }
 
     _processingPath() {
@@ -31,7 +49,7 @@
     _summaryUrl() {
       var path = this._summaryPath();
 
-      var lastInstant = this._lastInstant();
+      var lastInstant = this.lastInstant;
       if (lastInstant) {
         return path + "?pagination[last_instant_id]="+lastInstant.id;
       } else {
@@ -41,14 +59,6 @@
 
     _summaryPath() {
       return this.location.$$path + "/contagion/summary";
-    }
-
-    _lastInstant() {
-      var simulation = this.controller.simulation;
-
-      if (simulation && simulation.instants.length > 0) {
-        return this._findLastInstant(simulation.instants);
-      }
     }
 
     _findLastInstant(instants) {
