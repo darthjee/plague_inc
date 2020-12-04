@@ -63,21 +63,18 @@
 
   fn._setSimulation = function(data) {
     if (this.simulation) {
-      this._chopInstants(data.instants[0]);
+      var instants = this._processedInstants();
 
-      data.instants = this.simulation.instants
-        .concat(data.instants);
+      data.instants = instants.concat(data.instants);
     }
 
     this.simulation = data;
   };
 
-  fn._chopInstants = function(newInstant) {
-    if (newInstant && this.simulation.instants.last()) {
-      while(this.simulation.instants.last().day >= newInstant.day) {
-        this.simulation.instants.pop();
-      }
-    }
+  fn._processedInstants = function() {
+    return _.select(this.simulation.instants, function(instant) {
+      return instant.status == "processed";
+    });
   };
 
   fn._loadData = function() {
