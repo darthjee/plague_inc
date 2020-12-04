@@ -22,6 +22,7 @@
 
   fn._success = function(data) {
     this._setSimulation(data);
+    this._drawGraph();
     this._updateMode();
 
     if (this.mode === "read") {
@@ -100,6 +101,8 @@
       .success(this._success)
       .error(this._error);
   };
+
+  fn._drawGraph = function() {};
 
   app.controller("Simulation.GraphController", [
     "$timeout",
