@@ -1,17 +1,16 @@
 (function(_, angular, Cyberhawk) {
   var app = angular.module("simulation/graph_controller", [
-    "cyberhawk/notifier"
+    "cyberhawk/notifier",
+    "simulation/process"
   ]);
 
-  function Controller(http, timeout, $routeParams, $location) {
-    this.http     = http.bind(this);
+  function Controller(timeout, $routeParams, processor) {
     this.timeout  = timeout;
     this.id       = $routeParams.id;
-    this.location = $location;
+    this.processor = processor.bind(this);
 
     _.bindAll(
-      this, "_summaryPath", "_summaryUrl", "_loadData",
-      "_success", "_error", "_enqueueProcess", "_process"
+      this, "_loadData", "_success", "_error", "_enqueueProcess", "_process"
     );
     this._loadData();
 
@@ -64,25 +63,22 @@
 
   fn._setSimulation = function(data) {
     if (this.simulation) {
-      this._chopInstants(data.instants[0]);
+      var instants = this._processedInstants();
 
-      data.instants = this.simulation.instants
-        .concat(data.instants);
+      data.instants = instants.concat(data.instants);
     }
 
     this.simulation = data;
   };
 
-  fn._chopInstants = function(newInstant) {
-    if (newInstant && this.simulation.instants.last()) {
-      while(this.simulation.instants.last().day >= newInstant.day) {
-        this.simulation.instants.pop();
-      }
-    }
+  fn._processedInstants = function() {
+    return _.select(this.simulation.instants, function(instant) {
+      return instant.status === "processed";
+    });
   };
 
   fn._loadData = function() {
-    var promisse = this.http.get(this._summaryUrl());
+    var promisse = this.processor.read();
 
     this._handlePromisse(promisse);
   };
@@ -93,7 +89,8 @@
 
   fn._process = function() {
     this.mode = "process";
-    var promisse = this.http.post(this._processingPath(), {});
+
+    var promisse = this.processor.process();
 
     this._handlePromisse(promisse);
   };
@@ -104,44 +101,10 @@
       .error(this._error);
   };
 
-  fn._processingPath = function() {
-    return this.location.$$path + "/contagion/process";
-  };
-
-  fn._summaryUrl = function() {
-    var path = this._summaryPath();
-
-    var lastInstant = this._lastInstant();
-    if (lastInstant) {
-      return path + "?pagination[last_instant_id]="+lastInstant.id;
-    } else {
-      return path;
-    }
-  };
-
-  fn._lastInstant = function() {
-    if (this.simulation && this.simulation.instants.length > 0) {
-      var instants = this.simulation.instants;
-
-      for (var index = instants.length - 1; index >= 0; index--) {
-        var instant = instants[index];
-
-        if (instant.status === "processed") {
-          return instant;
-        }
-      }
-    }
-  };
-
-  fn._summaryPath = function() {
-    return this.location.$$path + "/contagion/summary";
-  };
-
   app.controller("Simulation.GraphController", [
-    "binded_http",
     "$timeout",
     "$routeParams",
-    "$location",
+    "simulation_processor",
     Controller
   ]);
 }(window._, window.angular, window.Cyberhawk));

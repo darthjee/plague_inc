@@ -47,7 +47,7 @@ class Simulation < ApplicationRecord
   end
 
   def processable?
-    processing? && updated_at < Settings.processing_timeout.ago ||
+    processing? && updated_at < Settings.processing_timeout.to_i.seconds.ago ||
       !processing?
   end
 
@@ -55,6 +55,6 @@ class Simulation < ApplicationRecord
     return 0 if processable?
     return Settings.processing_wait_time unless processing?
 
-    updated_at - Settings.processing_timeout.ago
+    updated_at - Settings.processing_timeout.to_i.seconds.ago
   end
 end
