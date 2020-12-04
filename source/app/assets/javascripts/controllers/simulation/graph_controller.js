@@ -73,7 +73,7 @@
 
   fn._processedInstants = function() {
     return _.select(this.simulation.instants, function(instant) {
-      return instant.status == "processed";
+      return instant.status === "processed";
     });
   };
 
