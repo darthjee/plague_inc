@@ -1,13 +1,15 @@
 (function(_, angular, Cyberhawk) {
   var app = angular.module("simulation/graph_controller", [
     "cyberhawk/notifier",
-    "simulation/process"
+    "simulation/process",
+    "simulation/graph"
   ]);
 
-  function Controller(timeout, $routeParams, processor) {
-    this.timeout  = timeout;
-    this.id       = $routeParams.id;
+  function Controller(timeout, $routeParams, processor, graph) {
+    this.timeout   = timeout;
+    this.id        = $routeParams.id;
     this.processor = processor.bind(this);
+    this.graph     = graph
 
     _.bindAll(
       this, "_loadData", "_success", "_error", "_enqueueProcess", "_process"
@@ -16,12 +18,14 @@
 
     this.mode = "read";
     this.process = false;
+    window.debug = graph;
   }
 
   var fn = Controller.prototype;
 
   fn._success = function(data) {
     this._setSimulation(data);
+    this._drawGraph();
     this._updateMode();
 
     if (this.mode === "read") {
@@ -101,10 +105,15 @@
       .error(this._error);
   };
 
+  fn._drawGraph = function() {
+    this.graph.draw(this.simulation.instants);
+  };
+
   app.controller("Simulation.GraphController", [
     "$timeout",
     "$routeParams",
     "simulation_processor",
+    "simulation_graph",
     Controller
   ]);
 }(window._, window.angular, window.Cyberhawk));

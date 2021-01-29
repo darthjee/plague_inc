@@ -72,7 +72,7 @@
     }
   }
 
-  var ProcessorServiceFactory = function(http, $location) {
+  function ProcessorServiceFactory(http, $location) {
     return new Processor(http, $location);
   };
 
@@ -81,4 +81,4 @@
     "$location",
     ProcessorServiceFactory
   ]);
-}(window._, window.angular, window.Cyberhawk));
+}(window._, window.angular));

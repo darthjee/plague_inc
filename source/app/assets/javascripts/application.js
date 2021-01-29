@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require js-cookie
+//= require d3
 //= require bootstrap
 //= require underscore
 //= require angular/angular

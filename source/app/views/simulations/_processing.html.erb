@@ -1,4 +1,5 @@
 <div ng-controller="Simulation.GraphController as graph">
+  <div id="simulation-graph"><svg /></div>
   <% magicka_display('graph') do |form| %>
     <% form.with_model(:simulation) do |simulation| %>
       <%= simulation.input(:status, label: 'Processing status') %>
