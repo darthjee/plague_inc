@@ -8,7 +8,7 @@ ruby '2.5.0'
 gem 'bundler', '~> 1.16.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.4.4'
+gem 'rails', '5.2.5'
 
 # Use pg as the database for Active Record
 gem 'mysql2'
@@ -35,17 +35,17 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'arstotzka',    '~> 1.6.1'
-gem 'azeroth',      '>= 0.7.1'
+gem 'azeroth',      '>= 0.7.2'
 gem 'bower-rails',  '~> 0.12.0'
 gem 'newrelic_rpm', '~> 6.8.0.360'
-gem 'nokogiri',     '1.10.10'
+gem 'nokogiri',     '1.11.3'
 gem 'rake',         '13.0.1'
 gem 'sinclair',     '~> 1.6.7'
 gem 'tarquinn',     '~> 0.2.0'
 gem 'turbolinks',   '5.2.1'
 
 gem 'darthjee-core_ext', '>= 2.0.0'
-gem 'magicka', '~> 0.5.4'
+gem 'magicka', '~> 0.5.5'
 
 group :development do
   # Access an interactive console on exception pages
