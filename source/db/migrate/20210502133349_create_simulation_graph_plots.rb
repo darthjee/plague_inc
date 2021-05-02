@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateSimulationGraphPlots < ActiveRecord::Migration[5.2]
   def change
     create_table :simulation_graph_plots do |t|
