@@ -3,6 +3,9 @@
 class Simulation < ApplicationRecord
   class Graph < ApplicationRecord
     class Plot < ApplicationRecord
+      FIELDS = %w[
+      ].freeze
+
       validates :label,
                 presence: true,
                 length: { maximum: 255 }
