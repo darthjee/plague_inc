@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 2021_05_02_133349) do
 
   create_table "simulation_graph_plots", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "label", null: false
-    t.string "attribute", null: false
+    t.string "field", null: false
     t.string "metric", null: false
   end
 

@@ -16,11 +16,11 @@ describe Simulation::Graph::Plot, type: :model do
     end
 
     it do
-      expect(simulation).to validate_presence_of(:attribute)
+      expect(simulation).to validate_presence_of(:field)
     end
 
     it do
-      expect(simulation).to validate_length_of(:attribute)
+      expect(simulation).to validate_length_of(:field)
         .is_at_most(255)
     end
 
