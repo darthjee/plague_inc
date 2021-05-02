@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_02_082540) do
+ActiveRecord::Schema.define(version: 2021_05_02_133349) do
 
   create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -77,6 +77,12 @@ ActiveRecord::Schema.define(version: 2021_05_02_082540) do
     t.integer "days_till_contagion", default: 0, null: false
     t.integer "days_till_immunization_end"
     t.index ["simulation_id"], name: "index_simulation_contagions_on_simulation_id", unique: true
+  end
+
+  create_table "simulation_graph_plots", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "label", null: false
+    t.string "attribute", null: false
+    t.string "metric", null: false
   end
 
   create_table "simulation_graphs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
