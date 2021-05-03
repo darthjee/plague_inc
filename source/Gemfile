@@ -74,6 +74,7 @@ group :development do
   gem 'yard',                  '0.9.26'
   gem 'yardstick',             '0.9.9'
   gem 'zonebie',               '0.6.1'
+  gem 'gnuplot',               '2.6.2'
 end
 
 group :development, :test do
