@@ -20,8 +20,8 @@ describe Simulation::Graph::Plot, type: :model do
     end
 
     it do
-      expect(simulation).to validate_length_of(:field)
-        .is_at_most(19)
+      expect(simulation).to validate_inclusion_of(:field)
+        .in_array(described_class::FIELDS)
     end
 
     it do
@@ -29,8 +29,8 @@ describe Simulation::Graph::Plot, type: :model do
     end
 
     it do
-      expect(simulation).to validate_length_of(:metric)
-        .is_at_most(255)
+      expect(simulation).to validate_inclusion_of(:metric)
+        .in_array(described_class::METRICS)
     end
   end
 end
