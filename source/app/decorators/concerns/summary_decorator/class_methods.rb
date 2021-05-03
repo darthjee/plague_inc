@@ -2,6 +2,10 @@
 
 module SummaryDecorator
   module ClassMethods
+    def counts_exposed
+      @counts_exposed ||= []
+    end
+
     def expose_counts(*states)
       Builder.new(self).tap do |builder|
         states.each do |state|

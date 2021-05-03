@@ -9,9 +9,14 @@ module SummaryDecorator
     end
 
     def expose_all(state)
-      klass.send(:expose, state)
-      klass.send(:expose, "#{state}_percentage")
-      klass.send(:expose, "recent_#{state}")
+      [
+        state,
+        "#{state}_percentage",
+        "recent_#{state}"
+      ].each do |method|
+        klass.send(:expose, method)
+        klass.counts_exposed << method
+      end
     end
 
     private
