@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'gnuplot'
+
 class Simulation < ApplicationRecord
   class Graph < ApplicationRecord
     class Plotter
@@ -12,7 +14,7 @@ class Simulation < ApplicationRecord
 
       def process
         FileUtils.mkdir_p(folder)
-        File.open(output, "w").close
+        plot_file
       end
 
       private
@@ -27,9 +29,16 @@ class Simulation < ApplicationRecord
         @folder ||= output.gsub(/\/[^\/]*$/, "")
       end
 
-      def plot
-        Gnuplot.open do |gp|
+      def plot_file
+        ::Gnuplot.open do |gp|
           Gnuplot::Plot.new(gp) do |plot|
+            plot.set :term, :png
+            plot.output output
+
+            plot.data << Gnuplot::DataSet.new('x') do |ds|
+              ds.with = "lines"
+              ds.linewidth = 4
+            end
           end
         end
       end
