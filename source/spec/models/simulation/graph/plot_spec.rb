@@ -7,6 +7,10 @@ describe Simulation::Graph::Plot, type: :model do
 
   describe 'validations' do
     it do
+      expect(simulation).to validate_presence_of(:graph)
+    end
+
+    it do
       expect(simulation).to validate_presence_of(:label)
     end
 

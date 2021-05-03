@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 2021_05_02_133349) do
     t.string "label", null: false
     t.string "field", limit: 19, null: false
     t.string "metric", limit: 7, null: false
+    t.bigint "graph_id", null: false
   end
 
   create_table "simulation_graphs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

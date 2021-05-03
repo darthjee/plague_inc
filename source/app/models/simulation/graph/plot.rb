@@ -8,6 +8,10 @@ class Simulation < ApplicationRecord
 
       METRICS = %w[value average max min].freeze
 
+      belongs_to :graph
+
+      validates_presence_of :graph
+
       validates :label,
                 presence: true,
                 length: { maximum: 255 }
