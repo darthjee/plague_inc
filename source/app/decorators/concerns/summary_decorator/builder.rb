@@ -8,6 +8,12 @@ module SummaryDecorator
       add_percentage(state)
     end
 
+    def expose_all(state)
+      klass.send(:expose, state)
+      klass.send(:expose, "#{state}_percentage")
+      klass.send(:expose, "recent_#{state}")
+    end
+
     private
 
     def add_recent_count(state)
