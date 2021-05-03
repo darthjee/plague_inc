@@ -8,6 +8,17 @@ module SummaryDecorator
       add_percentage(state)
     end
 
+    def expose_all(state)
+      [
+        state.to_s,
+        "#{state}_percentage",
+        "recent_#{state}"
+      ].each do |method|
+        klass.send(:expose, method)
+        klass.counts_exposed << method
+      end
+    end
+
     private
 
     def add_recent_count(state)
