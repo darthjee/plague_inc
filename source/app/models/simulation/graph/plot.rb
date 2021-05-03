@@ -3,8 +3,7 @@
 class Simulation < ApplicationRecord
   class Graph < ApplicationRecord
     class Plot < ApplicationRecord
-      FIELDS = %w[
-      ].freeze
+      FIELDS = Contagion::Instant::SummaryDecorator.counts_exposed
 
       validates :label,
                 presence: true,

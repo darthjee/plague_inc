@@ -10,7 +10,7 @@ module SummaryDecorator
 
     def expose_all(state)
       [
-        state,
+        state.to_s,
         "#{state}_percentage",
         "recent_#{state}"
       ].each do |method|
