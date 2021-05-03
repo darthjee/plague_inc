@@ -12,6 +12,7 @@ class Simulation < ApplicationRecord
 
       def process
         FileUtils.mkdir_p(folder)
+        File.open(output, "w").close
       end
 
       private

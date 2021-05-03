@@ -7,6 +7,8 @@ fdescribe Simulation::Graph::Plotter do
 
   describe '.process' do
     let(:folder) { Settings.tmp_plot_folder }
+    let(:output) { "#{folder}/#{output_file}" }
+    let(:output_file) { 'file.png' }
 
     context 'when folder does not exist' do
       before do
@@ -18,14 +20,24 @@ fdescribe Simulation::Graph::Plotter do
           .to change { Dir[folder].size }.by(1)
       end
 
+      it 'creates image' do
+        expect { described_class.process(graph, output: output) }
+          .to change { File.exists?(output) }
+          .from(false).to(true)
+      end
+
       context 'when passing a file path' do
         let(:folder) { '/tmp/folder' }
-        let(:output) { "#{folder}/#{output_file}" }
-        let(:output_file) { 'file.png' }
 
         it do
           expect { described_class.process(graph, output: output) }
             .to change { Dir[folder].size }.by(1)
+        end
+
+        it 'creates image' do
+          expect { described_class.process(graph, output: output) }
+            .to change { File.exists?(output) }
+            .from(false).to(true)
         end
       end
     end
