@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 2021_05_02_133349) do
     t.string "field", limit: 19, null: false
     t.string "metric", limit: 7, null: false
     t.bigint "graph_id", null: false
+    t.index ["graph_id"], name: "fk_rails_985da59b63"
   end
 
   create_table "simulation_graphs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -107,4 +108,5 @@ ActiveRecord::Schema.define(version: 2021_05_02_133349) do
   add_foreign_key "simulation_contagion_populations", "simulation_contagion_groups", column: "group_id"
   add_foreign_key "simulation_contagion_populations", "simulation_contagion_instants", column: "instant_id"
   add_foreign_key "simulation_contagions", "simulations"
+  add_foreign_key "simulation_graph_plots", "simulation_graphs", column: "graph_id"
 end
