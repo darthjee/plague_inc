@@ -10,7 +10,8 @@ class Simulation < ApplicationRecord
                 length: { maximum: 255 }
       validates :field,
                 presence: true,
-                length: { maximum: 255 }
+                length: { maximum: 19 }
+                #inclusion: { in: FILEDS },
       validates :metric,
                 presence: true,
                 length: { maximum: 255 }

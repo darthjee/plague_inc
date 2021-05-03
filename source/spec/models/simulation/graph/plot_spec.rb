@@ -21,7 +21,7 @@ describe Simulation::Graph::Plot, type: :model do
 
     it do
       expect(simulation).to validate_length_of(:field)
-        .is_at_most(255)
+        .is_at_most(19)
     end
 
     it do
