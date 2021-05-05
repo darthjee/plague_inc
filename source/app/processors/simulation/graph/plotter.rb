@@ -34,8 +34,8 @@ class Simulation < ApplicationRecord
           Gnuplot::Plot.new(gp) do |plot|
             setup_plot(plot)
 
-            plot.data << Gnuplot::DataSet.new('x') do |ds|
-              ds.with = "lines"
+            data_sets.each do |data_set|
+              plot.data << data_set
             end
           end
         end
@@ -45,6 +45,14 @@ class Simulation < ApplicationRecord
         plot.set :term, :png
         plot.output output
         plot.title graph.title if graph.title
+      end
+
+      def data_sets
+        [
+          Gnuplot::DataSet.new('x') do |ds|
+            ds.with = "lines"
+          end
+        ]
       end
     end
   end
