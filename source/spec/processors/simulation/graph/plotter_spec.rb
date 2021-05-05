@@ -4,6 +4,14 @@ require 'spec_helper'
 
 fdescribe Simulation::Graph::Plotter do
   let(:graph) { create(:simulation_graph) }
+  let(:simulations_size) { 3 }
+  let(:simulations) do
+    create_list(:simulation, simulations_size)
+  end
+
+  before do
+    simulations.each { create(:simulation_graph_plot, graph: graph) }
+  end
 
   describe '.process' do
     let(:folder) { Settings.tmp_plot_folder }
