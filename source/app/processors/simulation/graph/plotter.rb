@@ -44,6 +44,7 @@ class Simulation < ApplicationRecord
       def setup_plot(plot)
         plot.set :term, :png
         plot.output output
+        plot.title graph.title if graph.title
       end
     end
   end
