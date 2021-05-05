@@ -32,15 +32,18 @@ class Simulation < ApplicationRecord
       def plot_file
         ::Gnuplot.open do |gp|
           Gnuplot::Plot.new(gp) do |plot|
-            plot.set :term, :png
-            plot.output output
+            setup_plot(plot)
 
             plot.data << Gnuplot::DataSet.new('x') do |ds|
               ds.with = "lines"
-              ds.linewidth = 4
             end
           end
         end
+      end
+
+      def setup_plot(plot)
+        plot.set :term, :png
+        plot.output output
       end
     end
   end
