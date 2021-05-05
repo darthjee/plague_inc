@@ -5,7 +5,7 @@ FactoryBot.define do
     graph { build(:simulation_graph) }
 
     sequence(:label) { |n| "Plot ###{n}" }
-    field            { 'death' }
+    field            { 'dead' }
     metric           { 'value' }
   end
 end
