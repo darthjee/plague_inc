@@ -51,7 +51,7 @@ class Simulation < ApplicationRecord
         graph.plots.map do |plot|
           x = plot.simulation.contagion.instants.map(&:day)
           y = plot.simulation.contagion.instants.map do |instant|
-            instant.populations.dead.sum(:size)
+            instant.populations.public_send(plot.field).sum(:size)
           end
 
           Gnuplot::DataSet.new([x, y]) do |ds|
