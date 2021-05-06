@@ -4,12 +4,24 @@ require 'spec_helper'
 
 fdescribe Simulation::Graph::Plotter do
   let(:graph) { create(:simulation_graph) }
-  let(:simulations_size) { 3 }
+  let(:simulations_size) { 1 }
+  let(:days)             { 20 }
   let(:simulations) do
     create_list(:simulation, simulations_size)
   end
 
   before do
+    simulations.each do |simulation|
+      contagion = simulation.contagion
+      group = contagion.groups.first
+      days.times.each do |day|
+        instant = create(:contagion_instant, contagion: contagion, day: day)
+        day.times do |d|
+          create(:contagion_population, days: d, instant: instant, group: group, size: 10)
+        end
+      end
+    end
+
     simulations.each { create(:simulation_graph_plot, graph: graph) }
   end
 

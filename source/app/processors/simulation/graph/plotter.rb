@@ -48,11 +48,11 @@ class Simulation < ApplicationRecord
       end
 
       def data_sets
-        [
+        graph.plots.map do
           Gnuplot::DataSet.new('x') do |ds|
             ds.with = "lines"
           end
-        ]
+        end
       end
     end
   end
