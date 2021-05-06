@@ -17,12 +17,17 @@ fdescribe Simulation::Graph::Plotter do
       days.times.each do |day|
         instant = create(:contagion_instant, contagion: contagion, day: day)
         day.times do |d|
-          create(:contagion_population, days: d, instant: instant, group: group, size: 10, state: :dead)
+          create(
+            :contagion_population, days: d, instant: instant, group: group, state: :dead,
+            size: 10 * d
+          )
         end
       end
     end
 
-    simulations.each { create(:simulation_graph_plot, graph: graph) }
+    simulations.each do |simulation|
+      create(:simulation_graph_plot, graph: graph, simulation: simulation)
+    end
   end
 
   describe '.process' do
