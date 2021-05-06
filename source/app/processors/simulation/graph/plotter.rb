@@ -51,6 +51,7 @@ class Simulation < ApplicationRecord
         graph.plots.map do |plot|
           Gnuplot::DataSet.new(plot.plot_data) do |ds|
             ds.with = "lines"
+            ds.title = plot.label
           end
         end
       end
