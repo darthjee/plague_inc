@@ -11,6 +11,10 @@ describe Simulation::Graph::Plot, type: :model do
     end
 
     it do
+      expect(plot).to validate_presence_of(:simulation)
+    end
+
+    it do
       expect(plot).to validate_presence_of(:label)
     end
 

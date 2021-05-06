@@ -2,7 +2,8 @@
 
 FactoryBot.define do
   factory :simulation_graph_plot, class: 'Simulation::Graph::Plot' do
-    graph { build(:simulation_graph) }
+    graph      { build(:simulation_graph) }
+    simulation { build(:simulation) }
 
     sequence(:label) { |n| "Plot ###{n}" }
     field            { 'dead' }
