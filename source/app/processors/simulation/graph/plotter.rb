@@ -49,12 +49,7 @@ class Simulation < ApplicationRecord
 
       def data_sets
         graph.plots.map do |plot|
-          x = plot.simulation.contagion.instants.map(&:day)
-          y = plot.simulation.contagion.instants.map do |instant|
-            instant.populations.public_send(plot.field).sum(:size)
-          end
-
-          Gnuplot::DataSet.new([x, y]) do |ds|
+          Gnuplot::DataSet.new(plot.plot_data) do |ds|
             ds.with = "lines"
           end
         end
