@@ -9,6 +9,7 @@ fdescribe Simulation::Graph::Plotter do
   let(:simulations) do
     create_list(:simulation, simulations_size)
   end
+  let(:function) { Danica.build(:day) { day * 10 } }
 
   before do
     simulations.each do |simulation|
@@ -19,7 +20,7 @@ fdescribe Simulation::Graph::Plotter do
         day.times do |d|
           create(
             :contagion_population, days: d, instant: instant, group: group, state: :dead,
-            size: 10 * d
+            size: function.calculate(day).to_i
           )
         end
       end
