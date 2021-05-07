@@ -9,25 +9,20 @@ fdescribe Simulation::Graph::Plotter do
   let(:simulations) do
     create_list(:simulation, simulations_size)
   end
-  let(:function) { Danica.build(:day) { day * 10 } }
 
   before do
     simulations.each do |simulation|
       contagion = simulation.contagion
-      group = contagion.groups.first
-      days.times.each do |day|
-        instant = create(:contagion_instant, contagion: contagion, day: day)
-        day.times do |d|
-          create(
-            :contagion_population, days: d, instant: instant, group: group, state: :dead,
-            size: function.calculate(day, d).to_i
-          )
-        end
-      end
-    end
 
-    simulations.each do |simulation|
-      create(:simulation_graph_plot, graph: graph, simulation: simulation)
+      days.times.each do |day|
+        create(:contagion_instant, contagion: contagion, day: day)
+      end
+
+      create(
+        :simulation_graph_plot,
+        graph: graph,
+        simulation: simulation
+      )
     end
   end
 
