@@ -20,7 +20,7 @@ fdescribe Simulation::Graph::Plotter do
         day.times do |d|
           create(
             :contagion_population, days: d, instant: instant, group: group, state: :dead,
-            size: function.calculate(day).to_i
+            size: function.calculate(day, d).to_i
           )
         end
       end
