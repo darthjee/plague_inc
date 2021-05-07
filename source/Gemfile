@@ -43,6 +43,7 @@ gem 'rake',         '13.0.3'
 gem 'sinclair',     '~> 1.6.7'
 gem 'tarquinn',     '~> 0.2.0'
 gem 'turbolinks',   '5.2.1'
+gem 'danica',       '2.7.7'
 
 gem 'darthjee-core_ext', '>= 2.0.0'
 gem 'magicka', '~> 0.5.5'
