@@ -23,6 +23,7 @@ fdescribe Simulation::Graph::Plotter do
 
       create(
         :simulation_graph_plot,
+        label: "Dead",
         graph: graph,
         simulation: simulation,
         function: function
