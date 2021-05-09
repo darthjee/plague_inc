@@ -54,10 +54,20 @@ fdescribe Simulation::Graph::Plotter do
           .to change { Dir[folder].size }.by(1)
       end
 
-      it 'creates image' do
-        expect { described_class.process(graph, output: output) }
-          .to change { File.exists?(output) }
-          .from(false).to(true)
+      it 'creates an image' do
+        expect { described_class.process(graph) }
+          .to change { Dir["#{folder}/*.png"].size }.by(1)
+      end
+
+      it 'returns the output path' do
+        regexp = "^#{Settings.tmp_plot_folder}/plot-#{graph.id}-\\d{1,3}.png$"
+        expect(described_class.process(graph))
+          .to match(Regexp.new(regexp))
+      end
+
+      it 'creates the image' do
+        expect(File.exists?(described_class.process(graph)))
+          .to be_truthy
       end
 
       it 'create the right image' do
@@ -73,16 +83,70 @@ fdescribe Simulation::Graph::Plotter do
             .to change { Dir[folder].size }.by(1)
         end
 
-        it 'creates image' do
+        it 'creates an image' do
           expect { described_class.process(graph, output: output) }
-            .to change { File.exists?(output) }
-            .from(false).to(true)
+            .to change { Dir["#{folder}/*.png"].size }.by(1)
+        end
+
+        it 'creates the image' do
+          expect(File.exists?(described_class.process(graph, output: output)))
+            .to be_truthy
         end
 
         it 'create the right image' do
           expect(File.read(described_class.process(graph, output: output)))
             .to eq(fixture_file.read)
         end
+      end
+    end
+
+    context 'when folder does exist' do
+      before do
+        FileUtils.mkdir_p(folder)
+      end
+
+      it 'does not create folder' do
+        expect { described_class.process(graph) }
+          .not_to change { Dir[folder].size }
+      end
+
+      it 'creates an image' do
+        expect { described_class.process(graph) }
+          .to change { Dir["#{folder}/*.png"].size }.by(1)
+      end
+
+      it 'returns the output path' do
+        regexp = "^#{Settings.tmp_plot_folder}/plot-#{graph.id}-\\d{1,3}.png$"
+        expect(described_class.process(graph))
+          .to match(Regexp.new(regexp))
+      end
+
+      it 'creates the image' do
+        expect(File.exists?(described_class.process(graph)))
+          .to be_truthy
+      end
+
+      it 'create the right image' do
+        expect(File.read(described_class.process(graph)))
+          .to eq(fixture_file.read)
+      end
+    end
+
+    context 'when file already exist exist' do
+      before do
+        FileUtils.mkdir_p(folder)
+        File.open(output, "w") { |f| f.write("content") }
+      end
+
+      it 'does not create folder' do
+        expect { described_class.process(graph, output: output) }
+          .not_to change { Dir[folder].size }
+      end
+
+      it 'updates the image' do
+        expect { described_class.process(graph, output: output) }
+          .to change { File.read(output) }
+          .to(fixture_file.read)
       end
     end
   end
