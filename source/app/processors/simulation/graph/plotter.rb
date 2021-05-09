@@ -15,6 +15,7 @@ class Simulation < ApplicationRecord
       def process
         FileUtils.mkdir_p(folder)
         plot_file
+        output
       end
 
       private

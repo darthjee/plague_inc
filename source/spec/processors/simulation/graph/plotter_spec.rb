@@ -6,12 +6,20 @@ fdescribe Simulation::Graph::Plotter do
   let(:graph) { create(:simulation_graph) }
   let(:simulations_size) { 1 }
   let(:days)             { 20 }
+
   let(:simulations) do
     create_list(:simulation, simulations_size)
   end
+
   let(:function) do
     Danica.build(:day, :days) { (day - days) * 10 }
   end
+
+  let(:fixture_path) do
+    'spec/support/fixtures/dead_graph.png'
+  end
+
+  let(:fixture_file) { File.open(fixture_path, "r") }
 
   before do
     simulations.each do |simulation|
@@ -52,6 +60,11 @@ fdescribe Simulation::Graph::Plotter do
           .from(false).to(true)
       end
 
+      it 'create the right image' do
+        expect(File.read(described_class.process(graph)))
+          .to eq(fixture_file.read)
+      end
+
       context 'when passing a file path' do
         let(:folder) { '/tmp/folder' }
 
@@ -64,6 +77,11 @@ fdescribe Simulation::Graph::Plotter do
           expect { described_class.process(graph, output: output) }
             .to change { File.exists?(output) }
             .from(false).to(true)
+        end
+
+        it 'create the right image' do
+          expect(File.read(described_class.process(graph, output: output)))
+            .to eq(fixture_file.read)
         end
       end
     end
