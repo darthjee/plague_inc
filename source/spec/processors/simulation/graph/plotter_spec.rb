@@ -9,6 +9,9 @@ fdescribe Simulation::Graph::Plotter do
   let(:simulations) do
     create_list(:simulation, simulations_size)
   end
+  let(:function) do
+    Danica.build(:day, :days) { (day - days) * 10 }
+  end
 
   before do
     simulations.each do |simulation|
@@ -21,7 +24,8 @@ fdescribe Simulation::Graph::Plotter do
       create(
         :simulation_graph_plot,
         graph: graph,
-        simulation: simulation
+        simulation: simulation,
+        function: function
       )
     end
   end

@@ -10,12 +10,11 @@ FactoryBot.define do
     metric           { 'value' }
 
     transient do
-      function do
-        Danica.build(:day, :days) { (day - days) * 10 }
-      end
+      function { nil }
     end
 
     after(:create) do |plot, evaluator|
+      return unless evaluator.function
       simulation = plot.simulation
       contagion = simulation.contagion
       group = contagion.groups.first
