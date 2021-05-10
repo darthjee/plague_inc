@@ -15,6 +15,7 @@ FactoryBot.define do
 
     after(:create) do |plot, evaluator|
       return unless evaluator.function
+
       simulation = plot.simulation
       contagion = simulation.contagion
       group = contagion.groups.first

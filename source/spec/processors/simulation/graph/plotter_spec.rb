@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Graph::Plotter do
+describe Simulation::Graph::Plotter do
   let(:graph) { create(:simulation_graph) }
   let(:simulations_size) { 1 }
   let(:days)             { 10 }
@@ -19,7 +19,7 @@ fdescribe Simulation::Graph::Plotter do
     'spec/support/fixtures/dead_graph.png'
   end
 
-  let(:fixture_file) { File.open(fixture_path, "r") }
+  let(:fixture_file) { File.open(fixture_path, 'r') }
 
   before do
     simulations.each do |simulation|
@@ -31,7 +31,7 @@ fdescribe Simulation::Graph::Plotter do
 
       create(
         :simulation_graph_plot,
-        label: "Dead",
+        label: 'Dead',
         graph: graph,
         simulation: simulation,
         function: function
@@ -66,8 +66,8 @@ fdescribe Simulation::Graph::Plotter do
       end
 
       it 'creates the image' do
-        expect(File.exists?(described_class.process(graph)))
-          .to be_truthy
+        expect(File)
+          .to exist(described_class.process(graph))
       end
 
       it 'create the right image' do
@@ -89,8 +89,8 @@ fdescribe Simulation::Graph::Plotter do
         end
 
         it 'creates the image' do
-          expect(File.exists?(described_class.process(graph, output: output)))
-            .to be_truthy
+          expect(File)
+            .to exist(described_class.process(graph, output: output))
         end
 
         it 'create the right image' do
@@ -107,7 +107,7 @@ fdescribe Simulation::Graph::Plotter do
 
       it 'does not create folder' do
         expect { described_class.process(graph) }
-          .not_to change { Dir[folder].size }
+          .not_to(change { Dir[folder].size })
       end
 
       it 'creates an image' do
@@ -122,8 +122,8 @@ fdescribe Simulation::Graph::Plotter do
       end
 
       it 'creates the image' do
-        expect(File.exists?(described_class.process(graph)))
-          .to be_truthy
+        expect(File)
+          .to exist(described_class.process(graph))
       end
 
       it 'create the right image' do
@@ -135,12 +135,12 @@ fdescribe Simulation::Graph::Plotter do
     context 'when file already exist exist' do
       before do
         FileUtils.mkdir_p(folder)
-        File.open(output, "w") { |f| f.write("content") }
+        File.open(output, 'w') { |f| f.write('content') }
       end
 
       it 'does not create folder' do
         expect { described_class.process(graph, output: output) }
-          .not_to change { Dir[folder].size }
+          .not_to(change { Dir[folder].size })
       end
 
       it 'updates the image' do

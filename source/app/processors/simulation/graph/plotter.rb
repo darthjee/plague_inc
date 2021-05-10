@@ -23,11 +23,14 @@ class Simulation < ApplicationRecord
       attr_reader :graph
 
       def output
-        @output ||= "#{Settings.tmp_plot_folder}/plot-#{graph.id}-#{Random.rand(1000)}.png"
+        @output ||= [
+          Settings.tmp_plot_folder,
+          "plot-#{graph.id}-#{Random.rand(1000)}.png"
+        ].join('/')
       end
 
       def folder
-        @folder ||= output.gsub(/\/[^\/]*$/, "")
+        @folder ||= output.gsub(%r{/[^/]*$}, '')
       end
 
       def plot_file
@@ -51,7 +54,7 @@ class Simulation < ApplicationRecord
       def data_sets
         graph.plots.map do |plot|
           Gnuplot::DataSet.new(plot.plot_data) do |ds|
-            ds.with = "lines"
+            ds.with = 'lines'
             ds.title = plot.label
           end
         end
