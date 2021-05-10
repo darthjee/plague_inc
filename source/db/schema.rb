@@ -81,10 +81,10 @@ ActiveRecord::Schema.define(version: 2021_05_06_120805) do
 
   create_table "simulation_graph_plots", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "label", null: false
-    t.string "field", limit: 19, null: false
     t.string "metric", limit: 7, null: false
     t.bigint "graph_id", null: false
     t.bigint "simulation_id", null: false
+    t.string "field", limit: 8, null: false
     t.string "field_modifier"
     t.index ["graph_id"], name: "fk_rails_985da59b63"
     t.index ["simulation_id"], name: "fk_rails_37bab834ce"
