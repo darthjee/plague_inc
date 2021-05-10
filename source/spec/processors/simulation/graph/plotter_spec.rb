@@ -5,7 +5,7 @@ require 'spec_helper'
 fdescribe Simulation::Graph::Plotter do
   let(:graph) { create(:simulation_graph) }
   let(:simulations_size) { 1 }
-  let(:days)             { 20 }
+  let(:days)             { 10 }
 
   let(:simulations) do
     create_list(:simulation, simulations_size)
