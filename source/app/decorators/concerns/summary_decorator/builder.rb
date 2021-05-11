@@ -9,7 +9,7 @@ module SummaryDecorator
     end
 
     def expose_all(state)
-      klass.counts_exposed << state
+      klass.counts_exposed << state.to_s
 
       [
         state.to_s,
