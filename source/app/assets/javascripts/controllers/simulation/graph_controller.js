@@ -63,7 +63,11 @@
 
   fn._setSimulation = function(data) {
     if (this.simulation) {
-      var instants = this._processedInstants();
+      var instants = this.simulation.instants;
+
+      if (data.instants.length > 0) {
+        instants = this._removeInstants(data.instants[0].id);
+      }
 
       data.instants = instants.concat(data.instants);
     }
@@ -71,9 +75,9 @@
     this.simulation = data;
   };
 
-  fn._processedInstants = function() {
+  fn._removeInstants = function(id) {
     return _.select(this.simulation.instants, function(instant) {
-      return instant.status === "processed";
+      return instant.id < id;
     });
   };
 
