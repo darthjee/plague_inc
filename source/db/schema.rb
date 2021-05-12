@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_06_120805) do
+ActiveRecord::Schema.define(version: 2021_05_02_133349) do
 
   create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -81,18 +81,14 @@ ActiveRecord::Schema.define(version: 2021_05_06_120805) do
 
   create_table "simulation_graph_plots", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "label", null: false
+    t.string "field", limit: 19, null: false
     t.string "metric", limit: 7, null: false
     t.bigint "graph_id", null: false
-    t.bigint "simulation_id", null: false
-    t.string "field", limit: 8, null: false
-    t.string "field_modifier"
     t.index ["graph_id"], name: "fk_rails_985da59b63"
-    t.index ["simulation_id"], name: "fk_rails_37bab834ce"
   end
 
   create_table "simulation_graphs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
-    t.string "title"
   end
 
   create_table "simulations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -113,5 +109,4 @@ ActiveRecord::Schema.define(version: 2021_05_06_120805) do
   add_foreign_key "simulation_contagion_populations", "simulation_contagion_instants", column: "instant_id"
   add_foreign_key "simulation_contagions", "simulations"
   add_foreign_key "simulation_graph_plots", "simulation_graphs", column: "graph_id"
-  add_foreign_key "simulation_graph_plots", "simulations"
 end

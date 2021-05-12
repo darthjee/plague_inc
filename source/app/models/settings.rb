@@ -18,8 +18,6 @@ class Settings
     processing_timeout: 2.minutes,
     processing_wait_time: 1.second,
 
-    tmp_plot_folder: '/tmp/plots',
-
     log_level: :info
   )
 end
