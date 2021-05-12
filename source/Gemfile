@@ -37,6 +37,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'arstotzka',    '~> 1.6.2'
 gem 'azeroth',      '>= 0.7.3'
 gem 'bower-rails',  '~> 0.12.0'
+gem 'danica',       '2.7.7'
 gem 'newrelic_rpm', '~> 6.9.0.363'
 gem 'nokogiri',     '1.11.3'
 gem 'rake',         '13.0.3'
@@ -56,6 +57,7 @@ group :development do
   gem 'web-console',           '3.7.0'
 
   gem 'factory_bot',           '5.1.1'
+  gem 'gnuplot',               '2.6.2'
   gem 'pry',                   '0.12.2'
   gem 'pry-nav',               '0.3.0'
   gem 'pry-rails',             '0.3.9'
