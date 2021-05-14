@@ -38,8 +38,6 @@ class Simulation < ApplicationRecord
         Contagion::Interactor.process(
           instant, new_instant, options, cache: cache
         )
-
-        instant.status = Instant::PROCESSED
       end
 
       def build_healthy
