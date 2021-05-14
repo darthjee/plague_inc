@@ -13,7 +13,7 @@ class Settings
 
     contagion_instants_pagination: 20,
 
-    interaction_block_size: 1000,
+    interaction_block_size: 1000000000,
     processing_iteractions: 1,
     processing_timeout: 2.minutes,
     processing_wait_time: 1.second,
