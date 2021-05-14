@@ -16,18 +16,20 @@ class Simulation < ApplicationRecord
       include Contagion::Cacheable
 
       def process
-        interact
-        infect
+        while interactions > 0
+          interact
+          infect
 
-        ActiveRecord::Base.transaction do
-          save
+          ActiveRecord::Base.transaction do
+            save
+          end
         end
       end
 
       private
 
       attr_reader :population, :instant,
-                  :new_instant, :options
+        :new_instant, :options
 
       delegate :populations, to: :instant
       delegate :interaction_map, to: :interaction_store
