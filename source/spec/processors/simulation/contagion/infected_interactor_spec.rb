@@ -130,8 +130,8 @@ describe Simulation::Contagion::InfectedInteractor, :contagion_cache do
         )
       end
 
-      context "when there are no failures" do
-       it 'updates simulation' do
+      context 'when there are no failures' do
+        it 'updates simulation' do
           expect { process }
             .to(change { simulation.reload.updated_at })
         end
@@ -148,7 +148,7 @@ describe Simulation::Contagion::InfectedInteractor, :contagion_cache do
         end
       end
 
-      context "when there is a failure in the second run" do
+      context 'when there is a failure in the second run' do
         let(:mocked_store) { mocked_store_class.new(populations) }
 
         let(:mocked_store_class) do
@@ -158,11 +158,11 @@ describe Simulation::Contagion::InfectedInteractor, :contagion_cache do
         before do
           allow(Simulation::Contagion::InstantInteractionStore)
             .to receive(:new).with(populations)
-            .and_return(mocked_store)
+                             .and_return(mocked_store)
           allow(mocked_store).to receive(:interact).twice.and_call_original
         end
 
-       it 'updates simulation' do
+        it 'updates simulation' do
           expect { process }
             .to raise_error(RSpec::Mocks::MockExpectationError)
             .and(change { simulation.reload.updated_at })

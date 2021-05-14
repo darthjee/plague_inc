@@ -16,15 +16,13 @@ class Simulation < ApplicationRecord
       include Contagion::Cacheable
 
       def process
-        while interactions.positive?
-          consume_interactions
-        end
+        consume_interactions while interactions.positive?
       end
 
       private
 
       attr_reader :population, :instant,
-        :new_instant, :options
+                  :new_instant, :options
 
       delegate :populations, to: :instant
       delegate :interaction_map, to: :interaction_store
