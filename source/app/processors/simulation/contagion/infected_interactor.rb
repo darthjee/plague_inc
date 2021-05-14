@@ -16,7 +16,12 @@ class Simulation < ApplicationRecord
       include Contagion::Cacheable
 
       def process
-        consume_interactions while interactions.positive?
+        interact
+        infect
+
+        ActiveRecord::Base.transaction do
+          save
+        end
       end
 
       private
@@ -36,15 +41,6 @@ class Simulation < ApplicationRecord
         @new_instant = new_instant
         @options     = options
         @cache       = cache
-      end
-
-      def consume_interactions
-        interact
-        infect
-
-        ActiveRecord::Base.transaction do
-          save
-        end
       end
 
       def interact
