@@ -35,6 +35,10 @@ class Simulation < ApplicationRecord
       validates :status,
                 presence: true,
                 inclusion: { in: STATUSES }
+
+      def processed?
+        status == PROCESSED
+      end
     end
   end
 end
