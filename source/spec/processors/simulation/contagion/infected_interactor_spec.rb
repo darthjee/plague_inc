@@ -138,7 +138,7 @@ describe Simulation::Contagion::InfectedInteractor, :contagion_cache do
 
         it 'does not update simulation status' do
           expect { process }
-            .to (not_change { simulation.reload.status })
+            .not_to(change { simulation.reload.status })
         end
 
         it 'consumes some infected interactions' do
@@ -171,7 +171,7 @@ describe Simulation::Contagion::InfectedInteractor, :contagion_cache do
         it 'does not update simulation status' do
           expect { process }
             .to raise_error(RSpec::Mocks::MockExpectationError)
-            .and (not_change { simulation.reload.status })
+            .and(not_change { simulation.reload.status })
         end
 
         it 'consumes some infected interactions' do
