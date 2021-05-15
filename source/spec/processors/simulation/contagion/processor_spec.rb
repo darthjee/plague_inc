@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::Processor, :contagion_cache do
+describe Simulation::Contagion::Processor, :contagion_cache do
   let(:simulation) do
     build(:simulation, contagion: nil).tap do |sim|
       sim.save(validate: false)
@@ -560,7 +560,7 @@ fdescribe Simulation::Contagion::Processor, :contagion_cache do
         )
       end
 
-      let!(:infected_population) do
+      before do
         create(
           :contagion_population, :infected,
           instant: ready_instant,
@@ -570,9 +570,7 @@ fdescribe Simulation::Contagion::Processor, :contagion_cache do
           days: infected_days,
           interactions: infected_interactions
         )
-      end
 
-      before do
         allow(options).to receive(:interaction_block_size).and_return(1)
       end
 

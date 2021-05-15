@@ -461,18 +461,6 @@ describe Simulation::Contagion::InstantProcessor, :contagion_cache do
         ready_instant.reload.populations.infected
       end
 
-      let!(:healthy_population) do
-        create(
-          :contagion_population, :healthy,
-          instant: ready_instant,
-          group: group,
-          behavior: behavior,
-          size: healthy_size,
-          days: 0,
-          interactions: healthy_interactions
-        )
-      end
-
       let(:immune_populations) do
         ready_instant.reload.populations.immune
       end
@@ -486,7 +474,23 @@ describe Simulation::Contagion::InstantProcessor, :contagion_cache do
         )
       end
 
-      let!(:infected_population) do
+      let(:process) do
+        described_class.process(
+          ready_instant, options, cache: cache
+        )
+      end
+
+      before do
+        create(
+          :contagion_population, :healthy,
+          instant: ready_instant,
+          group: group,
+          behavior: behavior,
+          size: healthy_size,
+          days: 0,
+          interactions: healthy_interactions
+        )
+
         create(
           :contagion_population, :infected,
           instant: ready_instant,
@@ -496,15 +500,7 @@ describe Simulation::Contagion::InstantProcessor, :contagion_cache do
           days: infected_days,
           interactions: infected_interactions
         )
-      end
 
-      let(:process) do
-        described_class.process(
-          ready_instant, options, cache: cache
-        )
-      end
-
-      before do
         allow(options)
           .to receive(:interaction_block_size)
           .and_return(1)
