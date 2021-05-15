@@ -41,6 +41,8 @@ class Simulation < ApplicationRecord
       end
 
       def build_healthy
+        return unless instant.processed?
+
         healthy_populations.each do |pop|
           Population::Builder.build(
             instant: new_instant,
