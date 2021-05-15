@@ -143,7 +143,7 @@ describe Simulation::Contagion::Interactor, :contagion_cache do
         .not_to(change { new_instant.reload.status })
     end
 
-    it "consumes interactions of infected population" do
+    it 'consumes interactions of infected population' do
       expect { process }
         .to change { infected_population.reload.interactions }
         .to(0)
@@ -211,7 +211,7 @@ describe Simulation::Contagion::Interactor, :contagion_cache do
           .to(change { healthy_population.reload.interactions })
       end
 
-      it "consumes interactions of infected population" do
+      it 'consumes interactions of infected population' do
         expect { process }
           .to change { infected_population.reload.interactions }
           .to(0)
@@ -256,7 +256,7 @@ describe Simulation::Contagion::Interactor, :contagion_cache do
           .not_to(change { new_instant.populations.reload.sum(:size) })
       end
 
-      it "consumes interactions of infected population" do
+      it 'consumes interactions of infected population' do
         expect { process }
           .to change { infected_population.reload.interactions }
           .to(0)
@@ -324,7 +324,7 @@ describe Simulation::Contagion::Interactor, :contagion_cache do
           .by(2 * healthy_size)
       end
 
-      it "consumes interactions of infected population" do
+      it 'consumes interactions of infected population' do
         expect { process }
           .to change { infected_population.reload.interactions }
           .to(0)
@@ -414,14 +414,14 @@ describe Simulation::Contagion::Interactor, :contagion_cache do
           .not_to(change { new_instant.populations.reload.sum(:interactions) })
       end
 
-      it "consumes interactions of infected population" do
+      it 'consumes interactions of infected population' do
         expect { process }
           .to change { infected_population.reload.interactions }
           .to(0)
       end
     end
 
-    context "when there are more interactions then block size" do
+    context 'when there are more interactions then block size' do
       let!(:healthy_population) do
         create(
           :contagion_population, :healthy,
@@ -459,12 +459,12 @@ describe Simulation::Contagion::Interactor, :contagion_cache do
           .not_to(change { new_instant.reload.status })
       end
 
-      it "consumes some interactions" do
+      it 'consumes some interactions' do
         expect { process }
           .to change { infected_population.reload.interactions }
       end
 
-      it "consumes interactions from both interactors" do
+      it 'consumes interactions from both interactors' do
         expect { process }
           .to change { current_instant.reload.populations.sum(:interactions) }
           .by(-2)

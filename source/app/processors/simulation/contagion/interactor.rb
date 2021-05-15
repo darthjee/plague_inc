@@ -61,7 +61,7 @@ class Simulation < ApplicationRecord
                .select(&:infected?)
                .select(&:interactions?)
       end
-      
+
       def mark_instant_as_processed
         return if infected_populations.any?
 
