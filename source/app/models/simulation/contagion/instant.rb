@@ -40,6 +40,10 @@ class Simulation < ApplicationRecord
       def processed?
         status == PROCESSED
       end
+
+      def ready?
+        status == READY
+      end
     end
   end
 end

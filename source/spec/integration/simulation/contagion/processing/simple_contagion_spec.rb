@@ -35,6 +35,8 @@ fdescribe "Simple Contagion" do
   end
 
   let(:simulation_id) { parsed_body['id'] }
+  let(:simulation)    { Simulation.find(simulation_id) }
+  let(:contagion)     { simulation.contagion }
 
   before do
     post "/simulations.json", params: params
@@ -42,5 +44,61 @@ fdescribe "Simple Contagion" do
 
   it 'creates simulation' do
     expect(simulation_id).not_to be_nil
+  end
+
+  context 'when processing' do
+    let(:first_instant) do
+      contagion.instants.first
+    end
+
+    let(:new_instant) do
+      contagion.instants.last
+    end
+
+    let(:new_populations) do
+      new_instant.populations
+    end
+
+    before do
+      processing_times.times do
+        post "/simulations/#{simulation_id}/contagion/process.json", params: {}
+      end
+    end
+
+    context 'when processing only once' do
+      let(:processing_times) { 1 }
+
+      it "creates first instant" do
+        expect(first_instant).to be_ready
+      end
+    end
+
+    context 'when processing twice' do
+      let(:processing_times) { 2 }
+
+      it "creates second instant" do
+        expect(new_instant).to be_ready
+      end
+
+      it 'infects more healthy people' do
+        expect(new_populations.infected.sum(:size)).to be > 1
+      end
+
+      it 'marks first instant as processed' do
+        expect(first_instant).to be_processed
+      end
+    end
+
+    context 'when processing three' do
+      let(:processing_times) { 3 }
+
+      it "creates a third instant" do
+        expect(contagion.instants.count).to eq(3)
+      end
+
+      it 'infects more healthy people' do
+        expect(new_populations.infected.sum(:size)).to be > 2
+      end
+    end
   end
 end
