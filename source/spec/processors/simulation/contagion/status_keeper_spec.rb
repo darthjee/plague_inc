@@ -111,6 +111,47 @@ describe Simulation::Contagion::StatusKeeper do
       end
     end
 
+    context 'when instant has not been fully processed' do
+      let(:new_instant) do
+        create(
+          :contagion_instant, :ready,
+          contagion: contagion,
+          day: 1,
+          populations: new_populations
+        )
+      end
+
+      let(:new_states) do
+        %i[healthy dead immune]
+      end
+
+      let(:new_populations) do
+        new_states.map do |state|
+          build(
+            :contagion_population, state,
+            group: group,
+            behavior: behavior,
+            instant: nil
+          )
+        end
+      end
+
+      let(:block) do
+        proc do
+          current_instant.update(
+            status: Simulation::Contagion::Instant::PROCESSING
+          )
+          new_instant
+        end
+      end
+
+      it do
+        expect { described_class.process(simulation, &block) }
+          .to change { simulation.reload.status }
+          .to(Simulation::PROCESSED)
+      end
+    end
+
     context 'when block call raises an exception' do
       before do
         allow(test_double).to receive(:process)
