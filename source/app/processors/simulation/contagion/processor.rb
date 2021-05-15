@@ -19,7 +19,7 @@ class Simulation < ApplicationRecord
 
       def process
         StatusKeeper.process(simulation) do
-          PostCreator.process(instant, cache: cache)
+          finalize_creation
         end
 
         instant
@@ -38,6 +38,23 @@ class Simulation < ApplicationRecord
 
       def instant
         @instant ||= find_or_build_instant
+      end
+      
+      def finalize_creation
+        return if processing_previous?
+        PostCreator.process(instant, cache: cache)
+      end
+
+      def processing_previous?
+        return false
+        return unless contagion.instants.processing.any?
+        contagion
+          .instants
+          .processing
+          .first
+          .populations
+          .infected.where("interactions > 0").any?
+
       end
 
       def find_or_build_instant
