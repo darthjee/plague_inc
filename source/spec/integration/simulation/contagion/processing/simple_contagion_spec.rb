@@ -71,6 +71,10 @@ fdescribe "Simple Contagion" do
       it "creates first instant" do
         expect(first_instant).to be_ready
       end
+
+      it "marks simulation as processed" do
+        expect(simulation.reload).to be_processed
+      end
     end
 
     context 'when processing twice' do
@@ -87,6 +91,10 @@ fdescribe "Simple Contagion" do
       it 'marks first instant as processed' do
         expect(first_instant).to be_processed
       end
+
+      it "marks simulation as processed" do
+        expect(simulation.reload).to be_processed
+      end
     end
 
     context 'when processing three' do
@@ -98,6 +106,40 @@ fdescribe "Simple Contagion" do
 
       it 'infects more healthy people' do
         expect(new_populations.infected.sum(:size)).to be > 2
+      end
+
+      it "marks simulation as processed" do
+        expect(simulation.reload).to be_processed
+      end
+    end
+
+    context 'when processing three with a reduced block size' do
+      let(:processing_times) { 3 }
+      let(:current_instant)  { contagion.instants.where(day: 2) }
+
+      before do
+        allow(Settings).to receive(:interaction_block_size).and_return(1)
+        post "/simulations/#{simulation_id}/contagion/process.json", params: {}
+      end
+
+      it "creates a forth instant" do
+        expect(contagion.instants.count).to eq(4)
+      end
+
+      it "marks forth instant as created" do
+        expect(new_instant).to be_created
+      end
+
+      it "marks current instant as processing" do
+        expect(current_instant.reload).to be_processing
+      end
+
+      it 'infects more healthy people' do
+        expect(new_populations.infected.sum(:size)).to be > 0
+      end
+
+      it "marks simulation as processed" do
+        expect(simulation.reload).to be_processed
       end
     end
   end
