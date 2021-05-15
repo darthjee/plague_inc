@@ -52,7 +52,7 @@ fdescribe "Simple Contagion" do
     end
 
     let(:new_instant) do
-      contagion.instants.last
+      contagion.reload.instants.last
     end
 
     let(:new_populations) do
@@ -115,11 +115,17 @@ fdescribe "Simple Contagion" do
 
     context 'when processing three with a reduced block size' do
       let(:processing_times) { 3 }
-      let(:current_instant)  { contagion.instants.where(day: 2) }
+      let(:current_instant)  { contagion.reload.instants.find_by(day: 2) }
+      let(:processing_params) do
+        {
+          options: {
+            interaction_block_size: 1
+          }
+        }
+      end
 
       before do
-        allow(Settings).to receive(:interaction_block_size).and_return(1)
-        post "/simulations/#{simulation_id}/contagion/process.json", params: {}
+        post "/simulations/#{simulation_id}/contagion/process.json", params: processing_params
       end
 
       it "creates a forth instant" do
