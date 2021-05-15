@@ -28,6 +28,10 @@ Layout/LineLength:
     - 'config/environments/*.rb'
     - 'config/initializers/content_security_policy.rb'
 
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/integration/**/*.rb'
+
 Style/WordArray:
   Exclude:
     - 'db/schema.rb'

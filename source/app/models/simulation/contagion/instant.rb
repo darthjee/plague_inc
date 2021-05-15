@@ -14,8 +14,9 @@ class Simulation < ApplicationRecord
         CREATED, READY, PROCESSING, PROCESSED, FINISHED
       ].freeze
 
-      scope :created, -> { where(status: CREATED) }
-      scope :ready,   -> { where(status: READY) }
+      scope :created,    -> { where(status: CREATED) }
+      scope :ready,      -> { where(status: READY) }
+      scope :processing, -> { where(status: PROCESSING) }
 
       belongs_to :contagion
       belongs_to :current_population,
@@ -35,6 +36,22 @@ class Simulation < ApplicationRecord
       validates :status,
                 presence: true,
                 inclusion: { in: STATUSES }
+
+      def processed?
+        status == PROCESSED
+      end
+
+      def processing?
+        status == PROCESSING
+      end
+
+      def created?
+        status == CREATED
+      end
+
+      def ready?
+        status == READY
+      end
     end
   end
 end

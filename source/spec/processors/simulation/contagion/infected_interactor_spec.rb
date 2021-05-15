@@ -130,56 +130,20 @@ describe Simulation::Contagion::InfectedInteractor, :contagion_cache do
         )
       end
 
-      context 'when there are no failures' do
-        it 'updates simulation' do
-          expect { process }
-            .to(change { simulation.reload.updated_at })
-        end
-
-        it 'does not update simulation status' do
-          expect { process }
-            .not_to(change { simulation.reload.status })
-        end
-
-        it 'consumes some infected interactions' do
-          expect { process }
-            .to change { infected_population.reload.interactions }
-            .to(0)
-        end
+      it 'updates simulation' do
+        expect { process }
+          .to(change { simulation.reload.updated_at })
       end
 
-      context 'when there is a failure in the second run' do
-        let(:mocked_store) { mocked_store_class.new(populations) }
+      it 'does not update simulation status' do
+        expect { process }
+          .not_to(change { simulation.reload.status })
+      end
 
-        let(:mocked_store_class) do
-          Class.new(Simulation::Contagion::InstantInteractionStore)
-        end
-
-        before do
-          allow(Simulation::Contagion::InstantInteractionStore)
-            .to receive(:new).with(populations)
-                             .and_return(mocked_store)
-          allow(mocked_store).to receive(:interact).twice.and_call_original
-        end
-
-        it 'updates simulation' do
-          expect { process }
-            .to raise_error(RSpec::Mocks::MockExpectationError)
-            .and(change { simulation.reload.updated_at })
-        end
-
-        it 'does not update simulation status' do
-          expect { process }
-            .to raise_error(RSpec::Mocks::MockExpectationError)
-            .and(not_change { simulation.reload.status })
-        end
-
-        it 'consumes some infected interactions' do
-          expect { process }
-            .to raise_error(RSpec::Mocks::MockExpectationError)
-            .and change { infected_population.reload.interactions }
-            .by(-2 * block_size)
-        end
+      it 'consumes some infected interactions' do
+        expect { process }
+          .to change { infected_population.reload.interactions }
+          .by(-2 * block_size)
       end
     end
 

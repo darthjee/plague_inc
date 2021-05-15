@@ -14,7 +14,7 @@ class Simulation < ApplicationRecord
       def process
         interact
 
-        instant.status = Instant::PROCESSED
+        mark_instant_as_processed
 
         save
       end
@@ -60,6 +60,12 @@ class Simulation < ApplicationRecord
         instant.populations
                .select(&:infected?)
                .select(&:interactions?)
+      end
+
+      def mark_instant_as_processed
+        return if infected_populations.any?
+
+        instant.status = Instant::PROCESSED
       end
     end
   end

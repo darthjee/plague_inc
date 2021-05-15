@@ -19,7 +19,8 @@ class Simulation < ApplicationRecord
 
       def process
         StatusKeeper.process(simulation) do
-          PostCreator.process(instant, cache: cache)
+          @instant = find_or_build_instant
+          finalize_creation
         end
 
         instant
@@ -27,7 +28,7 @@ class Simulation < ApplicationRecord
 
       private
 
-      attr_reader :contagion, :options
+      attr_reader :contagion, :options, :instant
       delegate :instants, to: :contagion
       delegate :simulation, to: :contagion
 
@@ -36,8 +37,21 @@ class Simulation < ApplicationRecord
         @options   = options
       end
 
-      def instant
-        @instant ||= find_or_build_instant
+      def finalize_creation
+        return if processing_previous?
+
+        PostCreator.process(instant, cache: cache)
+      end
+
+      def processing_previous?
+        return unless contagion.instants.processing.any?
+
+        contagion
+          .instants
+          .processing
+          .first
+          .populations
+          .infected.where('interactions > 0').any?
       end
 
       def find_or_build_instant

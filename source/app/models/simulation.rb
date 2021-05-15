@@ -38,6 +38,10 @@ class Simulation < ApplicationRecord
     self.contagion = settings
   end
 
+  def processed?
+    status == PROCESSED
+  end
+
   def finished?
     status == FINISHED
   end

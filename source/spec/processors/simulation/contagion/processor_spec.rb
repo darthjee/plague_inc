@@ -523,5 +523,76 @@ describe Simulation::Contagion::Processor, :contagion_cache do
           .by(1)
       end
     end
+
+    context 'when interactions is bigger than block size' do
+      let(:lethality)             { 1 }
+      let(:infected_days)         { 0 }
+      let(:days_till_start_death) { 2 }
+      let(:days_till_recovery)    { 3 }
+      let(:infected_size)         { 1 }
+
+      let(:created_instant) do
+        contagion.reload.instants.last
+      end
+
+      let(:created_populations) do
+        created_instant.populations
+      end
+
+      let(:created_infected_populations) do
+        created_populations.infected
+      end
+
+      let(:created_immune_populations) do
+        created_populations.immune
+      end
+
+      let(:created_dead_populations) do
+        created_populations.dead
+      end
+
+      let!(:ready_instant) do
+        create(
+          :contagion_instant,
+          day: 0,
+          status: :ready,
+          contagion: contagion
+        )
+      end
+
+      before do
+        create(
+          :contagion_population, :infected,
+          instant: ready_instant,
+          group: group,
+          behavior: behavior,
+          size: infected_size,
+          days: infected_days,
+          interactions: infected_interactions
+        )
+
+        allow(options).to receive(:interaction_block_size).and_return(1)
+      end
+
+      it 'creates a new instant' do
+        expect { described_class.process(contagion, options) }
+          .to change { contagion.reload.instants.count }
+          .by(1)
+      end
+
+      it 'creates a new created instant' do
+        described_class.process(contagion, options)
+
+        expect(created_instant.status)
+          .to eq(Simulation::Contagion::Instant::CREATED)
+      end
+
+      it 'changes instant status' do
+        expect { described_class.process(contagion, options) }
+          .to change { ready_instant.reload.status }
+          .from(Simulation::Contagion::Instant::READY)
+          .to(Simulation::Contagion::Instant::PROCESSING)
+      end
+    end
   end
 end

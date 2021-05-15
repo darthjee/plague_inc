@@ -197,6 +197,11 @@ describe Simulation::Contagion::InstantProcessor, :contagion_cache do
         end
       end
 
+      it 'does not create a heaalthy population' do
+        process
+        expect(created_instant.populations.healthy).to be_empty
+      end
+
       context 'when there is a healthy and an infected population' do
         let(:infected_size) { Random.rand(3..10) }
         let(:healthy_size)  { Random.rand(20..30) }
@@ -254,6 +259,11 @@ describe Simulation::Contagion::InstantProcessor, :contagion_cache do
         it 'keeps population size' do
           expect { process }
             .not_to change(&population_size_block)
+        end
+
+        it 'creates a heaalthy population' do
+          process
+          expect(created_instant.populations.healthy).not_to be_empty
         end
       end
 
@@ -414,6 +424,121 @@ describe Simulation::Contagion::InstantProcessor, :contagion_cache do
         expect { process }
           .to change { created_instant.reload.populations.infected.count }
           .by(1)
+      end
+    end
+
+    context 'when infected size is bigger than block size' do
+      let(:days_till_start_death) { 2 }
+      let(:days_till_recovery)    { 3 }
+      let(:infected_size)         { 10 }
+      let(:healthy_size)          { 100 }
+
+      let(:healthy_interactions) do
+        healthy_size * interactions
+      end
+
+      let(:created_instant) do
+        contagion.reload.instants.last
+      end
+
+      let(:created_populations) do
+        created_instant.populations
+      end
+
+      let(:created_infected_populations) do
+        created_populations.infected
+      end
+
+      let(:created_immune_populations) do
+        created_populations.immune
+      end
+
+      let(:created_dead_populations) do
+        created_populations.dead
+      end
+
+      let(:infected_populations) do
+        ready_instant.reload.populations.infected
+      end
+
+      let(:immune_populations) do
+        ready_instant.reload.populations.immune
+      end
+
+      let!(:ready_instant) do
+        create(
+          :contagion_instant,
+          day: 0,
+          status: :ready,
+          contagion: contagion
+        )
+      end
+
+      let(:process) do
+        described_class.process(
+          ready_instant, options, cache: cache
+        )
+      end
+
+      before do
+        create(
+          :contagion_population, :healthy,
+          instant: ready_instant,
+          group: group,
+          behavior: behavior,
+          size: healthy_size,
+          days: 0,
+          interactions: healthy_interactions
+        )
+
+        create(
+          :contagion_population, :infected,
+          instant: ready_instant,
+          group: group,
+          behavior: behavior,
+          size: infected_size,
+          days: infected_days,
+          interactions: infected_interactions
+        )
+
+        allow(options)
+          .to receive(:interaction_block_size)
+          .and_return(1)
+      end
+
+      it 'updates simulation' do
+        expect { process }
+          .to(change { simulation.reload.updated_at })
+      end
+
+      it 'does not update simulation status' do
+        expect { process }
+          .not_to(change { simulation.reload.status })
+      end
+
+      it 'creates a new instant' do
+        expect { process }
+          .to change { contagion.reload.instants.count }
+          .by(1)
+      end
+
+      it 'creates a new created instant' do
+        process
+
+        expect(created_instant.status)
+          .to eq(Simulation::Contagion::Instant::CREATED)
+      end
+
+      it 'changes instant status to processing' do
+        expect { process }
+          .to change { ready_instant.reload.status }
+          .from(Simulation::Contagion::Instant::READY)
+          .to(Simulation::Contagion::Instant::PROCESSING)
+      end
+
+      it 'does not create a heaalthy population' do
+        process
+        expect(created_instant.populations.healthy).to be_empty
       end
     end
   end

@@ -16,7 +16,7 @@ class Simulation < ApplicationRecord
       def process
         simulation.update(status: Simulation::PROCESSING)
         block.call
-        simulation.update(status: status)
+        simulation.reload.update(status: status)
       end
 
       private
@@ -27,7 +27,13 @@ class Simulation < ApplicationRecord
       delegate :populations, to: :ready_instant
 
       def status
-        infected? ? PROCESSED : FINISHED
+        finished? ? FINISHED : PROCESSED
+      end
+
+      def finished?
+        return false if instants.processing.any?
+
+        !infected?
       end
 
       def ready_instant

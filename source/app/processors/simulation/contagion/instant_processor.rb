@@ -38,11 +38,11 @@ class Simulation < ApplicationRecord
         Contagion::Interactor.process(
           instant, new_instant, options, cache: cache
         )
-
-        instant.status = Instant::PROCESSED
       end
 
       def build_healthy
+        return unless instant.processed?
+
         healthy_populations.each do |pop|
           Population::Builder.build(
             instant: new_instant,
