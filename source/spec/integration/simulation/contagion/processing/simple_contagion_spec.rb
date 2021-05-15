@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-fdescribe "Simple Contagion" do
+describe 'Simple Contagion' do
   let(:params) do
     {
       simulation: {
@@ -24,7 +26,7 @@ fdescribe "Simple Contagion" do
             interactions: '2',
             name: 'Generic',
             reference: '1'
-          }],
+          }]
         }
       }
     }
@@ -39,7 +41,7 @@ fdescribe "Simple Contagion" do
   let(:contagion)     { simulation.contagion }
 
   before do
-    post "/simulations.json", params: params
+    post '/simulations.json', params: params
   end
 
   it 'creates simulation' do
@@ -68,11 +70,11 @@ fdescribe "Simple Contagion" do
     context 'when processing only once' do
       let(:processing_times) { 1 }
 
-      it "creates first instant" do
+      it 'creates first instant' do
         expect(first_instant).to be_ready
       end
 
-      it "marks simulation as processed" do
+      it 'marks simulation as processed' do
         expect(simulation.reload).to be_processed
       end
     end
@@ -80,7 +82,7 @@ fdescribe "Simple Contagion" do
     context 'when processing twice' do
       let(:processing_times) { 2 }
 
-      it "creates second instant" do
+      it 'creates second instant' do
         expect(new_instant).to be_ready
       end
 
@@ -92,7 +94,7 @@ fdescribe "Simple Contagion" do
         expect(first_instant).to be_processed
       end
 
-      it "marks simulation as processed" do
+      it 'marks simulation as processed' do
         expect(simulation.reload).to be_processed
       end
     end
@@ -100,7 +102,7 @@ fdescribe "Simple Contagion" do
     context 'when processing three' do
       let(:processing_times) { 3 }
 
-      it "creates a third instant" do
+      it 'creates a third instant' do
         expect(contagion.instants.count).to eq(3)
       end
 
@@ -108,7 +110,7 @@ fdescribe "Simple Contagion" do
         expect(new_populations.infected.sum(:size)).to be > 2
       end
 
-      it "marks simulation as processed" do
+      it 'marks simulation as processed' do
         expect(simulation.reload).to be_processed
       end
     end
@@ -125,18 +127,19 @@ fdescribe "Simple Contagion" do
       end
 
       before do
-        post "/simulations/#{simulation_id}/contagion/process.json", params: processing_params
+        post "/simulations/#{simulation_id}/contagion/process.json",
+             params: processing_params
       end
 
-      it "creates a forth instant" do
+      it 'creates a forth instant' do
         expect(contagion.instants.count).to eq(4)
       end
 
-      it "marks forth instant as created" do
+      it 'marks forth instant as created' do
         expect(new_instant).to be_created
       end
 
-      it "marks current instant as processing" do
+      it 'marks current instant as processing' do
         expect(current_instant.reload).to be_processing
       end
 
@@ -144,7 +147,7 @@ fdescribe "Simple Contagion" do
         expect(new_populations.infected.sum(:size)).to be > 0
       end
 
-      it "marks simulation as processed" do
+      it 'marks simulation as processed' do
         expect(simulation.reload).to be_processed
       end
     end
