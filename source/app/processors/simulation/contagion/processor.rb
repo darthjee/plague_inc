@@ -23,7 +23,7 @@ class Simulation < ApplicationRecord
           finalize_creation
         end
 
-        instant
+        ProcessingSummary.new(instant)
       end
 
       private
