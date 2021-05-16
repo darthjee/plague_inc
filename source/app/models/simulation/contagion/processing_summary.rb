@@ -3,7 +3,7 @@
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class ProcessingSummary
-      attr_reader :instant
+      attr_reader :instant, :interactions
       
       delegate :id, :status, :day, :total,
         :dead_percentage, :infected_percentage,
@@ -12,12 +12,14 @@ class Simulation < ApplicationRecord
         :recent_immune, :recent_healthy,
         to: :instant
 
-      def initialize(instant)
+      def initialize(instant, interactions: 0)
         @instant = instant
       end
 
-      def interactions
-        @interactions ||= 0
+      def ==(other)
+        return false unless other.is_a?(self.class)
+        other.interactions == interactions &&
+          other.instant == instant
       end
     end
   end

@@ -57,6 +57,10 @@ describe Simulation::Contagion::Processor, :contagion_cache do
     Simulation::Processor::Options.new
   end
 
+  let(:summary) do
+    Simulation::Contagion::ProcessingSummary.new(instant)
+  end
+
   before { contagion.reload }
 
   describe '.process' do
@@ -76,12 +80,17 @@ describe Simulation::Contagion::Processor, :contagion_cache do
 
       it do
         expect(described_class.process(contagion, options))
+          .to be_a(Simulation::Contagion::ProcessingSummary)
+      end
+
+      it do
+        expect(described_class.process(contagion, options).instant)
           .to be_a(Simulation::Contagion::Instant)
       end
 
       it do
         expect(described_class.process(contagion, options))
-          .to eq(instant)
+          .to eq(summary)
       end
 
       context 'when death does not start' do
