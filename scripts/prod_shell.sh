@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function run() {
-  download
+  get_image
   heroku config -s > .env.production
   clean_env & \
     PRODUCTION_IMAGE=$(docker_url) \
@@ -16,6 +16,14 @@ function clean_env() {
 function app_name(){
   echo $(heroku info -s | grep git_url | sed -e "s/.*\///g" | sed -e "s/\.git.*//g")
 }
+
+function get_image() {
+  URL=$(docker_url)
+  if ! (docker images | grep $URL > /dev/null); then
+    download
+  fi
+}
+
 
 function download() {
   docker pull $(docker_url)
