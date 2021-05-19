@@ -14,7 +14,7 @@ function clean_env() {
 }
 
 function app_name(){
-  echo $(heroku info -s | grep git_url | sed -e "s/.*\///g" | sed -e "s/\.git//g")
+  echo $(heroku info -s | grep git_url | sed -e "s/.*\///g" | sed -e "s/\.git.*//g")
 }
 
 function download() {
