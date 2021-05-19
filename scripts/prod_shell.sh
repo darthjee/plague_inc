@@ -25,4 +25,13 @@ function docker_url() {
   echo registry.heroku.com/$(app_name)/web
 }
 
-run
+ACTION=$1
+
+case $ACTION in
+  "run")
+    run
+    ;;
+  *)
+    $ACTION
+    ;;
+esac
