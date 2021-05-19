@@ -19,7 +19,7 @@ function app_name(){
 
 function get_image() {
   URL=$(docker_url)
-  if ! (docker images | grep $URL > /dev/null); then
+  if ! (docker images | grep "$URL" > /dev/null); then
     download
   fi
 }
