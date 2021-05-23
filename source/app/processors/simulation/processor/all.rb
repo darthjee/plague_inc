@@ -28,19 +28,22 @@ class Simulation < ApplicationRecord
       end
 
       def processing_simulation
-        Simulation.order(:updated_at)
-          .where("updated_at < ?", Settings.processing_timeout)
+        Simulation
+          .order(:updated_at)
+          .where('updated_at < ?', Settings.processing_timeout)
           .find_by(status: :processing)
       end
 
       def ready_simulation
-        Simulation.order(:updated_at).find_by(status: %w[processing processed])
+        Simulation
+          .order(:updated_at)
+          .find_by(status: %w[processing processed])
       end
 
       def delay
         @delay ||= 30.seconds
       end
-      
+
       def reset_delay
         @delay = nil
       end
