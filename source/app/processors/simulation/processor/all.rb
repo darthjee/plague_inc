@@ -8,8 +8,6 @@ class Simulation < ApplicationRecord
       def process
         1000.times do
           try_process
-          wait
-          increase_delay
         end
       end
 
@@ -17,10 +15,13 @@ class Simulation < ApplicationRecord
 
       def try_process
         simulation = next_simulation
-        return unless simulation
-
-        reset_delay
-        Simulation::Processor.process(simulation)
+        if simulation
+          reset_delay
+          Simulation::Processor.process(simulation)
+        else
+          wait
+          increase_delay
+        end
       end
 
       def next_simulation
