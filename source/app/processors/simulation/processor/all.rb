@@ -3,13 +3,25 @@
 class Simulation < ApplicationRecord
   class Processor
     class All
-      #include ::Processor
+      include ::Processor
 
       def process
-        Simulation::Process.process(next_simulation)
+        1000.times do
+          try_process
+          wait
+          increase_delay
+        end
       end
 
       private
+
+      def try_process
+        simulation = next_simulation
+        return unless simulation
+
+        reset_delay
+        Simulation::Process.process(simulation)
+      end
 
       def next_simulation
         processing_simulation || ready_simulation
@@ -23,6 +35,23 @@ class Simulation < ApplicationRecord
 
       def ready_simulation
         Simulation.order(:updated_at).find_by(status: %w[processing processed])
+      end
+
+      def delay
+        @delay ||= 30.seconds
+      end
+      
+      def reset_delay
+        @delay = nil
+      end
+
+      def increase_delay
+        @delay = delay * 2
+      end
+
+      def wait
+        puts "Waiting #{delay / 60.0} minutes"
+        sleep(delay)
       end
     end
   end
