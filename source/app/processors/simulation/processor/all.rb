@@ -20,7 +20,7 @@ class Simulation < ApplicationRecord
         return unless simulation
 
         reset_delay
-        Simulation::Process.process(simulation)
+        Simulation::Processor.process(simulation)
       end
 
       def next_simulation
