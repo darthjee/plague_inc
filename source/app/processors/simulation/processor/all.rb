@@ -38,7 +38,7 @@ class Simulation < ApplicationRecord
       def ready_simulation
         Simulation
           .order(:updated_at)
-          .find_by(status: %w[processing processed])
+          .find_by(status: %w[created processed])
       end
 
       def delay
