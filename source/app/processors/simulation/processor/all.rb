@@ -31,7 +31,7 @@ class Simulation < ApplicationRecord
       def processing_simulation
         Simulation
           .order(:updated_at)
-          .where('updated_at < ?', Settings.processing_timeout)
+          .where('updated_at < ?', Settings.processing_timeout.ago)
           .find_by(status: :processing)
       end
 
