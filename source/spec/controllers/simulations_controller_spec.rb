@@ -313,4 +313,45 @@ describe SimulationsController do
       end
     end
   end
+
+  describe 'GET show' do
+    render_views
+
+    let(:simulation)    { create(:simulation) }
+    let(:simulation_id) { simulation.id }
+
+    context 'when requesting html and ajax is true', :cached do
+      before do
+        get :show, params: { format: :html, ajax: true, id: simulation_id }
+      end
+
+      it { expect(response).to be_successful }
+
+      it { expect(response).to render_template('simulations/show') }
+    end
+
+    context 'when requesting html and ajax is false' do
+      before do
+        get :show, params: { id: simulation_id }
+      end
+
+      it do
+        expect(response).to redirect_to("#/simulations/#{simulation_id}")
+      end
+    end
+
+    context 'when requesting json', :not_cached do
+      let(:expected_object) { simulation }
+
+      before do
+        get :show, params: { id: simulation_id, format: :json }
+      end
+
+      it { expect(response).to be_successful }
+
+      it 'returns simulations serialized' do
+        expect(response.body).to eq(expected_json)
+      end
+    end
+  end
 end
