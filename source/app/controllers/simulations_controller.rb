@@ -10,7 +10,13 @@ class SimulationsController < ApplicationController
 
   resource_for :simulation, build_with: :build_simulation
 
+  alias clone edit
+
   private
+
+  def simulation_id
+    params.key?(:id) ? params[:id] : params[:simulation_id]
+  end
 
   def build_simulation
     Simulation::Builder.process(params, simulations)

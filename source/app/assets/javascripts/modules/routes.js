@@ -17,7 +17,7 @@
         controllerAs: 'hc'
       }
     }, {
-      routes: ['/simulations/new'],
+      routes: ['/simulations/new', '/simulations/:id/clone'],
       config: {
         controller: 'Simulation.NewController',
         controllerAs: 'gnc'
