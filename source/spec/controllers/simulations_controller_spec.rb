@@ -361,9 +361,13 @@ describe SimulationsController do
     let(:simulation)    { create(:simulation) }
     let(:simulation_id) { simulation.id }
 
+    before do
+      get :clone, params: parameters
+    end
+
     context 'when requesting html and ajax is true', :cached do
-      before do
-        get :clone, params: { format: :html, ajax: true, simulation_id: simulation_id }
+      let(:parameters) do
+        { format: :html, ajax: true, simulation_id: simulation_id }
       end
 
       it { expect(response).to be_successful }
@@ -372,9 +376,7 @@ describe SimulationsController do
     end
 
     context 'when requesting html and ajax is false' do
-      before do
-        get :clone, params: { simulation_id: simulation_id }
-      end
+      let(:parameters) { { simulation_id: simulation_id } }
 
       it do
         expect(response).to redirect_to("#/simulations/#{simulation_id}/clone")
@@ -384,9 +386,7 @@ describe SimulationsController do
     context 'when requesting json', :not_cached do
       let(:expected_object) { simulation }
 
-      before do
-        get :clone, params: { simulation_id: simulation_id, format: :json }
-      end
+      let(:parameters) { { simulation_id: simulation_id, format: :json } }
 
       it { expect(response).to be_successful }
 
