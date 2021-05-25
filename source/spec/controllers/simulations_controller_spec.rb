@@ -368,7 +368,7 @@ describe SimulationsController do
 
       it { expect(response).to be_successful }
 
-      it { expect(response).to render_template('simulations/edit') }
+      it { expect(response).to render_template('simulations/clone') }
     end
 
     context 'when requesting html and ajax is false' do
