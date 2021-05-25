@@ -2,6 +2,9 @@
   var module = angular.module("simulation/requester", ["binded_http"]);
 
   class SimulationRequesterService extends Cyberhawk.RequesterService {
+    saveRequest(data) {
+      return this.http.post(this.savePath, data);
+    }
   }
 
   class SimulationRequesterServiceBuilder {
@@ -11,7 +14,7 @@
 
     build($location) {
       var path = $location.$$path + ".json";
-      var savePath = $location.$$path.replace(/\/(new|edit)$/, "") + ".json";
+      var savePath = $location.$$path.replace(/\/(new|edit|\d+\/clone)$/, "") + ".json";
       return new SimulationRequesterService(path, savePath, this.http);
     }
   }
