@@ -363,17 +363,17 @@ describe SimulationsController do
 
     context 'when requesting html and ajax is true', :cached do
       before do
-        get :show, params: { format: :html, ajax: true, simulation_id: simulation_id }
+        get :clone, params: { format: :html, ajax: true, simulation_id: simulation_id }
       end
 
       it { expect(response).to be_successful }
 
-      it { expect(response).to render_template('simulations/new') }
+      it { expect(response).to render_template('simulations/edit') }
     end
 
     context 'when requesting html and ajax is false' do
       before do
-        get :show, params: { simulation_id: simulation_id }
+        get :clone, params: { simulation_id: simulation_id }
       end
 
       it do
