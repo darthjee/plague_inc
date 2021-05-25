@@ -1,8 +1,8 @@
 (function(_, angular, Cyberhawk) {
-  var app = angular.module('simulation/new_controller', [
-    'simulation/requester',
-    'cyberhawk/controller',
-    'cyberhawk/notifier',
+  var app = angular.module("simulation/new_controller", [
+    "simulation/requester",
+    "cyberhawk/controller",
+    "cyberhawk/notifier",
   ]);
 
   function Controller(builder, notifier, $location) {
@@ -60,23 +60,23 @@
   };
 
   fn.addBehavior = function() {
-    this.addObject('behaviors');
+    this.addObject("behaviors");
   };
 
   fn.removeBehavior = function(index) {
-    this.removeObject('behaviors', index);
+    this.removeObject("behaviors", index);
   };
 
   fn.addGroup = function() {
-    this.addObject('groups');
+    this.addObject("groups");
   };
 
   fn.removeGroup = function(index) {
-    this.removeObject('groups', index);
+    this.removeObject("groups", index);
   };
 
-  app.controller('Simulation.NewController', [
-    'simulation_requester', 'cyberhawk_notifier', '$location',
+  app.controller("Simulation.NewController", [
+    "simulation_requester", "cyberhawk_notifier", "$location",
     Controller
   ]);
 }(window._, window.angular, window.Cyberhawk));
