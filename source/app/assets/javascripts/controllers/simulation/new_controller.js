@@ -1,5 +1,6 @@
 (function(_, angular, Cyberhawk) {
   var app = angular.module('simulation/new_controller', [
+    'simulation/requester',
     'cyberhawk/controller',
     'cyberhawk/notifier',
   ]);
@@ -71,7 +72,7 @@
   };
 
   app.controller('Simulation.NewController', [
-    'cyberhawk_requester', 'cyberhawk_notifier', '$location',
+    'simulation_requester', 'cyberhawk_notifier', '$location',
     Controller
   ]);
 }(window._, window.angular, window.Cyberhawk));

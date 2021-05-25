@@ -4,15 +4,17 @@
   class SimulationRequesterService extends Cyberhawk.RequesterService {
   }
 
-  function SimulationRequesterServiceBuilder($http) {
-    this.http = $http;
-  }
+  class SimulationRequesterServiceBuilder {
+    constructor ($http) {
+      this.http = $http;
+    }
 
-  SimulationRequesterServiceBuilder.prototype.build = function($location) {
-    var path = $location.$$path + ".json";
-    var savePath = $location.$$path.replace(/\/(new|edit)$/, "") + ".json";
-    return new SimulationRequesterService(path, savePath, this.http);
-  };
+    build($location) {
+      var path = $location.$$path + ".json";
+      var savePath = $location.$$path.replace(/\/(new|edit)$/, "") + ".json";
+      return new SimulationRequesterService(path, savePath, this.http);
+    }
+  }
 
   function SimulationRequesterServiceFactory($http) {
     return new SimulationRequesterServiceBuilder($http);
