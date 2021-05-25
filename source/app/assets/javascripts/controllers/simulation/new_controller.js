@@ -19,6 +19,10 @@
     }
   };
 
+  fn._goIndex = function() {
+    this.location.path(this.location.$$path.replace(/(\w*\/edit|new|\d+\/clone)/, ""));
+  };
+
   fn.addObject = function(key) {
     if (!this.data.settings) {
       this.data.settings = {
