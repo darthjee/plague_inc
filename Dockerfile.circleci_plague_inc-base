@@ -22,8 +22,6 @@ FROM base
 
 USER root
 
-RUN apt-get install telnet
-
 COPY --chown=circleci:circleci --from=builder /home/circleci/bundle/ /usr/local/bundle/
 COPY --chown=circleci:circleci --from=builder /home/circleci/bower/ /home/circleci/.cache/bower/
 
