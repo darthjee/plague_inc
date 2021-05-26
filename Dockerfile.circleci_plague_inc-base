@@ -1,4 +1,4 @@
-FROM darthjee/circleci_taap:0.7.0 as base
+FROM darthjee/circleci_taap:0.7.1 as base
 FROM darthjee/scripts:0.1.8 as scripts
 
 ######################################
@@ -21,8 +21,6 @@ RUN /bin/bash bower_builder.sh
 FROM base
 
 USER root
-
-RUN apt-get install telnet
 
 COPY --chown=circleci:circleci --from=builder /home/circleci/bundle/ /usr/local/bundle/
 COPY --chown=circleci:circleci --from=builder /home/circleci/bower/ /home/circleci/.cache/bower/
