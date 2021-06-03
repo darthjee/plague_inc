@@ -11,6 +11,7 @@ class Simulation < ApplicationRecord
       expose :processable_in
       expose :instants, decorator: Instant::SummaryDecorator
       expose :instants_total
+      expose :interactions
 
       attr_reader :instants
 
@@ -21,6 +22,10 @@ class Simulation < ApplicationRecord
 
       def instants_total
         object.contagion.instants.count
+      end
+
+      def interactions
+        object.try(:interactions) || 0
       end
     end
   end
