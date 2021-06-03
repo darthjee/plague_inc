@@ -61,6 +61,7 @@ describe Simulation::Contagion::SummaryDecorator do
           processable: true,
           processable_in: 0,
           instants_total: 1,
+          interactions: 0,
           instants: [{
             id: instant.id,
             status: instant.status,
