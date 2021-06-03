@@ -22,11 +22,12 @@ class Simulation < ApplicationRecord
         ActiveRecord::Base.transaction do
           save
         end
+        interacted
       end
 
       private
 
-      attr_reader :population, :instant,
+      attr_reader :population, :instant, :interacted,
                   :new_instant, :options
 
       delegate :populations, to: :instant
@@ -36,16 +37,18 @@ class Simulation < ApplicationRecord
       delegate :interactions, to: :population
 
       def initialize(population, instant, new_instant, options, cache:)
-        @population  = population
-        @instant     = instant
-        @new_instant = new_instant
-        @options     = options
-        @cache       = cache
+        @population   = population
+        @instant      = instant
+        @new_instant  = new_instant
+        @options      = options
+        @cache        = cache
+        @interacted   = 0
       end
 
       def interact
         options.interaction_block_size.to_i.times do
           break if interactions.zero?
+          add_interactions
 
           population.interactions -= 1
           interaction_store.interact
@@ -61,6 +64,10 @@ class Simulation < ApplicationRecord
             cache: cache
           )
         end
+      end
+      
+      def add_interactions
+        @interacted += 2
       end
 
       def populations
