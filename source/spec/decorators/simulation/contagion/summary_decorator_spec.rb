@@ -137,5 +137,52 @@ describe Simulation::Contagion::SummaryDecorator do
         end
       end
     end
+
+    context 'when the instants are processing summary' do
+      subject(:decorator) do
+        described_class.new(simulation, summaries)
+      end
+
+      let(:interactions) { Random.rand(100) }
+      let (:summaries) do
+        instants.map do |instant|
+          Simulation::Contagion::ProcessingSummary.new(
+            instant, interactions: interactions
+          )
+        end
+      end
+
+      let(:expected) do
+        {
+          status: simulation.status,
+          processable: true,
+          processable_in: 0,
+          instants_total: 1,
+          interactions: interactions,
+          instants: [{
+            id: instant.id,
+            status: instant.status,
+            day: day,
+            total: 0,
+            dead: 0,
+            healthy: 0,
+            immune: 0,
+            infected: 0,
+            dead_percentage: 0,
+            healthy_percentage: 0,
+            immune_percentage: 0,
+            infected_percentage: 0,
+            recent_dead: 0,
+            recent_healthy: 0,
+            recent_immune: 0,
+            recent_infected: 0
+          }]
+        }.as_json
+      end
+
+      it 'returns simulation with instant instants' do
+        expect(decorator.as_json).to eq(expected)
+      end
+    end
   end
 end

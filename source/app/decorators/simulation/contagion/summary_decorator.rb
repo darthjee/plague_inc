@@ -25,7 +25,9 @@ class Simulation < ApplicationRecord
       end
 
       def interactions
-        object.try(:interactions) || 0
+        instants.map do |instant|
+          instant.try(:interactions)
+        end.compact.sum
       end
     end
   end
