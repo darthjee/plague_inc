@@ -37,7 +37,7 @@ class Simulation < ApplicationRecord
 
       def ready_simulation
         Simulation
-          .order(:updated_at)
+          .order(:created_at)
           .find_by(status: %w[created processed])
       end
 
