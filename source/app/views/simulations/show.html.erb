@@ -4,6 +4,17 @@
   <% end %>
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <%= angular_safe_link_to(:simulation_clone, { simulation_id: "{{gnc.data.id}}" }, class: "btn btn-primary") do %>
+            Clone
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-12">
       <div class="card shadow-sm">
         <div class="card-header">
           <h4 class="my-0 font-weight-normal">
