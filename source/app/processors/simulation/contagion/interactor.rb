@@ -37,7 +37,7 @@ class Simulation < ApplicationRecord
       end
 
       def interact
-        infected_populations.each do |population|
+        infected_populations.map do |population|
           InfectedInteractor.process(
             population,
             instant,
@@ -45,7 +45,7 @@ class Simulation < ApplicationRecord
             options,
             cache: cache
           )
-        end
+        end.sum
       end
 
       def save

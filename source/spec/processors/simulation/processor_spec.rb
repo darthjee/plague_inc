@@ -106,6 +106,11 @@ describe Simulation::Processor, :contagion_cache do
 
       it do
         expect(described_class.process(simulation))
+          .to all(be_a(Simulation::Contagion::ProcessingSummary))
+      end
+
+      it do
+        expect(described_class.process(simulation).map(&:instant))
           .to all(be_a(Simulation::Contagion::Instant))
       end
 
