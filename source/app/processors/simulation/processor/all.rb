@@ -5,6 +5,12 @@ class Simulation < ApplicationRecord
     class All
       include ::Processor
 
+      attr_reader :simulation_id
+
+      def initialize(simulation_id = nil)
+        @simulation_id = simulation_id
+      end
+
       def process
         1000.times do
           try_process
@@ -25,7 +31,13 @@ class Simulation < ApplicationRecord
       end
 
       def next_simulation
-        processing_simulation || ready_simulation
+        simulation_from_id || processing_simulation || ready_simulation
+      end
+
+      def simulation_from_id
+        return unless simulation_id
+
+        @simulation_from_id ||= Simulation.find(simulation_id)
       end
 
       def processing_simulation
