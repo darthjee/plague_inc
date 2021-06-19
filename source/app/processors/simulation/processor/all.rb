@@ -7,7 +7,7 @@ class Simulation < ApplicationRecord
 
       attr_reader :simulation_id
 
-      def initialize(simulation_id=nil)
+      def initialize(simulation_id = nil)
         @simulation_id = simulation_id
       end
 
@@ -34,10 +34,10 @@ class Simulation < ApplicationRecord
         simulation_from_id || processing_simulation || ready_simulation
       end
 
-
       def simulation_from_id
         return unless simulation_id
-        @simulation ||= Simulation.find(simulation_id)
+
+        @simulation_from_id ||= Simulation.find(simulation_id)
       end
 
       def processing_simulation
