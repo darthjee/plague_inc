@@ -6,18 +6,43 @@
       </h4>
     </div>
     <div class="card-body">
-      <ul class="list-group mt-3 mb-4">
-        <li class="list-group-item">
-          <%= angular_safe_link_to(:new_simulation, {}, class: "text-dark") do %>
-            + New simulation
-          <% end %>
-        </li>
-        <li class="list-group-item" ng-repeat="simulation in gnc.data">
-          <%= angular_safe_link_to(:simulation, { id: "{{simulation.id}}" }, class: "text-dark") do %>
-            {{simulation.name}}
-          <% end %>
-        </li>
-      </ul>
+      <table class="table">
+        <thead>
+          <th scope="col">Name</th>
+          <th scope="col">status</th>
+          <th scope="col">Lethality</th>
+          <th scope="col">Groups</th>
+          <th scope="col">Behaviors</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="2">
+              <%= angular_safe_link_to(:new_simulation, {}, class: "text-dark") do %>
+                + New simulation
+              <% end %>
+            </td>
+          </tr>
+          <tr ng-repeat="simulation in gnc.data">
+            <td>
+              <%= angular_safe_link_to(:simulation, { id: "{{simulation.id}}" }, class: "text-dark") do %>
+                {{simulation.name}}
+              <% end %>
+            </td>
+            <td>{{simulation.status}}</td>
+            <td>{{simulation.settings.lethality}}</td>
+            <td>
+              <p ng-repeat="group in simulation.settings.groups">
+                {{group.name}} // {{group.size}} // {{group.behavior}}
+              </p>
+            </td>
+            <td>
+              <p ng-repeat="behavior in simulation.settings.behaviors">
+                {{behavior.reference}} // {{behavior.interactions}} // {{behavior.contagion_risk}}
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
