@@ -8,7 +8,9 @@ class SimulationsController < ApplicationController
 
   protect_from_forgery except: [:create]
 
-  resource_for :simulation, build_with: :build_simulation
+  resource_for :simulation,
+    build_with: :build_simulation,
+    after_save: :trigger_worker
 
   alias clone edit
 
@@ -20,5 +22,9 @@ class SimulationsController < ApplicationController
 
   def build_simulation
     Simulation::Builder.process(params, simulations)
+  end
+
+  def trigger_worker
+    Simulation::ProcessorWorker.perform_async(simulation.id)
   end
 end

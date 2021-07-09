@@ -134,6 +134,11 @@ describe SimulationsController do
 
       let(:expected_object) { simulation }
 
+      before do
+        allow(Simulation::ProcessorWorker)
+          .to receive(:perform_async)
+      end
+
       it do
         post :create, params: parameters
 
@@ -162,6 +167,14 @@ describe SimulationsController do
         expect { post :create, params: parameters }
           .to change(Simulation::Contagion::Behavior, :count)
           .by(1)
+      end
+
+      it do
+        post :create, params: parameters
+
+        expect(Simulation::ProcessorWorker)
+          .to have_received(:perform_async)
+          .with(Simulation.last.id)
       end
 
       context 'when the request is completed' do
