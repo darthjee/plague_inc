@@ -9,8 +9,8 @@ class SimulationsController < ApplicationController
   protect_from_forgery except: [:create]
 
   resource_for :simulation,
-    build_with: :build_simulation,
-    after_save: :trigger_worker
+               build_with: :build_simulation,
+               after_save: :trigger_worker
 
   alias clone edit
 

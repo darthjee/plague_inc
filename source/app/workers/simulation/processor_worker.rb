@@ -8,6 +8,7 @@ class Simulation < ApplicationRecord
       Processor.process(simulation, times: 1)
 
       return if simulation.finished?
+
       self.class.perform_async(id)
     end
   end

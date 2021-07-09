@@ -324,7 +324,6 @@ describe SimulationsController do
           expect(response.body).to eq(expected_json)
         end
 
-
         it do
           post :create, params: parameters
 
