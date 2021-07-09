@@ -118,7 +118,6 @@ RSpec.configure do |config|
 
     ActiveRecord::Migration.check_pending!
     ActiveRecord::Migration.maintain_test_schema!
-    allow(Simulation::ProcessorWorker).to receive(:perform_async)
   end
 
   config.around do |example|
