@@ -30,6 +30,8 @@ jobs:
           PLAGUE_INC_MYSQL_NAME: plague_inc
           PLAGUE_INC_MYSQL_PASSWORD: plague_inc
           PLAGUE_INC_PASSWORD_SALT: abcd
+      - image: circleci/redis:latest
+        name: redis
       - image: circleci/mysql:5.7
         name: mysql
         environment:
