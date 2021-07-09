@@ -323,6 +323,14 @@ describe SimulationsController do
 
           expect(response.body).to eq(expected_json)
         end
+
+
+        it do
+          post :create, params: parameters
+
+          expect(Simulation::ProcessorWorker)
+            .not_to have_received(:perform_async)
+        end
       end
     end
   end

@@ -25,6 +25,8 @@ class SimulationsController < ApplicationController
   end
 
   def trigger_worker
+    return unless simulation.persisted?
+
     Simulation::ProcessorWorker.perform_async(simulation.id)
   end
 end
