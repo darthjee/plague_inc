@@ -2,7 +2,7 @@ development: &development
   adapter: mysql2
   encoding: utf8
   database: <%= ENV["PLAGUE_INC_MYSQL_NAME"] %>_development
-  pool: 5
+  pool: 10
   username: <%= ENV["PLAGUE_INC_MYSQL_USER"] %>
   password: <%= ENV["PLAGUE_INC_MYSQL_PASSWORD"] %>
   host: <%= ENV["PLAGUE_INC_MYSQL_HOST"] %>
