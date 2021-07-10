@@ -27,6 +27,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem 'sidekiq'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
@@ -35,7 +36,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'arstotzka',    '~> 1.6.2'
-gem 'azeroth',      '>= 0.7.3'
+gem 'azeroth',      '>= 0.7.4'
 gem 'bower-rails',  '~> 0.12.0'
 gem 'danica',       '2.7.7'
 gem 'gnuplot',      '2.6.2'

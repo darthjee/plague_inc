@@ -1,5 +1,9 @@
 version: '3'
 services:
+  plague_inc_redis:
+    image: redis:6.2.4
+    container_name: plague_inc_redis
+    env_file: .env
   plague_inc_mysql:
     image: mysql:5.7
     container_name: plague_inc_mysql
@@ -17,6 +21,7 @@ services:
       - ./source:/home/app/app
     links:
       - plague_inc_mysql:mysql
+      - plague_inc_redis:redis
     env_file: .env
 
 
