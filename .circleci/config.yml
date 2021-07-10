@@ -30,6 +30,7 @@ jobs:
           PLAGUE_INC_MYSQL_NAME: plague_inc
           PLAGUE_INC_MYSQL_PASSWORD: plague_inc
           PLAGUE_INC_PASSWORD_SALT: abcd
+          PLAGUE_INC_REDIS_URL: redis://redis:6379/0
       - image: circleci/redis:latest
         name: redis
       - image: circleci/mysql:5.7
