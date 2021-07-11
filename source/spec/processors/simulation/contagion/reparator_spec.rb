@@ -45,7 +45,7 @@ fdescribe Simulation::Contagion::Reparator do
       end
     end
 
-    context "when there are 2 instants one instant" do
+    context "when there are 2 instants instant" do
       let(:day) { 1 }
       let!(:day_1) do
         create(:contagion_instant, day: 1, contagion: contagion)
@@ -75,6 +75,52 @@ fdescribe Simulation::Contagion::Reparator do
         expect { process }
           .to change(Simulation::Contagion::Population, :count)
           .by(-2)
+      end
+    end
+
+    context "when there are more than 2 instants instant" do
+      let!(:day_1) do
+        create(:contagion_instant, day: 1, contagion: contagion)
+      end
+
+      let!(:day_2) do
+        create(:contagion_instant, day: 2, contagion: contagion)
+      end
+
+      before do
+        create(
+          :contagion_population, :infected,
+          size: size / 2,
+          instant: day_1,
+          group: group
+        )
+        create(
+          :contagion_population, :infected,
+          size: 3 * size / 4,
+          instant: day_2,
+          group: group
+        )
+      end
+
+      it do
+        expect { process }.to change { simulation.reload.status }
+          .to(Simulation::CREATED)
+      end
+
+      context "when passing day 1" do
+        let(:day) { 1 }
+
+        it "removes all instants" do
+          expect { process }
+            .to change { simulation.reload.contagion.instants.size }
+            .to(0)
+        end
+
+        it "removes populations" do
+          expect { process }
+            .to change(Simulation::Contagion::Population, :count)
+            .by(-3)
+        end
       end
     end
   end
