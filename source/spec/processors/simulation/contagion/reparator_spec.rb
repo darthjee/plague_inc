@@ -8,7 +8,7 @@ fdescribe Simulation::Contagion::Reparator do
   let(:simulation_id) { simulation.id }
   let(:simulation)   { contagion.simulation }
   let(:contagion)    { create(:contagion, size: size, status: :finished) }
-  let(:size)         { Random.rand(100..1000) }
+  let(:size)         { 800 }
   let(:group)        { contagion.groups.first }
 
   describe '.process' do
@@ -45,7 +45,7 @@ fdescribe Simulation::Contagion::Reparator do
       end
     end
 
-    context "when there are 2 instants instant" do
+    fcontext "when there are 2 instants instant" do
       let(:day) { 1 }
       let!(:day_1) do
         create(:contagion_instant, day: 1, contagion: contagion)
@@ -53,8 +53,26 @@ fdescribe Simulation::Contagion::Reparator do
 
       before do
         create(
+          :contagion_population, :healthy,
+          size: 3 * size / 4,
+          instant: day_0,
+          group: group
+        )
+        create(
           :contagion_population, :infected,
-          size: size / 2,
+          size: size / 4,
+          instant: day_1,
+          group: group
+        )
+        create(
+          :contagion_population, :dead,
+          size: size / 8,
+          instant: day_1,
+          group: group
+        )
+        create(
+          :contagion_population, :immune,
+          size: size / 8,
           instant: day_1,
           group: group
         )
@@ -74,7 +92,7 @@ fdescribe Simulation::Contagion::Reparator do
       it "removes populations" do
         expect { process }
           .to change(Simulation::Contagion::Population, :count)
-          .by(-2)
+          .by(-5)
       end
     end
 
