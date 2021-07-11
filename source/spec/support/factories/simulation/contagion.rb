@@ -16,8 +16,13 @@ FactoryBot.define do
       build_list(
         :contagion_group, 1,
         contagion: @instance,
-        behavior: behaviors.first
+        behavior: behaviors.first,
+        size: size
       )
+    end
+
+    transient do
+      size { 100 }
     end
   end
 end
