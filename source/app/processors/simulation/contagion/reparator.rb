@@ -35,12 +35,16 @@ class Simulation < ApplicationRecord
       end
 
       def instants_to_delete
-        return simulation.contagion.instants if day < 2
+        return simulation.contagion.instants if delete_all?
         simulation.contagion.instants.where("day > ?", day)
       end
 
       def new_status
-        day > 1 ? :processed : :created
+        delete_all? ? :created : :processed
+      end
+
+      def delete_all?
+        day <= 1
       end
     end
   end
