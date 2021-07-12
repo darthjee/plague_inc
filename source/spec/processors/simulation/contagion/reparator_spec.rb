@@ -191,13 +191,14 @@ fdescribe Simulation::Contagion::Reparator do
 
           it 'Does not remove any instant' do
             expect { process }
-              .not_to change { simulation.reload.contagion.instants.size }
+              .to change { simulation.reload.contagion.instants.size }
+              .to(0)
           end
 
-          xit 'removes populations' do
+          it 'removes populations' do
             expect { process }
               .to change(Simulation::Contagion::Population, :count)
-              .by(-11)
+              .by(-16)
           end
         end
       end

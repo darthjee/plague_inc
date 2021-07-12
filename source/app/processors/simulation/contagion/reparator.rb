@@ -15,10 +15,7 @@ class Simulation < ApplicationRecord
       def process
         ActiveRecord::Base.transaction do
           simulation.update(status: new_status)
-          simulation.contagion.instants.each do |instant|
-            instant.populations.destroy_all
-            instant.destroy
-          end
+          delete_instants
         end
       end
 
@@ -27,7 +24,19 @@ class Simulation < ApplicationRecord
       attr_reader :simulation_id, :day
 
       def simulation
-        Simulation.find(simulation_id)
+        @simulation ||= Simulation.find(simulation_id)
+      end
+
+      def delete_instants
+        instants_to_delete.each do |instant|
+          instant.populations.destroy_all
+          instant.destroy
+        end
+      end
+
+      def instants_to_delete
+        return simulation.contagion.instants if day < 2
+        simulation.contagion.instants.where("day > ?", day)
       end
 
       def new_status
