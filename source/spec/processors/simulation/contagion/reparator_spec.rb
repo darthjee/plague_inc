@@ -126,6 +126,7 @@ fdescribe Simulation::Contagion::Reparator do
       include_context 'with instant complete', 0
       include_context 'with instant complete', 1
       include_context 'with instant incomplete', 2
+      include_context 'with instant incomplete', 3
 
       context 'when passing day 0' do
         let(:day) { 0 }
@@ -147,7 +148,7 @@ fdescribe Simulation::Contagion::Reparator do
           it 'removes populations' do
             expect { process }
               .to change(Simulation::Contagion::Population, :count)
-              .by(-11)
+              .by(-16)
           end
         end
       end
@@ -172,7 +173,7 @@ fdescribe Simulation::Contagion::Reparator do
           it 'removes populations' do
             expect { process }
               .to change(Simulation::Contagion::Population, :count)
-              .by(-11)
+              .by(-16)
           end
         end
       end
