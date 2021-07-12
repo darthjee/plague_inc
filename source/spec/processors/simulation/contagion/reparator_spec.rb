@@ -190,6 +190,30 @@ fdescribe Simulation::Contagion::Reparator do
           end
         end
       end
+
+      context "when passing day 2" do
+        let(:day) { 2 }
+
+        it do
+          expect { process }.to change { simulation.reload.status }
+            .to(Simulation::PROCESSED)
+        end
+
+        context "when passing day 1" do
+          let(:day) { 1 }
+
+          it "Does not remove any instant" do
+            expect { process }
+              .not_to change { simulation.reload.contagion.instants.size }
+          end
+
+          xit "removes populations" do
+            expect { process }
+              .to change(Simulation::Contagion::Population, :count)
+              .by(-11)
+          end
+        end
+      end
     end
   end
 end

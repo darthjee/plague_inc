@@ -14,7 +14,7 @@ class Simulation < ApplicationRecord
 
       def process
         ActiveRecord::Base.transaction do
-          simulation.update(status: :created)
+          simulation.update(status: new_status)
           simulation.contagion.instants.each do |instant|
             instant.populations.destroy_all
             instant.destroy
@@ -28,6 +28,10 @@ class Simulation < ApplicationRecord
 
       def simulation
         Simulation.find(simulation_id)
+      end
+
+      def new_status
+        day > 1 ? :processed : :created
       end
     end
   end
