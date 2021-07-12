@@ -161,20 +161,16 @@ fdescribe Simulation::Contagion::Reparator do
             .to(Simulation::CREATED)
         end
 
-        context 'when passing day 1' do
-          let(:day) { 1 }
+        it 'removes all instants' do
+          expect { process }
+            .to change { simulation.reload.contagion.instants.size }
+            .to(0)
+        end
 
-          it 'removes all instants' do
-            expect { process }
-              .to change { simulation.reload.contagion.instants.size }
-              .to(0)
-          end
-
-          it 'removes populations' do
-            expect { process }
-              .to change(Simulation::Contagion::Population, :count)
-              .by(-16)
-          end
+        it 'removes populations' do
+          expect { process }
+            .to change(Simulation::Contagion::Population, :count)
+            .by(-16)
         end
       end
 
@@ -186,20 +182,16 @@ fdescribe Simulation::Contagion::Reparator do
             .to(Simulation::PROCESSED)
         end
 
-        context 'when passing day 1' do
-          let(:day) { 1 }
+        it 'Deletes only instants after the selected instant' do
+          expect { process }
+            .to change { simulation.reload.contagion.instants.size }
+            .by(-1)
+        end
 
-          it 'Does not remove any instant' do
-            expect { process }
-              .to change { simulation.reload.contagion.instants.size }
-              .to(0)
-          end
-
-          it 'removes populations' do
-            expect { process }
-              .to change(Simulation::Contagion::Population, :count)
-              .by(-16)
-          end
+        it 'removes populations of removed instants' do
+          expect { process }
+            .to change(Simulation::Contagion::Population, :count)
+            .by(-5)
         end
       end
     end
