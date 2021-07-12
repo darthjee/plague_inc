@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-shared_context "with instant incomplete" do |day|
+shared_context 'with instant incomplete' do |day|
   before do
     instant = create(:contagion_instant, day: day, contagion: contagion)
 
@@ -50,8 +50,8 @@ shared_context "with instant incomplete" do |day|
   end
 end
 
-shared_context "with instant complete" do |day|
-  include_context "with instant incomplete", day
+shared_context 'with instant complete' do |day|
+  include_context 'with instant incomplete', day
 
   before do
     instant = contagion.reload.instants.find_by(day: day)
@@ -77,57 +77,57 @@ fdescribe Simulation::Contagion::Reparator do
   describe '.process' do
     let(:day) { 0 }
 
-    context "when there is only one instant" do
-      include_context "with instant incomplete", 0
+    context 'when there is only one instant' do
+      include_context 'with instant incomplete', 0
 
       it do
         expect { process }.to change { simulation.reload.status }
           .to(Simulation::CREATED)
       end
 
-      it "removes all instants" do
+      it 'removes all instants' do
         expect { process }
           .to change { simulation.reload.contagion.instants.size }
           .to(0)
       end
 
-      it "removes populations" do
+      it 'removes populations' do
         expect { process }
           .to change(Simulation::Contagion::Population, :count)
           .by(-1)
       end
     end
 
-    context "when there are 2 instants instant" do
+    context 'when there are 2 instants instant' do
       let(:day) { 1 }
 
-      include_context "with instant complete", 0
-      include_context "with instant incomplete", 1
+      include_context 'with instant complete', 0
+      include_context 'with instant incomplete', 1
 
       it do
         expect { process }.to change { simulation.reload.status }
           .to(Simulation::CREATED)
       end
 
-      it "removes all instants" do
+      it 'removes all instants' do
         expect { process }
           .to change { simulation.reload.contagion.instants.size }
           .to(0)
       end
 
-      it "removes populations" do
+      it 'removes populations' do
         expect { process }
           .to change(Simulation::Contagion::Population, :count)
           .by(-5)
       end
     end
 
-    context "when there are more than 2 instants instant" do
-      include_context "with instant complete", 0
-      include_context "with instant complete", 1
-      include_context "with instant incomplete", 2
+    context 'when there are more than 2 instants instant' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant incomplete', 2
 
-      context "when passing day 0" do
+      context 'when passing day 0' do
         let(:day) { 0 }
 
         it do
@@ -135,16 +135,16 @@ fdescribe Simulation::Contagion::Reparator do
             .to(Simulation::CREATED)
         end
 
-        context "when passing day 1" do
+        context 'when passing day 1' do
           let(:day) { 1 }
 
-          it "removes all instants" do
+          it 'removes all instants' do
             expect { process }
               .to change { simulation.reload.contagion.instants.size }
               .to(0)
           end
 
-          it "removes populations" do
+          it 'removes populations' do
             expect { process }
               .to change(Simulation::Contagion::Population, :count)
               .by(-11)
@@ -152,7 +152,7 @@ fdescribe Simulation::Contagion::Reparator do
         end
       end
 
-      context "when passing day 1" do
+      context 'when passing day 1' do
         let(:day) { 1 }
 
         it do
@@ -160,16 +160,16 @@ fdescribe Simulation::Contagion::Reparator do
             .to(Simulation::CREATED)
         end
 
-        context "when passing day 1" do
+        context 'when passing day 1' do
           let(:day) { 1 }
 
-          it "removes all instants" do
+          it 'removes all instants' do
             expect { process }
               .to change { simulation.reload.contagion.instants.size }
               .to(0)
           end
 
-          it "removes populations" do
+          it 'removes populations' do
             expect { process }
               .to change(Simulation::Contagion::Population, :count)
               .by(-11)
@@ -177,7 +177,7 @@ fdescribe Simulation::Contagion::Reparator do
         end
       end
 
-      context "when passing day 2" do
+      context 'when passing day 2' do
         let(:day) { 2 }
 
         it do
@@ -185,15 +185,15 @@ fdescribe Simulation::Contagion::Reparator do
             .to(Simulation::PROCESSED)
         end
 
-        context "when passing day 1" do
+        context 'when passing day 1' do
           let(:day) { 1 }
 
-          it "Does not remove any instant" do
+          it 'Does not remove any instant' do
             expect { process }
               .not_to change { simulation.reload.contagion.instants.size }
           end
 
-          xit "removes populations" do
+          xit 'removes populations' do
             expect { process }
               .to change(Simulation::Contagion::Population, :count)
               .by(-11)
