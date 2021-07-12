@@ -4,7 +4,7 @@ require 'spec_helper'
 
 shared_context "with instant incomplete" do |day|
   before do
-    instant = contagion.reload.instants.find_by(day: day)
+    instant = create(:contagion_instant, day: day, contagion: contagion)
 
     create(
       :contagion_population, :infected,
@@ -76,9 +76,6 @@ fdescribe Simulation::Contagion::Reparator do
 
   describe '.process' do
     let(:day) { 0 }
-    let!(:day_0) do
-      create(:contagion_instant, day: 0, contagion: contagion)
-    end
 
     context "when there is only one instant" do
       include_context "with instant incomplete", 0
@@ -103,9 +100,6 @@ fdescribe Simulation::Contagion::Reparator do
 
     context "when there are 2 instants instant" do
       let(:day) { 1 }
-      let!(:day_1) do
-        create(:contagion_instant, day: 1, contagion: contagion)
-      end
 
       include_context "with instant complete", 0
       include_context "with instant incomplete", 1
@@ -129,14 +123,6 @@ fdescribe Simulation::Contagion::Reparator do
     end
 
     context "when there are more than 2 instants instant" do
-      let!(:day_1) do
-        create(:contagion_instant, day: 1, contagion: contagion)
-      end
-
-      let!(:day_2) do
-        create(:contagion_instant, day: 2, contagion: contagion)
-      end
-
       include_context "with instant complete", 0
       include_context "with instant complete", 1
       include_context "with instant incomplete", 2
