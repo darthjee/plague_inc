@@ -42,20 +42,28 @@ class Simulation < ApplicationRecord
         return unless instant
         instant.populations.dead.find_by(days: 0).destroy
         instant.populations.immune.find_by(days: 0).destroy
-        fix_population(:healthy)
+        rebuild_populations
         PostCreator.process(instant, cache: CacheStore::Factory.new)
       end
 
-      def fix_population(state)
-        previous_instant.populations.where(state: state, days: 0).each do |prev_pop|
-          pop = instant.populations.where(state: state, days: 0)
+      def rebuild_populations
+        previous_instant.populations.healthy.where(days: 0).each do |prev_pop|
+          healthy_pop = instant.populations.healthy.where(days: 0)
             .find_or_initialize_by(
               group: prev_pop.group, days: 0, behavior: prev_pop.behavior
             )
 
-          pop.size = prev_pop.remaining_size
-          pop.new_infections = 0
-          pop.save
+          healthy_pop.size = prev_pop.remaining_size
+          healthy_pop.new_infections = 0
+          healthy_pop.save
+
+          infected_pop = instant.populations.infected.where(days: 0)
+            .find_or_initialize_by(group: prev_pop.group, days: 0)
+
+          infected_pop.size = prev_pop.new_infections
+          infected_pop.new_infections = 0
+          infected_pop.behavior ||= group.behavior
+          infected_pop.save
         end
       end
 
