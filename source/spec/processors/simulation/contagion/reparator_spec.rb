@@ -67,7 +67,7 @@ shared_context 'with instant complete' do |day|
   end
 end
 
-fdescribe Simulation::Contagion::Reparator do
+describe Simulation::Contagion::Reparator do
   subject(:process) { described_class.process(simulation_id, day) }
 
   let(:simulation_id) { simulation.id }
@@ -202,10 +202,11 @@ fdescribe Simulation::Contagion::Reparator do
         it 'removes populations of removed instants' do
           expect { process }
             .to change(Simulation::Contagion::Population, :count)
-            .by(-5)
+            .by(-4)
         end
 
         it 'correct populations size' do
+
           expect { process }
             .to change { contagion.instants.find_by(day: 2).populations.sum(:size) }
             .to(size)

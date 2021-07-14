@@ -49,13 +49,16 @@ class Simulation < ApplicationRecord
 
       def rebuild_populations
         previous_instant.populations.healthy.each do |prev_pop|
-          rebuild_healthy_population(prev_pop)
+          rebuild_population(prev_pop, :healthy)
           rebuild_infected_population(prev_pop)
+        end
+        previous_instant.populations.infected.each do |prev_pop|
+          rebuild_population(prev_pop, :infected)
         end
       end
 
-      def rebuild_healthy_population(prev_pop)
-        healthy_pop = instant.populations.healthy
+      def rebuild_population(prev_pop, state)
+        healthy_pop = instant.populations.where(state: state)
           .find_or_initialize_by(
             group: prev_pop.group,
             days: prev_pop.days + 1,
