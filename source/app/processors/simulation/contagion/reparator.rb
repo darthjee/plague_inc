@@ -41,6 +41,7 @@ class Simulation < ApplicationRecord
 
       def fix_populations
         return unless instant
+
         instant.populations.dead.find_by(days: 0).destroy
         instant.populations.immune.find_by(days: 0).destroy
         rebuild_populations
@@ -58,12 +59,13 @@ class Simulation < ApplicationRecord
       end
 
       def rebuild_population(prev_pop, state)
-        healthy_pop = instant.populations.where(state: state)
-          .find_or_initialize_by(
-            group: prev_pop.group,
-            days: prev_pop.days + 1,
-            behavior: prev_pop.behavior,
-          )
+        healthy_pop = instant
+                      .populations.where(state: state)
+                      .find_or_initialize_by(
+                        group: prev_pop.group,
+                        days: prev_pop.days + 1,
+                        behavior: prev_pop.behavior
+                      )
 
         healthy_pop.size = prev_pop.remaining_size
         healthy_pop.new_infections = 0
@@ -71,8 +73,9 @@ class Simulation < ApplicationRecord
       end
 
       def rebuild_infected_population(prev_pop)
-        infected_pop = instant.populations.infected.where(days: 0)
-          .find_or_initialize_by(group: prev_pop.group, days: 0)
+        infected_pop = instant
+                       .populations.infected.where(days: 0)
+                       .find_or_initialize_by(group: prev_pop.group, days: 0)
 
         infected_pop.size = prev_pop.new_infections
         infected_pop.new_infections = 0
@@ -89,7 +92,8 @@ class Simulation < ApplicationRecord
 
       def instants_to_delete
         return contagion.instants if delete_all?
-        contagion.instants.where("day > ?", day)
+
+        contagion.instants.where('day > ?', day)
       end
 
       def new_status

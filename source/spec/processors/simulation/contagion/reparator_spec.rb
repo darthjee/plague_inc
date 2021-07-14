@@ -82,7 +82,7 @@ describe Simulation::Contagion::Reparator do
       days_till_recovery: 1,
       days_till_sympthoms: 0,
       days_till_start_death: 1,
-      lethality: 1,
+      lethality: 1
     )
   end
 
@@ -207,7 +207,6 @@ describe Simulation::Contagion::Reparator do
         end
 
         it 'correct populations size' do
-
           expect { process }
             .to change { contagion.instants.find_by(day: 2).populations.sum(:size) }
             .to(size)
@@ -229,7 +228,7 @@ describe Simulation::Contagion::Reparator do
         it 'marks instant as ready' do
           expect { process }
             .to change { contagion.reload.instants.find_by(day: 2).status }
-            .to (Simulation::Contagion::Instant::READY)
+            .to Simulation::Contagion::Instant::READY
         end
       end
     end
