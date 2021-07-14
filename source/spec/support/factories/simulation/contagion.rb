@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :contagion, class: 'Simulation::Contagion' do
-    simulation { build(:simulation, settings: nil) }
+    simulation { build(:simulation, settings: nil, status: status) }
 
     lethality                  { 0.5 }
     days_till_recovery         { 10 }
@@ -16,8 +16,14 @@ FactoryBot.define do
       build_list(
         :contagion_group, 1,
         contagion: @instance,
-        behavior: behaviors.first
+        behavior: behaviors.first,
+        size: size
       )
+    end
+
+    transient do
+      size { 100 }
+      status { :created }
     end
   end
 end
