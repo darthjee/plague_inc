@@ -8,7 +8,7 @@ shared_context 'with instant incomplete' do |day|
 
     create(
       :contagion_population, :infected,
-      size: size / 4,
+      size: 2 * day + 2,
       instant: instant,
       group: group,
       days: 0
@@ -17,14 +17,14 @@ shared_context 'with instant incomplete' do |day|
     if day > 0
       create(
         :contagion_population, :dead,
-        size: size / 8,
+        size: day,
         instant: instant,
         group: group,
         days: 0
       )
       create(
         :contagion_population, :immune,
-        size: size / 8,
+        size: day,
         instant: instant,
         group: group,
         days: 0
@@ -34,14 +34,14 @@ shared_context 'with instant incomplete' do |day|
     if day > 1
       create(
         :contagion_population, :dead,
-        size: size / 8,
+        size: day - 1,
         instant: instant,
         group: group,
         days: 1
       )
       create(
         :contagion_population, :immune,
-        size: size / 8,
+        size: day - 1,
         instant: instant,
         group: group,
         days: 1
@@ -61,7 +61,7 @@ shared_context 'with instant complete' do |day|
       size: size - instant.populations.sum(:size),
       instant: instant,
       group: group,
-      new_infections: size / 4
+      new_infections: 2 * day + 4
     )
   end
 end
@@ -192,7 +192,19 @@ fdescribe Simulation::Contagion::Reparator do
         it 'removes populations of removed instants' do
           expect { process }
             .to change(Simulation::Contagion::Population, :count)
-            .by(-7)
+            .by(-6)
+        end
+
+        it 'correct populations size' do
+          expect { process }
+            .to change { contagion.instants.find_by(day: 2).populations.sum(:size) }
+            .to(size)
+        end
+
+        it 'correct healthy population' do
+          expect { process }
+            .to change { contagion.instants.find_by(day: 2).populations.healthy.sum(:size) }
+            .to(788)
         end
       end
     end
