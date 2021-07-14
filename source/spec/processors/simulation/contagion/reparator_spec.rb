@@ -148,20 +148,16 @@ describe Simulation::Contagion::Reparator do
             .to(Simulation::CREATED)
         end
 
-        context 'when passing day 1' do
-          let(:day) { 1 }
+        it 'removes all instants' do
+          expect { process }
+            .to change { simulation.reload.contagion.instants.size }
+            .to(0)
+        end
 
-          it 'removes all instants' do
-            expect { process }
-              .to change { simulation.reload.contagion.instants.size }
-              .to(0)
-          end
-
-          it 'removes populations' do
-            expect { process }
-              .to change(Simulation::Contagion::Population, :count)
-              .by(-16)
-          end
+        it 'removes populations' do
+          expect { process }
+            .to change(Simulation::Contagion::Population, :count)
+            .by(-16)
         end
       end
 
@@ -208,21 +204,27 @@ describe Simulation::Contagion::Reparator do
 
         it 'correct populations size' do
           expect { process }
-            .to change { contagion.instants.find_by(day: 2).populations.sum(:size) }
+            .to change {
+              contagion.instants.find_by(day: 2).populations.sum(:size)
+            }
             .to(size)
         end
 
         it 'correct healthy population' do
           expect { process }
-            .to change { contagion.reload.instants.find_by(day: 2).populations.healthy.sum(:size) }
-            .to(788)
+            .to change {
+              contagion.reload.instants.find_by(day: 2)
+                       .populations.healthy.sum(:size)
+            } .to(788)
         end
 
         it 'kills population' do
           process
 
-          expect(contagion.reload.instants.find_by(day: 2).populations.dead.find_by(days: 0).size)
-            .to eq(4)
+          expect(
+            contagion.reload.instants.find_by(day: 2)
+            .populations.dead.find_by(days: 0).size
+          ).to eq(4)
         end
 
         it 'marks instant as ready' do

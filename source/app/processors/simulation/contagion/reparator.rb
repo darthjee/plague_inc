@@ -42,10 +42,14 @@ class Simulation < ApplicationRecord
       def fix_populations
         return unless instant
 
-        instant.populations.dead.find_by(days: 0).destroy
-        instant.populations.immune.find_by(days: 0).destroy
+        destroy_populations
         rebuild_populations
         PostCreator.process(instant, cache: cache)
+      end
+
+      def destroy_populations
+        instant.populations.dead.find_by(days: 0).destroy
+        instant.populations.immune.find_by(days: 0).destroy
       end
 
       def rebuild_populations
