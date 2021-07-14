@@ -61,7 +61,8 @@ shared_context 'with instant complete' do |day|
       size: size - instant.populations.sum(:size),
       instant: instant,
       group: group,
-      new_infections: 2 * day + 4
+      new_infections: 2 * day + 4,
+      days: day
     )
   end
 end
