@@ -6,6 +6,7 @@ class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Reparator
       include ::Processor
+      include Contagion::Cacheable
 
       def initialize(simulation_id, day)
         @simulation_id = simulation_id
@@ -43,20 +44,22 @@ class Simulation < ApplicationRecord
         instant.populations.dead.find_by(days: 0).destroy
         instant.populations.immune.find_by(days: 0).destroy
         rebuild_populations
-        PostCreator.process(instant, cache: CacheStore::Factory.new)
+        PostCreator.process(instant, cache: cache)
       end
 
       def rebuild_populations
-        previous_instant.populations.healthy.where(days: 0).each do |prev_pop|
+        previous_instant.populations.healthy.each do |prev_pop|
           rebuild_healthy_population(prev_pop)
           rebuild_infected_population(prev_pop)
         end
       end
 
       def rebuild_healthy_population(prev_pop)
-        healthy_pop = instant.populations.healthy.where(days: 0)
+        healthy_pop = instant.populations.healthy
           .find_or_initialize_by(
-            group: prev_pop.group, days: 0, behavior: prev_pop.behavior
+            group: prev_pop.group,
+            days: prev_pop.days + 1,
+            behavior: prev_pop.behavior,
           )
 
         healthy_pop.size = prev_pop.remaining_size

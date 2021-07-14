@@ -72,9 +72,18 @@ fdescribe Simulation::Contagion::Reparator do
 
   let(:simulation_id) { simulation.id }
   let(:simulation)   { contagion.simulation }
-  let(:contagion)    { create(:contagion, size: size, status: :finished) }
   let(:size)         { 800 }
   let(:group)        { contagion.groups.first }
+  let(:contagion) do
+    create(
+      :contagion,
+      size: size,
+      status: :finished,
+      days_till_recovery: 2,
+      days_till_sympthoms: 0,
+      days_till_start_death: 0,
+    )
+  end
 
   describe '.process' do
     let(:day) { 0 }
@@ -193,7 +202,7 @@ fdescribe Simulation::Contagion::Reparator do
         it 'removes populations of removed instants' do
           expect { process }
             .to change(Simulation::Contagion::Population, :count)
-            .by(-6)
+            .by(-5)
         end
 
         it 'correct populations size' do
@@ -204,7 +213,7 @@ fdescribe Simulation::Contagion::Reparator do
 
         it 'correct healthy population' do
           expect { process }
-            .to change { contagion.instants.find_by(day: 2).populations.healthy.sum(:size) }
+            .to change { contagion.reload.instants.find_by(day: 2).populations.healthy.sum(:size) }
             .to(788)
         end
       end
