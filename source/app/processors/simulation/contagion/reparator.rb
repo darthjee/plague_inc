@@ -16,6 +16,7 @@ class Simulation < ApplicationRecord
         ActiveRecord::Base.transaction do
           simulation.update(status: new_status)
           delete_instants
+          fix_populations
         end
       end
 
@@ -23,8 +24,20 @@ class Simulation < ApplicationRecord
 
       attr_reader :simulation_id, :day
 
+      delegate :contagion, to: :simulation
+
       def simulation
         @simulation ||= Simulation.find(simulation_id)
+      end
+
+      def instant
+        @instant ||= contagion.instants.find_by(day: day)
+      end
+
+      def fix_populations
+        return unless instant
+        instant.populations.dead.find_by(days: 0).destroy
+        instant.populations.immune.find_by(days: 0).destroy
       end
 
       def delete_instants
@@ -35,8 +48,8 @@ class Simulation < ApplicationRecord
       end
 
       def instants_to_delete
-        return simulation.contagion.instants if delete_all?
-        simulation.contagion.instants.where("day > ?", day)
+        return contagion.instants if delete_all?
+        contagion.instants.where("day > ?", day)
       end
 
       def new_status

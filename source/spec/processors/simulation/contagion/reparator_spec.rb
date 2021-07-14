@@ -60,7 +60,8 @@ shared_context 'with instant complete' do |day|
       :contagion_population, :healthy,
       size: size - instant.populations.sum(:size),
       instant: instant,
-      group: group
+      group: group,
+      new_infections: size / 4
     )
   end
 end
@@ -191,7 +192,7 @@ fdescribe Simulation::Contagion::Reparator do
         it 'removes populations of removed instants' do
           expect { process }
             .to change(Simulation::Contagion::Population, :count)
-            .by(-5)
+            .by(-7)
         end
       end
     end
