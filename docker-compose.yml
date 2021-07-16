@@ -75,6 +75,9 @@ services:
     env_file: .env.production
     container_name: plague_inc_production
     image: $PRODUCTION_IMAGE
+    links:
+      - plague_inc_redis:redis
     environment:
       - PLAGUE_INC_INTERACTION_BLOCK_SIZE=10000
       - PAPERTRAIL_API_TOKEN=''
+      - PLAGUE_INC_REDIS_URL=redis://redis:6379/0
