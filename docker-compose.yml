@@ -3,7 +3,9 @@ services:
   plague_inc_redis:
     image: redis:6.2.4
     container_name: plague_inc_redis
-    env_file: .env
+  plague_inc_prod_redis:
+    image: redis:6.2.4
+    container_name: plague_inc_prod_redis
   plague_inc_mysql:
     image: mysql:5.7
     container_name: plague_inc_mysql
@@ -76,8 +78,9 @@ services:
     container_name: plague_inc_production
     image: $PRODUCTION_IMAGE
     links:
-      - plague_inc_redis:redis
+      - plague_inc_prod_redis:redis
     environment:
       - PLAGUE_INC_INTERACTION_BLOCK_SIZE=10000
       - PAPERTRAIL_API_TOKEN=''
       - PLAGUE_INC_REDIS_URL=redis://redis:6379/0
+      - REDISCLOUD_URL=
