@@ -10,7 +10,7 @@ class Simulation < ApplicationRecord
         .eager_load(contagion: :behaviors)
         .find(id)
 
-      Processor.process(simulation, times: 1)
+      Simulation::Processor.process(simulation, times: 1)
 
       return if simulation.finished?
 
