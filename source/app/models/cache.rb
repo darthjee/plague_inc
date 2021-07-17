@@ -35,7 +35,7 @@ class Cache
 
   def build_mapping
     configs.each_with_object({}) do |klass, hash|
-      store = CacheStore.new(klass)
+      store = Cache::Store.new(klass)
       hash[store.key.to_sym] = store
       hash[klass]            = store
     end
