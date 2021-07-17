@@ -7,7 +7,7 @@ describe Cache::Factory do
 
   describe '#build' do
     it do
-      expect(factory.build).to be_a(Hash)
+      expect(factory.build).to be_a(Cache)
     end
 
     context 'when nothing has been configured' do
@@ -16,10 +16,9 @@ describe Cache::Factory do
 
     context 'when factory has been configured' do
       let(:expected) do
-        {
-          simulation: Cache::Store.new(Simulation),
-          group: Cache::Store.new(Simulation::Contagion::Group)
-        }
+        Cache.new(
+          Set.new([Simulation, Simulation::Contagion::Group])
+        )
       end
 
       before do

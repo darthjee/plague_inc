@@ -7,10 +7,7 @@ class Cache
     end
 
     def build
-      configs.each_with_object({}) do |klass, hash|
-        store = Cache::Store.new(klass)
-        hash[store.key.to_sym] = store
-      end
+      Cache.new(configs)
     end
 
     private

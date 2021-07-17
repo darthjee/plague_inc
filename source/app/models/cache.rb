@@ -1,4 +1,6 @@
 class Cache
+  delegate :empty?, to: :configs
+
   def initialize(configs)
     @configs = configs
   end
@@ -15,9 +17,17 @@ class Cache
     self[key].find(id)
   end
 
-  private
+  def ==(other)
+    return false unless other.is_a? self.class
+
+    configs == other.configs
+  end
+
+  protected
 
   attr_reader :configs
+
+  private
 
   def mapping
     @mapping ||= build_mapping
