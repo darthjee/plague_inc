@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-redis_url = ENV['REDISCLOUD_URL'].present? ? ENV['REDISCLOUD_URL'] : ENV['PLAGUE_INC_REDIS_URL']
+redis_url = if ENV['REDISCLOUD_URL'].present?
+              ENV['REDISCLOUD_URL']
+            else
+              ENV['PLAGUE_INC_REDIS_URL']
+            end
 
 Sidekiq.configure_server do |config|
   config.redis = { url: redis_url }

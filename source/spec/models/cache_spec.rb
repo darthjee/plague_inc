@@ -2,10 +2,16 @@
 
 require 'spec_helper'
 
-describe CacheStore do
-  subject(:store) { described_class.new(klass) }
+describe Cache do
+  subject(:cache) { described_class.new(configs) }
 
-  let(:klass) { Simulation::Contagion::Group }
+  let(:configs) { Set.new(classes) }
+  let(:classes) do
+    [
+      Simulation::Contagion::Group,
+      Simulation::Contagion::Behavior
+    ]
+  end
 
   let(:simulation) { create(:simulation, :processing) }
   let(:contagion)  { simulation.contagion }
@@ -18,6 +24,7 @@ describe CacheStore do
       contagion: contagion
     )
   end
+
   let(:population) do
     create(
       :contagion_population,
@@ -25,15 +32,11 @@ describe CacheStore do
     )
   end
 
-  describe '#key' do
-    it 'returns the name of the class' do
-      expect(store.key).to eq('group')
-    end
-  end
-
   describe '#find' do
+    let(:klass) { Simulation::Contagion::Group }
+
     it 'returns correct given group' do
-      expect(store.find(group_id))
+      expect(cache.find(:group, group_id))
         .to eq(group)
     end
 
@@ -44,11 +47,11 @@ describe CacheStore do
           .with(group_id)
           .and_return(group).once
 
-        store.find(group_id)
+        cache.find(:group, group_id)
       end
 
       it do
-        store.find(group_id)
+        cache.find(:group, group_id)
 
         expect(klass).to have_received(:find).once
       end
@@ -61,11 +64,11 @@ describe CacheStore do
           .with(group_id)
           .and_return(group).once
 
-        store.fetch_from(population)
+        cache.fetch_from(:group, population)
       end
 
       it do
-        store.find(group_id)
+        cache.find(:group, group_id)
 
         expect(klass).to have_received(:find).once
       end
@@ -81,7 +84,7 @@ describe CacheStore do
     end
 
     it 'returns correct given group' do
-      expect(store.fetch_from(group))
+      expect(cache.fetch_from(:behavior, group))
         .to eq(behavior)
     end
 
@@ -94,7 +97,7 @@ describe CacheStore do
       end
 
       it 'assign attribute' do
-        expect { store.fetch_from(group) }
+        expect { cache.fetch_from(:behavior, group) }
           .to change(group, :behavior)
           .from(behavior)
           .to(other_behavior)
@@ -108,11 +111,11 @@ describe CacheStore do
           .with(behavior_id)
           .and_return(behavior).once
 
-        store.find(behavior_id)
+        cache.find(:behavior, behavior_id)
       end
 
       it do
-        store.fetch_from(group)
+        cache.fetch_from(:behavior, group)
 
         expect(klass).to have_received(:find).once
       end
@@ -125,13 +128,60 @@ describe CacheStore do
           .with(behavior_id)
           .and_return(behavior).once
 
-        store.fetch_from(group)
+        cache.fetch_from(:behavior, group)
       end
 
       it do
-        store.fetch_from(group)
+        cache.fetch_from(:behavior, group)
 
         expect(klass).to have_received(:find).once
+      end
+    end
+  end
+
+  describe '[]' do
+    context 'when class has been set' do
+      context 'when key is the class' do
+        let(:key) { classes.sample }
+
+        it do
+          expect(cache[key]).to be_a(Cache::Store)
+        end
+
+        it 'returns correct cache store' do
+          expect(cache[key]).to eq(Cache::Store.new(key))
+        end
+      end
+
+      context 'when key is the class name' do
+        let(:key) { :group }
+
+        it do
+          expect(cache[key]).to be_a(Cache::Store)
+        end
+
+        it 'returns correct cache store' do
+          expect(cache[key])
+            .to eq(Cache::Store.new(Simulation::Contagion::Group))
+        end
+      end
+    end
+
+    context 'when class has not been set' do
+      context 'when key is the class' do
+        let(:key) { Simulation::Contagion }
+
+        it do
+          expect(cache[key]).to be_nil
+        end
+      end
+
+      context 'when key is the class name' do
+        let(:key) { :contagion }
+
+        it do
+          expect(cache[key]).to be_nil
+        end
       end
     end
   end

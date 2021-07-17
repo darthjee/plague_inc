@@ -2,7 +2,7 @@
 
 shared_context 'with contagion cache', contagion_cache: true do
   let(:cache_factory) do
-    CacheStore::Factory.new.tap do |factory|
+    Cache::Factory.new.tap do |factory|
       factory.add_cache(Simulation::Contagion::Group)
       factory.add_cache(Simulation::Contagion::Behavior)
     end

@@ -8,7 +8,7 @@ module Cacheable
     end
 
     def cache_factory
-      @cache_factory ||= CacheStore::Factory.new
+      @cache_factory ||= Cache::Factory.new
     end
   end
 end

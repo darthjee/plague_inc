@@ -16,6 +16,13 @@ class SimulationsController < ApplicationController
 
   private
 
+  def simulations
+    Simulation
+      .eager_load(:contagion)
+      .eager_load(contagion: :groups)
+      .eager_load(contagion: :behaviors)
+  end
+
   def simulation_id
     params.key?(:id) ? params[:id] : params[:simulation_id]
   end

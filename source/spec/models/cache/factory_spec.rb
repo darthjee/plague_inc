@@ -2,12 +2,12 @@
 
 require 'spec_helper'
 
-describe CacheStore::Factory do
+describe Cache::Factory do
   subject(:factory) { described_class.new }
 
   describe '#build' do
     it do
-      expect(factory.build).to be_a(Hash)
+      expect(factory.build).to be_a(Cache)
     end
 
     context 'when nothing has been configured' do
@@ -16,10 +16,9 @@ describe CacheStore::Factory do
 
     context 'when factory has been configured' do
       let(:expected) do
-        {
-          simulation: CacheStore.new(Simulation),
-          group: CacheStore.new(Simulation::Contagion::Group)
-        }
+        Cache.new(
+          Set.new([Simulation, Simulation::Contagion::Group])
+        )
       end
 
       before do
