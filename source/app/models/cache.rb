@@ -8,11 +8,11 @@ class Cache
   end
 
   def fetch_from(key, object)
-    [key].fetch_from(object)
+    self[key].fetch_from(object)
   end
 
   def find(key, id)
-    [key].find(id)
+    self[key].find(id)
   end
 
   private
