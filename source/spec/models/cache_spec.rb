@@ -145,11 +145,11 @@ describe Cache do
         let(:key) { classes.sample }
 
         it do
-          expect(cache[key]).to be_a(CacheStore)
+          expect(cache[key]).to be_a(Cache::Store)
         end
 
         it "returns correct cache store" do
-          expect(cache[key]).to eq(CacheStore.new(key))
+          expect(cache[key]).to eq(Cache::Store.new(key))
         end
       end
 
@@ -157,12 +157,12 @@ describe Cache do
         let(:key) { :group }
 
         it do
-          expect(cache[key]).to be_a(CacheStore)
+          expect(cache[key]).to be_a(Cache::Store)
         end
 
         it "returns correct cache store" do
           expect(cache[key])
-            .to eq(CacheStore.new(Simulation::Contagion::Group))
+            .to eq(Cache::Store.new(Simulation::Contagion::Group))
         end
       end
     end
