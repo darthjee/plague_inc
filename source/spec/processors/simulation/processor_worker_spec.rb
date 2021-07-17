@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::ProcessorWorker, :contagion_cache do
+describe Simulation::ProcessorWorker, :contagion_cache do
   subject(:worker) { described_class.new }
 
   let(:simulation_id) { simulation.id }
