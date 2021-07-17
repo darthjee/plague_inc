@@ -5,10 +5,10 @@ class Simulation < ApplicationRecord
     include Sidekiq::Worker
     def perform(id)
       simulation = Simulation
-        .eager_load(:contagion)
-        .eager_load(contagion: :groups)
-        .eager_load(contagion: :behaviors)
-        .find(id)
+                   .eager_load(:contagion)
+                   .eager_load(contagion: :groups)
+                   .eager_load(contagion: :behaviors)
+                   .find(id)
 
       Simulation::Processor.process(simulation, times: 1)
 

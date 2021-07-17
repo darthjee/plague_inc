@@ -31,10 +31,10 @@ class ContagionController < ApplicationController
 
   def simulation
     @simulation ||= Simulation
-      .eager_load(:contagion)
-      .eager_load(contagion: :groups)
-      .eager_load(contagion: :behaviors)
-      .find(simulation_id)
+                    .eager_load(:contagion)
+                    .eager_load(contagion: :groups)
+                    .eager_load(contagion: :behaviors)
+                    .find(simulation_id)
   end
 
   def instants_empty?

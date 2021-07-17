@@ -9,7 +9,7 @@ describe Cache do
   let(:classes) do
     [
       Simulation::Contagion::Group,
-      Simulation::Contagion::Behavior,
+      Simulation::Contagion::Behavior
     ]
   end
 
@@ -148,19 +148,19 @@ describe Cache do
           expect(cache[key]).to be_a(Cache::Store)
         end
 
-        it "returns correct cache store" do
+        it 'returns correct cache store' do
           expect(cache[key]).to eq(Cache::Store.new(key))
         end
       end
 
-      context 'when key is the class' do
+      context 'when key is the class name' do
         let(:key) { :group }
 
         it do
           expect(cache[key]).to be_a(Cache::Store)
         end
 
-        it "returns correct cache store" do
+        it 'returns correct cache store' do
           expect(cache[key])
             .to eq(Cache::Store.new(Simulation::Contagion::Group))
         end
@@ -176,7 +176,7 @@ describe Cache do
         end
       end
 
-      context 'when key is the class' do
+      context 'when key is the class name' do
         let(:key) { :contagion }
 
         it do
@@ -186,4 +186,3 @@ describe Cache do
     end
   end
 end
-

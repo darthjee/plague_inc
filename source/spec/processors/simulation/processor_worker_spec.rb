@@ -88,7 +88,7 @@ describe Simulation::ProcessorWorker, :contagion_cache do
           .not_to(change { contagion.reload.instants.count })
       end
 
-      it "reschedule the worker" do
+      it 'reschedule the worker' do
         worker.perform(simulation_id)
 
         expect(described_class)
@@ -118,7 +118,7 @@ describe Simulation::ProcessorWorker, :contagion_cache do
             .not_to(change { contagion.reload.instants.count })
         end
 
-        it "does not reschedule the worker" do
+        it 'does not reschedule the worker' do
           worker.perform(simulation_id)
 
           expect(described_class)
