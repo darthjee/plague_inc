@@ -16,10 +16,14 @@ fdescribe Cache do
   describe '[]' do
     context 'when class has been set' do
       context 'when key is the class' do
-        let(:key) { Simulation::Contagion::Group }
+        let(:key) { classes.sample }
 
         it do
           expect(cache[key]).to be_a(CacheStore)
+        end
+
+        it "returns correct cache store" do
+          expect(cache[key]).to eq(CacheStore.new(key))
         end
       end
 
@@ -28,6 +32,11 @@ fdescribe Cache do
 
         it do
           expect(cache[key]).to be_a(CacheStore)
+        end
+
+        it "returns correct cache store" do
+          expect(cache[key])
+            .to eq(CacheStore.new(Simulation::Contagion::Group))
         end
       end
     end

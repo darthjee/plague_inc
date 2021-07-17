@@ -7,6 +7,14 @@ class Cache
     mapping[key]
   end
 
+  def fetch_from(key, object)
+    [key].fetch_from(object)
+  end
+
+  def find(key, id)
+    [key].find(id)
+  end
+
   private
 
   attr_reader :configs
