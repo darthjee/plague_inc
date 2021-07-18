@@ -12,24 +12,35 @@ class Simulation < ApplicationRecord
       end
 
       def process
-        groups.each do |group|
-          cache.put(group)
-        end
+        populate_groups
+        populate_behaviors
 
-        behaviors.each do |behavior|
-          cache.put(behavior)
-        end
-
-        instant.populations.each do |population|
-          with_cache(population, :group)
-          with_cache(population, :behavior)
-          with_cache(population.group, :behavior)
-        end
+        warm_models
 
         instant
       end
 
       private
+
+      def populate_groups
+        groups.each do |group|
+          cache.put(group)
+        end
+      end
+
+      def populate_behaviors
+        behaviors.each do |behavior|
+          cache.put(behavior)
+        end
+      end
+
+      def warm_models
+        instant.populations.each do |population|
+          with_cache(population, :group)
+          with_cache(population, :behavior)
+          with_cache(population.group, :behavior)
+        end
+      end
 
       attr_reader :instant
       delegate :contagion, to: :instant
