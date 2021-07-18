@@ -138,4 +138,22 @@ describe Cache do
       end
     end
   end
+
+  describe '#put' do
+    let(:klass) { Simulation::Contagion::Group }
+
+    before do
+      allow(klass)
+        .to receive(:find)
+        .with(group_id)
+        .and_return(group)
+    end
+
+    it 'stores the object in the cache' do
+      cache.put(group)
+      cache.find(:group, group_id)
+
+      expect(klass).not_to have_received(:find)
+    end
+  end
 end

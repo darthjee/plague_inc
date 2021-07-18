@@ -15,6 +15,10 @@ class Cache
     self[key].find(id)
   end
 
+  def put(value)
+    self[value.class].put(value)
+  end
+
   def ==(other)
     return false unless other.is_a? self.class
 
