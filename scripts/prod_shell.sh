@@ -3,13 +3,16 @@
 function run() {
   get_image
   heroku config -s > .env.production
-  clean_env & \
-    PRODUCTION_IMAGE=$(docker_url) \
-    docker-compose run plague_inc_production /bin/bash
+  clean_env & run_docker
+}
+
+function run_docker() {
+  PRODUCTION_IMAGE=$(docker_url) \
+  docker-compose run plague_inc_production /bin/bash
 }
 
 function clean_env() {
-  sleep 5
+  sleep 10
   echo "" > .env.production
 }
 
