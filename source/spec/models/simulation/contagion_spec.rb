@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion, type: :model do
+fdescribe Simulation::Contagion, type: :model do
   subject(:contagion) { build(:contagion) }
 
   describe 'validations' do
@@ -157,7 +157,12 @@ describe Simulation::Contagion, type: :model do
 
     before do
       days.times do |day|
-        create(:contagion_instant, contagion: contagion, day: day)
+        create(
+          :contagion_instant,
+          contagion: contagion,
+          day: day,
+          status: day == days - 1 ? :processing : :processed
+        )
       end
     end
 
@@ -174,7 +179,7 @@ describe Simulation::Contagion, type: :model do
     context 'when there are more instant' do
       let(:days) { Random.rand(2..7) }
 
-      xit { expect(contagion.current_instant).to eq(expected) }
+      it { expect(contagion.current_instant).to eq(expected) }
     end
   end
 
