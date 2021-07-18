@@ -7,10 +7,6 @@ class Cache
     @configs = configs
   end
 
-  def [](key)
-    mapping[key]
-  end
-
   def fetch_from(key, object)
     self[key].fetch_from(object)
   end
@@ -30,6 +26,10 @@ class Cache
   attr_reader :configs
 
   private
+
+  def [](key)
+    mapping[key]
+  end
 
   def mapping
     @mapping ||= build_mapping
