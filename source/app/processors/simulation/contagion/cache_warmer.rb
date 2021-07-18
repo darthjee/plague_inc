@@ -12,6 +12,14 @@ class Simulation < ApplicationRecord
       end
 
       def process
+        groups.each do |group|
+          cache.put(group)
+        end
+
+        behaviors.each do |behavior|
+          cache.put(behavior)
+        end
+
         instant.populations.each do |population|
           with_cache(population, :group)
           with_cache(population, :behavior)
@@ -24,6 +32,8 @@ class Simulation < ApplicationRecord
       private
 
       attr_reader :instant
+      delegate :contagion, to: :instant
+      delegate :groups, :behaviors, to: :contagion
     end
   end
 end
