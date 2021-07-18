@@ -18,11 +18,28 @@ describe Cache::Store do
       contagion: contagion
     )
   end
+
   let(:population) do
     create(
       :contagion_population,
       instant: instant, group: group
     )
+  end
+
+  describe '#put' do
+    before do
+      allow(klass)
+        .to receive(:find)
+        .with(group_id)
+        .and_return(group)
+    end
+
+    it 'stores a value' do
+      store.put(group)
+      store.find(group_id)
+
+      expect(klass).not_to have_received(:find)
+    end
   end
 
   describe '#key' do

@@ -139,50 +139,21 @@ describe Cache do
     end
   end
 
-  describe '[]' do
-    context 'when class has been set' do
-      context 'when key is the class' do
-        let(:key) { classes.sample }
+  describe '#put' do
+    let(:klass) { Simulation::Contagion::Group }
 
-        it do
-          expect(cache[key]).to be_a(Cache::Store)
-        end
-
-        it 'returns correct cache store' do
-          expect(cache[key]).to eq(Cache::Store.new(key))
-        end
-      end
-
-      context 'when key is the class name' do
-        let(:key) { :group }
-
-        it do
-          expect(cache[key]).to be_a(Cache::Store)
-        end
-
-        it 'returns correct cache store' do
-          expect(cache[key])
-            .to eq(Cache::Store.new(Simulation::Contagion::Group))
-        end
-      end
+    before do
+      allow(klass)
+        .to receive(:find)
+        .with(group_id)
+        .and_return(group)
     end
 
-    context 'when class has not been set' do
-      context 'when key is the class' do
-        let(:key) { Simulation::Contagion }
+    it 'stores the object in the cache' do
+      cache.put(group)
+      cache.find(:group, group_id)
 
-        it do
-          expect(cache[key]).to be_nil
-        end
-      end
-
-      context 'when key is the class name' do
-        let(:key) { :contagion }
-
-        it do
-          expect(cache[key]).to be_nil
-        end
-      end
+      expect(klass).not_to have_received(:find)
     end
   end
 end
