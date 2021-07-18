@@ -27,6 +27,10 @@ class Cache
       @key ||= klass.name.gsub(/.*::/, '').underscore
     end
 
+    def put(value)
+      store[value.id] = value
+    end
+
     def ==(other)
       return false unless other.is_a? self.class
 

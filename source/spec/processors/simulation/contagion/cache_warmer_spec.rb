@@ -62,7 +62,7 @@ describe Simulation::Contagion::CacheWarmer, :contagion_cache do
 
     context 'when group didnt have the right behavior loaded' do
       before do
-        cache[:group].fetch_from(loaded_instant.populations[0])
+        cache.fetch_from(:group, loaded_instant.populations[0])
         loaded_instant.populations[0].group.behavior.name = 'Other Name'
       end
 
