@@ -17,6 +17,9 @@ class Simulation < ApplicationRecord
     has_many :groups
     has_many :behaviors
     has_many :instants, -> { order(:day) }
+    has_one :current_instant,
+            -> { where(status: %i[created ready]) },
+            class_name: 'Simulation::Contagion::Instant'
 
     validates_presence_of :simulation, :groups, :behaviors
 

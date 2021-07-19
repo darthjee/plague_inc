@@ -151,6 +151,46 @@ describe Simulation::Contagion, type: :model do
     end
   end
 
+  describe '#current_instant' do
+    let(:days) { 0 }
+    let(:expected) { contagion.instants.find_by(day: days - 1) }
+
+    before do
+      days.times do |day|
+        status = if day == days - 1
+                   %i[created ready].sample
+                 elsif day == days - 2
+                   :processing
+                 else
+                   :processed
+                 end
+
+        create(
+          :contagion_instant,
+          contagion: contagion,
+          day: day,
+          status: status
+        )
+      end
+    end
+
+    context 'when there are no instants' do
+      it { expect(contagion.current_instant).to be_nil }
+    end
+
+    context 'when there is one instant' do
+      let(:days) { 1 }
+
+      it { expect(contagion.current_instant).to eq(expected) }
+    end
+
+    context 'when there are more instant' do
+      let(:days) { Random.rand(2..7) }
+
+      it { expect(contagion.current_instant).to eq(expected) }
+    end
+  end
+
   describe '#process' do
     subject(:contagion) { simulation.contagion }
 

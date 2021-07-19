@@ -10,6 +10,11 @@ class Simulation < ApplicationRecord
 
       expose :groups
       expose :behaviors
+      expose :current_day
+
+      def current_day
+        current_instant&.day
+      end
     end
   end
 end

@@ -16,6 +16,8 @@ describe Simulation::Decorator do
   let(:decorator_json) { JSON.parse(decorator.to_json) }
 
   describe '#to_json' do
+    let(:current_day) { nil }
+
     context 'when object is one entity' do
       let(:object) { create(:simulation) }
 
@@ -37,6 +39,7 @@ describe Simulation::Decorator do
           .slice(*settings_attributes)
           .merge(groups: [group_json])
           .merge(behaviors: [behavior_json])
+          .merge(current_day: current_day)
       end
 
       let(:expected_json) do
@@ -100,6 +103,7 @@ describe Simulation::Decorator do
             .merge(errors: settings_errors)
             .merge(groups: [group_json])
             .merge(behaviors: [behavior_json])
+            .merge(current_day: current_day)
         end
 
         let(:expected_json) do
@@ -143,6 +147,7 @@ describe Simulation::Decorator do
               .as_json.slice(*settings_attributes)
               .merge(groups: groups_json)
               .merge(behaviors: behaviors_json)
+              .merge(current_day: current_day)
             )
         end.as_json
       end
@@ -195,6 +200,7 @@ describe Simulation::Decorator do
                   .as_json.slice(*settings_attributes)
                   .merge(groups: groups_json)
                   .merge(behaviors: behaviors_json)
+                  .merge(current_day: current_day)
               )
           end.as_json
         end

@@ -15,10 +15,12 @@ describe Simulation::Contagion::Decorator do
   let(:decorator_json) { JSON.parse(decorator.to_json) }
 
   describe '#to_json' do
+    let(:current_day) { nil }
+
     context 'when object is one entity' do
-      let(:object)   { create(:contagion) }
-      let(:group)    { object.groups.first }
-      let(:behavior) { object.behaviors.first }
+      let(:object)      { create(:contagion) }
+      let(:group)       { object.groups.first }
+      let(:behavior)    { object.behaviors.first }
 
       let(:group_json) do
         Simulation::Contagion::Group::Decorator.new(group).as_json
@@ -34,7 +36,10 @@ describe Simulation::Contagion::Decorator do
           .slice(*settings_attributes)
           .merge('groups' => [group_json])
           .merge('behaviors' => [behavior_json])
+          .merge('current_day' => current_day)
       end
+
+      let(:processed_instants) { current_day.nil? ? 0 : current_day }
 
       it 'returns expected json' do
         expect(decorator_json).to eq(expected_json)
@@ -71,9 +76,31 @@ describe Simulation::Contagion::Decorator do
             .merge('errors' => expected_errors)
             .merge('groups' => [group_json])
             .merge('behaviors' => [behavior_json])
+            .merge('current_day' => current_day)
         end
 
         before { object.valid? }
+
+        it 'returns expected json with errors' do
+          expect(decorator_json).to eq(expected_json)
+        end
+      end
+
+      context 'when contagion has instants' do
+        let(:current_day) { Random.rand(2..10) }
+
+        before do
+          processed_instants.times do |day|
+            create(:contagion_instant, :processed, day: day, contagion: object)
+          end
+
+          create(
+            :contagion_instant,
+            %i[created ready].sample,
+            day: current_day,
+            contagion: object
+          )
+        end
 
         it 'returns expected json with errors' do
           expect(decorator_json).to eq(expected_json)
@@ -99,6 +126,7 @@ describe Simulation::Contagion::Decorator do
             .as_json.slice(*settings_attributes)
             .merge(groups: groups_json)
             .merge(behaviors: behaviors_json)
+            .merge(current_day: current_day)
         end.as_json
       end
 
@@ -140,6 +168,7 @@ describe Simulation::Contagion::Decorator do
               .merge(errors: expected_errors)
               .merge(groups: groups_json)
               .merge(behaviors: behaviors_json)
+              .merge(current_day: current_day)
           end.as_json
         end
 

@@ -9,5 +9,17 @@ FactoryBot.define do
     trait :ready do
       status { Simulation::Contagion::Instant::READY }
     end
+
+    trait :processing do
+      status { Simulation::Contagion::Instant::PROCESSING }
+    end
+
+    trait :processed do
+      status { Simulation::Contagion::Instant::PROCESSED }
+    end
+
+    trait :created do
+      status { Simulation::Contagion::Instant::CREATED }
+    end
   end
 end

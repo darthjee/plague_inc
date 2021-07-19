@@ -21,6 +21,7 @@ class SimulationsController < ApplicationController
       .eager_load(:contagion)
       .eager_load(contagion: :groups)
       .eager_load(contagion: :behaviors)
+      .eager_load(contagion: :current_instant)
   end
 
   def simulation_id
