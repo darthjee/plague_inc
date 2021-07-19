@@ -157,13 +157,13 @@ describe Simulation::Contagion, type: :model do
 
     before do
       days.times do |day|
-        if day == days - 1
-          status = %i[created ready].sample
-        elsif day == days - 2
-          status = :processing
-        else
-          status = :processed
-        end
+        status = if day == days - 1
+                   %i[created ready].sample
+                 elsif day == days - 2
+                   :processing
+                 else
+                   :processed
+                 end
 
         create(
           :contagion_instant,
