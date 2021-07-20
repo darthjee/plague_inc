@@ -80,7 +80,7 @@ services:
     links:
       - plague_inc_prod_redis:redis
     environment:
-      - PLAGUE_INC_INTERACTION_BLOCK_SIZE=10000
+      - PLAGUE_INC_INTERACTION_BLOCK_SIZE=50000
       - PAPERTRAIL_API_TOKEN=''
       - PLAGUE_INC_REDIS_URL=redis://redis:6379/0
       - REDISCLOUD_URL=
