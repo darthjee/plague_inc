@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 2021_07_30_160954) do
 
   create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", limit: 50
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   add_foreign_key "simulation_contagion_behaviors", "simulation_contagions", column: "contagion_id"
