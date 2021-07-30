@@ -2,5 +2,15 @@
 
 require 'spec_helper'
 
-xdescribe Tag, type: :model do
+describe Tag, type: :model do
+  describe '#save' do
+    subject(:tag) { build(:tag, name: name) }
+    let(:name)    { 'My tagName' }
+
+    it do
+      expect { tag.tap(&:save).reload }
+        .to change(tag, :name)
+        .to('my tagname')
+    end
+  end
 end
