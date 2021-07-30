@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 2021_07_30_181254) do
   end
 
   create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name", limit: 50
+    t.string "name", limit: 50, null: false
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
