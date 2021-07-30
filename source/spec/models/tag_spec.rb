@@ -13,4 +13,41 @@ describe Tag, type: :model do
         .to('my tagname')
     end
   end
+
+  describe '.for' do
+    let(:name) { 'My tagName' }
+
+    context 'when there is no tag' do
+      before { create(:tag) }
+
+      it do
+        expect(described_class.for(name))
+          .to be_a(described_class)
+      end
+
+      it do
+        expect(described_class.for(name))
+          .not_to be_persisted
+      end
+    end
+
+    context 'when there a tag' do
+      let!(:previous_tag) { create(:tag, name: name) }
+
+      it do
+        expect(described_class.for(name))
+          .to be_a(described_class)
+      end
+
+      it do
+        expect(described_class.for(name))
+          .to be_persisted
+      end
+
+      it 'returns already created tag' do
+        expect(described_class.for(name))
+          .to eq(previous_tag)
+      end
+    end
+  end
 end
