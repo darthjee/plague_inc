@@ -7,6 +7,16 @@ FactoryBot.define do
     contagion       { build(:contagion, simulation: nil) }
     created_at      { 2.days.ago }
     updated_at      { 1.days.ago }
+
+    transient do
+      tags { ['tag'] }
+    end
+
+    after(:build) do |simulation, builder|
+      simulation.tags = builder.tags.map do |tag|
+        Tag.for(tag)
+      end
+    end
   end
 
   trait :processing do
