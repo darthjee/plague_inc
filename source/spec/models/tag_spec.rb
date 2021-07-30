@@ -3,9 +3,23 @@
 require 'spec_helper'
 
 describe Tag, type: :model do
+  subject(:tag) { build(:tag) }
+
+  describe 'validations' do
+    it do
+      expect(tag).to validate_presence_of(:name)
+    end
+
+    it do
+      expect(tag).to validate_length_of(:name)
+        .is_at_most(50)
+    end
+  end
+
   describe '#save' do
     subject(:tag) { build(:tag, name: name) }
-    let(:name)    { 'My tagName' }
+
+    let(:name) { 'My tagName' }
 
     it do
       expect { tag.tap(&:save).reload }
