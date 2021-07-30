@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2021_07_30_181254) do
   create_table "simulations_tags", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "simulation_id", null: false
     t.bigint "tag_id", null: false
+    t.index ["simulation_id", "tag_id"], name: "index_simulations_tags_on_simulation_id_and_tag_id", unique: true
   end
 
   create_table "tags", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
