@@ -30,10 +30,12 @@ describe Simulation::Builder do
     }
   end
 
+  let(:size) { Random.rand(300..1000) }
+
   let(:group_params) do
     {
       name: 'Group 1',
-      size: 100,
+      size: size,
       reference: 'group-1',
       behavior: 'behavior-1'
     }
@@ -70,7 +72,7 @@ describe Simulation::Builder do
     let(:expected_group) do
       Simulation::Contagion::Group.new(
         name: 'Group 1',
-        size: 100,
+        size: size,
         reference: 'group-1',
         behavior: expected_behavior
       )
@@ -186,7 +188,7 @@ describe Simulation::Builder do
       let(:group_params) do
         {
           name: 'Group 1',
-          size: 100,
+          size: size,
           reference: 'group-1'
         }
       end
