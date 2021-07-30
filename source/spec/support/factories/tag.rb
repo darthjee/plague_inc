@@ -5,4 +5,3 @@ FactoryBot.define do
     sequence(:name) { |n| "tag###{n}" }
   end
 end
-
