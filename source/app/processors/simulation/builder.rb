@@ -19,6 +19,12 @@ class Simulation < ApplicationRecord
     expose :behaviors,  path: 'simulation.settings',
                         after_each: :build_behavior,
                         default: []
+    expose :sizes,      full_path: 'simulation.settings.groups.size',
+                        default: []
+    expose :tags,       path: :simulation,
+                        after: :build_default_tags,
+                        after_each: :build_tag,
+                        default: []
 
     # @param params [ActionController::Parameters]
     # @param simulations [Simulation::ActiveRecord_Relation]
@@ -45,7 +51,10 @@ class Simulation < ApplicationRecord
     attr_reader :params, :simulations
 
     def build_simulation(simulation_params)
-      build_object(simulation_params, simulations, Simulation)
+      build_object(
+        simulation_params, simulations, Simulation,
+        tags: tags
+      )
     end
 
     def build_settings(settings_params)
@@ -74,6 +83,15 @@ class Simulation < ApplicationRecord
         behavior_params, settings.behaviors, Simulation::Contagion::Behavior,
         contagion: settings
       )
+    end
+
+    def build_tag(name)
+      return unless name.present?
+      Tag.for(name)
+    end
+
+    def build_default_tags(tags)
+      tags << Tag.for("size:#{sizes.sum}")
     end
 
     def build_object(params, collection, klass, **attributes)

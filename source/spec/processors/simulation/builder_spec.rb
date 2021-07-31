@@ -87,6 +87,12 @@ describe Simulation::Builder do
       )
     end
 
+    let(:expected_tags) do
+      [
+        "size:#{size}"
+      ]
+    end
+
     it { expect(simulation).to be_a(Simulation) }
 
     it { expect(simulation).to be_valid }
@@ -139,6 +145,11 @@ describe Simulation::Builder do
     it 'builds behaviors with attributes' do
       expect(simulation.settings.behaviors.to_json)
         .to eq([expected_behavior].to_json)
+    end
+
+    it 'builds tags' do
+      expect(simulation.tags.map(&:name))
+        .to match_array(expected_tags)
     end
 
     context 'when there is no group' do
