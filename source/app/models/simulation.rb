@@ -21,6 +21,7 @@ class Simulation < ApplicationRecord
   ].freeze
 
   has_one :contagion
+  has_and_belongs_to_many :tags
 
   validates_presence_of :algorithm, :settings, :status
   validates_inclusion_of :algorithm, in: ALGORITHMS

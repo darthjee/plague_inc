@@ -16,8 +16,8 @@ describe Simulation::Contagion::Population::Builder do
     )
   end
 
-  let(:size)     { 300 }
-  let(:infected) { 100 }
+  let(:size)     { Random.rand(300..1000) }
+  let(:infected) { Random.rand(100..size) }
 
   let!(:instant) do
     create(:contagion_instant, contagion: contagion)

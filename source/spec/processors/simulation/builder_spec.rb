@@ -9,6 +9,7 @@ describe Simulation::Builder do
 
   let(:collection) { Simulation.all }
   let(:parameters) { ActionController::Parameters.new(params) }
+  let(:lethality)  { Random.rand(3..7) / 10.0 }
   let(:params) do
     {
       simulation: {
@@ -21,7 +22,7 @@ describe Simulation::Builder do
 
   let(:settings_params) do
     {
-      lethality: 0.5,
+      lethality: lethality,
       days_till_recovery: 13,
       days_till_sympthoms: 12,
       days_till_start_death: 11,
@@ -30,10 +31,12 @@ describe Simulation::Builder do
     }
   end
 
+  let(:size) { Random.rand(300..1000) }
+
   let(:group_params) do
     {
       name: 'Group 1',
-      size: 100,
+      size: size,
       reference: 'group-1',
       behavior: 'behavior-1'
     }
@@ -59,7 +62,7 @@ describe Simulation::Builder do
 
     let(:expected_settings) do
       Simulation::Contagion.new(
-        lethality: 0.5,
+        lethality: lethality,
         days_till_recovery: 13,
         days_till_sympthoms: 12,
         days_till_start_death: 11,
@@ -70,7 +73,7 @@ describe Simulation::Builder do
     let(:expected_group) do
       Simulation::Contagion::Group.new(
         name: 'Group 1',
-        size: 100,
+        size: size,
         reference: 'group-1',
         behavior: expected_behavior
       )
@@ -83,6 +86,13 @@ describe Simulation::Builder do
         contagion_risk: 0.5,
         reference: 'behavior-1'
       )
+    end
+
+    let(:expected_tags) do
+      [
+        "size:#{size}",
+        "lethality:#{lethality}"
+      ]
     end
 
     it { expect(simulation).to be_a(Simulation) }
@@ -139,6 +149,11 @@ describe Simulation::Builder do
         .to eq([expected_behavior].to_json)
     end
 
+    it 'builds tags' do
+      expect(simulation.tags.map(&:name))
+        .to match_array(expected_tags)
+    end
+
     context 'when there is no group' do
       let(:group_params) { nil }
 
@@ -186,7 +201,7 @@ describe Simulation::Builder do
       let(:group_params) do
         {
           name: 'Group 1',
-          size: 100,
+          size: size,
           reference: 'group-1'
         }
       end
@@ -363,7 +378,7 @@ describe Simulation::Builder do
     context 'when group payload is missing' do
       let(:settings_params) do
         {
-          lethality: 0.5,
+          lethality: lethality,
           days_till_recovery: 13,
           days_till_sympthoms: 12,
           days_till_start_death: 11
@@ -372,7 +387,7 @@ describe Simulation::Builder do
 
       let(:expected_settings) do
         Simulation::Contagion.new(
-          lethality: 0.5,
+          lethality: lethality,
           days_till_recovery: 13,
           days_till_sympthoms: 12,
           days_till_start_death: 11
