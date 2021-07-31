@@ -9,6 +9,7 @@ describe Simulation::Builder do
 
   let(:collection) { Simulation.all }
   let(:parameters) { ActionController::Parameters.new(params) }
+  let(:lethality)  { Random.rand(3..7) / 10.0 }
   let(:params) do
     {
       simulation: {
@@ -21,7 +22,7 @@ describe Simulation::Builder do
 
   let(:settings_params) do
     {
-      lethality: 0.5,
+      lethality: lethality,
       days_till_recovery: 13,
       days_till_sympthoms: 12,
       days_till_start_death: 11,
@@ -61,7 +62,7 @@ describe Simulation::Builder do
 
     let(:expected_settings) do
       Simulation::Contagion.new(
-        lethality: 0.5,
+        lethality: lethality,
         days_till_recovery: 13,
         days_till_sympthoms: 12,
         days_till_start_death: 11,
@@ -89,7 +90,8 @@ describe Simulation::Builder do
 
     let(:expected_tags) do
       [
-        "size:#{size}"
+        "size:#{size}",
+        "lethality:#{lethality}"
       ]
     end
 
@@ -376,7 +378,7 @@ describe Simulation::Builder do
     context 'when group payload is missing' do
       let(:settings_params) do
         {
-          lethality: 0.5,
+          lethality: lethality,
           days_till_recovery: 13,
           days_till_sympthoms: 12,
           days_till_start_death: 11
@@ -385,7 +387,7 @@ describe Simulation::Builder do
 
       let(:expected_settings) do
         Simulation::Contagion.new(
-          lethality: 0.5,
+          lethality: lethality,
           days_till_recovery: 13,
           days_till_sympthoms: 12,
           days_till_start_death: 11

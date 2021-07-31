@@ -21,6 +21,7 @@ class Simulation < ApplicationRecord
                         default: []
     expose :sizes,      full_path: 'simulation.settings.groups.size',
                         default: []
+    expose :lethality,  path: 'simulation.settings'
     expose :tags,       path: :simulation,
                         after: :build_default_tags,
                         after_each: :build_tag,
@@ -92,6 +93,7 @@ class Simulation < ApplicationRecord
 
     def build_default_tags(tags)
       tags << Tag.for("size:#{sizes.sum}")
+      tags << Tag.for("lethality:#{lethality}")
     end
 
     def build_object(params, collection, klass, **attributes)
