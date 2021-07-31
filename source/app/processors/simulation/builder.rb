@@ -88,6 +88,7 @@ class Simulation < ApplicationRecord
 
     def build_tag(name)
       return unless name.present?
+
       Tag.for(name)
     end
 
