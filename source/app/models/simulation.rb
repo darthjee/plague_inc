@@ -39,6 +39,13 @@ class Simulation < ApplicationRecord
     self.contagion = settings
   end
 
+  def add_tag(name)
+    return if tags.where(name: name.downcase).any?
+    tag = Tag.for(name)
+    tags << tag
+    save
+  end
+
   def processed?
     status == PROCESSED
   end
