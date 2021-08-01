@@ -234,5 +234,25 @@ describe Simulation::Contagion::Reparator do
         end
       end
     end
+
+    context 'when an instant misses population with 0 days' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant incomplete', 2
+      include_context 'with instant incomplete', 3
+
+      before do
+        simulation
+        Simulation::Contagion::Population.where(days: 0).delete_all
+      end
+
+      context 'when passing day 2' do
+        let(:day) { 2 }
+
+        it do
+          expect { process }.not_to raise_error
+        end
+      end
+    end
   end
 end

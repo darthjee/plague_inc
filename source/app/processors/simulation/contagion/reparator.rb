@@ -48,8 +48,8 @@ class Simulation < ApplicationRecord
       end
 
       def destroy_populations
-        instant.populations.dead.find_by(days: 0).destroy
-        instant.populations.immune.find_by(days: 0).destroy
+        instant.populations.dead.find_by(days: 0)&.destroy
+        instant.populations.immune.find_by(days: 0)&.destroy
       end
 
       def rebuild_populations
@@ -83,7 +83,7 @@ class Simulation < ApplicationRecord
 
         infected_pop.size = prev_pop.new_infections
         infected_pop.new_infections = 0
-        infected_pop.behavior ||= group.behavior
+        infected_pop.behavior ||= prev_pop.group.behavior
         infected_pop.save
       end
 
