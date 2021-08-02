@@ -197,7 +197,8 @@ fdescribe Simulation::Contagion::Reparator do
 
       it do
         expect { check_and_fix__all }
-          .not_to change { simulation.reload.status }
+          .to change { simulation.reload.status }
+          .from(false).to(true)
       end
 
       it do
@@ -205,6 +206,11 @@ fdescribe Simulation::Contagion::Reparator do
 
         expect(Simulation::ProcessorWorker)
           .not_to have_received(:perform_async)
+      end
+
+      it do
+        expect { check_and_fix_all }
+          .not_to change { simulation.reload.checked }
       end
     end
 
@@ -224,6 +230,11 @@ fdescribe Simulation::Contagion::Reparator do
         expect(Simulation::ProcessorWorker)
           .not_to have_received(:perform_async)
       end
+
+      it do
+        expect { check_and_fix_all }
+          .not_to change { simulation.reload.checked }
+      end
     end
 
     context 'when there is few incomplete instants' do
@@ -242,6 +253,11 @@ fdescribe Simulation::Contagion::Reparator do
         expect(Simulation::ProcessorWorker)
           .to have_received(:perform_async)
           .with(simulation.id)
+      end
+
+      it do
+        expect { check_and_fix_all }
+          .not_to change { simulation.reload.checked }
       end
     end
 
@@ -265,6 +281,11 @@ fdescribe Simulation::Contagion::Reparator do
         expect(Simulation::ProcessorWorker)
           .to have_received(:perform_async)
           .with(simulation.id)
+      end
+
+      it do
+        expect { check_and_fix_all }
+          .not_to change { simulation.reload.checked }
       end
     end
   end
