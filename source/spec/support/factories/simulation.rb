@@ -7,6 +7,7 @@ FactoryBot.define do
     contagion       { build(:contagion, simulation: nil) }
     created_at      { 2.days.ago }
     updated_at      { 1.days.ago }
+    checked         { false }
 
     transient do
       tags { ['tag'] }
