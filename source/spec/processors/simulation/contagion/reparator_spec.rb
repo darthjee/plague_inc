@@ -72,6 +72,7 @@ fdescribe Simulation::Contagion::Reparator do
   let(:simulation)   { contagion.simulation }
   let(:size)         { 800 }
   let(:group)        { contagion.groups.first }
+  let(:checked)      { false }
   let(:contagion) do
     create(
       :contagion,
@@ -80,7 +81,8 @@ fdescribe Simulation::Contagion::Reparator do
       days_till_recovery: 1,
       days_till_sympthoms: 0,
       days_till_start_death: 1,
-      lethality: 1
+      lethality: 1,
+      checked: checked
     )
   end
 
@@ -117,6 +119,22 @@ fdescribe Simulation::Contagion::Reparator do
     before do
       allow(Simulation::ProcessorWorker)
         .to receive(:perform_async)
+    end
+
+    context 'when the simulation is checked' do
+      let(:checked) { true }
+
+      it do
+        expect { repair_all }
+          .not_to change { simulation.reload.status }
+      end
+
+      it do
+        repair_all
+
+        expect(Simulation::ProcessorWorker)
+          .not_to have_received(:perform_async)
+      end
     end
 
     context 'when there is few incomplete instants' do
