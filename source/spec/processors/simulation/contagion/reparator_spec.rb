@@ -114,6 +114,11 @@ fdescribe Simulation::Contagion::Reparator do
       described_class.repair_all
     end
 
+    before do
+      allow(Simulation::ProcessorWorker)
+        .to receive(:perform_async)
+    end
+
     context 'when there is few incomplete instants' do
       include_context 'with instant incomplete', 0
 
@@ -122,6 +127,14 @@ fdescribe Simulation::Contagion::Reparator do
           .to change { simulation.reload.status }
           .from(Simulation::FINISHED)
           .to(Simulation::CREATED)
+      end
+
+      it do
+        repair_all
+
+        expect(Simulation::ProcessorWorker)
+          .to have_received(:perform_async)
+          .with(simulation.id)
       end
     end
 
@@ -137,6 +150,14 @@ fdescribe Simulation::Contagion::Reparator do
           .to change { simulation.reload.status }
           .from(Simulation::FINISHED)
           .to(Simulation::PROCESSED)
+      end
+
+      it do
+        repair_all
+
+        expect(Simulation::ProcessorWorker)
+          .to have_received(:perform_async)
+          .with(simulation.id)
       end
     end
   end
