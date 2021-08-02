@@ -67,7 +67,7 @@ shared_context 'with instant complete' do |day|
   end
 end
 
-fdescribe Simulation::Contagion::Reparator do
+describe Simulation::Contagion::Reparator do
   let(:simulation_id) { simulation.id }
   let(:simulation)   { contagion.simulation }
   let(:size)         { 800 }
@@ -91,16 +91,16 @@ fdescribe Simulation::Contagion::Reparator do
       described_class.check_all
     end
 
-    context "when instant is incomplete" do
+    context 'when instant is incomplete' do
       include_context 'with instant incomplete', 0
 
       it do
         expect { check_and_fix_all }
-          .not_to change { simulation.reload.checked }
+          .not_to(change { simulation.reload.checked })
       end
     end
 
-    context "when instant is complete" do
+    context 'when instant is complete' do
       include_context 'with instant complete', 0
 
       it do
@@ -128,7 +128,7 @@ fdescribe Simulation::Contagion::Reparator do
 
       it do
         expect { repair_all }
-          .not_to change { simulation.reload.status }
+          .not_to(change { simulation.reload.status })
       end
 
       it do
@@ -210,7 +210,7 @@ fdescribe Simulation::Contagion::Reparator do
 
       it do
         expect { check_and_fix_all }
-          .not_to change { simulation.reload.checked }
+          .not_to(change { simulation.reload.checked })
       end
     end
 
@@ -221,7 +221,7 @@ fdescribe Simulation::Contagion::Reparator do
 
       it do
         expect { check_and_fix__all }
-          .not_to change { simulation.reload.status }
+          .not_to(change { simulation.reload.status })
       end
 
       it do
@@ -233,7 +233,7 @@ fdescribe Simulation::Contagion::Reparator do
 
       it do
         expect { check_and_fix_all }
-          .not_to change { simulation.reload.checked }
+          .not_to(change { simulation.reload.checked })
       end
     end
 
@@ -257,7 +257,7 @@ fdescribe Simulation::Contagion::Reparator do
 
       it do
         expect { check_and_fix_all }
-          .not_to change { simulation.reload.checked }
+          .not_to(change { simulation.reload.checked })
       end
     end
 
@@ -285,7 +285,7 @@ fdescribe Simulation::Contagion::Reparator do
 
       it do
         expect { check_and_fix_all }
-          .not_to change { simulation.reload.checked }
+          .not_to(change { simulation.reload.checked })
       end
     end
   end
@@ -415,14 +415,14 @@ fdescribe Simulation::Contagion::Reparator do
             .to change {
               contagion.instants.find_by(day: 2).populations.sum(:size)
             }
-              .to(size)
+            .to(size)
         end
 
         it 'correct healthy population' do
           expect { process }
             .to change {
               contagion.reload.instants.find_by(day: 2)
-                .populations.healthy.sum(:size)
+                       .populations.healthy.sum(:size)
             } .to(788)
         end
 
@@ -452,7 +452,7 @@ fdescribe Simulation::Contagion::Reparator do
 
         it 'Deletes only instants after the selected instant' do
           expect { process }
-            .not_to change { simulation.reload.contagion.instants.size }
+            .not_to(change { simulation.reload.contagion.instants.size })
         end
 
         it 'removes populations of removed instants' do
@@ -462,17 +462,17 @@ fdescribe Simulation::Contagion::Reparator do
 
         it 'correct populations size' do
           expect { process }
-            .not_to change {
+            .not_to(change do
               contagion.instants.find_by(day: 3).populations.sum(:size)
-            }
+            end)
         end
 
         it 'correct healthy population' do
           expect { process }
-            .not_to change {
+            .not_to(change do
               contagion.reload.instants.find_by(day: 3)
-                .populations.healthy.sum(:size)
-            }
+                       .populations.healthy.sum(:size)
+            end)
         end
 
         it 'kills population' do

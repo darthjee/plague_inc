@@ -29,11 +29,11 @@ class Simulation < ApplicationRecord
 
       def self.repair_all
         Simulation.eager_load(:contagion).eager_load(contagion: :groups).where(status: :finished, checked: false).map do |simulation|
-            size = simulation.contagion.groups.map(&:size).sum
-            day = simulation.contagion.instants.joins(:populations).group(:instant_id).order(:day).having("sum(size) <> ?",size).pluck(:day).first
+          size = simulation.contagion.groups.map(&:size).sum
+          day = simulation.contagion.instants.joins(:populations).group(:instant_id).order(:day).having('sum(size) <> ?', size).pluck(:day).first
           [simulation.id, day]
-        end.select { |id, day| day }.each do|id, day|
-          Simulation::Contagion::Reparator.process(id, day-1)
+        end.select { |_id, day| day }.each do |id, day|
+          Simulation::Contagion::Reparator.process(id, day - 1)
           Simulation::ProcessorWorker.perform_async(id)
         end
       end
