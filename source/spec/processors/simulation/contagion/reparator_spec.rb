@@ -122,6 +122,8 @@ fdescribe Simulation::Contagion::Reparator do
     end
 
     context 'when the simulation is checked' do
+      include_context 'with instant incomplete', 0
+
       let(:checked) { true }
 
       it do
@@ -185,13 +187,85 @@ fdescribe Simulation::Contagion::Reparator do
       described_class.check_all
     end
 
-    include_context 'with instant incomplete', 0
+    before do
+      allow(Simulation::ProcessorWorker)
+        .to receive(:perform_async)
+    end
 
-    it do
-      expect { check_and_fix_all }
-        .to change { simulation.reload.status }
-        .from(Simulation::FINISHED)
-        .to(Simulation::PROCESSED)
+    context 'when simulation is completed' do
+      include_context 'with instant complete', 0
+
+      it do
+        expect { check_and_fix__all }
+          .not_to change { simulation.reload.status }
+      end
+
+      it do
+        check_and_fix_all
+
+        expect(Simulation::ProcessorWorker)
+          .not_to have_received(:perform_async)
+      end
+    end
+
+    context 'when the simulation is checked' do
+      include_context 'with instant incomplete', 0
+
+      let(:checked) { true }
+
+      it do
+        expect { check_and_fix__all }
+          .not_to change { simulation.reload.status }
+      end
+
+      it do
+        check_and_fix_all
+
+        expect(Simulation::ProcessorWorker)
+          .not_to have_received(:perform_async)
+      end
+    end
+
+    context 'when there is few incomplete instants' do
+      include_context 'with instant incomplete', 0
+
+      it do
+        expect { check_and_fix__all }
+          .to change { simulation.reload.status }
+          .from(Simulation::FINISHED)
+          .to(Simulation::CREATED)
+      end
+
+      it do
+        check_and_fix_all
+
+        expect(Simulation::ProcessorWorker)
+          .to have_received(:perform_async)
+          .with(simulation.id)
+      end
+    end
+
+    context 'when there are several incomplete instants' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant complete', 2
+      include_context 'with instant incomplete', 3
+      include_context 'with instant incomplete', 4
+
+      it do
+        expect { check_and_fix__all }
+          .to change { simulation.reload.status }
+          .from(Simulation::FINISHED)
+          .to(Simulation::PROCESSED)
+      end
+
+      it do
+        check_and_fix_all
+
+        expect(Simulation::ProcessorWorker)
+          .to have_received(:perform_async)
+          .with(simulation.id)
+      end
     end
   end
 
