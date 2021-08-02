@@ -8,6 +8,36 @@ class Simulation < ApplicationRecord
       include ::Processor
       include Contagion::Cacheable
 
+      def self.check_and_fix_all
+        check_all
+        repair_all
+      end
+
+      def self.check_all
+        Simulation::Contagion
+          .eager_load(:groups)
+          .eager_load(:simulation)
+          .eager_load(:current_instant)
+          .eager_load(current_instant: :populations)
+          .where(simulations: { status: :finished, checked: false })
+          .each do |c|
+            current_size = c.current_instant.populations.map(&:size).sum
+            size = c.groups.map(&:size).sum
+            c.simulation.update(checked: current_size == size)
+          end
+      end
+
+      def self.repair_all
+        Simulation.eager_load(:contagion).eager_load(contagion: :groups).where(status: :finished, checked: false).map do |simulation|
+            size = simulation.contagion.groups.map(&:size).sum
+            day = simulation.contagion.instants.joins(:populations).group(:instant_id).order(:day).having("sum(size) <> ?",size).pluck(:day).first
+          [simulation.id, day]
+        end.select { |id, day| day }.each do|id, day|
+          Simulation::Contagion::Reparator.process(id, day-1)
+          Simulation::ProcessorWorker.perform_async(id)
+        end
+      end
+
       def initialize(simulation_id, day)
         @simulation_id = simulation_id
         @day = day

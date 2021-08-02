@@ -67,7 +67,7 @@ shared_context 'with instant complete' do |day|
   end
 end
 
-describe Simulation::Contagion::Reparator do
+fdescribe Simulation::Contagion::Reparator do
   subject(:process) { described_class.process(simulation_id, day) }
 
   let(:simulation_id) { simulation.id }
