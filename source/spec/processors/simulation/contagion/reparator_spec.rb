@@ -68,8 +68,6 @@ shared_context 'with instant complete' do |day|
 end
 
 fdescribe Simulation::Contagion::Reparator do
-  subject(:process) { described_class.process(simulation_id, day) }
-
   let(:simulation_id) { simulation.id }
   let(:simulation)   { contagion.simulation }
   let(:size)         { 800 }
@@ -86,7 +84,51 @@ fdescribe Simulation::Contagion::Reparator do
     )
   end
 
+  describe '.check_all' do
+    subject(:check_and_fix_all) do
+      described_class.check_all
+    end
+
+    context "when instant is incomplete" do
+      include_context 'with instant incomplete', 0
+
+      it do
+        expect { check_and_fix_all }
+          .not_to change { simulation.reload.checked }
+      end
+    end
+
+    context "when instant is complete" do
+      include_context 'with instant complete', 0
+
+      it do
+        expect { check_and_fix_all }
+          .to change { simulation.reload.checked }
+          .from(false).to(true)
+      end
+    end
+  end
+
+  xdescribe '.check_and_fix_all' do
+    subject(:check_and_fix_all) do
+      described_class.check_all
+    end
+
+    include_context 'with instant incomplete', 0
+
+    it do
+      expect { check_and_fix_all }
+        .to change { simulation.reload.status }
+        .from(Simulation::FINISHED)
+        .to(Simulation::PROCESSED)
+    end
+  end
+
   describe '.process' do
+    subject(:process) do
+      described_class.process(simulation_id, day)
+    end
+
     let(:day) { 0 }
 
     context 'when there is only one instant' do
@@ -207,14 +249,14 @@ fdescribe Simulation::Contagion::Reparator do
             .to change {
               contagion.instants.find_by(day: 2).populations.sum(:size)
             }
-            .to(size)
+              .to(size)
         end
 
         it 'correct healthy population' do
           expect { process }
             .to change {
               contagion.reload.instants.find_by(day: 2)
-                       .populations.healthy.sum(:size)
+                .populations.healthy.sum(:size)
             } .to(788)
         end
 
