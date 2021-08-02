@@ -97,10 +97,10 @@ class Simulation < ApplicationRecord
                       .populations.where(state: state)
                       .find_or_initialize_by(
                         group: prev_pop.group,
-                        days: prev_pop.days + 1,
-                        behavior: prev_pop.behavior
+                        days: prev_pop.days + 1
                       )
 
+        healthy_pop.behavior ||= prev_pop.behavior
         healthy_pop.size = prev_pop.remaining_size
         healthy_pop.new_infections = 0
         healthy_pop.save

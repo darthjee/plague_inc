@@ -109,6 +109,38 @@ fdescribe Simulation::Contagion::Reparator do
     end
   end
 
+  describe '.repair_all' do
+    subject(:repair_all) do
+      described_class.repair_all
+    end
+
+    context 'when there is few incomplete instants' do
+      include_context 'with instant incomplete', 0
+
+      it do
+        expect { repair_all }
+          .to change { simulation.reload.status }
+          .from(Simulation::FINISHED)
+          .to(Simulation::CREATED)
+      end
+    end
+
+    context 'when there are several incomplete instants' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant complete', 2
+      include_context 'with instant incomplete', 3
+      include_context 'with instant incomplete', 4
+
+      it do
+        expect { repair_all }
+          .to change { simulation.reload.status }
+          .from(Simulation::FINISHED)
+          .to(Simulation::PROCESSED)
+      end
+    end
+  end
+
   xdescribe '.check_and_fix_all' do
     subject(:check_and_fix_all) do
       described_class.check_all
@@ -272,6 +304,55 @@ fdescribe Simulation::Contagion::Reparator do
         it 'marks instant as ready' do
           expect { process }
             .to change { contagion.reload.instants.find_by(day: 2).status }
+            .to Simulation::Contagion::Instant::READY
+        end
+      end
+
+      context 'when passing day 3' do
+        let(:day) { 3 }
+
+        it do
+          expect { process }.to change { simulation.reload.status }
+            .to(Simulation::PROCESSED)
+        end
+
+        it 'Deletes only instants after the selected instant' do
+          expect { process }
+            .not_to change { simulation.reload.contagion.instants.size }
+        end
+
+        it 'removes populations of removed instants' do
+          expect { process }
+            .not_to change(Simulation::Contagion::Population, :count)
+        end
+
+        it 'correct populations size' do
+          expect { process }
+            .not_to change {
+              contagion.instants.find_by(day: 3).populations.sum(:size)
+            }
+        end
+
+        it 'correct healthy population' do
+          expect { process }
+            .not_to change {
+              contagion.reload.instants.find_by(day: 3)
+                .populations.healthy.sum(:size)
+            }
+        end
+
+        it 'kills population' do
+          process
+
+          expect(
+            contagion.reload.instants.find_by(day: 3)
+            .populations.dead.find_by(days: 0).size
+          ).to eq(6)
+        end
+
+        it 'marks instant as ready' do
+          expect { process }
+            .to change { contagion.reload.instants.find_by(day: 3).status }
             .to Simulation::Contagion::Instant::READY
         end
       end
