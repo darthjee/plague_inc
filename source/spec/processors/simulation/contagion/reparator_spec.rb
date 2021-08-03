@@ -68,12 +68,11 @@ shared_context 'with instant complete' do |day|
 end
 
 describe Simulation::Contagion::Reparator do
-  subject(:process) { described_class.process(simulation_id, day) }
-
   let(:simulation_id) { simulation.id }
   let(:simulation)   { contagion.simulation }
   let(:size)         { 800 }
   let(:group)        { contagion.groups.first }
+  let(:checked)      { false }
   let(:contagion) do
     create(
       :contagion,
@@ -82,11 +81,220 @@ describe Simulation::Contagion::Reparator do
       days_till_recovery: 1,
       days_till_sympthoms: 0,
       days_till_start_death: 1,
-      lethality: 1
+      lethality: 1,
+      checked: checked
     )
   end
 
+  describe '.check_all' do
+    subject(:check_and_fix_all) do
+      described_class.check_all
+    end
+
+    context 'when instant is incomplete' do
+      include_context 'with instant incomplete', 0
+
+      it do
+        expect { check_and_fix_all }
+          .not_to(change { simulation.reload.checked })
+      end
+    end
+
+    context 'when instant is complete' do
+      include_context 'with instant complete', 0
+
+      it do
+        expect { check_and_fix_all }
+          .to change { simulation.reload.checked }
+          .from(false).to(true)
+      end
+    end
+  end
+
+  describe '.repair_all' do
+    subject(:repair_all) do
+      described_class.repair_all
+    end
+
+    before do
+      allow(Simulation::ProcessorWorker)
+        .to receive(:perform_async)
+    end
+
+    context 'when the simulation is checked' do
+      include_context 'with instant incomplete', 0
+
+      let(:checked) { true }
+
+      it do
+        expect { repair_all }
+          .not_to(change { simulation.reload.status })
+      end
+
+      it do
+        repair_all
+
+        expect(Simulation::ProcessorWorker)
+          .not_to have_received(:perform_async)
+      end
+    end
+
+    context 'when there is few incomplete instants' do
+      include_context 'with instant incomplete', 0
+
+      it do
+        expect { repair_all }
+          .to change { simulation.reload.status }
+          .from(Simulation::FINISHED)
+          .to(Simulation::CREATED)
+      end
+
+      it do
+        repair_all
+
+        expect(Simulation::ProcessorWorker)
+          .to have_received(:perform_async)
+          .with(simulation.id)
+      end
+    end
+
+    context 'when there are several incomplete instants' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant complete', 2
+      include_context 'with instant incomplete', 3
+      include_context 'with instant incomplete', 4
+
+      it do
+        expect { repair_all }
+          .to change { simulation.reload.status }
+          .from(Simulation::FINISHED)
+          .to(Simulation::PROCESSED)
+      end
+
+      it do
+        repair_all
+
+        expect(Simulation::ProcessorWorker)
+          .to have_received(:perform_async)
+          .with(simulation.id)
+      end
+    end
+  end
+
+  xdescribe '.check_and_fix_all' do
+    subject(:check_and_fix_all) do
+      described_class.check_all
+    end
+
+    before do
+      allow(Simulation::ProcessorWorker)
+        .to receive(:perform_async)
+    end
+
+    context 'when simulation is completed' do
+      include_context 'with instant complete', 0
+
+      it do
+        expect { check_and_fix__all }
+          .to change { simulation.reload.status }
+          .from(false).to(true)
+      end
+
+      it do
+        check_and_fix_all
+
+        expect(Simulation::ProcessorWorker)
+          .not_to have_received(:perform_async)
+      end
+
+      it do
+        expect { check_and_fix_all }
+          .not_to(change { simulation.reload.checked })
+      end
+    end
+
+    context 'when the simulation is checked' do
+      include_context 'with instant incomplete', 0
+
+      let(:checked) { true }
+
+      it do
+        expect { check_and_fix__all }
+          .not_to(change { simulation.reload.status })
+      end
+
+      it do
+        check_and_fix_all
+
+        expect(Simulation::ProcessorWorker)
+          .not_to have_received(:perform_async)
+      end
+
+      it do
+        expect { check_and_fix_all }
+          .not_to(change { simulation.reload.checked })
+      end
+    end
+
+    context 'when there is few incomplete instants' do
+      include_context 'with instant incomplete', 0
+
+      it do
+        expect { check_and_fix__all }
+          .to change { simulation.reload.status }
+          .from(Simulation::FINISHED)
+          .to(Simulation::CREATED)
+      end
+
+      it do
+        check_and_fix_all
+
+        expect(Simulation::ProcessorWorker)
+          .to have_received(:perform_async)
+          .with(simulation.id)
+      end
+
+      it do
+        expect { check_and_fix_all }
+          .not_to(change { simulation.reload.checked })
+      end
+    end
+
+    context 'when there are several incomplete instants' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant complete', 2
+      include_context 'with instant incomplete', 3
+      include_context 'with instant incomplete', 4
+
+      it do
+        expect { check_and_fix__all }
+          .to change { simulation.reload.status }
+          .from(Simulation::FINISHED)
+          .to(Simulation::PROCESSED)
+      end
+
+      it do
+        check_and_fix_all
+
+        expect(Simulation::ProcessorWorker)
+          .to have_received(:perform_async)
+          .with(simulation.id)
+      end
+
+      it do
+        expect { check_and_fix_all }
+          .not_to(change { simulation.reload.checked })
+      end
+    end
+  end
+
   describe '.process' do
+    subject(:process) do
+      described_class.process(simulation_id, day)
+    end
+
     let(:day) { 0 }
 
     context 'when there is only one instant' do
@@ -231,6 +439,75 @@ describe Simulation::Contagion::Reparator do
           expect { process }
             .to change { contagion.reload.instants.find_by(day: 2).status }
             .to Simulation::Contagion::Instant::READY
+        end
+      end
+
+      context 'when passing day 3' do
+        let(:day) { 3 }
+
+        it do
+          expect { process }.to change { simulation.reload.status }
+            .to(Simulation::PROCESSED)
+        end
+
+        it 'Deletes only instants after the selected instant' do
+          expect { process }
+            .not_to(change { simulation.reload.contagion.instants.size })
+        end
+
+        it 'removes populations of removed instants' do
+          expect { process }
+            .not_to change(Simulation::Contagion::Population, :count)
+        end
+
+        it 'correct populations size' do
+          expect { process }
+            .not_to(change do
+              contagion.instants.find_by(day: 3).populations.sum(:size)
+            end)
+        end
+
+        it 'correct healthy population' do
+          expect { process }
+            .not_to(change do
+              contagion.reload.instants.find_by(day: 3)
+                       .populations.healthy.sum(:size)
+            end)
+        end
+
+        it 'kills population' do
+          process
+
+          expect(
+            contagion.reload.instants.find_by(day: 3)
+            .populations.dead.find_by(days: 0).size
+          ).to eq(6)
+        end
+
+        it 'marks instant as ready' do
+          expect { process }
+            .to change { contagion.reload.instants.find_by(day: 3).status }
+            .to Simulation::Contagion::Instant::READY
+        end
+      end
+    end
+
+    context 'when an instant misses population with 0 days' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant incomplete', 2
+      include_context 'with instant incomplete', 3
+
+      before do
+        simulation
+        Simulation::Contagion::Population.where(days: 0).delete_all
+      end
+
+      context 'when passing day 2' do
+        let(:day) { 2 }
+
+        it do
+          expect { process }.not_to raise_error
         end
       end
     end

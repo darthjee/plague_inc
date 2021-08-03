@@ -222,7 +222,7 @@ describe SimulationsController do
         let(:expected_simulation_attributes) do
           payload.stringify_keys.reject do |key, _|
             key == 'settings'
-          end.merge('status' => 'created')
+          end.merge('status' => 'created', 'checked' => false)
         end
 
         let(:expected_settings_attributes) do
