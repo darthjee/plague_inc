@@ -214,8 +214,9 @@ describe Simulation, type: :model do
   end
 
   describe "add_tag" do
-    subject(:simulation) { create(:simulation, tags: []) }
+    subject!(:simulation) { create(:simulation, tags: tags) }
 
+    let(:tags) { [] }
     let(:name) { "My tag_Name" }
 
     context "when there is no tag registered" do
@@ -239,6 +240,20 @@ describe Simulation, type: :model do
         expect { simulation.add_tag(name) }
           .to change { simulation.reload.tags.count }
           .by(1)
+      end
+
+      it do
+        expect { simulation.add_tag(name) }
+          .not_to change(Tag, :count)
+      end
+    end
+
+    context "when the tag is registered and attached" do
+      let(:tags) { [name] }
+
+      it "does not add tag to simulation" do
+        expect { simulation.add_tag(name) }
+          .not_to change { simulation.reload.tags.count }
       end
 
       it do
