@@ -1,10 +1,15 @@
 # frozen_string_literal: true
 
 require './app/processors/simulation/contagion/population/builder'
+require './app/processors/simulation/contagion/reparator/class_methods'
 
 class Simulation < ApplicationRecord
   class Contagion < ApplicationRecord
     class Reparator
+      class << self
+        include Reparator::ClassMethods
+      end
+
       include ::Processor
       include Contagion::Cacheable
 
@@ -48,8 +53,8 @@ class Simulation < ApplicationRecord
       end
 
       def destroy_populations
-        instant.populations.dead.find_by(days: 0).destroy
-        instant.populations.immune.find_by(days: 0).destroy
+        instant.populations.dead.find_by(days: 0)&.destroy
+        instant.populations.immune.find_by(days: 0)&.destroy
       end
 
       def rebuild_populations
@@ -67,10 +72,10 @@ class Simulation < ApplicationRecord
                       .populations.where(state: state)
                       .find_or_initialize_by(
                         group: prev_pop.group,
-                        days: prev_pop.days + 1,
-                        behavior: prev_pop.behavior
+                        days: prev_pop.days + 1
                       )
 
+        healthy_pop.behavior ||= prev_pop.behavior
         healthy_pop.size = prev_pop.remaining_size
         healthy_pop.new_infections = 0
         healthy_pop.save
@@ -83,7 +88,7 @@ class Simulation < ApplicationRecord
 
         infected_pop.size = prev_pop.new_infections
         infected_pop.new_infections = 0
-        infected_pop.behavior ||= group.behavior
+        infected_pop.behavior ||= prev_pop.group.behavior
         infected_pop.save
       end
 

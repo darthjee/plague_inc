@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_30_181254) do
+ActiveRecord::Schema.define(version: 2021_08_02_190733) do
 
   create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(version: 2021_07_30_181254) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status", default: "created", null: false
+    t.boolean "checked", default: false, null: false
   end
 
   create_table "simulations_tags", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
