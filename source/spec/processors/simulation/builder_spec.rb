@@ -157,6 +157,8 @@ describe Simulation::Builder do
     context 'when there is no group' do
       let(:group_params) { nil }
 
+      let(:expected_tags) { [] }
+
       it { expect(simulation).to be_a(Simulation) }
 
       it { expect(simulation).not_to be_valid }
@@ -195,6 +197,11 @@ describe Simulation::Builder do
         expect(simulation.settings.behaviors.to_json)
           .to eq([expected_behavior].to_json)
       end
+
+      it 'builds no default tags' do
+        expect(simulation.tags.map(&:name))
+          .to match_array(expected_tags)
+      end
     end
 
     context 'when group misses behavior' do
@@ -205,6 +212,8 @@ describe Simulation::Builder do
           reference: 'group-1'
         }
       end
+
+      let(:expected_tags) { [] }
 
       it { expect(simulation).to be_a(Simulation) }
 
@@ -259,10 +268,16 @@ describe Simulation::Builder do
         expect(simulation.settings.behaviors.to_json)
           .to eq([expected_behavior].to_json)
       end
+
+      it 'builds no default tags' do
+        expect(simulation.tags.map(&:name))
+          .to match_array(expected_tags)
+      end
     end
 
     context 'when there are no behaviors' do
       let(:behavior_params) { nil }
+      let(:expected_tags)   { [] }
 
       it { expect(simulation).to be_a(Simulation) }
 
@@ -312,6 +327,11 @@ describe Simulation::Builder do
         expect(simulation.settings.behaviors)
           .to be_empty
       end
+
+      it 'builds no default tags' do
+        expect(simulation.tags.map(&:name))
+          .to match_array(expected_tags)
+      end
     end
 
     context 'when settings payload and algorithm are missing' do
@@ -322,6 +342,7 @@ describe Simulation::Builder do
           }
         }
       end
+      let(:expected_tags)   { [] }
 
       let(:expected_simulation) do
         Simulation.new(
@@ -341,6 +362,11 @@ describe Simulation::Builder do
       it 'does not generate settings' do
         expect(simulation.settings).to be_nil
       end
+
+      it 'builds no default tags' do
+        expect(simulation.tags.map(&:name))
+          .to match_array(expected_tags)
+      end
     end
 
     context 'when settings payload is missing' do
@@ -352,6 +378,7 @@ describe Simulation::Builder do
           }
         }
       end
+      let(:expected_tags) { [] }
 
       let(:expected_simulation) do
         Simulation.new(
@@ -370,12 +397,19 @@ describe Simulation::Builder do
           .to eq(expected_simulation.as_json)
       end
 
-      it 'generate settingsi empty settings' do
+      it 'generate settings empty settings' do
         expect(simulation.settings).to be_a(Simulation::Contagion)
+      end
+
+      it 'builds no default tags' do
+        expect(simulation.tags.map(&:name))
+          .to match_array(expected_tags)
       end
     end
 
     context 'when group payload is missing' do
+      let(:expected_tags) { [] }
+
       let(:settings_params) do
         {
           lethality: lethality,
@@ -415,6 +449,11 @@ describe Simulation::Builder do
 
       it 'does not generate groups' do
         expect(simulation.settings.groups).to be_empty
+      end
+
+      it 'builds no default tags' do
+        expect(simulation.tags.map(&:name))
+          .to match_array(expected_tags)
       end
     end
   end
