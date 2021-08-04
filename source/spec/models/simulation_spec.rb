@@ -253,7 +253,7 @@ describe Simulation, type: :model do
 
       it 'does not add tag to simulation' do
         expect { simulation.add_tag(name) }
-          .not_to change { simulation.reload.tags.count }
+          .not_to(change { simulation.reload.tags.count })
       end
 
       it do

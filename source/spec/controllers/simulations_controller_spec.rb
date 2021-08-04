@@ -297,7 +297,7 @@ describe SimulationsController do
 
         let(:expected_tags) do
           [
-            'customtag',
+            'customtag'
           ]
         end
 
@@ -312,18 +312,18 @@ describe SimulationsController do
           Simulation.new(simulation_attributes).tap(&:valid?)
         end
 
-        it do
+        it 'is not successful' do
           post :create, params: parameters
 
           expect(response).not_to be_successful
         end
 
-        it do
+        it 'does not create a new simulation' do
           expect { post :create, params: parameters }
             .not_to change(Simulation, :count)
         end
 
-        it do
+        it 'does not create a new tag' do
           expect { post :create, params: parameters }
             .not_to change(Tag, :count)
         end
