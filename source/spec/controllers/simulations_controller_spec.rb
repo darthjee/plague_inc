@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe SimulationsController do
+describe SimulationsController do
   let(:expected_json) do
     Simulation::Decorator.new(expected_object).to_json
   end

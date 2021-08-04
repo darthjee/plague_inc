@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Decorator do
+describe Simulation::Decorator do
   subject(:decorator) { described_class.new(object) }
 
   let(:attributes) { %w[id name algorithm status] }

@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation, type: :model do
+describe Simulation, type: :model do
   subject(:simulation) { build(:simulation) }
 
   describe 'validations' do
