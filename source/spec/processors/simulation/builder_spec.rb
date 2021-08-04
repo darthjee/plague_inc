@@ -27,18 +27,31 @@ describe Simulation::Builder do
       days_till_recovery: 13,
       days_till_sympthoms: 12,
       days_till_start_death: 11,
-      groups: [group_params].compact,
+      groups: groups_params,
       behaviors: [behavior_params].compact
     }
   end
 
   let(:size) { Random.rand(300..1000) }
 
+  let(:groups_params) do
+    [group_params].compact
+  end
+
   let(:group_params) do
     {
       name: 'Group 1',
-      size: size,
+      size: size.to_s,
       reference: 'group-1',
+      behavior: 'behavior-1'
+    }
+  end
+
+  let(:group2_params) do
+    {
+      name: 'Group 1',
+      size: size.to_s,
+      reference: 'group-2',
       behavior: 'behavior-1'
     }
   end
@@ -158,6 +171,25 @@ describe Simulation::Builder do
 
     it 'does not create tags' do
       expect { simulation }.not_to change(Tag, :count)
+    end
+
+    context 'whenre there are two groups' do
+      let(:groups_params) do
+        [group_params, group2_params].compact
+      end
+
+      let(:expected_tags) do
+        [
+          'mytag',
+          "size:#{size * 2}",
+          "lethality:#{lethality}"
+        ]
+      end
+
+      it 'creates the right tags' do
+        expect(simulation.tags.map(&:name))
+          .to match_array(expected_tags)
+      end
     end
 
     context 'when there is no group' do
