@@ -99,9 +99,11 @@ describe SimulationsController do
           algorithm: 'contagion',
           settings: settings_payload,
           status: 'processing',
-          tags: ['CustomTag']
+          tags: tags
         }
       end
+
+      let(:tags) { ['CustomTag'] }
 
       let(:settings_payload) do
         {
@@ -291,10 +293,19 @@ describe SimulationsController do
       end
 
       context 'when there are validation errors' do
-        let(:payload) { { algorithm: 'invalid' } }
+        let(:payload) { { algorithm: 'invalid', tags: tags } }
+
+        let(:expected_tags) do
+          [
+            'customtag',
+          ]
+        end
 
         let(:simulation_attributes) do
-          payload.merge(settings: Simulation::Contagion.new)
+          payload.merge(
+            settings: Simulation::Contagion.new,
+            tags: [Tag.for(tags.first)]
+          )
         end
 
         let(:simulation) do
@@ -330,7 +341,8 @@ describe SimulationsController do
           Simulation.new(
             name: 'my simulation',
             algorithm: 'contagion',
-            contagion: Simulation::Contagion.new
+            contagion: Simulation::Contagion.new,
+            tags: [Tag.for(tags.first)]
           ).tap(&:valid?)
         end
 
