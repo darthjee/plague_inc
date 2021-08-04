@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation, type: :model do
+fdescribe Simulation, type: :model do
   subject(:simulation) { build(:simulation) }
 
   describe 'validations' do
@@ -213,7 +213,7 @@ describe Simulation, type: :model do
     end
   end
 
-  describe 'attach_tag' do
+  describe '#attach_tag' do
     subject!(:simulation) { build(:simulation, tags: tags) }
 
     let(:tags) { [] }
@@ -280,7 +280,7 @@ describe Simulation, type: :model do
     end
   end
 
-  describe 'add_tag' do
+  describe '#add_tag' do
     subject!(:simulation) { create(:simulation, tags: tags) }
 
     let(:tags) { [] }
@@ -297,6 +297,13 @@ describe Simulation, type: :model do
         expect { simulation.add_tag(name) }
           .to change(Tag, :count)
           .by(1)
+      end
+
+      it 'normalizes tag name' do
+        simulation.add_tag(name)
+
+        expect(simulation.tags.pluck(:name))
+          .to eq(['my tag_name'])
       end
     end
 
@@ -326,6 +333,27 @@ describe Simulation, type: :model do
       it do
         expect { simulation.add_tag(name) }
           .not_to change(Tag, :count)
+      end
+    end
+
+    context 'when adding many tags' do
+      it 'adds new tag to simulation' do
+        expect { simulation.add_tag(name, 'oTherTag') }
+          .to change { simulation.reload.tags.count }
+          .by(2)
+      end
+
+      it do
+        expect { simulation.add_tag(name, 'oTherTag') }
+          .to change(Tag, :count)
+          .by(2)
+      end
+
+      it 'normalizes tag name' do
+        simulation.add_tag(name, 'oTherTag')
+
+        expect(simulation.tags.pluck(:name))
+          .to eq(['my tag_name', 'othertag'])
       end
     end
   end

@@ -45,8 +45,11 @@ class Simulation < ApplicationRecord
     tags << Tag.for(name)
   end
 
-  def add_tag(name)
-    attach_tag(name)
+  def add_tag(*names)
+    names.each do |name|
+      attach_tag(name)
+    end
+
     save
   end
 
