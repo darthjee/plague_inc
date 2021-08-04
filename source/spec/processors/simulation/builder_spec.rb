@@ -15,7 +15,8 @@ describe Simulation::Builder do
       simulation: {
         name: 'my simulation',
         algorithm: 'contagion',
-        settings: settings_params
+        settings: settings_params,
+        tags: %w[myTag]
       }
     }
   end
@@ -90,6 +91,7 @@ describe Simulation::Builder do
 
     let(:expected_tags) do
       [
+        "mytag",
         "size:#{size}",
         "lethality:#{lethality}"
       ]
@@ -157,7 +159,7 @@ describe Simulation::Builder do
     context 'when there is no group' do
       let(:group_params) { nil }
 
-      let(:expected_tags) { [] }
+      let(:expected_tags) { %w[mytag] }
 
       it { expect(simulation).to be_a(Simulation) }
 
@@ -213,7 +215,7 @@ describe Simulation::Builder do
         }
       end
 
-      let(:expected_tags) { [] }
+      let(:expected_tags) { %w[mytag] }
 
       it { expect(simulation).to be_a(Simulation) }
 
@@ -277,7 +279,7 @@ describe Simulation::Builder do
 
     context 'when there are no behaviors' do
       let(:behavior_params) { nil }
-      let(:expected_tags)   { [] }
+      let(:expected_tags)   { %w[mytag] }
 
       it { expect(simulation).to be_a(Simulation) }
 
@@ -342,7 +344,7 @@ describe Simulation::Builder do
           }
         }
       end
-      let(:expected_tags)   { [] }
+      let(:expected_tags) { [] }
 
       let(:expected_simulation) do
         Simulation.new(
@@ -408,7 +410,7 @@ describe Simulation::Builder do
     end
 
     context 'when group payload is missing' do
-      let(:expected_tags) { [] }
+      let(:expected_tags) { %w[mytag] }
 
       let(:settings_params) do
         {
