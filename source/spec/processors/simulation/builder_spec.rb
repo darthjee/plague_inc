@@ -91,7 +91,7 @@ describe Simulation::Builder do
 
     let(:expected_tags) do
       [
-        "mytag",
+        'mytag',
         "size:#{size}",
         "lethality:#{lethality}"
       ]
