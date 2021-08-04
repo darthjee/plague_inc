@@ -156,6 +156,10 @@ describe Simulation::Builder do
         .to match_array(expected_tags)
     end
 
+    it 'does not create tags' do
+      expect { simulation }.not_to change(Tag, :count)
+    end
+
     context 'when there is no group' do
       let(:group_params) { nil }
 
