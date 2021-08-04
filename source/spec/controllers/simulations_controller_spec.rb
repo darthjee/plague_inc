@@ -98,7 +98,8 @@ describe SimulationsController do
           name: 'my simulation',
           algorithm: 'contagion',
           settings: settings_payload,
-          status: 'processing'
+          status: 'processing',
+          tags: ['CustomTag']
         }
       end
 
@@ -138,6 +139,7 @@ describe SimulationsController do
 
       let(:expected_tags) do
         [
+          'customtag',
           "size:#{size}",
           "lethality:#{lethality}"
         ]
@@ -189,7 +191,7 @@ describe SimulationsController do
       it do
         expect { post :create, params: parameters }
           .to change(Tag, :count)
-          .by(2)
+          .by(3)
       end
 
       context 'when the request is completed' do
@@ -236,7 +238,7 @@ describe SimulationsController do
 
         let(:expected_simulation_attributes) do
           payload.stringify_keys.reject do |key, _|
-            key == 'settings'
+            %w[settings tags].include?(key)
           end.merge('status' => 'created', 'checked' => false)
         end
 
