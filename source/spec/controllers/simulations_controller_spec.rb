@@ -85,6 +85,8 @@ describe SimulationsController do
 
   describe 'POST create' do
     context 'when requesting json format' do
+      let(:size)      { 100 }
+      let(:lethality) { 0.5 }
       let(:simulation) { Simulation.last }
 
       let(:parameters) do
@@ -102,7 +104,7 @@ describe SimulationsController do
 
       let(:settings_payload) do
         {
-          lethality: 0.5,
+          lethality: lethality,
           days_till_recovery: 13,
           days_till_sympthoms: 12,
           days_till_start_death: 11,
@@ -115,7 +117,7 @@ describe SimulationsController do
       let(:group_payload) do
         {
           name: 'Group 1',
-          size: 100,
+          size: size,
           behavior: 'behavior-1',
           reference: 'group-1',
           lethality_override: nil,
@@ -133,6 +135,13 @@ describe SimulationsController do
       end
 
       let(:expected_object) { simulation }
+
+      let(:expected_tags) do
+        [
+          "size:#{size}",
+          "lethality:#{lethality}"
+        ]
+      end
 
       before do
         allow(Simulation::ProcessorWorker)
@@ -175,6 +184,12 @@ describe SimulationsController do
         expect(Simulation::ProcessorWorker)
           .to have_received(:perform_async)
           .with(Simulation.last.id)
+      end
+
+      it do
+        expect { post :create, params: parameters }
+          .to change(Tag, :count)
+          .by(2)
       end
 
       context 'when the request is completed' do
@@ -266,6 +281,11 @@ describe SimulationsController do
           expect(behavior_attributes)
             .to eq(expected_behavior_attributes)
         end
+
+        it 'creates the expected tags' do
+          expect(simulation.tags.pluck(:name))
+            .to eq(expected_tags)
+        end
       end
 
       context 'when there are validation errors' do
@@ -294,6 +314,11 @@ describe SimulationsController do
           post :create, params: parameters
 
           expect(response.body).to eq(expected_json)
+        end
+
+        it do
+          expect { post :create, params: parameters }
+            .not_to change(Tag, :count)
         end
       end
 
