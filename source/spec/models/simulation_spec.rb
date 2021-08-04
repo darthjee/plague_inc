@@ -213,6 +213,73 @@ describe Simulation, type: :model do
     end
   end
 
+  describe 'attach_tag' do
+    subject!(:simulation) { build(:simulation, tags: tags) }
+
+    let(:tags) { [] }
+    let(:name) { 'My tag_Name' }
+
+    context 'when there is no tag registered' do
+      it 'attach new tag to simulation' do
+        expect { simulation.attach_tag(name) }
+          .to change { simulation.tags.size }
+          .by(1)
+      end
+
+      it 'does not save simulation' do
+        simulation.attach_tag(name)
+
+        expect(simulation).not_to be_persisted
+      end
+
+      it do
+        expect { simulation.attach_tag(name) }
+          .not_to change(Tag, :count)
+      end
+    end
+
+    context 'when the tag is registered but not attached' do
+      before { create(:tag, name: name) }
+
+      it 'attach new tag to simulation' do
+        expect { simulation.attach_tag(name) }
+          .to change { simulation.tags.size }
+          .by(1)
+      end
+
+      it 'does not save simulation' do
+        simulation.attach_tag(name)
+
+        expect(simulation).not_to be_persisted
+      end
+
+      it do
+        expect { simulation.attach_tag(name) }
+          .not_to change(Tag, :count)
+      end
+    end
+
+    context 'when the tag is registered and attached' do
+      let(:tags) { [name] }
+
+      it 'does not attach new tag to simulation' do
+        expect { simulation.attach_tag(name) }
+          .not_to(change { simulation.tags.size })
+      end
+
+      it 'does not save simulation' do
+        simulation.attach_tag(name)
+
+        expect(simulation).not_to be_persisted
+      end
+
+      it do
+        expect { simulation.attach_tag(name) }
+          .not_to change(Tag, :count)
+      end
+    end
+  end
+
   describe 'add_tag' do
     subject!(:simulation) { create(:simulation, tags: tags) }
 
