@@ -39,11 +39,14 @@ class Simulation < ApplicationRecord
     self.contagion = settings
   end
 
-  def add_tag(name)
-    return if tags.where(name: name.downcase).any?
+  def attach_tag(name)
+    return if tags.map(&:name).include?(name.downcase)
 
-    tag = Tag.for(name)
-    tags << tag
+    tags << Tag.for(name)
+  end
+
+  def add_tag(name)
+    attach_tag(name)
     save
   end
 

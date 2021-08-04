@@ -328,7 +328,7 @@ describe SimulationsController do
             .not_to change(Tag, :count)
         end
 
-        xit 'returns simulation with errors' do
+        it 'returns simulation with errors' do
           post :create, params: parameters
 
           expect(response.body).to eq(expected_json)
@@ -367,7 +367,7 @@ describe SimulationsController do
             .not_to change(Tag, :count)
         end
 
-        xit 'returns simulation with errors' do
+        it 'returns simulation with errors' do
           post :create, params: parameters
 
           expect(response.body).to eq(expected_json)
