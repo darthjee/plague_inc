@@ -39,6 +39,20 @@ class Simulation < ApplicationRecord
     self.contagion = settings
   end
 
+  def attach_tag(name)
+    return if tags.map(&:name).include?(name.downcase)
+
+    tags << Tag.for(name)
+  end
+
+  def add_tag(*names)
+    names.each do |name|
+      attach_tag(name)
+    end
+
+    save
+  end
+
   def processed?
     status == PROCESSED
   end

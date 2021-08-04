@@ -11,5 +11,10 @@ class Simulation < ApplicationRecord
     expose :settings
     expose :status
     expose :errors, if: :invalid?
+    expose :tags
+
+    def tags
+      object.tags.map(&:name)
+    end
   end
 end

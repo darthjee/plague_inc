@@ -85,6 +85,8 @@ describe SimulationsController do
 
   describe 'POST create' do
     context 'when requesting json format' do
+      let(:size)      { 100 }
+      let(:lethality) { 0.5 }
       let(:simulation) { Simulation.last }
 
       let(:parameters) do
@@ -96,13 +98,16 @@ describe SimulationsController do
           name: 'my simulation',
           algorithm: 'contagion',
           settings: settings_payload,
-          status: 'processing'
+          status: 'processing',
+          tags: tags
         }
       end
 
+      let(:tags) { ['CustomTag'] }
+
       let(:settings_payload) do
         {
-          lethality: 0.5,
+          lethality: lethality,
           days_till_recovery: 13,
           days_till_sympthoms: 12,
           days_till_start_death: 11,
@@ -115,7 +120,7 @@ describe SimulationsController do
       let(:group_payload) do
         {
           name: 'Group 1',
-          size: 100,
+          size: size,
           behavior: 'behavior-1',
           reference: 'group-1',
           lethality_override: nil,
@@ -133,6 +138,14 @@ describe SimulationsController do
       end
 
       let(:expected_object) { simulation }
+
+      let(:expected_tags) do
+        [
+          'customtag',
+          "size:#{size}",
+          "lethality:#{lethality}"
+        ]
+      end
 
       before do
         allow(Simulation::ProcessorWorker)
@@ -175,6 +188,12 @@ describe SimulationsController do
         expect(Simulation::ProcessorWorker)
           .to have_received(:perform_async)
           .with(Simulation.last.id)
+      end
+
+      it do
+        expect { post :create, params: parameters }
+          .to change(Tag, :count)
+          .by(3)
       end
 
       context 'when the request is completed' do
@@ -221,7 +240,7 @@ describe SimulationsController do
 
         let(:expected_simulation_attributes) do
           payload.stringify_keys.reject do |key, _|
-            key == 'settings'
+            %w[settings tags].include?(key)
           end.merge('status' => 'created', 'checked' => false)
         end
 
@@ -266,34 +285,58 @@ describe SimulationsController do
           expect(behavior_attributes)
             .to eq(expected_behavior_attributes)
         end
+
+        it 'creates the expected tags' do
+          expect(simulation.tags.pluck(:name))
+            .to eq(expected_tags)
+        end
       end
 
       context 'when there are validation errors' do
-        let(:payload) { { algorithm: 'invalid' } }
+        let(:payload) { { algorithm: 'invalid', tags: tags } }
+
+        let(:expected_tags) do
+          [
+            'customtag'
+          ]
+        end
 
         let(:simulation_attributes) do
-          payload.merge(settings: Simulation::Contagion.new)
+          payload.merge(
+            settings: Simulation::Contagion.new,
+            tags: [Tag.for(tags.first)]
+          )
         end
 
         let(:simulation) do
           Simulation.new(simulation_attributes).tap(&:valid?)
         end
 
-        it do
+        it 'is not successful' do
           post :create, params: parameters
 
           expect(response).not_to be_successful
         end
 
-        it do
+        it 'does not create a new simulation' do
           expect { post :create, params: parameters }
             .not_to change(Simulation, :count)
+        end
+
+        it 'does not create a new tag' do
+          expect { post :create, params: parameters }
+            .not_to change(Tag, :count)
         end
 
         it 'returns simulation with errors' do
           post :create, params: parameters
 
           expect(response.body).to eq(expected_json)
+        end
+
+        it do
+          expect { post :create, params: parameters }
+            .not_to change(Tag, :count)
         end
       end
 
@@ -303,7 +346,8 @@ describe SimulationsController do
           Simulation.new(
             name: 'my simulation',
             algorithm: 'contagion',
-            contagion: Simulation::Contagion.new
+            contagion: Simulation::Contagion.new,
+            tags: [Tag.for(tags.first)]
           ).tap(&:valid?)
         end
 
@@ -316,6 +360,11 @@ describe SimulationsController do
         it do
           expect { post :create, params: parameters }
             .not_to change(Simulation, :count)
+        end
+
+        it do
+          expect { post :create, params: parameters }
+            .not_to change(Tag, :count)
         end
 
         it 'returns simulation with errors' do

@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Simulation::Decorator do
   subject(:decorator) { described_class.new(object) }
 
-  let(:attributes) { %w[id name algorithm] }
+  let(:attributes) { %w[id name algorithm status] }
   let(:settings_attributes) do
     %w[
       lethality days_till_recovery
@@ -48,7 +48,7 @@ describe Simulation::Decorator do
           .slice(*attributes)
           .merge(settings: settings_json)
           .as_json
-          .merge('status' => 'created')
+          .merge('tags' => object.tags.map(&:name))
       end
 
       it 'returns expected json' do
@@ -113,7 +113,7 @@ describe Simulation::Decorator do
             .merge(settings: settings_json)
             .merge(errors: expected_errors)
             .deep_stringify_keys
-            .merge('status' => 'created')
+            .merge('tags' => object.tags.map(&:name))
         end
 
         before { object.valid? }
@@ -142,7 +142,7 @@ describe Simulation::Decorator do
             .as_json
             .slice(*attributes)
             .merge(
-              status: :created,
+              tags: simulation.tags.map(&:name),
               settings: simulation.settings
               .as_json.slice(*settings_attributes)
               .merge(groups: groups_json)
@@ -195,6 +195,7 @@ describe Simulation::Decorator do
               .slice(*attributes)
               .merge(
                 status: :created,
+                tags: simulation.tags.map(&:name),
                 errors: expected_errors,
                 settings: simulation.settings
                   .as_json.slice(*settings_attributes)
