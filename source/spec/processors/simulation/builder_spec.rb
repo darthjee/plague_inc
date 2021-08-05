@@ -173,7 +173,7 @@ describe Simulation::Builder do
       expect { simulation }.not_to change(Tag, :count)
     end
 
-    context 'whenre there are two groups' do
+    context 'when there are two groups' do
       let(:groups_params) do
         [group_params, group2_params].compact
       end
