@@ -7,9 +7,7 @@
   <div class="card-body">
     <%= form.input(:name, placeholder: "Simulation name") %>
     <%= form.select(:algorithm, options: Simulation::ALGORITHMS ) %>
-    <div class="form-group row">
-      <div class="col-7" ng-repeat="tag in gnc.data.tags">{{tag}}</div>
-    </div>
+    <%= form.tags(:tags) %>
 
     <% form.with_model('settings') do |f| %>
       <%= render partial: 'contagion_form', locals: { form: f } %>
