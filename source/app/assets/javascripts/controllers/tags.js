@@ -28,6 +28,10 @@
     this.tag = '';
   };
 
+  fn.removeTag = function(tags, index) {
+    tags.splice(index, 1);
+  };
+
   if (!window.Tag) {
     window.Tag = {};
   }
