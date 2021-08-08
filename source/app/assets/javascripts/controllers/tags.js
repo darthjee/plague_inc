@@ -21,7 +21,7 @@
     var tag = this.tag.trim(),
         contains = _.contains(tags, tag);
 
-    if (!(tag == "") && !contains) {
+    if (!(tag === "") && !contains) {
       tags.push(tag);
     }
 
@@ -36,5 +36,5 @@
     window.Tag = {};
   }
 
-  Tag.Controller = Controller;
+  window.Tag.Controller = Controller;
 }(window._, window.angular, window.Cyberhawk));

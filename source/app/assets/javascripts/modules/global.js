@@ -1,7 +1,7 @@
 (function(angular) {
   window.Global = {};
 
-  angular.module('global', [
-    'tags/controller'
+  angular.module("global", [
+    "tags/controller"
   ])
 }(window.angular));
