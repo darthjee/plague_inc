@@ -24,7 +24,7 @@ case $ACTION in
     curl https://cli-assets.heroku.com/install.sh | sh
     ;;
   "set-app")
-    heroku git:remote -a $HEROKU_APP_NAME
+    heroku git:remote -a "$HEROKU_APP_NAME"
     ;;
   "signin")
     heroku container:login

@@ -16,7 +16,7 @@
   fn.payload = function() {
     return {
       simulation: this.data
-    }
+    };
   };
 
   fn._goIndex = function() {
@@ -40,20 +40,23 @@
   };
 
   fn.buildReference = function(key) {
+    var references = this.referencesFor(key),
+      reference;
+
+    do {
+      reference = Math.floor(Math.random() * 1e10);
+    } while(_.contains(references, reference));
+
+    return reference;
+  };
+
+  fn.referencesFor = function(key) {
     var collection = this.data.settings[key];
 
-    while(true) {
-      var reference = Math.floor(Math.random() * 1e10);
-
-      var other = _.find(collection, function(object) {
-        return  object.reference === reference;
-      });
-
-      if (! other) {
-        return reference;
-      }
-    }
-  }
+    return _.map(collection, function(object) {
+      return object.reference;
+    });
+  };
 
   fn.removeObject = function(key, index) {
     this.data.settings[key].splice(index, 1);

@@ -1,4 +1,4 @@
-(function(_, angular, Cyberhawk) {
+(function(_, angular, Cyberhawk, Home) {
   var app = angular.module("home/controller", [
     "cyberhawk/controller",
     "cyberhawk/notifier",
@@ -19,4 +19,4 @@
   ]);
 
   Home.Controller = Controller;
-}(window._, window.angular, window.Cyberhawk));
+}(window._, window.angular, window.Cyberhawk, window.Home));

@@ -3,5 +3,5 @@
 
   angular.module("global", [
     "tags/controller"
-  ])
+  ]);
 }(window.angular));
