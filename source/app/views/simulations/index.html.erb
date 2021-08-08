@@ -29,7 +29,11 @@
               <% end %>
             </td>
             <td>{{simulation.status}}</td>
-            <td>{{simulation.tags.join(', ')}}</td>
+            <td>
+              <span ng-repeat="tag in simulation.tags" class="badge badge-secondary">
+                {{tag}}
+              </span>
+            </td>
             <td>{{simulation.settings.current_day}}</td>
             <td>{{simulation.settings.lethality}}</td>
           </tr>
