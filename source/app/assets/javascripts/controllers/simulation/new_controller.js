@@ -40,15 +40,14 @@
   };
 
   fn.buildReference = function(key) {
-    var references = this.referencesFor(key);
+    var references = this.referencesFor(key),
+      reference;
 
-    while(true) {
-      var reference = Math.floor(Math.random() * 1e10);
+    do {
+      reference = Math.floor(Math.random() * 1e10);
+    } while(_.contains(references, reference));
 
-      if (! _.contains(references, reference)) {
-        return reference;
-      }
-    }
+    return reference;
   };
 
   fn.referencesFor = function(key) {
