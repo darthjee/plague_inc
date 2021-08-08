@@ -19,4 +19,4 @@
   ]);
 
   Home.Controller = Controller;
-}(window._, window.angular, window.Cyberhawk), window.Home);
+}(window._, window.angular, window.Cyberhawk, window.Home));

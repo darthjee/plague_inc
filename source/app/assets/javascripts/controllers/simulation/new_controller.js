@@ -40,19 +40,23 @@
   };
 
   fn.buildReference = function(key) {
-    var collection = this.data.settings[key];
+    var references = this.referencesFor(key);
 
     while(true) {
       var reference = Math.floor(Math.random() * 1e10);
 
-      var other = _.find(collection, function(object) {
-        return  object.reference === reference;
-      });
-
-      if (! other) {
+      if (! _.contains(references, reference)) {
         return reference;
       }
     }
+  };
+
+  fn.referencesFor = function(key) {
+    var collection = this.data.settings[key];
+
+    return _.map(collection, function(object) {
+      return object.reference;
+    });
   };
 
   fn.removeObject = function(key, index) {
