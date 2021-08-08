@@ -10,6 +10,7 @@
         <thead>
           <th scope="col">Name</th>
           <th scope="col">Status</th>
+          <th scope="col">Tags</th>
           <th scope="col">Days</th>
           <th scope="col">Lethality</th>
           <th scope="col">Groups</th>
@@ -30,6 +31,7 @@
               <% end %>
             </td>
             <td>{{simulation.status}}</td>
+            <td>{{simulation.tags.join(', ')}}</td>
             <td>{{simulation.settings.current_day}}</td>
             <td>{{simulation.settings.lethality}}</td>
             <td>
