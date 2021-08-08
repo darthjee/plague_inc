@@ -1,8 +1,8 @@
 (function(angular) {
   window.Home = {};
 
-  angular.module('home', [
-    'home/controller'
+  angular.module("home", [
+    "home/controller"
   ])
 }(window.angular));
 

@@ -1,7 +1,7 @@
 (function(_, angular, Cyberhawk) {
-  var app = angular.module('tags/controller', [
-    'cyberhawk/controller',
-    'cyberhawk/notifier',
+  var app = angular.module("tags/controller", [
+    "cyberhawk/controller",
+    "cyberhawk/notifier",
   ]);
 
   function Controller(builder, notifier, $location) {
@@ -12,8 +12,8 @@
 
   _.extend(fn, Cyberhawk.Controller.prototype);
 
-  app.controller('Tags.Controller', [
-    'cyberhawk_requester', 'cyberhawk_notifier', '$location',
+  app.controller("Tags.Controller", [
+    "cyberhawk_requester", "cyberhawk_notifier", "$location",
     Controller
   ]);
 
@@ -21,11 +21,11 @@
     var tag = this.tag.trim(),
         contains = _.contains(tags, tag);
 
-    if (!(tag == '') && !contains) {
+    if (!(tag == "") && !contains) {
       tags.push(tag);
     }
 
-    this.tag = '';
+    this.tag = "";
   };
 
   fn.removeTag = function(tags, index) {

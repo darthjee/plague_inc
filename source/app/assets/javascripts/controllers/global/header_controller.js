@@ -1,7 +1,7 @@
 (function(_, angular, Global) {
-  var app = angular.module('global/header_controller', [
-    'cyberhawk/notifier',
-    'binded_http'
+  var app = angular.module("global/header_controller", [
+    "cyberhawk/notifier",
+    "binded_http"
   ]);
 
   function Controller(http, notifier) {
@@ -11,8 +11,8 @@
 
   var fn = Controller.prototype;
 
-  app.controller('Global.HeaderController', [
-    'binded_http', 'cyberhawk_notifier',
+  app.controller("Global.HeaderController", [
+    "binded_http", "cyberhawk_notifier",
     Controller
   ]);
 

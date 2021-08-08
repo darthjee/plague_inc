@@ -1,7 +1,7 @@
 (function(_, angular, Cyberhawk) {
-  var app = angular.module('home/controller', [
-    'cyberhawk/controller',
-    'cyberhawk/notifier',
+  var app = angular.module("home/controller", [
+    "cyberhawk/controller",
+    "cyberhawk/notifier",
   ]);
 
 
@@ -13,8 +13,8 @@
 
   _.extend(fn, Cyberhawk.Controller.prototype);
 
-  app.controller('Home.Controller', [
-    'cyberhawk_requester', 'cyberhawk_notifier', '$location',
+  app.controller("Home.Controller", [
+    "cyberhawk_requester", "cyberhawk_notifier", "$location",
     Controller
   ]);
 
