@@ -53,7 +53,7 @@
         return reference;
       }
     }
-  }
+  };
 
   fn.removeObject = function(key, index) {
     this.data.settings[key].splice(index, 1);
