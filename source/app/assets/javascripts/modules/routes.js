@@ -8,7 +8,7 @@
       templateBuilder: function(route, params) {
         return route + '?ajax=true';
       }
-    }
+    };
 
     provider.configs = [{
       routes: ['/'],

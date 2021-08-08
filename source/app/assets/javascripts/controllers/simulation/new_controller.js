@@ -16,7 +16,7 @@
   fn.payload = function() {
     return {
       simulation: this.data
-    }
+    };
   };
 
   fn._goIndex = function() {
