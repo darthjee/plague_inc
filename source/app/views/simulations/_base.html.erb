@@ -7,6 +7,7 @@
   <div class="card-body">
     <%= form.input(:name, placeholder: "Simulation name") %>
     <%= form.select(:algorithm, options: Simulation::ALGORITHMS ) %>
+    <%= form.tags(:tags) %>
 
     <% form.with_model('settings') do |f| %>
       <%= render partial: 'contagion_form', locals: { form: f } %>

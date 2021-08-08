@@ -10,10 +10,9 @@
         <thead>
           <th scope="col">Name</th>
           <th scope="col">Status</th>
+          <th scope="col">Tags</th>
           <th scope="col">Days</th>
           <th scope="col">Lethality</th>
-          <th scope="col">Groups</th>
-          <th scope="col">Behaviors</th>
         </thead>
         <tbody>
           <tr>
@@ -30,18 +29,13 @@
               <% end %>
             </td>
             <td>{{simulation.status}}</td>
+            <td>
+              <span ng-repeat="tag in simulation.tags" class="badge badge-secondary">
+                {{tag}}
+              </span>
+            </td>
             <td>{{simulation.settings.current_day}}</td>
             <td>{{simulation.settings.lethality}}</td>
-            <td>
-              <p ng-repeat="group in simulation.settings.groups">
-                {{group.name}} // {{group.size}} // {{group.behavior}}
-              </p>
-            </td>
-            <td>
-              <p ng-repeat="behavior in simulation.settings.behaviors">
-                {{behavior.reference}} // {{behavior.interactions}} // {{behavior.contagion_risk}}
-              </p>
-            </td>
           </tr>
         </tbody>
       </table>
