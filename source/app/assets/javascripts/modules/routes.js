@@ -5,7 +5,7 @@
     provider.defaultConfig = {
       controller: "Cyberhawk.Controller",
       controllerAs: "gnc",
-      templateBuilder: function(route, params) {
+      templateBuilder(route, params) {
         return route + "?ajax=true";
       }
     };
