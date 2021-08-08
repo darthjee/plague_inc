@@ -5,4 +5,3 @@ module Magicka
   class NgTags < Magicka::Text
   end
 end
-
