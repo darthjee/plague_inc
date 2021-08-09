@@ -14,7 +14,11 @@ class Simulation < ApplicationRecord
 
       return if simulation.finished?
 
-      self.class.perform_async(id)
+      next_worker.perform_async(id)
+    end
+
+    def next_worker
+      self.class
     end
   end
 end
