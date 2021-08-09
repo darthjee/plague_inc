@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-shared_examples "a processor worker" do
+shared_examples 'a processor worker' do
   subject(:worker) { described_class.new }
 
   let(:simulation_id) { simulation.id }

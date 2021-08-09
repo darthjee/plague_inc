@@ -5,4 +5,3 @@ class Simulation < ApplicationRecord
     sidekiq_options queue: :critical
   end
 end
-
