@@ -1,1 +1,4 @@
 :concurrency: 15
+:queues:
+  - critical
+  - default
