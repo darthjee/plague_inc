@@ -3,6 +3,7 @@
 class Simulation < ApplicationRecord
   class ProcessorWorker
     include Sidekiq::Worker
+
     def perform(id)
       simulation = Simulation
                    .eager_load(:contagion)
@@ -16,6 +17,8 @@ class Simulation < ApplicationRecord
 
       next_worker.perform_async(id)
     end
+
+    private
 
     def next_worker
       self.class

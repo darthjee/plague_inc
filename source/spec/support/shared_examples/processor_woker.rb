@@ -5,6 +5,7 @@ require 'spec_helper'
 shared_examples 'a processor worker' do
   subject(:worker) { described_class.new }
 
+  let(:next_worker) { described_class }
   let(:simulation_id) { simulation.id }
   let(:simulation) do
     build(:simulation, simulation_attributes).tap do |sim|
@@ -74,7 +75,7 @@ shared_examples 'a processor worker' do
 
   describe '.perform' do
     before do
-      allow(described_class)
+      allow(next_worker)
         .to receive(:perform_async)
         .with(simulation_id)
     end
@@ -91,7 +92,7 @@ shared_examples 'a processor worker' do
       it 'reschedule the worker' do
         worker.perform(simulation_id)
 
-        expect(described_class)
+        expect(next_worker)
           .to have_received(:perform_async).with(simulation_id)
       end
     end
@@ -121,7 +122,7 @@ shared_examples 'a processor worker' do
         it 'does not reschedule the worker' do
           worker.perform(simulation_id)
 
-          expect(described_class)
+          expect(next_worker)
             .not_to have_received(:perform_async).with(simulation_id)
         end
       end
