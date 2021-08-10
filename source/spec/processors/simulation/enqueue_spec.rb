@@ -2,17 +2,8 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Enqueue do
+describe Simulation::Enqueue do
   let(:quantity) { Random.rand(5..10) }
-
-  before do
-    quantity.times do
-      create(:simulation, status: :finished)
-      create(:simulation, status: :processing)
-      create(:simulation, status: :processed)
-      create(:simulation, status: :created)
-    end
-  end
 
   let(:initial_schedules)  { [] }
   let(:critical_schedules) { [] }
@@ -24,6 +15,15 @@ fdescribe Simulation::Enqueue do
 
   let(:processing_simulations) do
     Simulation.where(status: %i[processing processed])
+  end
+
+  before do
+    quantity.times do
+      create(:simulation, status: :finished)
+      create(:simulation, status: :processing)
+      create(:simulation, status: :processed)
+      create(:simulation, status: :created)
+    end
   end
 
   describe '.process' do
