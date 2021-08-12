@@ -17,8 +17,8 @@
 //= require angular/angular
 //= require angular-route/angular-route
 //= require kanto/kanto
-//= require cyberhawk/cyberhawk
 //= require querystring
+//= require cyberhawk/cyberhawk
 //= require bootstrap
 //= require_tree ./utils
 //= require modules/plague_inc
