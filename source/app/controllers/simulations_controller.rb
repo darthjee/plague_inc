@@ -10,7 +10,8 @@ class SimulationsController < ApplicationController
 
   resource_for :simulation,
                build_with: :build_simulation,
-               after_save: :trigger_worker
+               after_save: :trigger_worker,
+               paginated: true
 
   alias clone edit
 

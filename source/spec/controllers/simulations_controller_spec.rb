@@ -46,9 +46,11 @@ describe SimulationsController do
   end
 
   describe 'GET index' do
+    let(:simulations_count) { 1 }
+
     render_views
 
-    before { create_list(:simulation, 1) }
+    before { create_list(:simulation, simulations_count) }
 
     context 'when requesting json', :not_cached do
       let(:expected_object) { Simulation.all }
@@ -61,6 +63,64 @@ describe SimulationsController do
 
       it 'returns simulations serialized' do
         expect(response.body).to eq(expected_json)
+      end
+
+      it 'adds page header' do
+        expect(response.headers['page']).to eq(1)
+      end
+
+      it 'adds pages header' do
+        expect(response.headers['pages']).to eq(1)
+      end
+
+      it 'adds per_page header' do
+        expect(response.headers['per_page']).to eq(20)
+      end
+
+      context 'when there are too many simulations' do
+        let(:simulations_count) { 21 }
+        let(:expected_object)   { Simulation.limit(20) }
+
+        it { expect(response).to be_successful }
+
+        it 'returns simulations serialized' do
+          expect(response.body).to eq(expected_json)
+        end
+
+        it 'adds page header' do
+          expect(response.headers['page']).to eq(1)
+        end
+
+        it 'adds pages header' do
+          expect(response.headers['pages']).to eq(2)
+        end
+
+        it 'adds per_page header' do
+          expect(response.headers['per_page']).to eq(20)
+        end
+      end
+
+      context 'when there are too many simulations' do
+        let(:simulations_count) { 21 }
+        let(:expected_object)   { Simulation.offset(20) }
+
+        it { expect(response).to be_successful }
+
+        it 'returns simulations serialized' do
+          expect(response.body).to eq(expected_json)
+        end
+
+        it 'adds page header' do
+          expect(response.headers['page']).to eq(2)
+        end
+
+        it 'adds pages header' do
+          expect(response.headers['pages']).to eq(2)
+        end
+
+        it 'adds per_page header' do
+          expect(response.headers['per_page']).to eq(20)
+        end
       end
     end
 
