@@ -5,8 +5,12 @@ module Magicka
   class NgPagination < Magicka::Element
     template_folder 'templates/display'
 
-    with_attribute_locals :pagination
-    with_attribute_locals :path_method
-    with_attribute_locals :options
+    with_attribute_locals :pagination, :path_method, :options
+    with_attributes :model, :field
+    with_locals :pagination_object
+
+    def pagination_object
+      [model, field].join('.')
+    end
   end
 end

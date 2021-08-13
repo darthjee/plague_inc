@@ -3,8 +3,8 @@
     <li class="page-item" ng-show="<%= pagination %>.page > 1">
       <%= angular_safe_link_to(
         path_method, {
-          page: "{{ #{pagination}.page-1 }}",
-          per_page: "{{ #{pagination}.perPage }}"
+          page: "{{ #{pagination_object}.page-1 }}",
+          per_page: "{{ #{pagination_object}.perPage }}"
         }.merge(options),
         'aria-label' => 'Previous',
         'class' => 'page-link'
@@ -16,7 +16,7 @@
       <%= angular_safe_link_to(
         path_method, {
           page: '{{ page }}',
-          per_page: "{{ #{pagination}.perPage }}"
+          per_page: "{{ #{pagination_object}.perPage }}"
         }.merge(options),
         'ng-show' => 'page',
         'class' => 'page-link'
@@ -28,8 +28,8 @@
     <li class="page-item" ng-show="<%= pagination %>.page < <%= pagination %>.pages">
       <%= angular_safe_link_to(
         path_method, {
-          page: "{{ #{pagination}.page + 1 }}",
-          per_page: "{{ #{pagination}.perPage }}"
+          page: "{{ #{pagination_object}.page + 1 }}",
+          per_page: "{{ #{pagination_object}.perPage }}"
         }.merge(options),
         'aria-label' => 'Next',
         'class' => 'page-link'
