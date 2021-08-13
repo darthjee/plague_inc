@@ -8,7 +8,7 @@ module Magicka
     with_attribute_locals :path_method, :options
     with_attributes :model, :field
     with_locals :pagination, :current_page, :total_pages
-    with_locals :previous_page, :next_page
+    with_locals :per_page, :previous_page, :next_page
 
     def pagination
       [model, field].join('.')
@@ -32,6 +32,10 @@ module Magicka
 
     def next_page
       "{{ #{pagination}.page + 1 }}"
+    end
+
+    def per_page
+      "{{ #{pagination}.perPage }}"
     end
   end
 end

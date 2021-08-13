@@ -4,7 +4,7 @@
       <%= angular_safe_link_to(
         path_method, {
           page: previous_page,
-          per_page: "{{ #{pagination}.perPage }}"
+          per_page: per_page
         }.merge(options),
         'aria-label' => 'Previous',
         'class' => 'page-link'
@@ -16,7 +16,7 @@
       <%= angular_safe_link_to(
         path_method, {
           page: '{{ page }}',
-          per_page: "{{ #{pagination}.perPage }}"
+          per_page: per_page
         }.merge(options),
         'ng-show' => 'page',
         'class' => 'page-link'
@@ -29,7 +29,7 @@
       <%= angular_safe_link_to(
         path_method, {
           page: next_page,
-          per_page: "{{ #{pagination}.perPage }}"
+          per_page: per_page
         }.merge(options),
         'aria-label' => 'Next',
         'class' => 'page-link'
