@@ -9,8 +9,8 @@
         'aria-label' => 'Previous',
         'class' => 'page-link'
       ) do %>
-        <span aria-hidden="true">&laquo;</span>
-      <% end %>
+      <span aria-hidden="true">&laquo;</span>
+    <% end %>
     </li>
     <li class="page-item" ng-repeat="page in <%= pages_list %> track by $index" class="{{ <%= current_page %> == page ? 'sr-only' : '' }}">
       <%= angular_safe_link_to(
@@ -21,9 +21,9 @@
         'ng-show' => 'page',
         'class' => 'page-link'
       ) do %>
-        {{ page }} <span class="sr-only" ng-show="<%= current_page %> == page">(current)</span>
-      <% end %>
-       <span ng-show="!page" class="page-link disabled">&#8230;</span>
+      {{ page }} <span class="sr-only" ng-show="<%= current_page %> == page">(current)</span>
+    <% end %>
+    <span ng-show="!page" class="page-link disabled">&#8230;</span>
     </li>
     <li class="page-item" ng-show="<%= current_page %> < <%= total_pages %>">
       <%= angular_safe_link_to(
@@ -34,8 +34,8 @@
         'aria-label' => 'Next',
         'class' => 'page-link'
       ) do %>
-        <span aria-hidden="true">&raquo;</span>
-      <% end %>
+      <span aria-hidden="true">&raquo;</span>
+    <% end %>
     </li>
   </ul>
 </nav>

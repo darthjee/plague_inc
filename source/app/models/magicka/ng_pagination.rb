@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module Magicka
-  # Screen button element with angular attributes
   class NgPagination < Magicka::Element
     template_folder 'templates/display'
 
