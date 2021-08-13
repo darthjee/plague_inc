@@ -20,5 +20,9 @@ module Magicka
     def total_pages
       [pagination, 'pages'].join('.')
     end
+
+    def options
+      @options ||= {}
+    end
   end
 end
