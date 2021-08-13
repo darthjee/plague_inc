@@ -57,7 +57,7 @@ describe SimulationsController do
       let(:expected_object) { Simulation.all }
 
       before do
-        get :index, params: parameters.merge( format: :json )
+        get :index, params: parameters.merge(format: :json)
       end
 
       it { expect(response).to be_successful }
