@@ -9,6 +9,7 @@ module Magicka
     with_attributes :model, :field
     with_locals :pagination, :current_page, :total_pages
     with_locals :per_page, :previous_page, :next_page
+    with_locals :pages_list
 
     def pagination
       [model, field].join('.')
@@ -20,6 +21,10 @@ module Magicka
 
     def total_pages
       [pagination, 'pages'].join('.')
+    end
+
+    def pages_list
+      [pagination, 'pagination'].join('.')
     end
 
     def options

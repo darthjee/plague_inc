@@ -12,7 +12,7 @@
         <span aria-hidden="true">&laquo;</span>
       <% end %>
     </li>
-    <li class="page-item" ng-repeat="page in <%= pagination %>.pagination track by $index" class="{{ <%= current_page %> == page ? 'active' : '' }}">
+    <li class="page-item" ng-repeat="page in <%= pages_list %> track by $index" class="{{ <%= current_page %> == page ? 'active' : '' }}">
       <%= angular_safe_link_to(
         path_method, {
           page: '{{ page }}',
