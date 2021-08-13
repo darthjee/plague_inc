@@ -3,7 +3,7 @@
     <li class="page-item" ng-show="<%= current_page %> > 1">
       <%= angular_safe_link_to(
         path_method, {
-          page: "{{ #{pagination}.page-1 }}",
+          page: previous_page,
           per_page: "{{ #{pagination}.perPage }}"
         }.merge(options),
         'aria-label' => 'Previous',
@@ -28,7 +28,7 @@
     <li class="page-item" ng-show="<%= current_page %> < <%= total_pages %>">
       <%= angular_safe_link_to(
         path_method, {
-          page: "{{ #{pagination}.page + 1 }}",
+          page: next_page,
           per_page: "{{ #{pagination}.perPage }}"
         }.merge(options),
         'aria-label' => 'Next',
