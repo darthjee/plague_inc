@@ -10,7 +10,9 @@ class SimulationsController < ApplicationController
 
   resource_for :simulation,
                build_with: :build_simulation,
-               after_save: :trigger_worker
+               after_save: :trigger_worker,
+               paginated: true,
+               per_page: 10
 
   alias clone edit
 
@@ -18,10 +20,11 @@ class SimulationsController < ApplicationController
 
   def simulations
     Simulation
-      .eager_load(:contagion)
+      .eager_load(:contagion, :tags)
       .eager_load(contagion: :groups)
       .eager_load(contagion: :behaviors)
       .eager_load(contagion: :current_instant)
+      .eager_load(contagion: { groups: :behavior })
   end
 
   def simulation_id

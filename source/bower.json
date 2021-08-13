@@ -9,6 +9,6 @@
     "js-cookie": "2.2.1",
     "querystring": "3.46.1",
     "kanto": "0.0.2",
-    "cyberhawk": "0.0.6"
+    "cyberhawk": "0.1.2"
   }
 }

@@ -39,6 +39,13 @@
           </tr>
         </tbody>
       </table>
+
+      <%= render partial: 'utils/pagination', locals: {
+        pagination: 'gnc.pagination',
+        path_method: :simulations,
+        options: {}
+      } %>
+
     </div>
   </div>
 </div>

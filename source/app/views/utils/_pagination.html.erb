@@ -1,0 +1,37 @@
+<nav>
+  <ul class="pagination">
+    <li ng-show="<%= pagination %>.page > 1">
+      <%= angular_safe_link_to(
+        path_method, {
+          page: "{{ #{pagination}.page-1 }}"
+        }.merge(options),
+        'aria-label' => 'Previous'
+      ) do %>
+        <span aria-hidden="true">&laquo;</span>
+      <% end %>
+    </li>
+    <li ng-repeat="page in <%= pagination %>.pagination track by $index" class="{{ <%= pagination %>.page == page ? 'active' : '' }}">
+      <%= angular_safe_link_to(
+        path_method, {
+          page: '{{ page }}'
+        }.merge(options),
+        'ng-show' => 'page'
+      ) do %>
+        {{ page }} <span class="sr-only" ng-show="<%= pagination %>.page == page">(current)</span>
+      <% end %>
+       <span ng-show="!page" class="disabled">&#8230;</span>
+    </li>
+    <li ng-show="<%= pagination %>.page < <%= pagination %>.pages">
+      <%= angular_safe_link_to(
+        path_method, {
+          page: "{{ #{pagination}.page + 1 }}"
+        }.merge(options),
+        'aria-label' => 'Next'
+      ) do %>
+        <span aria-hidden="true">&raquo;</span>
+      <% end %>
+    </li>
+  </ul>
+</nav>
+
+
