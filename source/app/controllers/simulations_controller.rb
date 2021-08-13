@@ -12,7 +12,7 @@ class SimulationsController < ApplicationController
                build_with: :build_simulation,
                after_save: :trigger_worker,
                paginated: true,
-               per_page: 2
+               per_page: 10
 
   alias clone edit
 

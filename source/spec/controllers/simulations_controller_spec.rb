@@ -47,6 +47,7 @@ describe SimulationsController do
 
   describe 'GET index' do
     let(:simulations_count) { 1 }
+    let(:parameters) { {} }
 
     render_views
 
@@ -56,7 +57,7 @@ describe SimulationsController do
       let(:expected_object) { Simulation.all }
 
       before do
-        get :index, params: { format: :json }
+        get :index, params: parameters.merge( format: :json )
       end
 
       it { expect(response).to be_successful }
@@ -74,12 +75,12 @@ describe SimulationsController do
       end
 
       it 'adds per_page header' do
-        expect(response.headers['per_page']).to eq(20)
+        expect(response.headers['per_page']).to eq(10)
       end
 
       context 'when there are too many simulations' do
         let(:simulations_count) { 21 }
-        let(:expected_object)   { Simulation.limit(20) }
+        let(:expected_object)   { Simulation.limit(10) }
 
         it { expect(response).to be_successful }
 
@@ -92,17 +93,18 @@ describe SimulationsController do
         end
 
         it 'adds pages header' do
-          expect(response.headers['pages']).to eq(2)
+          expect(response.headers['pages']).to eq(3)
         end
 
         it 'adds per_page header' do
-          expect(response.headers['per_page']).to eq(20)
+          expect(response.headers['per_page']).to eq(10)
         end
       end
 
-      context 'when there are too many simulations' do
+      context 'when requesting last page' do
         let(:simulations_count) { 21 }
         let(:expected_object)   { Simulation.offset(20) }
+        let(:parameters)        { { page: 3 } }
 
         it { expect(response).to be_successful }
 
@@ -111,15 +113,15 @@ describe SimulationsController do
         end
 
         it 'adds page header' do
-          expect(response.headers['page']).to eq(2)
+          expect(response.headers['page']).to eq(3)
         end
 
         it 'adds pages header' do
-          expect(response.headers['pages']).to eq(2)
+          expect(response.headers['pages']).to eq(3)
         end
 
         it 'adds per_page header' do
-          expect(response.headers['per_page']).to eq(20)
+          expect(response.headers['per_page']).to eq(10)
         end
       end
     end
