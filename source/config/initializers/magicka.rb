@@ -6,3 +6,5 @@ Magicka::Form.with_element(Magicka::NgButton)
 Magicka::Display.with_element(Magicka::NgButton)
 Magicka::Form.with_element(Magicka::NgTagsForm, :tags)
 Magicka::Display.with_element(Magicka::NgTags, :tags)
+
+Magicka::Display.with_element(Magicka::NgPagination, :pagination)

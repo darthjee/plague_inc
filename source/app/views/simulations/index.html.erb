@@ -40,11 +40,13 @@
         </tbody>
       </table>
 
-      <%= render partial: 'utils/pagination', locals: {
-        pagination: 'gnc.pagination',
-        path_method: :simulations,
-        options: {}
-      } %>
+      <%= magicka_display('gnc') do |display|
+        display.pagination('',
+          pagination: 'gnc.pagination',
+          path_method: :simulations,
+          options: {}
+        )
+      end %>
 
     </div>
   </div>
