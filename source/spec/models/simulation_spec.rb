@@ -171,7 +171,7 @@ describe Simulation, type: :model do
     context 'when it is processing' do
       let(:status) { described_class::PROCESSING }
       let(:minimum_time) do
-        Settings.processing_timeout - 2.seconds
+        Settings.processing_timeout - 5.seconds
       end
       let(:expected_range) do
         (minimum_time..Settings.processing_timeout)
