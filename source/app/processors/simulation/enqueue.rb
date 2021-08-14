@@ -31,7 +31,7 @@ class Simulation < ApplicationRecord
     end
 
     def scope
-      Simulation.where.not(status: %i[finished created])
+      Simulation.where.not(status: %i[finished created fixing])
     end
 
     def created
