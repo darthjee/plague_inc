@@ -522,6 +522,38 @@ describe Simulation::Contagion::Reparator do
       end
     end
 
+    context 'when there is an error' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant incomplete', 2
+      include_context 'with instant incomplete', 3
+
+      let(:day) { 2 }
+
+      before do
+        simulation
+        Simulation::Contagion::Population.where(days: 0).delete_all
+        allow(Simulation::Contagion::PostCreator)
+          .to receive(:process)
+          .and_raise(ActiveRecord::StatementInvalid)
+      end
+
+      it "rollback status update" do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and not_change { simulation.reload.status }
+      end
+
+      it "rollback instants deletions" do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and not_change { simulation.reload.contagion.instants.count }
+      end
+
+      it "rollback populations deletions" do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and not_change(Simulation::Contagion::Population, :count)
+      end
+    end
+
     context 'when an instant misses population with 0 days' do
       include_context 'with instant complete', 0
       include_context 'with instant complete', 1
