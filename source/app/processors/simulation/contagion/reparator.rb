@@ -15,8 +15,9 @@ class Simulation < ApplicationRecord
 
       def initialize(simulation_id, day, transaction: true)
         @simulation_id = simulation_id
-        @day           = day
         @transaction   = transaction
+
+        @day = simulation.fixing? ? 0 : day
       end
 
       def process

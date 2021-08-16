@@ -83,6 +83,28 @@ fdescribe Simulation::Contagion::ReparatorWorker do
       include_context 'with instant incomplete', 2
       include_context 'with instant incomplete', 3
 
+      context 'when passing day 3 and simulation is fixing' do
+        let(:day)    { 3 }
+        let(:status) { Simulation::FIXING }
+
+        it do
+          expect { perform }.to change { simulation.reload.status }
+            .to(Simulation::CREATED)
+        end
+
+        it 'removes all instants' do
+          expect { perform }
+            .to change { simulation.reload.contagion.instants.size }
+            .to(0)
+        end
+
+        it 'removes populations' do
+          expect { perform }
+            .to change(Simulation::Contagion::Population, :count)
+            .by(-16)
+        end
+      end
+
       context 'when passing day 0' do
         let(:day) { 0 }
 

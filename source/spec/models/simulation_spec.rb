@@ -105,6 +105,26 @@ describe Simulation, type: :model do
     end
   end
 
+  describe '#fixing?' do
+    subject(:simulation) { create(:simulation, status: status) }
+
+    context 'when it is FIXING' do
+      let(:status) { described_class::FIXING }
+
+      it { expect(simulation).to be_fixing }
+    end
+
+    context 'when it is not processing' do
+      let(:status) { statuses.sample }
+      let(:statuses) do
+        described_class::STATUSES -
+          [described_class::FIXING]
+      end
+
+      it { expect(simulation).not_to be_fixing }
+    end
+  end
+
   describe '#processable' do
     subject(:simulation) do
       create(

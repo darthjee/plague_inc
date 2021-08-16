@@ -66,6 +66,10 @@ class Simulation < ApplicationRecord
     status == PROCESSING
   end
 
+  def fixing?
+    status == FIXING
+  end
+
   def processable?
     processing? && updated_at < Settings.processing_timeout.to_i.seconds.ago ||
       !processing?
