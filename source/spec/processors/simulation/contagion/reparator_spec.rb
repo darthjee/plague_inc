@@ -147,9 +147,9 @@ describe Simulation::Contagion::Reparator do
     end
   end
 
-  xdescribe '.check_and_fix_all' do
+  describe '.check_and_fix_all' do
     subject(:check_and_fix_all) do
-      described_class.check_all
+      described_class.check_and_fix_all
     end
 
     before do
@@ -161,8 +161,8 @@ describe Simulation::Contagion::Reparator do
       include_context 'with instant complete', 0
 
       it do
-        expect { check_and_fix__all }
-          .to change { simulation.reload.status }
+        expect { check_and_fix_all }
+          .to change { simulation.reload.checked }
           .from(false).to(true)
       end
 
@@ -175,7 +175,7 @@ describe Simulation::Contagion::Reparator do
 
       it do
         expect { check_and_fix_all }
-          .not_to(change { simulation.reload.checked })
+          .not_to(change { simulation.reload.status })
       end
     end
 
@@ -185,7 +185,7 @@ describe Simulation::Contagion::Reparator do
       let(:checked) { true }
 
       it do
-        expect { check_and_fix__all }
+        expect { check_and_fix_all }
           .not_to(change { simulation.reload.status })
       end
 
@@ -206,7 +206,7 @@ describe Simulation::Contagion::Reparator do
       include_context 'with instant incomplete', 0
 
       it do
-        expect { check_and_fix__all }
+        expect { check_and_fix_all }
           .to change { simulation.reload.status }
           .from(Simulation::FINISHED)
           .to(Simulation::CREATED)
@@ -234,7 +234,7 @@ describe Simulation::Contagion::Reparator do
       include_context 'with instant incomplete', 4
 
       it do
-        expect { check_and_fix__all }
+        expect { check_and_fix_all }
           .to change { simulation.reload.status }
           .from(Simulation::FINISHED)
           .to(Simulation::PROCESSED)
