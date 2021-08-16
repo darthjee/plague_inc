@@ -152,6 +152,23 @@ describe Simulation::Contagion::Reparator do
       end
     end
 
+    context 'when simulation is not finished' do
+      include_context 'with instant incomplete', 0
+      let(:status) { not_finished }
+
+      it do
+        expect { repair_all }
+          .not_to change { simulation.reload.status }
+      end
+
+      it do
+        repair_all
+
+        expect(Simulation::ProcessorWorker)
+          .not_to have_received(:perform_async)
+      end
+    end
+
     context 'when there is few incomplete instants' do
       include_context 'with instant incomplete', 0
 
