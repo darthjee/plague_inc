@@ -130,7 +130,7 @@ describe Simulation::Contagion::Reparator do
     end
 
     before do
-      allow(Simulation::ProcessorWorker)
+      allow(Simulation::ProcessorInitialWorker)
         .to receive(:perform_async)
     end
 
@@ -147,7 +147,7 @@ describe Simulation::Contagion::Reparator do
       it do
         repair_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .not_to have_received(:perform_async)
       end
     end
@@ -164,7 +164,7 @@ describe Simulation::Contagion::Reparator do
       it do
         repair_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .not_to have_received(:perform_async)
       end
     end
@@ -182,7 +182,7 @@ describe Simulation::Contagion::Reparator do
       it do
         repair_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .to have_received(:perform_async)
           .with(simulation.id)
       end
@@ -205,7 +205,7 @@ describe Simulation::Contagion::Reparator do
       it do
         repair_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .to have_received(:perform_async)
           .with(simulation.id)
       end
@@ -218,7 +218,7 @@ describe Simulation::Contagion::Reparator do
     end
 
     before do
-      allow(Simulation::ProcessorWorker)
+      allow(Simulation::ProcessorInitialWorker)
         .to receive(:perform_async)
     end
 
@@ -234,7 +234,7 @@ describe Simulation::Contagion::Reparator do
       it do
         check_and_fix_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .not_to have_received(:perform_async)
       end
 
@@ -257,7 +257,7 @@ describe Simulation::Contagion::Reparator do
       it do
         check_and_fix_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .not_to have_received(:perform_async)
       end
 
@@ -280,7 +280,7 @@ describe Simulation::Contagion::Reparator do
       it do
         check_and_fix_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .to have_received(:perform_async)
           .with(simulation.id)
       end
@@ -308,7 +308,7 @@ describe Simulation::Contagion::Reparator do
       it do
         check_and_fix_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .to have_received(:perform_async)
           .with(simulation.id)
       end

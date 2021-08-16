@@ -16,7 +16,7 @@ class Simulation < ApplicationRecord
         def repair_all
           broken_simulations_information.each do |id, day|
             Simulation::Contagion::Reparator.process(id, day)
-            Simulation::ProcessorWorker.perform_async(id)
+            Simulation::ProcessorInitialWorker.perform_async(id)
           end
         end
 
