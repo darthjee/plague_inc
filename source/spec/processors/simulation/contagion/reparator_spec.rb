@@ -145,6 +145,37 @@ describe Simulation::Contagion::Reparator do
           .with(simulation.id)
       end
     end
+
+    context 'when there is an error' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant complete', 2
+      include_context 'with instant incomplete', 3
+      include_context 'with instant incomplete', 4
+
+      before do
+        allow(Simulation::Contagion::PostCreator)
+          .to receive(:process)
+          .and_raise(ActiveRecord::StatementInvalid)
+        allow(Simulation::Contagion::ReparatorWorker)
+          .to receive(:perform_async)
+          .with(simulation.id, 2)
+      end
+
+      it 'enqueues the reparator worker' do
+        repair_all
+
+        expect(Simulation::Contagion::ReparatorWorker)
+          .to have_received(:perform_async)
+      end
+
+      it 'does not enqueue the initial worker' do
+        repair_all
+
+        expect(Simulation::ProcessorInitialWorker)
+          .not_to have_received(:perform_async)
+      end
+    end
   end
 
   describe '.check_and_fix_all' do
