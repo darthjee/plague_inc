@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Simulation::Contagion::ReparatorWorker do
+fdescribe Simulation::Contagion::ReparatorWorker do
   let(:simulation_id) { simulation.id }
   let(:simulation)   { contagion.simulation }
   let(:size)         { 800 }
@@ -32,6 +32,12 @@ describe Simulation::Contagion::ReparatorWorker do
 
     let(:day) { 0 }
 
+    before do
+      allow(Simulation::ProcessorInitialWorker)
+        .to receive(:perform_async)
+        .with(simulation_id)
+    end
+
     context 'when there is only one instant' do
       include_context 'with instant incomplete', 0
 
@@ -50,6 +56,13 @@ describe Simulation::Contagion::ReparatorWorker do
         expect { perform }
           .to change(Simulation::Contagion::Population, :count)
           .by(-1)
+      end
+
+      it do
+        perform
+
+        expect(Simulation::ProcessorInitialWorker)
+          .to have_received(:perform_async)
       end
     end
 
@@ -74,6 +87,13 @@ describe Simulation::Contagion::ReparatorWorker do
         expect { perform }
           .to change(Simulation::Contagion::Population, :count)
           .by(-5)
+      end
+
+      it do
+        perform
+
+        expect(Simulation::ProcessorInitialWorker)
+          .to have_received(:perform_async)
       end
     end
 
@@ -103,6 +123,13 @@ describe Simulation::Contagion::ReparatorWorker do
             .to change(Simulation::Contagion::Population, :count)
             .by(-16)
         end
+
+        it do
+          perform
+
+          expect(Simulation::ProcessorInitialWorker)
+            .to have_received(:perform_async)
+        end
       end
 
       context 'when passing day 0' do
@@ -124,6 +151,13 @@ describe Simulation::Contagion::ReparatorWorker do
             .to change(Simulation::Contagion::Population, :count)
             .by(-16)
         end
+
+        it do
+          perform
+
+          expect(Simulation::ProcessorInitialWorker)
+            .to have_received(:perform_async)
+        end
       end
 
       context 'when passing day 1' do
@@ -144,6 +178,13 @@ describe Simulation::Contagion::ReparatorWorker do
           expect { perform }
             .to change(Simulation::Contagion::Population, :count)
             .by(-16)
+        end
+
+        it do
+          perform
+
+          expect(Simulation::ProcessorInitialWorker)
+            .to have_received(:perform_async)
         end
       end
 
@@ -197,6 +238,13 @@ describe Simulation::Contagion::ReparatorWorker do
             .to change { contagion.reload.instants.find_by(day: 2).status }
             .to Simulation::Contagion::Instant::READY
         end
+
+        it do
+          perform
+
+          expect(Simulation::ProcessorInitialWorker)
+            .to have_received(:perform_async)
+        end
       end
 
       context 'when passing day 3' do
@@ -246,6 +294,13 @@ describe Simulation::Contagion::ReparatorWorker do
             .to change { contagion.reload.instants.find_by(day: 3).status }
             .to Simulation::Contagion::Instant::READY
         end
+
+        it do
+          perform
+
+          expect(Simulation::ProcessorInitialWorker)
+            .to have_received(:perform_async)
+        end
       end
     end
 
@@ -265,6 +320,13 @@ describe Simulation::Contagion::ReparatorWorker do
 
         it do
           expect { perform }.not_to raise_error
+        end
+
+        it do
+          perform
+
+          expect(Simulation::ProcessorInitialWorker)
+            .to have_received(:perform_async)
         end
       end
     end

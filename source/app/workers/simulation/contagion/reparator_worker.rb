@@ -9,6 +9,7 @@ class Simulation < ApplicationRecord
 
       def perform(simulation_id, day)
         Reparator.process(simulation_id, day, transaction: false)
+        ProcessorInitialWorker.perform_async(simulation_id)
       end
     end
   end
