@@ -53,7 +53,7 @@ describe Simulation::Contagion::Reparator do
 
         it do
           expect { check_all }
-            .not_to change { simulation.reload.checked }
+            .not_to(change { simulation.reload.checked })
         end
       end
     end
@@ -93,7 +93,7 @@ describe Simulation::Contagion::Reparator do
 
       it do
         expect { repair_all }
-          .not_to change { simulation.reload.status }
+          .not_to(change { simulation.reload.status })
       end
 
       it do
@@ -505,17 +505,17 @@ describe Simulation::Contagion::Reparator do
           .and_raise(ActiveRecord::StatementInvalid)
       end
 
-      it "rollback status update" do
+      it 'rollback status update' do
         expect { process }.to raise_error(ActiveRecord::StatementInvalid)
-          .and not_change { simulation.reload.status }
+          .and(not_change { simulation.reload.status })
       end
 
-      it "rollback instants deletions" do
+      it 'rollback instants deletions' do
         expect { process }.to raise_error(ActiveRecord::StatementInvalid)
-          .and not_change { simulation.reload.contagion.instants.count }
+          .and(not_change { simulation.reload.contagion.instants.count })
       end
 
-      it "rollback populations deletions" do
+      it 'rollback populations deletions' do
         expect { process }.to raise_error(ActiveRecord::StatementInvalid)
           .and not_change(Simulation::Contagion::Population, :count)
       end
@@ -542,19 +542,19 @@ describe Simulation::Contagion::Reparator do
           .and_raise(ActiveRecord::StatementInvalid)
       end
 
-      it "rollback status update" do
+      it 'rollback status update' do
         expect { process }.to raise_error(ActiveRecord::StatementInvalid)
           .and change { simulation.reload.status }
           .from(Simulation::FINISHED)
           .to(Simulation::FIXING)
       end
 
-      it "rollback instants deletions" do
+      it 'rollback instants deletions' do
         expect { process }.to raise_error(ActiveRecord::StatementInvalid)
-          .and change { simulation.reload.contagion.instants.count }
+          .and(change { simulation.reload.contagion.instants.count })
       end
 
-      it "rollback populations deletions" do
+      it 'rollback populations deletions' do
         expect { process }.to raise_error(ActiveRecord::StatementInvalid)
           .and change(Simulation::Contagion::Population, :count)
       end

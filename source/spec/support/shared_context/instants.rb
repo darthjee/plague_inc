@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_context 'with instant incomplete' do |day|
   before do
     instant = create(:contagion_instant, day: day, contagion: contagion)

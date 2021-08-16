@@ -31,7 +31,7 @@ class Simulation < ApplicationRecord
         def repair(id, day)
           Simulation::Contagion::Reparator.process(id, day, transaction: false)
           Simulation::ProcessorInitialWorker.perform_async(id)
-        rescue
+        rescue StandardError
           Simulation::Contagion::ReparatorWorker.perform_async(id, day)
         end
 

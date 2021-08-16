@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe Simulation::Contagion::ReparatorWorker do
+describe Simulation::Contagion::ReparatorWorker do
   let(:simulation_id) { simulation.id }
   let(:simulation)   { contagion.simulation }
   let(:size)         { 800 }
@@ -332,4 +332,3 @@ fdescribe Simulation::Contagion::ReparatorWorker do
     end
   end
 end
-

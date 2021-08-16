@@ -22,6 +22,7 @@ class Simulation < ApplicationRecord
 
       def process
         return fix unless transaction?
+
         ActiveRecord::Base.transaction { fix }
       end
 
