@@ -73,11 +73,15 @@ describe Simulation::Contagion::Reparator do
   let(:size)         { 800 }
   let(:group)        { contagion.groups.first }
   let(:checked)      { false }
+  let(:status)       { Simulation::FINISHED }
+  let(:not_finished) do
+    (Simulation::STATUSES - [Simulation::FINISHED]).sample
+  end
   let(:contagion) do
     create(
       :contagion,
       size: size,
-      status: :finished,
+      status: status,
       days_till_recovery: 1,
       days_till_sympthoms: 0,
       days_till_start_death: 1,
@@ -107,6 +111,15 @@ describe Simulation::Contagion::Reparator do
         expect { check_all }
           .to change { simulation.reload.checked }
           .from(false).to(true)
+      end
+
+      context 'when simulation is not finished' do
+        let(:status) { not_finished }
+
+        it do
+          expect { check_all }
+            .not_to change { simulation.reload.checked }
+        end
       end
     end
   end
