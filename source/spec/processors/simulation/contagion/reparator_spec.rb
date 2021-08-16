@@ -527,6 +527,7 @@ describe Simulation::Contagion::Reparator do
       include_context 'with instant complete', 1
       include_context 'with instant incomplete', 2
       include_context 'with instant incomplete', 3
+      include_context 'with instant incomplete', 4
 
       let(:day) { 2 }
 
@@ -551,6 +552,45 @@ describe Simulation::Contagion::Reparator do
       it "rollback populations deletions" do
         expect { process }.to raise_error(ActiveRecord::StatementInvalid)
           .and not_change(Simulation::Contagion::Population, :count)
+      end
+    end
+
+    context 'when there is an error and transaction is self' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant incomplete', 2
+      include_context 'with instant incomplete', 3
+      include_context 'with instant incomplete', 4
+
+      subject(:process) do
+        described_class.process(simulation_id, day, transaction: false)
+      end
+
+      let(:day) { 2 }
+
+      before do
+        simulation
+        Simulation::Contagion::Population.where(days: 0).delete_all
+        allow(Simulation::Contagion::PostCreator)
+          .to receive(:process)
+          .and_raise(ActiveRecord::StatementInvalid)
+      end
+
+      it "rollback status update" do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and change { simulation.reload.status }
+          .from(Simulation::FINISHED)
+          .to(Simulation::FIXING)
+      end
+
+      it "rollback instants deletions" do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and change { simulation.reload.contagion.instants.count }
+      end
+
+      it "rollback populations deletions" do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and change(Simulation::Contagion::Population, :count)
       end
     end
 
