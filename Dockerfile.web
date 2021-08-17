@@ -1,3 +1,3 @@
-FROM darthjee/production_plague_inc:0.6.2
+FROM darthjee/production_plague_inc:0.7.0
 
 CMD ["bin/rails", "s"]

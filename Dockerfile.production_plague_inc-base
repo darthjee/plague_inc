@@ -1,4 +1,4 @@
-FROM darthjee/production_taap:0.7.1 as base
+FROM darthjee/production_taap:0.8.0 as base
 FROM darthjee/scripts:0.1.8 as scripts
 
 ######################################
