@@ -105,6 +105,26 @@ describe Simulation, type: :model do
     end
   end
 
+  describe '#fixing?' do
+    subject(:simulation) { create(:simulation, status: status) }
+
+    context 'when it is FIXING' do
+      let(:status) { described_class::FIXING }
+
+      it { expect(simulation).to be_fixing }
+    end
+
+    context 'when it is not processing' do
+      let(:status) { statuses.sample }
+      let(:statuses) do
+        described_class::STATUSES -
+          [described_class::FIXING]
+      end
+
+      it { expect(simulation).not_to be_fixing }
+    end
+  end
+
   describe '#processable' do
     subject(:simulation) do
       create(
@@ -171,7 +191,7 @@ describe Simulation, type: :model do
     context 'when it is processing' do
       let(:status) { described_class::PROCESSING }
       let(:minimum_time) do
-        Settings.processing_timeout - 2.seconds
+        Settings.processing_timeout - 5.seconds
       end
       let(:expected_range) do
         (minimum_time..Settings.processing_timeout)

@@ -19,10 +19,9 @@ describe Simulation::Enqueue do
 
   before do
     quantity.times do
-      create(:simulation, status: :finished)
-      create(:simulation, status: :processing)
-      create(:simulation, status: :processed)
-      create(:simulation, status: :created)
+      Simulation::STATUSES.each do |status|
+        create(:simulation, status: status)
+      end
     end
   end
 

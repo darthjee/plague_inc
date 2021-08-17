@@ -2,82 +2,21 @@
 
 require 'spec_helper'
 
-shared_context 'with instant incomplete' do |day|
-  before do
-    instant = create(:contagion_instant, day: day, contagion: contagion)
-
-    create(
-      :contagion_population, :infected,
-      size: 2 * day + 2,
-      instant: instant,
-      group: group,
-      days: 0
-    )
-
-    if day > 0
-      create(
-        :contagion_population, :dead,
-        size: day,
-        instant: instant,
-        group: group,
-        days: 0
-      )
-      create(
-        :contagion_population, :immune,
-        size: day,
-        instant: instant,
-        group: group,
-        days: 0
-      )
-    end
-
-    if day > 1
-      create(
-        :contagion_population, :dead,
-        size: day - 1,
-        instant: instant,
-        group: group,
-        days: 1
-      )
-      create(
-        :contagion_population, :immune,
-        size: day - 1,
-        instant: instant,
-        group: group,
-        days: 1
-      )
-    end
-  end
-end
-
-shared_context 'with instant complete' do |day|
-  include_context 'with instant incomplete', day
-
-  before do
-    instant = contagion.reload.instants.find_by(day: day)
-
-    create(
-      :contagion_population, :healthy,
-      size: size - instant.populations.sum(:size),
-      instant: instant,
-      group: group,
-      new_infections: 2 * day + 4,
-      days: day
-    )
-  end
-end
-
 describe Simulation::Contagion::Reparator do
   let(:simulation_id) { simulation.id }
   let(:simulation)   { contagion.simulation }
   let(:size)         { 800 }
   let(:group)        { contagion.groups.first }
   let(:checked)      { false }
+  let(:status)       { Simulation::FINISHED }
+  let(:not_finished) do
+    (Simulation::STATUSES - [Simulation::FINISHED]).sample
+  end
   let(:contagion) do
     create(
       :contagion,
       size: size,
-      status: :finished,
+      status: status,
       days_till_recovery: 1,
       days_till_sympthoms: 0,
       days_till_start_death: 1,
@@ -87,7 +26,7 @@ describe Simulation::Contagion::Reparator do
   end
 
   describe '.check_all' do
-    subject(:check_and_fix_all) do
+    subject(:check_all) do
       described_class.check_all
     end
 
@@ -95,7 +34,7 @@ describe Simulation::Contagion::Reparator do
       include_context 'with instant incomplete', 0
 
       it do
-        expect { check_and_fix_all }
+        expect { check_all }
           .not_to(change { simulation.reload.checked })
       end
     end
@@ -104,9 +43,18 @@ describe Simulation::Contagion::Reparator do
       include_context 'with instant complete', 0
 
       it do
-        expect { check_and_fix_all }
+        expect { check_all }
           .to change { simulation.reload.checked }
           .from(false).to(true)
+      end
+
+      context 'when simulation is not finished' do
+        let(:status) { not_finished }
+
+        it do
+          expect { check_all }
+            .not_to(change { simulation.reload.checked })
+        end
       end
     end
   end
@@ -117,7 +65,7 @@ describe Simulation::Contagion::Reparator do
     end
 
     before do
-      allow(Simulation::ProcessorWorker)
+      allow(Simulation::ProcessorInitialWorker)
         .to receive(:perform_async)
     end
 
@@ -134,7 +82,24 @@ describe Simulation::Contagion::Reparator do
       it do
         repair_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
+          .not_to have_received(:perform_async)
+      end
+    end
+
+    context 'when simulation is not finished' do
+      include_context 'with instant incomplete', 0
+      let(:status) { not_finished }
+
+      it do
+        expect { repair_all }
+          .not_to(change { simulation.reload.status })
+      end
+
+      it do
+        repair_all
+
+        expect(Simulation::ProcessorInitialWorker)
           .not_to have_received(:perform_async)
       end
     end
@@ -152,7 +117,7 @@ describe Simulation::Contagion::Reparator do
       it do
         repair_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .to have_received(:perform_async)
           .with(simulation.id)
       end
@@ -175,20 +140,51 @@ describe Simulation::Contagion::Reparator do
       it do
         repair_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .to have_received(:perform_async)
           .with(simulation.id)
       end
     end
+
+    context 'when there is an error' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant complete', 2
+      include_context 'with instant incomplete', 3
+      include_context 'with instant incomplete', 4
+
+      before do
+        allow(Simulation::Contagion::PostCreator)
+          .to receive(:process)
+          .and_raise(ActiveRecord::StatementInvalid)
+        allow(Simulation::Contagion::ReparatorWorker)
+          .to receive(:perform_async)
+          .with(simulation.id, 2)
+      end
+
+      it 'enqueues the reparator worker' do
+        repair_all
+
+        expect(Simulation::Contagion::ReparatorWorker)
+          .to have_received(:perform_async)
+      end
+
+      it 'does not enqueue the initial worker' do
+        repair_all
+
+        expect(Simulation::ProcessorInitialWorker)
+          .not_to have_received(:perform_async)
+      end
+    end
   end
 
-  xdescribe '.check_and_fix_all' do
+  describe '.check_and_fix_all' do
     subject(:check_and_fix_all) do
-      described_class.check_all
+      described_class.check_and_fix_all
     end
 
     before do
-      allow(Simulation::ProcessorWorker)
+      allow(Simulation::ProcessorInitialWorker)
         .to receive(:perform_async)
     end
 
@@ -196,21 +192,21 @@ describe Simulation::Contagion::Reparator do
       include_context 'with instant complete', 0
 
       it do
-        expect { check_and_fix__all }
-          .to change { simulation.reload.status }
+        expect { check_and_fix_all }
+          .to change { simulation.reload.checked }
           .from(false).to(true)
       end
 
       it do
         check_and_fix_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .not_to have_received(:perform_async)
       end
 
       it do
         expect { check_and_fix_all }
-          .not_to(change { simulation.reload.checked })
+          .not_to(change { simulation.reload.status })
       end
     end
 
@@ -220,14 +216,14 @@ describe Simulation::Contagion::Reparator do
       let(:checked) { true }
 
       it do
-        expect { check_and_fix__all }
+        expect { check_and_fix_all }
           .not_to(change { simulation.reload.status })
       end
 
       it do
         check_and_fix_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .not_to have_received(:perform_async)
       end
 
@@ -241,7 +237,7 @@ describe Simulation::Contagion::Reparator do
       include_context 'with instant incomplete', 0
 
       it do
-        expect { check_and_fix__all }
+        expect { check_and_fix_all }
           .to change { simulation.reload.status }
           .from(Simulation::FINISHED)
           .to(Simulation::CREATED)
@@ -250,7 +246,7 @@ describe Simulation::Contagion::Reparator do
       it do
         check_and_fix_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .to have_received(:perform_async)
           .with(simulation.id)
       end
@@ -269,7 +265,7 @@ describe Simulation::Contagion::Reparator do
       include_context 'with instant incomplete', 4
 
       it do
-        expect { check_and_fix__all }
+        expect { check_and_fix_all }
           .to change { simulation.reload.status }
           .from(Simulation::FINISHED)
           .to(Simulation::PROCESSED)
@@ -278,7 +274,7 @@ describe Simulation::Contagion::Reparator do
       it do
         check_and_fix_all
 
-        expect(Simulation::ProcessorWorker)
+        expect(Simulation::ProcessorInitialWorker)
           .to have_received(:perform_async)
           .with(simulation.id)
       end
@@ -489,6 +485,78 @@ describe Simulation::Contagion::Reparator do
             .to change { contagion.reload.instants.find_by(day: 3).status }
             .to Simulation::Contagion::Instant::READY
         end
+      end
+    end
+
+    context 'when there is an error' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant incomplete', 2
+      include_context 'with instant incomplete', 3
+      include_context 'with instant incomplete', 4
+
+      let(:day) { 2 }
+
+      before do
+        simulation
+        Simulation::Contagion::Population.where(days: 0).delete_all
+        allow(Simulation::Contagion::PostCreator)
+          .to receive(:process)
+          .and_raise(ActiveRecord::StatementInvalid)
+      end
+
+      it 'rollback status update' do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and(not_change { simulation.reload.status })
+      end
+
+      it 'rollback instants deletions' do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and(not_change { simulation.reload.contagion.instants.count })
+      end
+
+      it 'rollback populations deletions' do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and not_change(Simulation::Contagion::Population, :count)
+      end
+    end
+
+    context 'when there is an error and transaction is self' do
+      include_context 'with instant complete', 0
+      include_context 'with instant complete', 1
+      include_context 'with instant incomplete', 2
+      include_context 'with instant incomplete', 3
+      include_context 'with instant incomplete', 4
+
+      subject(:process) do
+        described_class.process(simulation_id, day, transaction: false)
+      end
+
+      let(:day) { 2 }
+
+      before do
+        simulation
+        Simulation::Contagion::Population.where(days: 0).delete_all
+        allow(Simulation::Contagion::PostCreator)
+          .to receive(:process)
+          .and_raise(ActiveRecord::StatementInvalid)
+      end
+
+      it 'rollback status update' do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and change { simulation.reload.status }
+          .from(Simulation::FINISHED)
+          .to(Simulation::FIXING)
+      end
+
+      it 'rollback instants deletions' do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and(change { simulation.reload.contagion.instants.count })
+      end
+
+      it 'rollback populations deletions' do
+        expect { process }.to raise_error(ActiveRecord::StatementInvalid)
+          .and change(Simulation::Contagion::Population, :count)
       end
     end
 

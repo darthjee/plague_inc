@@ -10,14 +10,15 @@ class Simulation < ApplicationRecord
     contagion
   ].freeze
 
-  CREATED = 'created'
+  CREATED    = 'created'
   PROCESSING = 'processing'
-  PROCESSED = 'processed'
-  FINISHED = 'finished'
+  PROCESSED  = 'processed'
+  FINISHED   = 'finished'
+  FIXING     = 'fixing'
 
   ALLOWED_ATTRIBUTES = %i[name algorithm].freeze
   STATUSES = [
-    CREATED, PROCESSING, PROCESSED, FINISHED
+    CREATED, PROCESSING, PROCESSED, FINISHED, FIXING
   ].freeze
 
   has_one :contagion
@@ -63,6 +64,10 @@ class Simulation < ApplicationRecord
 
   def processing?
     status == PROCESSING
+  end
+
+  def fixing?
+    status == FIXING
   end
 
   def processable?

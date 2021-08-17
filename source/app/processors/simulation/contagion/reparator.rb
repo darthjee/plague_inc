@@ -13,17 +13,17 @@ class Simulation < ApplicationRecord
       include ::Processor
       include Contagion::Cacheable
 
-      def initialize(simulation_id, day)
+      def initialize(simulation_id, day, transaction: true)
         @simulation_id = simulation_id
-        @day = day
+        @transaction   = transaction
+
+        @day = simulation.fixing? ? 0 : day
       end
 
       def process
-        ActiveRecord::Base.transaction do
-          simulation.update(status: new_status)
-          delete_instants
-          fix_populations
-        end
+        return fix unless transaction?
+
+        ActiveRecord::Base.transaction { fix }
       end
 
       private
@@ -31,6 +31,13 @@ class Simulation < ApplicationRecord
       attr_reader :simulation_id, :day
 
       delegate :contagion, to: :simulation
+
+      def fix
+        simulation.update(status: Simulation::FIXING)
+        delete_instants
+        fix_populations
+        simulation.update(status: new_status)
+      end
 
       def simulation
         @simulation ||= Simulation.find(simulation_id)
@@ -111,6 +118,10 @@ class Simulation < ApplicationRecord
 
       def delete_all?
         day <= 1
+      end
+
+      def transaction?
+        @transaction
       end
     end
   end

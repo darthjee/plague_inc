@@ -15,8 +15,7 @@ class Simulation < ApplicationRecord
 
         def repair_all
           broken_simulations_information.each do |id, day|
-            Simulation::Contagion::Reparator.process(id, day)
-            Simulation::ProcessorWorker.perform_async(id)
+            repair(id, day)
           end
         end
 
@@ -27,6 +26,13 @@ class Simulation < ApplicationRecord
           current_size = contagion.current_instant.populations.map(&:size).sum
           size = contagion.groups.map(&:size).sum
           contagion.simulation.update(checked: current_size == size)
+        end
+
+        def repair(id, day)
+          Simulation::Contagion::Reparator.process(id, day, transaction: false)
+          Simulation::ProcessorInitialWorker.perform_async(id)
+        rescue StandardError
+          Simulation::Contagion::ReparatorWorker.perform_async(id, day)
         end
 
         def simulations_to_check
