@@ -31,4 +31,12 @@ FactoryBot.define do
   trait :finished do
     status { :finished }
   end
+
+  trait :created do
+    status { :created }
+  end
+
+  trait :fixing do
+    status { :fixing }
+  end
 end

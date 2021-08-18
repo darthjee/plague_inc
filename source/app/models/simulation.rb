@@ -24,6 +24,8 @@ class Simulation < ApplicationRecord
   has_one :contagion
   has_and_belongs_to_many :tags
 
+  scope :finished, -> { where(status: :finished) }
+
   validates_presence_of :algorithm, :settings, :status
   validates_inclusion_of :algorithm, in: ALGORITHMS
   validates_inclusion_of :status, in: STATUSES
