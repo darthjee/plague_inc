@@ -16,6 +16,7 @@ class ResizeBehaviorId < ActiveRecord::Migration[5.2]
     remove_foreign_key :simulation_contagion_populations, :simulation_contagion_behaviors
 
     yield
+  ensure
 
     add_foreign_key :simulation_contagion_groups, :simulation_contagion_behaviors, column: :behavior_id
     add_foreign_key :simulation_contagion_populations, :simulation_contagion_behaviors, column: :behavior_id
