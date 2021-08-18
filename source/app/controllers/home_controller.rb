@@ -14,6 +14,17 @@ class HomeController < ApplicationController
   private
 
   def summary
+    {
+      statuses: statuses_summary,
+      finished: finished_summary
+    }
+  end
+
+  def statuses_summary
     Simulation.group(:status).count
+  end
+
+  def finished_summary
+    Simulation.finished.group(:checked).count
   end
 end
