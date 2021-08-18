@@ -48,11 +48,11 @@ ActiveRecord::Schema.define(version: 2021_08_18_171531) do
     t.bigint "instant_id", null: false
     t.bigint "group_id", null: false
     t.bigint "behavior_id", null: false
-    t.integer "size", default: 0, null: false
+    t.integer "size", limit: 3, default: 0, null: false
     t.string "state", null: false
     t.integer "days", limit: 1, default: 0, null: false
     t.integer "interactions", default: 0, null: false
-    t.integer "new_infections", default: 0, null: false
+    t.integer "new_infections", limit: 3, default: 0, null: false
     t.index ["behavior_id"], name: "fk_rails_8cc87c0981"
     t.index ["group_id"], name: "fk_rails_ab58ee1256"
     t.index ["instant_id", "group_id", "state", "days"], name: "simulation_contagion_unique_keys", unique: true
