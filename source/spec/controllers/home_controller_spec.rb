@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-fdescribe HomeController do
+describe HomeController do
   describe 'GET show' do
     render_views
 
