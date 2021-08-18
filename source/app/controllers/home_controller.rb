@@ -4,5 +4,16 @@
 class HomeController < ApplicationController
   include OnePageApplication
 
-  def show; end
+  def show
+    respond_to do |format|
+      format.json { render json: summary }
+      format.html { render :show }
+    end
+  end
+
+  private
+
+  def summary
+    Simulation.group(:status).count
+  end
 end

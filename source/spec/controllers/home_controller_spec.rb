@@ -8,7 +8,7 @@ fdescribe HomeController do
 
     context 'when requesting html' do
       before do
-        get :show
+        get :show, params: { ajax: true }
       end
 
       it { expect(response).to be_successful }
@@ -17,13 +17,25 @@ fdescribe HomeController do
     end
 
     context 'when requesting json' do
+      let(:parsed_body) { JSON.parse(response.body) }
+
+      let(:expected_json) do
+        (1..Simulation::STATUSES.size).to_a.as_hash(
+          Simulation::STATUSES
+        )
+      end
+
       before do
+        expected_json.each do |status, count|
+          create_list(:simulation, count, status)
+        end
+
         get :show, params: { format: :json }
       end
 
       it { expect(response).to be_successful }
 
-      it { expect(response).to eq(expected_json) }
+      it { expect(parsed_body).to eq(expected_json) }
     end
   end
 end
