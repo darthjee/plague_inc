@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_18_171531) do
+ActiveRecord::Schema.define(version: 2021_08_18_230451) do
 
-  create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "simulation_contagion_behaviors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
     t.integer "interactions", null: false
     t.float "contagion_risk", null: false
@@ -22,13 +22,13 @@ ActiveRecord::Schema.define(version: 2021_08_18_171531) do
     t.index ["reference", "contagion_id"], name: "contagion_behaviors_reference_contagion_id", unique: true
   end
 
-  create_table "simulation_contagion_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "simulation_contagion_groups", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "contagion_id", null: false
     t.float "lethality_override"
     t.integer "size", null: false
     t.string "reference", limit: 10
-    t.bigint "behavior_id"
+    t.integer "behavior_id", null: false
     t.integer "infected", default: 0, null: false
     t.index ["behavior_id"], name: "fk_rails_31dbcf6ede"
     t.index ["contagion_id"], name: "fk_rails_feaa742918"
@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(version: 2021_08_18_171531) do
 
   create_table "simulation_contagion_populations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "instant_id", null: false
-    t.bigint "group_id", null: false
-    t.bigint "behavior_id", null: false
+    t.integer "group_id", null: false
+    t.integer "behavior_id", null: false
     t.integer "size", default: 0, null: false
     t.string "state", null: false
     t.integer "days", limit: 2, default: 0, null: false
