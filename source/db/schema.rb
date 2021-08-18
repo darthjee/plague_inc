@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2021_08_18_221300) do
     t.float "lethality_override"
     t.integer "size", null: false
     t.string "reference", limit: 10
-    t.integer "behavior_id"
+    t.integer "behavior_id", null: false
     t.integer "infected", default: 0, null: false
     t.index ["behavior_id"], name: "fk_rails_31dbcf6ede"
     t.index ["contagion_id"], name: "fk_rails_feaa742918"

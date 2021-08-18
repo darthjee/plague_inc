@@ -2,7 +2,7 @@ class ResizeBehaviorId < ActiveRecord::Migration[5.2]
   def up
     with_fk do
       change_column :simulation_contagion_behaviors, :id, :integer, null: false, unique: true, auto_increment: true
-      change_column :simulation_contagion_groups, :behavior_id, :integer
+      change_column :simulation_contagion_groups, :behavior_id, :integer, null: false
       change_column :simulation_contagion_populations, :behavior_id, :integer, null: false
     end
   end
