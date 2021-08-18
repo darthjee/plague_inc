@@ -4,8 +4,8 @@ class ChangeIntegerSize < ActiveRecord::Migration[5.2]
   TABLE = :simulation_contagion_populations
   SIZES = {
     days: 2,
-    size: 3,
-    new_infections: 3
+    size: 4,
+    new_infections: 4
   }.freeze
   DEFAULTS = {
     default: 0,
