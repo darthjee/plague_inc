@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_18_221300) do
+ActiveRecord::Schema.define(version: 2021_08_18_230451) do
 
   create_table "simulation_contagion_behaviors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2021_08_18_221300) do
     t.index ["reference", "contagion_id"], name: "contagion_behaviors_reference_contagion_id", unique: true
   end
 
-  create_table "simulation_contagion_groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "simulation_contagion_groups", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "contagion_id", null: false
     t.float "lethality_override"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2021_08_18_221300) do
 
   create_table "simulation_contagion_populations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "instant_id", null: false
-    t.bigint "group_id", null: false
+    t.integer "group_id", null: false
     t.integer "behavior_id", null: false
     t.integer "size", default: 0, null: false
     t.string "state", null: false
