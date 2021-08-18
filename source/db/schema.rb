@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_02_190733) do
+ActiveRecord::Schema.define(version: 2021_08_18_170149) do
 
   create_table "simulation_contagion_behaviors", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -18,8 +18,6 @@ ActiveRecord::Schema.define(version: 2021_08_02_190733) do
     t.float "contagion_risk", null: false
     t.string "reference", limit: 10
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["contagion_id"], name: "fk_rails_2f5e4f0f2a"
     t.index ["reference", "contagion_id"], name: "contagion_behaviors_reference_contagion_id", unique: true
   end
@@ -32,8 +30,6 @@ ActiveRecord::Schema.define(version: 2021_08_02_190733) do
     t.string "reference", limit: 10
     t.bigint "behavior_id"
     t.integer "infected", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["behavior_id"], name: "fk_rails_31dbcf6ede"
     t.index ["contagion_id"], name: "fk_rails_feaa742918"
     t.index ["reference", "contagion_id"], name: "index_simulation_contagion_groups_on_reference_and_contagion_id", unique: true
@@ -44,8 +40,6 @@ ActiveRecord::Schema.define(version: 2021_08_02_190733) do
     t.bigint "current_population_id"
     t.integer "day", null: false
     t.string "status", default: "created", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["contagion_id", "day"], name: "index_simulation_contagion_instants_on_contagion_id_and_day", unique: true
     t.index ["current_population_id"], name: "fk_rails_e6877570cd"
   end
@@ -54,8 +48,6 @@ ActiveRecord::Schema.define(version: 2021_08_02_190733) do
     t.bigint "instant_id", null: false
     t.bigint "group_id", null: false
     t.bigint "behavior_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "size", default: 0, null: false
     t.string "state", null: false
     t.integer "days", default: 0, null: false
@@ -72,8 +64,6 @@ ActiveRecord::Schema.define(version: 2021_08_02_190733) do
     t.integer "days_till_recovery", null: false
     t.integer "days_till_sympthoms", null: false
     t.integer "days_till_start_death", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "days_till_contagion", default: 0, null: false
     t.integer "days_till_immunization_end"
     t.index ["simulation_id"], name: "index_simulation_contagions_on_simulation_id", unique: true
