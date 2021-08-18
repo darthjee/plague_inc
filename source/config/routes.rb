@@ -2,6 +2,7 @@
 
 Rails.application.routes.draw do
   get '/' => 'home#show', as: :home
+  get '/.json' => 'home#show'
 
   resources :simulations, only: %i[index create new show] do
     get :clone

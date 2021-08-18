@@ -1,1 +1,61 @@
-home
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">
+          Simulations
+        </h4>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <th scope="col">Status</th>
+            <th scope="col">count</th>
+          </thead>
+          <tbody>
+            <tr ng-repeat="key in ['<%= Simulation::STATUSES.join("','") %>']">
+              <td>
+                {{key}}
+              </td>
+              <td>
+                {{hc.data.statuses[key] || 0}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">
+          Finished Simulations
+        </h4>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>
+                cheked
+              </td>
+              <td>
+                {{hc.data.finished.true || 0}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                not cheked
+              </td>
+              <td>
+                {{hc.data.finished.false || 0}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
