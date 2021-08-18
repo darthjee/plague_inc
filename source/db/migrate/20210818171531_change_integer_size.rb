@@ -1,15 +1,26 @@
+# frozen_string_literal: true
+
 class ChangeIntegerSize < ActiveRecord::Migration[5.2]
   TABLE = :simulation_contagion_populations
+  SIZES = {
+    days: 1,
+    size: 3,
+    new_infections: 3
+  }
+  DEFAULTS = {
+    default: 0,
+    null: false,
+  }
 
   def up
-    change_column TABLE, :days, :integer, default: 0, null: false, limit: 1 
-    change_column TABLE, :size, :integer, default: 0, null: false, limit: 3
-    change_column TABLE, :new_infections, :integer, default: 0, null: false, limit: 3
+    SIZES.each do |column, size|
+      change_column TABLE, column, :integer, limit: size, **DEFAULTS
+    end
   end
 
   def down
-    change_column TABLE, :days, :integer, default: 0, null: false
-    change_column TABLE, :size, :integer, default: 0, null: false
-    change_column TABLE, :new_infections, :integer, default: 0, null: false
+    SIZES.keys.each do |column|
+      change_column TABLE, column, :integer, **DEFAULTS
+    end
   end
 end
