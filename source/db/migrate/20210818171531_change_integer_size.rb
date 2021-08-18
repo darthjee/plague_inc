@@ -1,11 +1,13 @@
 class ChangeIntegerSize < ActiveRecord::Migration[5.2]
+  TABLE = :simulation_contagion_populations
+
   def up
-    change_column :simulation_contagion_populations,
-      :days, :integer, default: 0, null: false, limit: 1 
+    change_column TABLE, :days, :integer, default: 0, null: false, limit: 1 
+    change_column TABLE, :size, :integer, default: 0, null: false, limit: 4
   end
 
   def down
-    change_column :simulation_contagion_populations,
-      :days, :integer, default: 0, null: false
+    change_column TABLE, :days, :integer, default: 0, null: false
+    change_column TABLE, :size, :integer, default: 0, null: false
   end
 end
