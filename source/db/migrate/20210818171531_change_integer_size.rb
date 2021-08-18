@@ -6,11 +6,11 @@ class ChangeIntegerSize < ActiveRecord::Migration[5.2]
     days: 1,
     size: 3,
     new_infections: 3
-  }
+  }.freeze
   DEFAULTS = {
     default: 0,
-    null: false,
-  }
+    null: false
+  }.freeze
 
   def up
     SIZES.each do |column, size|
@@ -19,7 +19,7 @@ class ChangeIntegerSize < ActiveRecord::Migration[5.2]
   end
 
   def down
-    SIZES.keys.each do |column|
+    SIZES.each_key do |column|
       change_column TABLE, column, :integer, **DEFAULTS
     end
   end
