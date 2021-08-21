@@ -59,6 +59,106 @@ describe Simulation::Contagion::InstantProcessor, :contagion_cache do
   before { contagion.reload }
 
   describe '.process' do
+    context 'when there is a ready instant without healthy population' do
+      let(:infected_size)         { Random.rand(10..100) }
+
+      let(:created_instant) do
+        contagion.reload.instants.last
+      end
+
+      let(:created_populations) do
+        created_instant.populations
+      end
+
+      let(:created_infected_populations) do
+        created_populations.infected
+      end
+
+      let(:created_healthy_populations) do
+        created_populations.healthy
+      end
+
+      let!(:ready_instant) do
+        create(
+          :contagion_instant,
+          day: 0,
+          status: :ready,
+          contagion: contagion
+        )
+      end
+
+      let!(:infected_population) do
+        create(
+          :contagion_population, :infected,
+          instant: ready_instant,
+          group: group,
+          behavior: behavior,
+          size: infected_size,
+          days: infected_days,
+          interactions: infected_interactions
+        )
+      end
+
+      let!(:healthy_population) do
+        create(
+          :contagion_population, :healthy,
+          instant: ready_instant,
+          group: group,
+          behavior: behavior,
+          size: 0,
+          days: 0,
+        )
+      end
+
+      let(:process) do
+        described_class.process(
+          ready_instant, options, cache: cache
+        )
+      end
+
+      it 'updates simulation' do
+        expect { process }
+          .to(change { simulation.reload.updated_at })
+      end
+
+      it 'does not update simulation status' do
+        expect { process }
+          .not_to(change { simulation.reload.status })
+      end
+
+      it 'creates a new instant' do
+        expect { process }
+          .to change { contagion.reload.instants.count }
+          .by(1)
+      end
+
+      it 'creates a new ready instant' do
+        process
+
+        expect(created_instant.status)
+          .to eq(Simulation::Contagion::Instant::CREATED)
+      end
+
+      it 'changes instant status' do
+        expect { process }
+          .to change { ready_instant.reload.status }
+          .from(Simulation::Contagion::Instant::READY)
+          .to(Simulation::Contagion::Instant::PROCESSED)
+      end
+
+      it 'creates an infected population for the next day' do
+        process
+        expect(created_infected_populations.first.days)
+          .to eq(infected_days + 1)
+      end
+
+      it 'does not create a healthy population for the next day' do
+        process
+        expect(created_healthy_populations)
+          .to be_empty
+      end
+    end
+
     context 'when there is a ready instant' do
       let(:days_till_start_death) { 2 }
       let(:days_till_recovery)    { 3 }
