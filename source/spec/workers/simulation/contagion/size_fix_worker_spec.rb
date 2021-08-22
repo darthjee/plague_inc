@@ -49,6 +49,11 @@ describe Simulation::Contagion::SizeFixWorker do
           expect(described_class)
             .not_to have_received(:perform_async)
         end
+
+        it do
+          expect { perform }
+            .not_to change(Simulation::Contagion::Population, :count)
+        end
       end
 
       context 'when there is one instant' do
@@ -59,6 +64,11 @@ describe Simulation::Contagion::SizeFixWorker do
 
           expect(described_class)
             .not_to have_received(:perform_async)
+        end
+
+        it do
+          expect { perform }
+            .not_to change(Simulation::Contagion::Population, :count)
         end
       end
 
@@ -73,6 +83,11 @@ describe Simulation::Contagion::SizeFixWorker do
             .to have_received(:perform_async)
             .with(simulation.id, 1)
         end
+
+        it do
+          expect { perform }
+            .not_to change(Simulation::Contagion::Population, :count)
+        end
       end
 
       context 'when there are three instant' do
@@ -86,6 +101,11 @@ describe Simulation::Contagion::SizeFixWorker do
           expect(described_class)
             .to have_received(:perform_async)
             .with(simulation.id, 2)
+        end
+
+        it do
+          expect { perform }
+            .not_to change(Simulation::Contagion::Population, :count)
         end
       end
     end
@@ -106,6 +126,12 @@ describe Simulation::Contagion::SizeFixWorker do
           expect(described_class)
             .not_to have_received(:perform_async)
         end
+
+        it do
+          expect { perform }
+            .to change(Simulation::Contagion::Population, :count)
+            .by(-1)
+        end
       end
 
       context 'when there are three instant and day 1 is passed' do
@@ -119,6 +145,12 @@ describe Simulation::Contagion::SizeFixWorker do
 
           expect(described_class)
             .not_to have_received(:perform_async)
+        end
+
+        it do
+          expect { perform }
+            .to change(Simulation::Contagion::Population, :count)
+            .by(-1)
         end
       end
 
@@ -134,6 +166,12 @@ describe Simulation::Contagion::SizeFixWorker do
           expect(described_class)
             .to have_received(:perform_async)
             .with(simulation.id, 1)
+        end
+
+        it do
+          expect { perform }
+            .to change(Simulation::Contagion::Population, :count)
+            .by(-1)
         end
       end
     end

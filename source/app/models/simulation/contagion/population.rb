@@ -23,6 +23,7 @@ class Simulation < ApplicationRecord
       scope :alive,       -> { where.not(state: DEAD) }
       scope :recent,      -> { where(days: 0) }
       scope :not_empty,   -> { where.not(size: 0) }
+      scope :empty,       -> { where(size: 0) }
 
       scope :with_population, -> { where('size > ?', 0) }
 

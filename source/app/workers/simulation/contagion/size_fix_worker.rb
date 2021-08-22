@@ -18,6 +18,8 @@ class Simulation < ApplicationRecord
         @day = day
 
         return enqueue_first unless day
+
+        fix_populations
         enqueue_next
       end
 
@@ -27,6 +29,10 @@ class Simulation < ApplicationRecord
 
       delegate :contagion, to: :simulation
       delegate :instants, to: :contagion
+
+      def fix_populations
+        instant.populations.healthy.delete_all
+      end
 
       def enqueue_first
         return unless instants.any?
@@ -45,6 +51,18 @@ class Simulation < ApplicationRecord
         @simulation ||= Simulation
           .eager_load(:contagion)
           .find(simulation_id)
+      end
+
+      def instant
+        @instant ||= instants.find_by(day: day)
+      end
+
+      def previous_instant
+        @previous_instant ||= instants.find_by(day: day - 1)
+      end
+
+      def previous_populations
+        @previous_populations ||= previous_instant.populations
       end
     end
   end
