@@ -58,12 +58,11 @@ describe Simulation::Contagion::SizeFixWorker do
           perform
 
           expect(described_class)
-            .to have_received(:perform_async)
-            .with(simulation.id, 0)
+            .not_to have_received(:perform_async)
         end
       end
 
-      context 'when there is one instant' do
+      context 'when there are two instant' do
         include_context 'with instant with empty populations', 0
         include_context 'with instant with empty populations', 1
 
@@ -75,6 +74,20 @@ describe Simulation::Contagion::SizeFixWorker do
             .with(simulation.id, 1)
         end
       end
+
+      context 'when there are three instant' do
+        include_context 'with instant with empty populations', 0
+        include_context 'with instant with empty populations', 1
+        include_context 'with instant with empty populations', 2
+
+        it do
+          perform
+
+          expect(described_class)
+            .to have_received(:perform_async)
+            .with(simulation.id, 2)
+        end
+      end
     end
 
     context 'when day is passed' do
@@ -82,20 +95,7 @@ describe Simulation::Contagion::SizeFixWorker do
         described_class.new.perform(simulation.id, day)
       end
 
-      context 'when there is one instant' do
-        include_context 'with instant with empty populations', 0
-
-        let(:day) { 0 }
-
-        it do
-          perform
-
-          expect(described_class)
-            .not_to have_received(:perform_async)
-        end
-      end
-
-      context 'when there is one instant and day 1 is passed' do
+      context 'when there are two instants and day 1 is passed' do
         include_context 'with instant with empty populations', 0
         include_context 'with instant with empty populations', 1
         let(:day) { 1 }
@@ -104,21 +104,36 @@ describe Simulation::Contagion::SizeFixWorker do
           perform
 
           expect(described_class)
-            .to have_received(:perform_async)
-            .with(simulation.id, 0)
+            .not_to have_received(:perform_async)
         end
       end
 
-      context 'when there is one instant and day 0 is passed' do
+      context 'when there are three instant and day 1 is passed' do
         include_context 'with instant with empty populations', 0
         include_context 'with instant with empty populations', 1
-        let(:day) { 0 }
+        include_context 'with instant with empty populations', 2
+        let(:day) { 1 }
 
         it do
           perform
 
           expect(described_class)
             .not_to have_received(:perform_async)
+        end
+      end
+
+      context 'when there are three instant and day 2 is passed' do
+        include_context 'with instant with empty populations', 0
+        include_context 'with instant with empty populations', 1
+        include_context 'with instant with empty populations', 2
+        let(:day) { 2 }
+
+        it do
+          perform
+
+          expect(described_class)
+            .to have_received(:perform_async)
+            .with(simulation.id, 1)
         end
       end
     end

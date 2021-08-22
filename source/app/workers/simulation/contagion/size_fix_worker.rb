@@ -30,12 +30,13 @@ class Simulation < ApplicationRecord
 
       def enqueue_first
         return unless instants.any?
+        return if instants.last.day.zero?
 
         self.class.perform_async(simulation_id, instants.last.day)
       end
 
       def enqueue_next
-        return if day.zero?
+        return if day <= 1
 
         self.class.perform_async(simulation_id, day - 1)
       end
