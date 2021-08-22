@@ -68,7 +68,7 @@ class Simulation < ApplicationRecord
       end
 
       def healthy_populations
-        instant.populations.healthy
+        instant.populations.healthy.not_empty
       end
 
       def find_or_create_instant

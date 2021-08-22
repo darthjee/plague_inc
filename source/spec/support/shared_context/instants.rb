@@ -64,3 +64,20 @@ shared_context 'with instant complete' do |day|
     )
   end
 end
+
+shared_context 'with instant with empty populations' do |day, size: 0|
+  include_context 'with instant incomplete', day
+
+  before do
+    instant = contagion.reload.instants.find_by(day: day)
+
+    create(
+      :contagion_population, :healthy,
+      size: size,
+      instant: instant,
+      group: group,
+      new_infections: 0,
+      days: day
+    )
+  end
+end
