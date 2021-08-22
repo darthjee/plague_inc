@@ -60,7 +60,7 @@ describe Simulation::Contagion::InstantProcessor, :contagion_cache do
 
   describe '.process' do
     context 'when there is a ready instant without healthy population' do
-      let(:infected_size)         { Random.rand(10..100) }
+      let(:infected_size) { Random.rand(10..100) }
 
       let(:created_instant) do
         contagion.reload.instants.last
@@ -87,7 +87,13 @@ describe Simulation::Contagion::InstantProcessor, :contagion_cache do
         )
       end
 
-      let!(:infected_population) do
+      let(:process) do
+        described_class.process(
+          ready_instant, options, cache: cache
+        )
+      end
+
+      before do
         create(
           :contagion_population, :infected,
           instant: ready_instant,
@@ -97,22 +103,14 @@ describe Simulation::Contagion::InstantProcessor, :contagion_cache do
           days: infected_days,
           interactions: infected_interactions
         )
-      end
 
-      let!(:healthy_population) do
         create(
           :contagion_population, :healthy,
           instant: ready_instant,
           group: group,
           behavior: behavior,
           size: 0,
-          days: 0,
-        )
-      end
-
-      let(:process) do
-        described_class.process(
-          ready_instant, options, cache: cache
+          days: 0
         )
       end
 

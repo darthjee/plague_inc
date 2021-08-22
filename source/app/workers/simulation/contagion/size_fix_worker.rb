@@ -33,6 +33,7 @@ class Simulation < ApplicationRecord
       def fix_populations
         instant.populations.healthy.empty.each do |pop|
           next unless delete?(pop)
+
           pop.delete
         end
       end
@@ -60,8 +61,8 @@ class Simulation < ApplicationRecord
 
       def simulation
         @simulation ||= Simulation
-          .eager_load(:contagion)
-          .find(simulation_id)
+                        .eager_load(:contagion)
+                        .find(simulation_id)
       end
 
       def instant
@@ -78,4 +79,3 @@ class Simulation < ApplicationRecord
     end
   end
 end
-
