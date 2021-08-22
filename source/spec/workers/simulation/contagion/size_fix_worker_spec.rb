@@ -175,11 +175,37 @@ describe Simulation::Contagion::SizeFixWorker do
         end
       end
 
-      context 'when there healthy population is not empty' do
+      context 'when healthy population is not empty' do
         include_context 'with instant with empty populations', 0, size: 10
         include_context 'with instant with empty populations', 1, size: 10
         include_context 'with instant with empty populations', 2, size: 10
         let(:day) { 2 }
+
+        it do
+          perform
+
+          expect(described_class)
+            .to have_received(:perform_async)
+            .with(simulation.id, 1)
+        end
+
+        it do
+          expect { perform }
+            .not_to change(Simulation::Contagion::Population, :count)
+        end
+      end
+
+      context 'when other populations are empty' do
+        include_context 'with instant with empty populations', 0, size: 10
+        include_context 'with instant with empty populations', 1, size: 10
+        include_context 'with instant with empty populations', 2, size: 10
+
+        let(:day) { 2 }
+
+        before do
+          Simulation::Contagion::Population
+            .where.not(state: :healthy).update_all(size: 0)
+        end
 
         it do
           perform

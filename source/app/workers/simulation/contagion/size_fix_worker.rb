@@ -31,7 +31,7 @@ class Simulation < ApplicationRecord
       delegate :instants, to: :contagion
 
       def fix_populations
-        instant.populations.empty.delete_all
+        instant.populations.healthy.empty.delete_all
       end
 
       def enqueue_first
