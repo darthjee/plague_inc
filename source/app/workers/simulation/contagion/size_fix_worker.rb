@@ -31,7 +31,18 @@ class Simulation < ApplicationRecord
       delegate :instants, to: :contagion
 
       def fix_populations
-        instant.populations.healthy.empty.delete_all
+        instant.populations.healthy.empty.each do |pop|
+          next unless delete?(pop)
+          pop.delete
+        end
+      end
+
+      def delete?(population)
+        previous_populations.where(
+          state: population.state,
+          group: population.group,
+          size: 0
+        ).any?
       end
 
       def enqueue_first
