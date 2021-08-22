@@ -65,7 +65,7 @@ shared_context 'with instant complete' do |day|
   end
 end
 
-shared_context 'with instant with empty populations' do |day|
+shared_context 'with instant with empty populations' do |day, size: 0|
   include_context 'with instant incomplete', day
 
   before do
@@ -73,7 +73,7 @@ shared_context 'with instant with empty populations' do |day|
 
     create(
       :contagion_population, :healthy,
-      size: 0,
+      size: size,
       instant: instant,
       group: group,
       new_infections: 0,
