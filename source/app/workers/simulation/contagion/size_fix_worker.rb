@@ -15,13 +15,15 @@ class Simulation < ApplicationRecord
 
       def perform(simulation_id, day = nil)
         @simulation_id = simulation_id
+        @day = day
 
         return enqueue_first unless day
+        enqueue_next
       end
 
       private
 
-      attr_reader :simulation_id
+      attr_reader :simulation_id, :day
 
       delegate :contagion, to: :simulation
       delegate :instants, to: :contagion
@@ -30,6 +32,12 @@ class Simulation < ApplicationRecord
         return unless instants.any?
 
         self.class.perform_async(simulation_id, instants.last.day)
+      end
+
+      def enqueue_next
+        return if day.zero?
+
+        self.class.perform_async(simulation_id, day - 1)
       end
 
       def simulation
