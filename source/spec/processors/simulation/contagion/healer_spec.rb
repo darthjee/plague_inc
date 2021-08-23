@@ -71,5 +71,44 @@ describe Simulation::Contagion::Healer do
           .not_to(change { instant.populations.map(&:days) })
       end
     end
+
+    context 'when there is more than one population to be healed' do
+      let(:other_group) do
+        create(:contagion_group, contagion: contagion, behavior: group.behavior)
+      end
+
+      before do
+        states.map do |state|
+          create(
+            :contagion_population,
+            group: other_group,
+            behavior: other_group.behavior,
+            instant: instant,
+            days: 16,
+            size: 10,
+            state: state
+          )
+        end
+
+        simulation.contagion.reload
+      end
+
+      it 'recovers those ready to be recovered' do
+        expect { described_class.process(instant) }
+          .to change { instant.populations.map(&:state).sort }
+          .to(%w[dead dead healthy healthy immune immune immune immune])
+      end
+
+      it 'resets day counter' do
+        expect { described_class.process(instant) }
+          .to change { instant.populations.map(&:days).sort }
+          .to([0, 0, 16, 16, 16, 16, 16, 16])
+      end
+
+      it 'does not persist change' do
+        expect { described_class.process(instant) }
+          .not_to(change { instant.reload.populations.map(&:state) })
+      end
+    end
   end
 end
