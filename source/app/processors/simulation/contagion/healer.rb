@@ -21,10 +21,10 @@ class Simulation < ApplicationRecord
       # Only populations ready to be killed (days >= days_till_recovery)
       # are recovered
       def process
-        return unless population
-
-        population.state = Population::IMMUNE
-        population.days  = 0
+        populations.each do |population|
+          population.state = Population::IMMUNE
+          population.days  = 0
+        end
       end
 
       private
@@ -33,10 +33,9 @@ class Simulation < ApplicationRecord
 
       delegate :contagion, to: :instant
       delegate :days_till_recovery, to: :contagion
-      delegate :populations, to: :instant
 
-      def population
-        @population ||= populations.find do |pop|
+      def populations
+        @populations ||= instant.populations.select do |pop|
           pop.infected? && pop.days >= days_till_recovery
         end
       end
