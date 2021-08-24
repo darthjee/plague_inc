@@ -37,16 +37,16 @@ class Simulation < ApplicationRecord
 
       def connection_args
         [
-          Settings.graph_host,
-          Settings.graph_username,
+          GraphSettings.host,
+          GraphSettings.username,
           {
-            key_data: Settings.graph_key
+            key_data: GraphSettings.key
           }
         ]
       end
 
       def remote_path
-        [Settings.graph_folder, "#{graph_id}#{extension}"].join('/')
+        [GraphSettings.folder, "#{graph_id}#{extension}"].join('/')
       end
 
       def extension

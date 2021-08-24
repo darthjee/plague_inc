@@ -7,11 +7,6 @@ class Settings
   settings_prefix 'PLAGUE_INC'
 
   with_settings(
-    :graph_host,
-    :graph_username,
-    :graph_key,
-    :graph_folder,
-
     title: 'Plague Simulations',
     favicon: 'http://images.coronasim.xyz/favicon.ico',
     cache_age: 10.seconds,
