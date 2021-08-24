@@ -1,5 +1,8 @@
 FROM httpd:2.4.48
 
+RUN apt-get update
+RUN apt-get install -y openssh-server
+
 RUN mkdir /usr/local/apache2/htdocs/test
 RUN mkdir /usr/local/apache2/htdocs/app
 
