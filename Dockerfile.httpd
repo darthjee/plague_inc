@@ -6,5 +6,7 @@ RUN apt-get install -y openssh-server
 RUN mkdir /usr/local/apache2/htdocs/test
 RUN mkdir /usr/local/apache2/htdocs/app
 
+COPY httpd/sshd_config /etc/ssh/sshd_config
+
 COPY httpd/init.sh /init.sh
 CMD ["/init.sh"]
