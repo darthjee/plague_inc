@@ -2,7 +2,7 @@
 
 echo "----------------------------------"
 echo "Initing SSHD"
-systemctl restart sshd
+exec /usr/sbin/sshd -D -e
 echo "----------------------------------"
 echo "Initing HTTPD"
 httpd-foreground

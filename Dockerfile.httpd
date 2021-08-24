@@ -8,5 +8,5 @@ RUN mkdir /usr/local/apache2/htdocs/app
 
 COPY httpd/sshd_config /etc/ssh/sshd_config
 
-COPY httpd/entrypoint.sh /init.sh
+COPY httpd/entrypoint.sh /entrypoint.sh
 CMD ["/entrypoint.sh"]
