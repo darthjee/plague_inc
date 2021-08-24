@@ -10,6 +10,7 @@ class GraphSettings
     :host,
     :username,
     :key,
+    :passphrase,
     :folder,
   )
  end

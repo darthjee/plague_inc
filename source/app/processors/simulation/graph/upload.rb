@@ -40,7 +40,8 @@ class Simulation < ApplicationRecord
           GraphSettings.host,
           GraphSettings.username,
           {
-            key_data: GraphSettings.key
+            key_data: GraphSettings.key.gsub("\\n", "\n"),
+            passphrase: GraphSettings.passphrase
           }
         ]
       end
