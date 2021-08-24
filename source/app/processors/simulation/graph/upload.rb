@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 require 'gnuplot'
-require 'pry'
-require 'pry-nav'
+require 'bcrypt_pbkdf'
 
 class Simulation < ApplicationRecord
   class Graph < ApplicationRecord
@@ -41,7 +40,7 @@ class Simulation < ApplicationRecord
           Settings.graph_host,
           Settings.graph_username,
           {
-            password: Settings.graph_password
+            key_data: Settings.graph_key
           }
         ]
       end
