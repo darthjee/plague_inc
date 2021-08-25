@@ -13,6 +13,7 @@ services:
     container_name: plague_inc_images
     ports:
       - 127.0.0.1:8080:80
+      - 127.0.0.1:8020:22
   plague_inc_mysql:
     image: mysql:5.7
     container_name: plague_inc_mysql
