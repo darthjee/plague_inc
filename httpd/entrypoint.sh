@@ -1,5 +1,12 @@
 #!/bin/bash
 
+function create_user() {
+  echo "----------------------------------"
+  echo "Creating user"
+  useradd -u 1000 user_name --password the_password
+  chown user_name.user_name /usr/local/apache2/htdocs
+}
+
 function init_sshd() {
   echo "----------------------------------"
   echo "Initing SSHD"
@@ -12,4 +19,5 @@ function init_httpd() {
   httpd-foreground
 }
 
+create_user
 init_sshd & init_httpd
