@@ -84,5 +84,3 @@ services:
       - PAPERTRAIL_API_TOKEN=''
       - PLAGUE_INC_REDIS_URL=redis://redis:6379/0
       - REDISCLOUD_URL=
-    volumes:
-      - ./source/app:/home/app/app/app
