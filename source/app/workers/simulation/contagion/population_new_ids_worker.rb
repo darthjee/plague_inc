@@ -9,6 +9,10 @@ class Simulation < ApplicationRecord
 
       def perform
         return unless Simulation::Contagion::Population.where(new_id: nil).any?
+        new_id = Simulation::Contagion::Population.max(:new_id) + 1
+        Simulation::Contagion::Population.where(new_id: nil).limit(1).update_all(new_id: new_id)
+
+        self.class.perform_async
       end
     end
   end
