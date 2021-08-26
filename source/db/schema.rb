@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_18_230451) do
+ActiveRecord::Schema.define(version: 2021_08_26_122112) do
 
   create_table "simulation_contagion_behaviors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -37,11 +37,9 @@ ActiveRecord::Schema.define(version: 2021_08_18_230451) do
 
   create_table "simulation_contagion_instants", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
-    t.bigint "current_population_id"
     t.integer "day", null: false
     t.string "status", default: "created", null: false
     t.index ["contagion_id", "day"], name: "index_simulation_contagion_instants_on_contagion_id_and_day", unique: true
-    t.index ["current_population_id"], name: "fk_rails_e6877570cd"
   end
 
   create_table "simulation_contagion_populations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -108,7 +106,6 @@ ActiveRecord::Schema.define(version: 2021_08_18_230451) do
   add_foreign_key "simulation_contagion_behaviors", "simulation_contagions", column: "contagion_id"
   add_foreign_key "simulation_contagion_groups", "simulation_contagion_behaviors", column: "behavior_id"
   add_foreign_key "simulation_contagion_groups", "simulation_contagions", column: "contagion_id"
-  add_foreign_key "simulation_contagion_instants", "simulation_contagion_populations", column: "current_population_id"
   add_foreign_key "simulation_contagion_instants", "simulation_contagions", column: "contagion_id"
   add_foreign_key "simulation_contagion_populations", "simulation_contagion_behaviors", column: "behavior_id"
   add_foreign_key "simulation_contagion_populations", "simulation_contagion_groups", column: "group_id"
