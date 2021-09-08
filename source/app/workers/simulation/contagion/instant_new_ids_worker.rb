@@ -7,15 +7,28 @@ class Simulation < ApplicationRecord
 
       sidekiq_options queue: :super_critical
 
-      def perform
-        if Simulation::Contagion::Instant.where(new_id: nil).any?
-          new_id = Simulation::Contagion::Instant.maximum(:new_id) + 1
-          Simulation::Contagion::Instant.where(new_id: nil).limit(1).update_all(new_id: new_id)
+      attr_reader :id
 
-          self.class.perform_async
-        else
-          self.class.perform_in(60.seconds)
+      def self.enqueue_all
+        Simulation::Contagion::Instant.pluck(:id).each do |id|
+          self.perform_async(id)
         end
+      end
+
+      def perform(id)
+        @id = id
+
+        if first_population
+          instant.population.update_all(new_instant_id: instant.new_id)
+        end
+      end
+      
+      def first_population
+        @first_population ||= Simulation::Contagion::Population.find_by(new_instant_id: nil, instant_id: id)
+      end
+      
+      def instant
+        @instant ||= first_population.instant
       end
     end
   end
