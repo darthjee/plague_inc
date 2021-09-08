@@ -19,7 +19,7 @@ class Simulation < ApplicationRecord
         @id = id
 
         if first_population
-          instant.population.update_all(new_instant_id: instant.new_id)
+          instant.populations.update_all(new_instant_id: instant.new_id)
         end
       end
       
