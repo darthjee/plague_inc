@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_26_122112) do
+ActiveRecord::Schema.define(version: 2021_09_02_125814) do
 
   create_table "simulation_contagion_behaviors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "contagion_id", null: false
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2021_08_26_122112) do
     t.bigint "instant_id", null: false
     t.integer "group_id", null: false
     t.integer "behavior_id", null: false
-    t.integer "size", default: 0, null: false
+    t.bigint "size", default: 0, null: false
     t.string "state", null: false
     t.integer "days", limit: 2, default: 0, null: false
     t.integer "interactions", default: 0, null: false
