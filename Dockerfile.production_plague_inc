@@ -22,8 +22,17 @@ RUN rm /home/app/app/tmp/* -rf
 
 ##################################
 
-FROM base
+FROM base as release-base
 
 COPY --chown=app:app --from=builder /home/app/app/ /home/app/app/
 
 RUN bundle install --clean --without development test
+
+
+###############################
+FROM release-base as web
+
+CMD ["bin/rails", "s"]
+
+###############################
+FROM release-base
