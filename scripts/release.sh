@@ -24,7 +24,7 @@ case $ACTION in
     make PROJECT=production_plague_inc build
     ;;
   "build-web")
-    make build-web
+    make PROJECT=production_plague_inc build-web
     ;;
   *)
     echo Usage:
