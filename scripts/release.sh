@@ -23,9 +23,6 @@ case $ACTION in
   "build")
     make PROJECT=production_plague_inc build
     ;;
-  "build-web")
-    make PROJECT=production_plague_inc build-web
-    ;;
   *)
     echo Usage:
     echo "$0 build # builds gem"

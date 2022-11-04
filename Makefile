@@ -27,9 +27,6 @@ push-base:
 build:
 	docker build -f Dockerfile.$(PROJECT) . -t $(IMAGE) -t $(PUSH_IMAGE) -t $(PUSH_IMAGE):$(BASE_VERSION)
 
-build-web:
-	docker build -f Dockerfile.$(PROJECT) . -t $(IMAGE) -t $(PUSH_IMAGE) -t $(PUSH_IMAGE):$(BASE_VERSION) --target=web
-
 push:
 	make build
 	docker push $(PUSH_IMAGE)
