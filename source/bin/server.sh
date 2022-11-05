@@ -9,5 +9,6 @@ if [ "$RACK_ENV" != "production" ]; then
 fi
 
 bundle exec rake db:migrate db:seed
+bundle exec rake test:sidekiq
 
 bundle exec rails s -b 0.0.0.0
