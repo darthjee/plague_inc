@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'sidekiq/api'
-
 redis_url = if ENV['REDISCLOUD_URL'].present?
               ENV['REDISCLOUD_URL']
             else
