@@ -1,5 +1,7 @@
 #!/bin/bash
 
+RENDER_SERVICE_NAME="plague-inc"
+
 function services() {
   curl --request GET \
     --url 'https://api.render.com/v1/services' \
@@ -7,14 +9,8 @@ function services() {
     --header "Authorization: Bearer $RENDER_API_KEY"
 }
 
-ACTION=$1
+function service_id() {
+  services | jq ".[] | select(.service.name == \"$RENDER_SERVICE_NAME\") | .service.id"
+}
 
-case $ACTION in
-  "services")
-    services
-    ;;
-  *)
-    echo Usage:
-    echo "$0 services # list services"
-    ;;
-esac
+service_id
