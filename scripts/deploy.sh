@@ -47,14 +47,23 @@ function watch_deployment() {
   DEPLOYMENT_ID=$2
 
   COUNT=0
+  WAIT_TIME=320
+  MAX_TRIES=20
+
   while (true); do
     check_deployment_status $SERVICE_ID $DEPLOYMENT_ID
+
     COUNT=$[$COUNT+1]
-    if [ $COUNT -gt 10 ]; then
+    if [ $COUNT -gt $MAX_TRIES ]; then
       echo "timed out"
       exit 1
     fi
-    sleep 10
+
+    sleep $WAIT_TIME
+
+    if [ $WAIT_TIME -gt 10 ]; then
+      WAIT_TIME=$[$WAIT_TIME/2]
+    fi
   done
 }
 
