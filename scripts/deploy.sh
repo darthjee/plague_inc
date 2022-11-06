@@ -18,7 +18,7 @@ function services() {
 
 function deploy() {
   SERVICE_ID=$(service_id)
-  request GET "https://api.render.com/v1/services/$SERVICE_ID/deploys"
+  request POST "https://api.render.com/v1/services/$SERVICE_ID/deploys"
 }
 
 function service_id() {
