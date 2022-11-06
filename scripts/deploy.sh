@@ -29,7 +29,7 @@ case $ACTION in
     deploy
     ;;
   "wait")
-    last_deployment
+    deployment_status
     ;;
   *)
     $ACTION

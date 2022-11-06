@@ -44,5 +44,9 @@ function service_id() {
 
 function last_deployment() {
   request_for_service \
-    GET "https://api.render.com/v1/services/{{service_id}}/deploys?limit=1"
+    GET "https://api.render.com/v1/services/{{service_id}}/deploys?limit=1" | jq '.[0]'
+}
+
+function deployment_status() {
+  last_deployment | jq '.deploy.status'
 }
