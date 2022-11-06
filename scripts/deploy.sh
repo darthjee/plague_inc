@@ -21,17 +21,35 @@ function checkLastVersion() {
   fi
 }
 
-ACTION=$1
+function check_deployment_status() {
+  DEPLOYMENT_ID=$1
+  STATUS=$(deployment_status $DEPLOYMENT_ID)
 
-case $ACTION in
-  "deploy")
-    checkLastVersion
-    deploy
-    ;;
-  "wait")
-    deployment_status
-    ;;
-  *)
-    $ACTION
-    ;;
-esac
+  if [ $STATUS == "live" ]; then
+    exit 0
+  elif [ $STATUS == "build_failed"]; then
+    exit 1
+  elif [ $STATUS == "update_failed"]; then
+    exit 1
+  elif [ $STATUS == "canceled"]; then
+    exit 1
+  elif [ $STATUS == "deactivated"]; then
+    exit 1
+  else
+    echo "WAITING, current status: $STATUS"
+    return 0
+  fi
+}
+
+checkLastVersion
+DEPLOYMENT_ID=$(deploy | jq '.id')
+COUNT=0
+while (true); do
+  check_deployment_status $DEPLOYMENT_ID
+  COUNT=$[$COUNT+1]
+  if [ $COUNT -gt 10 ]; then
+    echo "timed out"
+    exit 1
+  fi
+  sleep 10
+done
