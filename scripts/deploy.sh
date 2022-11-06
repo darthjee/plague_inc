@@ -42,17 +42,46 @@ function check_deployment_status() {
   fi
 }
 
+function watch_deployment() {
+  SERVICE_ID=$1
+  DEPLOYMENT_ID=$2
+
+  COUNT=0
+  while (true); do
+    check_deployment_status $SERVICE_ID $DEPLOYMENT_ID
+    COUNT=$[$COUNT+1]
+    if [ $COUNT -gt 10 ]; then
+      echo "timed out"
+      exit 1
+    fi
+    sleep 10
+  done
+}
+
+function run_deploy() {
+  SERVICE_ID=$(service_id)
+  DEPLOYMENT_ID=$(deploy $SERVICE_ID | jq '.id' | sed -e 's/"//g')
+  watch_deployment $SERVICE_ID $DEPLOYMENT_ID
+}
+
+function watch_last_deployment() {
+  SERVICE_ID=$(service_id)
+  DEPLOYMENT_ID=$(last_deployment $SERVICE_ID | jq '.deploy.id' | sed -e 's/"//g')
+  watch_deployment $SERVICE_ID $DEPLOYMENT_ID
+}
+
+ACTION=$1
+
 checkLastVersion
-SERVICE_ID=$(service_id)
-# DEPLOYMENT_ID=$(deploy $SERVICE_ID | jq '.id' | sed -e 's/"//g')
-DEPLOYMENT_ID=$(last_deployment $SERVICE_ID | jq '.deploy.id' | sed -e 's/"//g')
-COUNT=0
-while (true); do
-  check_deployment_status $SERVICE_ID $DEPLOYMENT_ID
-  COUNT=$[$COUNT+1]
-  if [ $COUNT -gt 10 ]; then
-    echo "timed out"
-    exit 1
-  fi
-  sleep 10
-done
+
+case $ACTION in
+  "deploy")
+    run_deploy
+    ;;
+  "watch")
+    watch_last_deployment
+    ;;
+  *)
+    $ACTION
+    ;;
+esac
