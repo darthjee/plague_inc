@@ -24,19 +24,20 @@ function checkLastVersion() {
 function check_deployment_status() {
   DEPLOYMENT_ID=$1
   STATUS=$(deployment_status $DEPLOYMENT_ID)
+  echo "DEPLOYMENT STATUS $STATUS"
 
   if [ $STATUS == "live" ]; then
-    exit 0
-  elif [ $STATUS == "build_failed"]; then
+    exit 0;
+  elif [ $STATUS == "build_failed" ]; then
+    exit 1;
+  elif [ $STATUS == "update_failed" ]; then
+    exit 1;
+  elif [ $STATUS == "canceled" ]; then
     exit 1
-  elif [ $STATUS == "update_failed"]; then
-    exit 1
-  elif [ $STATUS == "canceled"]; then
-    exit 1
-  elif [ $STATUS == "deactivated"]; then
-    exit 1
+  elif [ $STATUS == "deactivated" ]; then
+    exit 1;
   else
-    return 0
+    return 0;
   fi
 }
 
