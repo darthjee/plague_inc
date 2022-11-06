@@ -46,6 +46,7 @@ function watch_deployment() {
   WAIT_TIME=160
 
   for COUNT in {1..20}; do
+    echo "ATTEMPT $COUNT"
     check_deployment_status "$SERVICE_ID" "$DEPLOYMENT_ID"
 
     sleep $WAIT_TIME
@@ -61,14 +62,14 @@ function watch_deployment() {
 
 function run_deploy() {
   SERVICE_ID=$(service_id)
-  DEPLOYMENT_ID=$(deploy $SERVICE_ID | jq '.id' | sed -e 's/"//g')
-  watch_deployment $SERVICE_ID $DEPLOYMENT_ID
+  DEPLOYMENT_ID=$(deploy "$SERVICE_ID" | jq '.id' | sed -e 's/"//g')
+  watch_deployment "$SERVICE_ID" "$DEPLOYMENT_ID"
 }
 
 function watch_last_deployment() {
   SERVICE_ID=$(service_id)
-  DEPLOYMENT_ID=$(last_deployment $SERVICE_ID | jq '.deploy.id' | sed -e 's/"//g')
-  watch_deployment $SERVICE_ID $DEPLOYMENT_ID
+  DEPLOYMENT_ID=$(last_deployment "$SERVICE_ID" | jq '.deploy.id' | sed -e 's/"//g')
+  watch_deployment "$SERVICE_ID" "$DEPLOYMENT_ID"
 }
 
 ACTION=$1

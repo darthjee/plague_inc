@@ -6,8 +6,8 @@ function request() {
   METHOD=$1
   URL=$2
 
-  curl --request $METHOD \
-    --url $URL \
+  curl --request "$METHOD" \
+    --url "$URL" \
     --header 'Accept: application/json' \
     --header "Authorization: Bearer $RENDER_API_KEY"
 }
@@ -50,5 +50,5 @@ function deployment() {
 function deployment_status() {
   SERVICE_ID=$1
   DEPLOYMENT_ID=$2
-  deployment $SERVICE_ID $DEPLOYMENT_ID | jq '.status' | sed -e 's/"//g'
+  deployment "$SERVICE_ID" "$DEPLOYMENT_ID" | jq '.status' | sed -e 's/"//g'
 }
