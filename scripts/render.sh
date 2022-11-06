@@ -1,24 +1,5 @@
 #!/bin/bash
 
-function isLatestCommit() {
-  VERSION=$(git tag | grep $(git describe  --tags))
-
-  if [[ $VERSION ]]; then
-    return 0
-  else
-    return 1
-  fi
-}
-
-function checkLastVersion() {
-  if $(isLatestCommit); then
-    echo "latest commit";
-  else
-    echo "Not last commit"
-    #exit 0
-  fi
-}
-
 RENDER_SERVICE_NAME="plague-inc"
 
 function request() {
@@ -44,7 +25,4 @@ function service_id() {
   services | jq \
     ".[] | select(.service.name == \"$RENDER_SERVICE_NAME\") | .service.id" \
     | sed -e 's/"//g'
-  }
-
-checkLastVersion
-deploy
+}
