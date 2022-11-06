@@ -18,7 +18,9 @@ function clean_env() {
 }
 
 function setup_env() {
-  get_env_vars
+  get_env_vars | \
+    jq 'map([.key, .value] | join("=")) | .[]' | \
+    sed -e 's/^ *"//g' -e 's/" *$//g'  > .env.production
 }
 
 ACTION=$1
