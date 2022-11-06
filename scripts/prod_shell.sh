@@ -3,8 +3,7 @@
 source "scripts/render.sh"
 
 function run() {
-  get_image
-  heroku config -s > .env.production
+  setup_env
   clean_env & run_docker
 }
 
@@ -26,9 +25,6 @@ function setup_env() {
 ACTION=$1
 
 case $ACTION in
-  "test")
-    setup_env
-    ;;
   "run")
     run
     ;;
