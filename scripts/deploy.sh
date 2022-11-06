@@ -36,14 +36,13 @@ function check_deployment_status() {
   elif [ $STATUS == "deactivated"]; then
     exit 1
   else
-    echo "WAITING, current status: $STATUS"
     return 0
   fi
 }
 
 checkLastVersion
-# DEPLOYMENT_ID=$(deploy | jq '.id')
-DEPLOYMENT_ID=$(last_deployment | jq '.id')
+# DEPLOYMENT_ID=$(deploy | jq '.id' | sed -e 's/"//g')
+DEPLOYMENT_ID=$(last_deployment | jq '.deploy.id' | sed -e 's/"//g')
 COUNT=0
 while (true); do
   check_deployment_status $DEPLOYMENT_ID

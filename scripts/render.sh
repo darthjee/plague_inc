@@ -64,5 +64,5 @@ function deployment() {
 
 function deployment_status() {
   DEPLOYMENT_ID=$1
-  deployment $DEPLOYMENT_ID | jq '.deploy.status'
+  deployment $DEPLOYMENT_ID | jq '.status' | sed -e 's/"//g'
 }
