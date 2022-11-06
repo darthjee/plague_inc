@@ -21,6 +21,11 @@ function deploy() {
   request POST "https://api.render.com/v1/services/$SERVICE_ID/deploys"
 }
 
+function get_env_vars() {
+  SERVICE_ID=$(service_id)
+  request GET "https://api.render.com/v1/services/$SERVICE_ID/env-vars"
+}
+
 function service_id() {
   services | jq \
     ".[] | select(.service.name == \"$RENDER_SERVICE_NAME\") | .service.id" \
