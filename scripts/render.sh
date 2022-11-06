@@ -37,6 +37,15 @@ function get_env_vars() {
 }
 
 function service_id() {
+  if [ $SERVICE_ID ]; then
+    echo $SERVICE_ID
+  else
+    export SERVICE_ID=$(fetch_service_id)
+    echo $SERVICE_ID
+  fi
+}
+
+function fetch_service_id() {
   services | jq \
     ".[] | select(.service.name == \"$RENDER_SERVICE_NAME\") | .service.id" \
     | sed -e 's/"//g'
