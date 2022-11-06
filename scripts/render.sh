@@ -31,7 +31,9 @@ function deploy() {
 }
 
 function get_env_vars() {
-  request_for_service GET "https://api.render.com/v1/services/{{service_id}}/env-vars"
+  request_for_service \
+    GET "https://api.render.com/v1/services/{{service_id}}/env-vars" | \
+    jq 'map(.envVar) | from_entries'
 }
 
 function service_id() {
