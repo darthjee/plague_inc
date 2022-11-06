@@ -10,20 +10,28 @@ function request() {
     --url $URL \
     --header 'Accept: application/json' \
     --header "Authorization: Bearer $RENDER_API_KEY"
-  }
+}
+
+function request_for_service() {
+  SERVICE_ID=$(service_id)
+
+  METHOD=$1
+  BASE_URL=$2
+  URL=$(echo $BASE_URL | sed -e "s/{{service_id}}/$SERVICE_ID/g")
+
+  request $METHOD $URL
+}
 
 function services() {
   request GET 'https://api.render.com/v1/services'
 }
 
 function deploy() {
-  SERVICE_ID=$(service_id)
-  request POST "https://api.render.com/v1/services/$SERVICE_ID/deploys"
+  request_for_service POST "https://api.render.com/v1/services/{{service_id}}/deploys"
 }
 
 function get_env_vars() {
-  SERVICE_ID=$(service_id)
-  request GET "https://api.render.com/v1/services/$SERVICE_ID/env-vars"
+  request_for_service GET "https://api.render.com/v1/services/{{service_id}}/env-vars"
 }
 
 function service_id() {
