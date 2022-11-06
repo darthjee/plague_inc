@@ -28,6 +28,9 @@ case $ACTION in
     checkLastVersion
     deploy
     ;;
+  "wait")
+    last_deployment
+    ;;
   *)
     $ACTION
     ;;
