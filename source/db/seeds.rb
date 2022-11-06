@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+return if ENV['RACK_ENV'] == 'production'
+
 params = ActionController::Parameters.new(
   simulation: {
     name: 'My Simulation',

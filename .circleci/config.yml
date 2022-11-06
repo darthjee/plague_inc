@@ -98,26 +98,5 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Make Build
-          command: scripts/release.sh build
-      - run:
-          name: Install Heroku
-          command: scripts/release.sh install
-      - run:
-          name: set heroku app
-          command: scripts/release.sh set-app
-      - run:
-          name: Heroku docker login
-          command: scripts/release.sh signin
-      - run:
-          name: Build heroku image
-          command: scripts/release.sh build-heroku
-      - run:
-          name: Release
-          command: scripts/release.sh release
-      - run:
-          name: Migrate
-          command: scripts/release.sh migrate
-      - run:
-          name: Populate fields
-          command: scripts/release.sh populate
+          name: Trigger Deploy
+          command: scripts/deploy.sh deploy

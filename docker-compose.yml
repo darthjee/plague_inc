@@ -76,7 +76,7 @@ services:
   plague_inc_production:
     env_file: .env.production
     container_name: plague_inc_production
-    image: $PRODUCTION_IMAGE
+    image: darthjee/production_plague_inc
     links:
       - plague_inc_prod_redis:redis
     environment:

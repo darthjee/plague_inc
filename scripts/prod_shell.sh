@@ -1,13 +1,13 @@
 #!/bin/bash
 
+source "scripts/render.sh"
+
 function run() {
-  get_image
-  heroku config -s > .env.production
+  setup_env
   clean_env & run_docker
 }
 
 function run_docker() {
-  PRODUCTION_IMAGE=$(docker_url) \
   docker-compose run plague_inc_production /bin/bash
 }
 
@@ -16,24 +16,10 @@ function clean_env() {
   echo "" > .env.production
 }
 
-function app_name(){
-  echo $(heroku info -s | grep git_url | sed -e "s/.*\///g" | sed -e "s/\.git.*//g")
-}
-
-function get_image() {
-  URL=$(docker_url)
-  if ! (docker images | grep "$URL" > /dev/null); then
-    download
-  fi
-}
-
-
-function download() {
-  docker pull $(docker_url)
-}
-
-function docker_url() {
-  echo registry.heroku.com/$(app_name)/web
+function setup_env() {
+  get_env_vars | \
+    jq 'map([.key, .value] | join("=")) | .[]' | \
+    sed -e 's/^ *"//g' -e 's/" *$//g'  > .env.production
 }
 
 ACTION=$1
