@@ -24,18 +24,15 @@ function checkLastVersion() {
 function check_deployment_status() {
   SERVICE_ID=$1
   DEPLOYMENT_ID=$2
-  STATUS=$(deployment_status $SERVICE_ID $DEPLOYMENT_ID)
+  STATUS=$(deployment_status "$SERVICE_ID" "$DEPLOYMENT_ID")
   echo "DEPLOYMENT STATUS $STATUS"
 
-  if [ $STATUS == "live" ]; then
+  if [ "$STATUS" == "live" ]; then
     exit 0;
-  elif [ $STATUS == "build_failed" ]; then
-    exit 1;
-  elif [ $STATUS == "update_failed" ]; then
-    exit 1;
-  elif [ $STATUS == "canceled" ]; then
-    exit 1
-  elif [ $STATUS == "deactivated" ]; then
+  elif [ "$STATUS" == "build_failed" ] ||
+    [ "$STATUS" == "update_failed" ] ||
+    [ "$STATUS" == "canceled" ] ||
+    [ "$STATUS" == "deactivated" ]; then
     exit 1;
   else
     return 0;
@@ -47,21 +44,21 @@ function watch_deployment() {
   DEPLOYMENT_ID=$2
 
   COUNT=0
-  WAIT_TIME=320
+  WAIT_TIME=160
   MAX_TRIES=20
 
   while (true); do
-    check_deployment_status $SERVICE_ID $DEPLOYMENT_ID
+    check_deployment_status "$SERVICE_ID" "$DEPLOYMENT_ID"
 
     COUNT=$[$COUNT+1]
-    if [ $COUNT -gt $MAX_TRIES ]; then
+    if [ "$COUNT" -gt "$MAX_TRIES" ]; then
       echo "timed out"
       exit 1
     fi
 
     sleep $WAIT_TIME
 
-    if [ $WAIT_TIME -gt 10 ]; then
+    if [ "$WAIT_TIME" -gt 10 ]; then
       WAIT_TIME=$[$WAIT_TIME/2]
     fi
   done
