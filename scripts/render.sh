@@ -42,6 +42,11 @@ function service_id() {
     | sed -e 's/"//g'
 }
 
+function last_deployment() {
+  request_for_service \
+    GET "https://api.render.com/v1/services/{{service_id}}/deploys?limit=1" | jq '.[0]'
+}
+
 function deployment() {
   DEPLOYMENT_ID=$1
   request_for_service \

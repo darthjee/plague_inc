@@ -42,7 +42,8 @@ function check_deployment_status() {
 }
 
 checkLastVersion
-DEPLOYMENT_ID=$(deploy | jq '.id')
+# DEPLOYMENT_ID=$(deploy | jq '.id')
+DEPLOYMENT_ID=$(last_deployment | jq '.id')
 COUNT=0
 while (true); do
   check_deployment_status $DEPLOYMENT_ID
