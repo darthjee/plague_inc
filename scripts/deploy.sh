@@ -21,5 +21,14 @@ function checkLastVersion() {
   fi
 }
 
-checkLastVersion
-deploy
+ACTION=$1
+
+case $ACTION in
+  "deploy")
+    checkLastVersion
+    deploy
+    ;;
+  *)
+    $ACTION
+    ;;
+esac

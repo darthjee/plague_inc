@@ -99,4 +99,4 @@ jobs:
       - checkout
       - run:
           name: Trigger Deploy
-          command: scripts/deploy.sh
+          command: scripts/deploy.sh deploy
