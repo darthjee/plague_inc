@@ -10,12 +10,14 @@ function isLatestCommit() {
   fi
 }
 
-if $(isLatestCommit); then
-  echo "latest commit";
-else
-  echo "Not last commit"
-  exit 0
-fi
+function checkLastVersion() {
+  if $(isLatestCommit); then
+    echo "latest commit";
+  else
+    echo "Not last commit"
+    exit 0
+  fi
+}
 
 RENDER_SERVICE_NAME="plague-inc"
 
@@ -27,7 +29,7 @@ function request() {
     --url $URL \
     --header 'Accept: application/json' \
     --header "Authorization: Bearer $RENDER_API_KEY"
-}
+  }
 
 function services() {
   request GET 'https://api.render.com/v1/services'
@@ -42,6 +44,7 @@ function service_id() {
   services | jq \
     ".[] | select(.service.name == \"$RENDER_SERVICE_NAME\") | .service.id" \
     | sed -e 's/"//g'
-}
+  }
 
+checkLastVersion
 deploy
