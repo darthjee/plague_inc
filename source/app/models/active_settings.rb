@@ -9,6 +9,13 @@ class ActiveSettings
     :session_period,
     :cache_age,
     :title,
-    :favicon
+    :favicon,
+    :contagion_instants_pagination,
+    :interaction_block_size,
+    :processing_iteractions,
+    :processing_timeout,
+    :processing_wait_time,
+    :tmp_plot_folder,
+    :log_level
   )
 end

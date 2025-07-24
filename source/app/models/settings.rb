@@ -2,9 +2,10 @@
 
 # Class responsible for general application settings
 class Settings
-  extend Sinclair::EnvSettable
-
-  settings_prefix 'PLAGUE_INC'
+  extend Sinclair::ChainSettable
+  
+  source :env, EnvSettings
+  source :db,  ActiveSettings
 
   with_settings(
     title: 'Plague Simulations',
