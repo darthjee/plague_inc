@@ -10,6 +10,11 @@ source/tmp/*
 !source/log/.keep
 !source/tmp/.keep
 
+source/log/*
+source/tmp/*
+!source/log/.keep
+!source/tmp/.keep
+
 # Ignore uploaded files in development
 source/storage/*
 source/!/storage/.keep
@@ -27,5 +32,35 @@ source/vendor/assets/bower_components/
 # Ignore master key for decrypting credentials and more.
 source/config/master.key
 source/config/credentials.yml.enc
+**/*.swp
+.env.production
+
+old_source/log/*
+old_source/tmp/*
+!old_source/log/.keep
+!old_source/tmp/.keep
+
+old_source/log/*
+old_source/tmp/*
+!old_source/log/.keep
+!old_source/tmp/.keep
+
+# Ignore uploaded files in development
+old_source/storage/*
+old_source/!/storage/.keep
+
+old_source/node_modules
+old_source/yarn-error.log
+
+old_source/public/assets
+old_source/rubycritic
+old_source/coverage
+old_source/.yardoc
+old_source/doc
+
+old_source/vendor/assets/bower_components/
+# Ignore master key for decrypting credentials and more.
+old_source/config/master.key
+old_source/config/credentials.yml.enc
 **/*.swp
 .env.production
