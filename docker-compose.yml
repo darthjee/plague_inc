@@ -1,13 +1,6 @@
-version: '3'
 services:
-  plague_inc_redis:
-    image: redis:6.2.4
-    container_name: plague_inc_redis
-  plague_inc_prod_redis:
-    image: redis:6.2.4
-    container_name: plague_inc_prod_redis
   plague_inc_mysql:
-    image: mysql:5.7
+    image: mysql:9.3.0
     container_name: plague_inc_mysql
     env_file: .env
     environment:
@@ -15,6 +8,22 @@ services:
     ports:
       - 127.0.0.1:$PLAGUE_INC_MYSQL_PORT:3306
 
+  plague_inc_redis:
+    image: redis:6.2.4
+    container_name: plague_inc_redis
+
+  plague_inc_prod_test_mysql:
+    image: mysql:9.3.0
+    container_name: plague_inc_prod_test_mysql
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: plague_inc
+    ports:
+      - 127.0.0.1:$PLAGUE_INC_MYSQL_PORT:3306
+
+  plague_inc_prod_redis:
+    image: redis:6.2.4
+    container_name: plague_inc_prod_redis
   #################### Base  ####################
 
   base: &base
@@ -26,6 +35,14 @@ services:
       - plague_inc_redis:redis
     env_file: .env
 
+  prod_base: &prod_base
+    env_file: .env.production
+    image: darthjee/production_plague_inc
+    environment:
+      RAILS_ENV: production
+      REDIS_URL: redis://redis:6379/1
+    links:
+      - plague_inc_prod_redis:redis
 
   base_build:
     <<: *base
@@ -34,26 +51,30 @@ services:
       dockerfile: Dockerfile.plague_inc
     command: echo done
 
-  production_base_build:
-    image: darthjee/production_plague_inc
-    env_file: .env
-    environment:
-      RAILS_ENV: production
+  base_prod_build:
+    <<: *prod_base
     build:
       context: .
       dockerfile: Dockerfile.production_plague_inc
-    links:
-      - plague_inc_mysql:mysql
     command: echo done
+
   #################### CONTAINERS ####################
 
   plague_inc_app:
     <<: *base
     container_name: plague_inc_app
-    command: /bin/bash bin/server.sh
-    depends_on: [base_build]
+    command: /bin/bash bin/test_server.sh
+    depends_on: [base_build, plague_inc_sidekiq]
     ports:
       - 127.0.0.1:3000:3000
+    environment:
+      - RAILS_ENV=development
+      - PLAGUE_INC_MYSQL_PORT=3306
+
+  plague_inc_sidekiq:
+    <<: *base
+    container_name: plague_inc_sidekiq
+    command: /bin/bash bin/sidekiq.sh
     environment:
       - RAILS_ENV=development
       - PLAGUE_INC_MYSQL_PORT=3306
@@ -74,13 +95,25 @@ services:
     depends_on: [base_build]
 
   plague_inc_production:
-    env_file: .env.production
+    <<: *prod_base
     container_name: plague_inc_production
-    image: darthjee/production_plague_inc
+    depends_on: [base_prod_build, plague_inc_prod_sidekiq]
+    command: bin/server.sh
+    ports:
+      - 127.0.0.1:3002:3000
+
+  plague_inc_prod_test:
+    <<: *prod_base
+    container_name: plague_inc_production_test
+    depends_on: [base_prod_build]
+    command: bin/test_server.sh
+    ports:
+      - 127.0.0.1:3002:3000
     links:
-      - plague_inc_prod_redis:redis
-    environment:
-      - PLAGUE_INC_INTERACTION_BLOCK_SIZE=50000
-      - PAPERTRAIL_API_TOKEN=''
-      - PLAGUE_INC_REDIS_URL=redis://redis:6379/0
-      - REDISCLOUD_URL=
+      - plague_inc_prod_test_mysql:mysql
+
+  plague_inc_prod_sidekiq:
+    <<: *prod_base
+    container_name: plague_inc_prod_sidekiq
+    depends_on: [base_prod_build]
+    command: /bin/bash bin/sidekiq.sh
