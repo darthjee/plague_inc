@@ -18,7 +18,7 @@ workflows:
               only: /.*/
             branches:
               only:
-                - master
+                - main
 jobs:
   test:
     docker:
