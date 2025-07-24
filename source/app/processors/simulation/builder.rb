@@ -50,6 +50,7 @@ class Simulation < ApplicationRecord
     private
 
     attr_reader :params, :simulations
+    alias json params
 
     def build_simulation(simulation_params)
       build_object(
