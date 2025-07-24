@@ -33,6 +33,7 @@ gem 'zyra',     '1.2.0'
 gem 'arstotzka', '1.6.2'
 gem 'gnuplot', '2.6.2'
 gem 'danica', '2.0.1'
+gem 'matrix', '0.4.3'
 
 group :development, :test do
   gem 'factory_bot',        '6.2.1'
