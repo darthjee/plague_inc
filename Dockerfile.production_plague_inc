@@ -1,4 +1,4 @@
-FROM darthjee/production_plague_inc-base:0.7.0 as base
+FROM darthjee/production_plague_inc-base:0.8.0 as base
 
 ####################################
 
