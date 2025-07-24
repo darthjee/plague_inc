@@ -1,0 +1,17 @@
+<div class="form-group row align-items-center">
+  <label for="<%= field %>" class="col-4 col-form-label text-right"><%= label %></label>
+  <div class="col-8">
+    <textarea
+      id="<%= field %>"
+      name="<%= field %>"
+      class="form-control"
+      ng-class="{'is-invalid': <%= ng_errors %>}"
+      ng-model="<%= ng_model %>"
+      placeholder="<%= placeholder %>">
+    </textarea>
+
+    <div class="invalid-feedback d-block mt-1" ng-repeat="error in <%= ng_errors %>">
+      {{error}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="card-deck mb-3">
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header">
+      <h4 class="my-0 font-weight-normal">
+        Users
+      </h4>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <th scope="col">Name</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="2">
+              <%= angular_safe_link_to(:new_admin_user, {}, class: "text-dark") do %>
+                + New User
+              <% end %>
+            </td>
+          </tr>
+          <tr ng-repeat="user in gnc.data">
+            <td>
+              <%= angular_safe_link_to(:admin_user, { id: "{{user.id}}" }, class: "text-dark") do %>
+                {{user.name}}
+              <% end %>
+            </td>
+            <td>
+              <%= angular_safe_link_to(:edit_admin_user, { id: "{{user.id}}" }, class: "text-dark") do %>
+                edit
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <%= magicka_display('gnc') do |display|
+        display.pagination('pagination',
+          path_method: :users
+        )
+      end %>
+
+    </div>
+  </div>
+</div>
+

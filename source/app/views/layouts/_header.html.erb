@@ -1,0 +1,46 @@
+<div class="flex-column align-items-center bg-light border-bottom shadow-sm" ng-controller="Global.HeaderController as headerController">
+  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <a class="navbar-brand" href="#/">
+      PlagueInc
+    </a>
+    <button class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item p-2">
+          <a class="nav-link" href="#">First Link</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li ng-hide="headerController.logged">
+          <a
+            class="nav-link"
+            ng-hide="headerController.ongoing"
+            data-toggle="modal"
+            href=""
+            data-target="#login-modal">
+            Login
+          </a>
+        </li>
+        <li ng-show="headerController.logged">
+          <a
+            class="nav-link"
+            ng-hide="headerController.ongoing"
+            data-toggle="modal"
+            href=""
+            ng-click="headerController.logoff()">
+            Logoff
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
