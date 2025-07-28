@@ -4,7 +4,8 @@
     'cyberhawk',
     'johto',
     'home',
-    'login'
+    'login',
+    "simulation"
   ]);
 
   module.config(['$httpProvider', function($httpProvider) {

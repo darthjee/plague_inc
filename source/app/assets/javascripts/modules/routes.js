@@ -18,7 +18,11 @@
     }, {
       routes: ["/admin/users/new", "/admin/users/:id", "/admin/users", "/admin/users/:id/edit"]
     }, {
-      routes: ["/simulations/new", "/simulations/:id/clone"]
+      routes: ["/simulations/new", "/simulations/:id/clone"],
+      config: {
+        controller: "Simulation.NewController",
+        controllerAs: "gnc"
+      }
     }, {
       routes: ["/simulations/:id", "/simulations"]
     }, {
