@@ -2,6 +2,7 @@
 
 Rails.application.routes.draw do
   get '/' => 'home#show', as: :home
+  get '/.json' => 'home#show'
 
   get '/forbidden' => 'static#forbidden', as: :forbidden
 
@@ -16,5 +17,14 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users
+  end
+
+  resources :simulations, only: %i[index create new show] do
+    get :clone
+
+    resource :contagion, only: %i[], controller: :contagion do
+      get :summary
+      post 'process' => 'contagion#run_process'
+    end
   end
 end
