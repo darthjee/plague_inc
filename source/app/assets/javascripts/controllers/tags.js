@@ -5,14 +5,16 @@
 
   var Methods = {
     addTag: function(tags) {
-      var tag = this.tag.trim(),
-          contains = _.contains(tags, tag);
+      if (this.tag) {
+        var tag = this.tag.trim(),
+            contains = _.contains(tags, tag);
 
-      if (!(tag === "") && !contains) {
-        tags.push(tag);
+        if (!(tag === "") && !contains) {
+          tags.push(tag);
+        }
+
+        this.tag = "";
       }
-
-      this.tag = "";
     },
 
     removeTag: function(tags, index) {
