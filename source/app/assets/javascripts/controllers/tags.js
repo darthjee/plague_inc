@@ -28,7 +28,7 @@
   }
 
   app.controller("Tags.Controller", [
-    "cyberhawk_builder", function(builder) { builder.build(this); }
+    "cyberhawk_builder", function(builder) { builder.build(this, options); }
   ]);
 
   if (!window.Tag) {
