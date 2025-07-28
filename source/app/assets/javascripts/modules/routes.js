@@ -20,6 +20,8 @@
     }, {
       routes: ["/simulations/new", "/simulations/:id/clone"]
     }, {
+      routes: ["/simulations/:id", "/simulations"]
+    }, {
       routes: ["/forbidden"]
     }];
     provider.$get().bindRoutes();
