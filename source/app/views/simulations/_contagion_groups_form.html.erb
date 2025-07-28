@@ -1,0 +1,35 @@
+<div class="card shadow-sm form-simulation-contagion-block">
+  <div class="card-header">
+    <h4 class="my-0 font-weight-normal">
+      Groups
+    </h4>
+  </div>
+  <div class="card-body">
+    <span ng-class="{'is-invalid': gnc.data.settings.errors.groups}" />
+    <div class="invalid-feedback" ng-repeat="error in gnc.data.settings.errors.groups">
+      {{error}}
+    </div>
+    <ul class="list-group mt-3 mb-4">
+      <li class="list-group-item" ng-repeat="group in gnc.data.settings.groups">
+        <% form.with_model(:group, base: nil) do |f| %>
+          <%= f.input(:name, placeholder: "General") %>
+          <%= f.input(:size, placeholder: "1000") %>
+          <%= f.input(:infected, placeholder: "2") %>
+          <%= f.ng_select(
+            :behavior,
+            options: 'gnc.data.settings.behaviors',
+            reference_key: :reference,
+            text_field: :name
+          ) %>
+          <%= f.button(
+            ng_click: 'gnc.removeGroup($index)',
+            classes: 'btn-secondary',
+            text: '-'
+          )%>
+        <% end %>
+      </li>
+    </ul>
+    <%= form.button(ng_click: 'gnc.addGroup()', classes: 'btn-secondary', text: '+')%>
+  </div>
+</div>
+

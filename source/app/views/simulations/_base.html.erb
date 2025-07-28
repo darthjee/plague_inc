@@ -1,0 +1,28 @@
+<div class="card shadow-sm">
+  <div class="card-header">
+    <h4 class="my-0 font-weight-normal">
+      New Simulation
+    </h4>
+  </div>
+  <div class="card-body">
+    <%= form.input(:name, placeholder: "Simulation name") %>
+    <%= form.select(:algorithm, options: Simulation::ALGORITHMS ) %>
+    <%= form.tags(:tags) %>
+
+    <% form.with_model('settings') do |f| %>
+      <%= render partial: 'contagion_form', locals: { form: f } %>
+    <% end %>
+
+    <div class="form-group row">
+      <div class="offset-2 col-10">
+        <%= form.button(
+          ng_click: 'gnc.save()',
+          ng_disabled: 'gnc.ongoing',
+          classes: 'btn-primary',
+          text: 'Save'
+        ) %>
+      </div>
+    </div>
+  </div>
+</div>
+
