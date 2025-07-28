@@ -18,6 +18,8 @@
     }, {
       routes: ["/admin/users/new", "/admin/users/:id", "/admin/users", "/admin/users/:id/edit"]
     }, {
+      routes: ["/simulations/new", "/simulations/:id/clone"]
+    }, {
       routes: ["/forbidden"]
     }];
     provider.$get().bindRoutes();
