@@ -77,7 +77,7 @@
   }
 
   app.controller("Simulation.NewController", [
-    "cyberhawk_builder", function(builder) { builder.build(this, options); }
+    "cyberhawk_builder", function(builder) { builder.buildAndRequest(this, options); }
   ]);
 }(window._, window.angular, window.Cyberhawk));
 
