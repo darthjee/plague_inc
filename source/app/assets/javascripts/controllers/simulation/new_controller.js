@@ -10,10 +10,6 @@
       };
     },
 
-    _goIndex: function() {
-      this.location.path(this.location.$$path.replace(/(\w*\/edit|new|\d+\/clone)/, ""));
-    },
-
     addObject: function(key) {
       if (!this.data.settings) {
         this.data.settings = {
@@ -77,7 +73,9 @@
   }
 
   app.controller("Simulation.NewController", [
-    "cyberhawk_builder", function(builder) { builder.buildAndRequest(this, options); }
+    "cyberhawk_builder", function(builder) {
+      builder.buildAndRequest(this, options);
+    }
   ]);
 }(window._, window.angular, window.Cyberhawk));
 
