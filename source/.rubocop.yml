@@ -39,6 +39,10 @@ Layout/LineLength:
   Exclude:
     - 'bin/bundle'
 
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/20200709193903_add_contagion_populations.rb'
+
 Gemspec/DeprecatedAttributeAssignment:
   Enabled: true
 
