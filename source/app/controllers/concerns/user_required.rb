@@ -34,6 +34,7 @@ module UserRequired
   def missing_user?
     return false if logged_user
     return false unless user_required?(action_name)
+
     true
   end
 end

@@ -20,7 +20,7 @@ class Simulation < ApplicationRecord
                         after_each: :build_behavior,
                         default: [], cached: true
     expose :sizes,      full_path: 'simulation.settings.groups.size',
-      default: [], type: :integer, cached: true
+                        default: [], type: :integer, cached: true
     expose :lethality,  path: 'simulation.settings', cached: true
     expose :tags,       path: :simulation,
                         after_each: :build_tag,

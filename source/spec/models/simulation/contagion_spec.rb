@@ -32,7 +32,7 @@ describe Simulation::Contagion, type: :model do
 
     it do
       expect(contagion).to validate_inclusion_of(:lethality)
-        .in_range((0.0..1.0))
+        .in_range(0.0..1.0)
     end
 
     it do

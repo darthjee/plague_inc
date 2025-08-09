@@ -419,7 +419,7 @@ describe Simulation::Contagion::Reparator do
             .to change {
               contagion.reload.instants.find_by(day: 2)
                        .populations.healthy.sum(:size)
-            } .to(788)
+            }.to(788)
         end
 
         it 'kills population' do
@@ -522,15 +522,15 @@ describe Simulation::Contagion::Reparator do
     end
 
     context 'when there is an error and transaction is self' do
+      subject(:process) do
+        described_class.process(simulation_id, day, transaction: false)
+      end
+
       include_context 'with instant complete', 0
       include_context 'with instant complete', 1
       include_context 'with instant incomplete', 2
       include_context 'with instant incomplete', 3
       include_context 'with instant incomplete', 4
-
-      subject(:process) do
-        described_class.process(simulation_id, day, transaction: false)
-      end
 
       let(:day) { 2 }
 

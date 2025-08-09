@@ -130,21 +130,21 @@ describe Simulation::Contagion::Population, type: :model do
     describe '.infected' do
       it do
         expect(described_class.infected)
-          .to match_array([infected_population])
+          .to contain_exactly(infected_population)
       end
     end
 
     describe '.healthy' do
       it do
         expect(described_class.healthy)
-          .to match_array([healthy_population])
+          .to contain_exactly(healthy_population)
       end
     end
 
     describe '.immune' do
       it do
         expect(described_class.immune)
-          .to match_array([immune_population])
+          .to contain_exactly(immune_population)
       end
     end
 

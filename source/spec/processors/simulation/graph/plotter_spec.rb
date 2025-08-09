@@ -135,7 +135,7 @@ describe Simulation::Graph::Plotter do
     context 'when file already exist exist' do
       before do
         FileUtils.mkdir_p(folder)
-        File.open(output, 'w') { |f| f.write('content') }
+        File.write(output, 'content')
       end
 
       it 'does not create folder' do

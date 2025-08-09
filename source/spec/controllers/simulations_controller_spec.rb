@@ -267,10 +267,7 @@ describe SimulationsController do
         let(:behavior)   { settings.behaviors.first }
 
         let(:simulation_attributes) do
-          simulation.attributes.reject do |key, _|
-            %w[id created_at updated_at]
-              .include? key
-          end
+          simulation.attributes.except('id', 'created_at', 'updated_at')
         end
 
         let(:settings_attributes_ignored) do
@@ -281,41 +278,28 @@ describe SimulationsController do
         end
 
         let(:settings_attributes) do
-          settings.attributes.reject do |key, _|
-            settings_attributes_ignored.include? key
-          end
+          settings.attributes.except(*settings_attributes_ignored)
         end
 
         let(:group_attributes) do
-          group.attributes.reject do |key, _|
-            %w[id contagion_id created_at updated_at]
-              .include? key
-          end
+          group.attributes.except('id', 'contagion_id', 'created_at', 'updated_at')
         end
 
         let(:behavior_attributes) do
-          behavior.attributes.reject do |key, _|
-            %w[id contagion_id created_at updated_at]
-              .include? key
-          end
+          behavior.attributes.except('id', 'contagion_id', 'created_at', 'updated_at')
         end
 
         let(:expected_simulation_attributes) do
-          payload.stringify_keys.reject do |key, _|
-            %w[settings tags].include?(key)
-          end.merge('status' => 'created', 'checked' => false)
+          payload.stringify_keys.except('settings', 'tags').merge('status' => 'created', 'checked' => false)
         end
 
         let(:expected_settings_attributes) do
-          settings_payload.stringify_keys.reject do |key, _|
-            %w[groups behaviors]
-              .include? key
-          end
+          settings_payload.stringify_keys.except('groups', 'behaviors')
         end
 
         let(:expected_group_attributes) do
           group_payload
-            .reject { |key, _| key == :behavior }
+            .except(:behavior)
             .merge(behavior_id: behavior.id)
             .stringify_keys
         end

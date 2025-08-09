@@ -54,7 +54,7 @@ describe Simulation::Contagion::InstantInteractionStore do
   let(:infected_size)         { 1 }
   let(:healthy_size)          { 10 }
   let(:infected_interactions) do
-    infected_size * behavior_interactions - 1
+    (infected_size * behavior_interactions) - 1
   end
   let(:healthy_interactions) do
     healthy_size * behavior_interactions

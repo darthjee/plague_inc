@@ -11,13 +11,12 @@ end
 # Class responsible for general application settings
 class Settings
   extend Sinclair::ChainSettable
-  
+
   source :env, EnvSettings
   source :db,  ActiveSettings
 
   with_settings(
     :password_salt,
-
     title: 'Plague Simulations',
     favicon: 'http://images.coronasim.xyz/favicon.ico',
     cache_age: 10.seconds,

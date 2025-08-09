@@ -14,11 +14,9 @@ class RandomBox
 
   delegate :>, :>=, :<, :<=, to: :rand
 
-  # rubocop:disable Style/MethodMissingSuper
-  def method_missing(_, *args)
-    Random.rand(*args)
+  def method_missing(_, *)
+    Random.rand(*)
   end
-  # rubocop:enable Style/MethodMissingSuper
 
   def respond_to_missing?(*_args)
     true

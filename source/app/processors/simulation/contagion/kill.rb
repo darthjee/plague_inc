@@ -26,6 +26,7 @@ class Simulation < ApplicationRecord
       private
 
       attr_reader :population, :contagion
+
       delegate :lethality, to: :contagion
 
       def alive

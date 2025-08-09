@@ -35,6 +35,7 @@ class Simulation < ApplicationRecord
     private
 
     attr_reader :simulation, :options
+
     delegate :settings, to: :simulation
     delegate :times, to: :options
   end
