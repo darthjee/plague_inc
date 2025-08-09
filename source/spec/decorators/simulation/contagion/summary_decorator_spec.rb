@@ -104,11 +104,11 @@ describe Simulation::Contagion::SummaryDecorator do
         let(:processable_in) { 120 }
 
         before do
-          # rubocop:disable RSpec/AnyInstance:
+          # rubocop:disable RSpec/AnyInstance
           allow_any_instance_of(Simulation)
             .to receive(:processable_in)
             .and_return(processable_in)
-          # rubocop:enable RSpec/AnyInstance:
+          # rubocop:enable RSpec/AnyInstance
         end
 
         it 'returns simulation not stale' do
