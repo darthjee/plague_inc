@@ -11,7 +11,7 @@
     },
 
     _goIndex: function() {
-      this.location.path(this.location.$$path.replace(/(\w*\/edit|new|\d+\/clone)/, ""));
+      this.location.path(this.path.replace(/(\w*\/edit|new|\d+\/clone)/, ""));
     },
 
     addObject: function(key) {
