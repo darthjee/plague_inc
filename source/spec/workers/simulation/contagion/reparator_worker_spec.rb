@@ -221,7 +221,7 @@ describe Simulation::Contagion::ReparatorWorker do
             .to change {
               contagion.reload.instants.find_by(day: 2)
                        .populations.healthy.sum(:size)
-            } .to(788)
+            }.to(788)
         end
 
         it 'kills population' do

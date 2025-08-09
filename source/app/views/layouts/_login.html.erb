@@ -1,0 +1,58 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="login-modal"
+  ng-controller="Login.Controller as loginController">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form ng-controller="Login.Controller as loginController">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+            ng-click="loginController.clear()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Login</h4>
+        </div>
+        <div class="alert alert-danger" ng-show="loginController.incorrect">
+          User name or password incorrect.
+        </div>
+        <div class="alert alert-danger" ng-show="loginController.error">
+          An unexpected error occourred, please try again later
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="login">Username</label>
+            <input
+                   type="text"
+                   class="form-control"
+                   id="login"
+                   placeholder="Usu&aacute;rio"
+                   ng-model="loginController.login">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+                   type="password"
+                   class="form-control"
+                   id="password"
+                   placeholder="Senha"
+                   ng-model="loginController.password">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+             type="button"
+             ng-click="loginController.clear()"
+             class="btn btn-default"
+             data-dismiss="modal">
+            Cancel
+          </button>
+          <button
+             type="submit"
+             class="btn btn-primary"
+             ng-disabled="loginController.ongoing"
+             ng-click="loginController.submit()">
+            Login
+          </button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

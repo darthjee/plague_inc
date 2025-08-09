@@ -3,7 +3,7 @@
 redis_url = if ENV['REDISCLOUD_URL'].present?
               ENV['REDISCLOUD_URL']
             else
-              ENV['PLAGUE_INC_REDIS_URL']
+              ENV.fetch('PLAGUE_INC_REDIS_URL', nil)
             end
 
 Sidekiq.configure_server do |config|

@@ -43,6 +43,7 @@ class Simulation < ApplicationRecord
       end
 
       attr_reader :instant
+
       delegate :contagion, to: :instant
       delegate :groups, :behaviors, to: :contagion
     end

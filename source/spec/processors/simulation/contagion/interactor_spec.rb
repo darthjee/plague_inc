@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-shared_context 'with infected random box', mock_random: true do
+shared_context 'with infected random box', :mock_random do
   before do
     allow(random_box).to receive(:interaction) do
       index = 0

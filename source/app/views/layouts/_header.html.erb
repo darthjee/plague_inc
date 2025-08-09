@@ -1,4 +1,4 @@
-<div class="flex-column align-items-center bg-light border-bottom shadow-sm">
+<div class="flex-column align-items-center bg-light border-bottom shadow-sm" ng-controller="Global.HeaderController as headerController">
   <nav class="navbar navbar-expand-sm navbar-light bg-light">
     <a class="navbar-brand" href="#/">
       Corona Simulator
@@ -19,6 +19,28 @@
           <%= angular_safe_link_to(:simulations, {}, class: 'nav-link text-dark"') do %>
             Simulations
           <% end %>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav">
+        <li ng-hide="headerController.logged">
+          <a
+            class="nav-link"
+            ng-hide="headerController.ongoing"
+            data-toggle="modal"
+            href=""
+            data-target="#login-modal">
+            Login
+          </a>
+        </li>
+        <li ng-show="headerController.logged">
+          <a
+            class="nav-link"
+            ng-hide="headerController.ongoing"
+            data-toggle="modal"
+            href=""
+            ng-click="headerController.logoff()">
+            Logoff
+          </a>
         </li>
       </ul>
     </div>

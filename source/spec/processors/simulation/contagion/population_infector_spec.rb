@@ -72,10 +72,10 @@ describe Simulation::Contagion::PopulationInfector, :contagion_cache do
   let(:behavior_interactions) { 2 }
   let(:new_infections)        { 0 }
   let(:interactions) do
-    behavior_interactions * (healthy_size - 1) + 1
+    (behavior_interactions * (healthy_size - 1)) + 1
   end
   let(:population_interactions) do
-    healthy_size * behavior_interactions - interactions
+    (healthy_size * behavior_interactions) - interactions
   end
 
   describe 'process' do

@@ -22,6 +22,7 @@ class Simulation < ApplicationRecord
       private
 
       attr_reader :simulation, :block
+
       delegate :contagion, to: :simulation
       delegate :instants, to: :contagion
       delegate :populations, to: :ready_instant

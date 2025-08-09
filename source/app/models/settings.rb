@@ -1,12 +1,22 @@
 # frozen_string_literal: true
 
+class Sinclair
+  module Settable
+    class Caster
+      cast_with(:seconds) { |value| value.to_i.seconds }
+    end
+  end
+end
+
 # Class responsible for general application settings
 class Settings
-  extend Sinclair::EnvSettable
+  extend Sinclair::ChainSettable
 
-  settings_prefix 'PLAGUE_INC'
+  source :env, EnvSettings
+  source :db,  ActiveSettings
 
   with_settings(
+    :password_salt,
     title: 'Plague Simulations',
     favicon: 'http://images.coronasim.xyz/favicon.ico',
     cache_age: 10.seconds,
@@ -22,4 +32,6 @@ class Settings
 
     log_level: :info
   )
+  setting_with_options(:hex_code_size, default: 16, type: :integer)
+  setting_with_options(:session_period, default: 2.days, type: :seconds)
 end

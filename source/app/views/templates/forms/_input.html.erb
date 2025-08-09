@@ -1,18 +1,16 @@
-<div class="form-group row">
-  <div class="col-5">
-    <label for="<%= field %>" class="control-label"><%= label %></label>
-  </div>
-  <div class="col-7">
+<div class="form-group row align-items-center">
+  <label for="<%= field %>" class="col-4 col-form-label text-right"><%= label %></label>
+  <div class="col-8">
     <input 
-       id="<%= field %>"
-       name="<%= field %>"
-       class="form-control"
-       ng-class="{'is-invalid': <%= ng_errors %>}"
-       ng-model="<%= ng_model %>"
-       placeholder="<%= placeholder %>"
-       type="text" />
+      id="<%= field %>"
+      name="<%= field %>"
+      class="form-control"
+      ng-class="{'is-invalid': <%= ng_errors %>}"
+      ng-model="<%= ng_model %>"
+      placeholder="<%= placeholder %>"
+      type="text" />
 
-    <div class="invalid-feedback" ng-repeat="error in <%= ng_errors %>">
+    <div class="invalid-feedback d-block mt-1" ng-repeat="error in <%= ng_errors %>">
       {{error}}
     </div>
   </div>

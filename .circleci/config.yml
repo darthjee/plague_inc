@@ -22,7 +22,7 @@ workflows:
 jobs:
   test:
     docker:
-      - image: darthjee/circleci_plague_inc-base:0.7.0
+      - image: darthjee/circleci_plague_inc-base:0.8.0
         environment:
           PLAGUE_INC_MYSQL_HOST: mysql
           PLAGUE_INC_MYSQL_PORT: 3306
@@ -51,8 +51,8 @@ jobs:
           name: Bundle Install
           command: bundle install
       - run:
-          name: Bower Install
-          command: bundle exec rake bower:install
+          name: Yarn Install
+          command: yarn install
       - run:
           name: Wait for database
           command: scripts/wait_for_db.sh
@@ -68,7 +68,7 @@ jobs:
 
   checks:
     docker:
-      - image: darthjee/circleci_plague_inc-base:0.7.0
+      - image: darthjee/circleci_plague_inc-base:0.8.0
         environment:
           PLAGUE_INC_MYSQL_HOST: mysql
           PLAGUE_INC_MYSQL_PORT: 3306

@@ -9,22 +9,22 @@ class Simulation < ApplicationRecord
     include ::Processor
     include Arstotzka
 
-    expose :simulation, after: :build_simulation
-    expose :algorithm,  path: :simulation
-    expose :settings,   path: :simulation,
+    expose :simulation, after: :build_simulation, cached: true
+    expose :algorithm,  path: :simulation, cached: true
+    expose :settings,   path: :simulation, cached: true,
                         after: :build_settings
     expose :groups,     path: 'simulation.settings',
                         after_each: :build_group,
-                        default: []
+                        default: [], cached: true
     expose :behaviors,  path: 'simulation.settings',
                         after_each: :build_behavior,
-                        default: []
+                        default: [], cached: true
     expose :sizes,      full_path: 'simulation.settings.groups.size',
-                        default: [], type: :integer
-    expose :lethality,  path: 'simulation.settings'
+                        default: [], type: :integer, cached: true
+    expose :lethality,  path: 'simulation.settings', cached: true
     expose :tags,       path: :simulation,
                         after_each: :build_tag,
-                        default: []
+                        default: [], cached: true
 
     # @param params [ActionController::Parameters]
     # @param simulations [Simulation::ActiveRecord_Relation]
@@ -50,6 +50,7 @@ class Simulation < ApplicationRecord
     private
 
     attr_reader :params, :simulations
+    alias json params
 
     def build_simulation(simulation_params)
       build_object(

@@ -1,21 +1,22 @@
 (function(angular) {
   var module = angular.module("plague_inc");
 
-  module.config(["kantoProvider", function(provider) {
+  module.config(["johtoProvider", function(provider) {
     provider.defaultConfig = {
-      controller: "Cyberhawk.Controller",
+      controller: "Global.GenericController",
       controllerAs: "gnc",
-      templateBuilder(route, params) {
+      templateBuilder: function(route, params) {
         return route + "?ajax=true";
       }
-    };
+    }
 
     provider.configs = [{
       routes: ["/"],
       config: {
-        controller: "Home.Controller",
         controllerAs: "hc"
       }
+    }, {
+      routes: ["/admin/users/new", "/admin/users/:id", "/admin/users", "/admin/users/:id/edit"]
     }, {
       routes: ["/simulations/new", "/simulations/:id/clone"],
       config: {
@@ -24,6 +25,8 @@
       }
     }, {
       routes: ["/simulations/:id", "/simulations"]
+    }, {
+      routes: ["/forbidden"]
     }];
     provider.$get().bindRoutes();
   }]);

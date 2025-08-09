@@ -135,13 +135,13 @@ describe RandomBox do
 
   describe 'method missing' do
     context 'when not sending arguments' do
-      it { expect(random_box.rate).to be_in((0...1)) }
+      it { expect(random_box.rate).to be_in(0...1) }
 
       it { expect(random_box.rate).to be_a(Float) }
     end
 
     context 'when sending integer argument' do
-      it { expect(random_box.person(100)).to be_in((0...100)) }
+      it { expect(random_box.person(100)).to be_in(0...100) }
 
       it { expect(random_box.id(100)).to be_a(Integer) }
     end

@@ -1,18 +1,25 @@
-<nav>
-  <ul class="pagination">
-    <li class="page-item" ng-show="<%= current_page %> > 1">
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+    <!-- Botão "Anterior" -->
+    <li class="page-item" ng-class="{disabled: <%= current_page %> <= 1}">
       <%= angular_safe_link_to(
         path_method, {
           page: previous_page,
           per_page: per_page
         }.merge(options),
         'aria-label' => 'Previous',
-        'class' => 'page-link'
+        'class' => 'page-link',
+        'ng-disabled' => "#{current_page} <= 1"
       ) do %>
-      <span aria-hidden="true">&laquo;</span>
-    <% end %>
+        <span aria-hidden="true">&laquo;</span>
+      <% end %>
     </li>
-    <li class="page-item" ng-repeat="page in <%= pages_list %> track by $index" class="{{ <%= current_page %> == page ? 'sr-only' : '' }}">
+
+    <!-- Páginas -->
+    <li
+      ng-repeat="page in <%= pages_list %> track by $index"
+      class="page-item"
+      ng-class="{active: <%= current_page %> == page}">
       <%= angular_safe_link_to(
         path_method, {
           page: '{{ page }}',
@@ -21,21 +28,24 @@
         'ng-show' => 'page',
         'class' => 'page-link'
       ) do %>
-      {{ page }} <span class="sr-only" ng-show="<%= current_page %> == page">(current)</span>
-    <% end %>
+        {{ page }}
+      <% end %>
     <span ng-show="!page" class="page-link disabled">&#8230;</span>
     </li>
-    <li class="page-item" ng-show="<%= current_page %> < <%= total_pages %>">
+
+    <!-- Botão "Próximo" -->
+    <li class="page-item" ng-class="{disabled: <%= current_page %> >= <%= total_pages %>}">
       <%= angular_safe_link_to(
         path_method, {
           page: next_page,
           per_page: per_page
         }.merge(options),
         'aria-label' => 'Next',
-        'class' => 'page-link'
+        'class' => 'page-link',
+        'ng-disabled' => "#{current_page} >= #{total_pages}"
       ) do %>
-      <span aria-hidden="true">&raquo;</span>
-    <% end %>
+        <span aria-hidden="true">&raquo;</span>
+      <% end %>
     </li>
   </ul>
 </nav>

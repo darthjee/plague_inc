@@ -52,7 +52,7 @@ function watch_deployment() {
     sleep $WAIT_TIME
 
     if [ "$WAIT_TIME" -gt 10 ]; then
-      WAIT_TIME=$[$WAIT_TIME/2]
+      WAIT_TIME=$[WAIT_TIME/2]
     fi
   done
 
@@ -60,13 +60,19 @@ function watch_deployment() {
   exit 1
 }
 
-function run_deploy() {
+function force_deploy() {
   SERVICE_ID=$(service_id)
   DEPLOYMENT_ID=$(deploy "$SERVICE_ID" | jq '.id' | sed -e 's/"//g')
   watch_deployment "$SERVICE_ID" "$DEPLOYMENT_ID"
 }
 
+function run_deploy() {
+  checkLastVersion
+  force_deploy
+}
+
 function watch_last_deployment() {
+  checkLastVersion
   SERVICE_ID=$(service_id)
   DEPLOYMENT_ID=$(last_deployment "$SERVICE_ID" | jq '.deploy.id' | sed -e 's/"//g')
   watch_deployment "$SERVICE_ID" "$DEPLOYMENT_ID"
@@ -74,14 +80,18 @@ function watch_last_deployment() {
 
 ACTION=$1
 
-checkLastVersion
-
 case $ACTION in
   "deploy")
     run_deploy
     ;;
+  "force_deploy")
+    force_deploy
+    ;;
   "watch")
     watch_last_deployment
+    ;;
+  "service_id")
+    service_id
     ;;
   *)
     $ACTION

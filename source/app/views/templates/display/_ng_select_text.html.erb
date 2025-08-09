@@ -1,6 +1,10 @@
-<div class="form-group row">
-  <div class="col-5">
-    <label for="<%= field %>" class="control-label"><%= label %></label>
+<div class="form-group row align-items-center">
+  <label for="<%= field %>" class="col-5 col-form-label text-right font-weight-bold">
+    <%= label %>
+  </label>
+  <div class="col-7">
+    <p class="form-control-plaintext mb-0">
+      {{<%= ng_model %> | select_transformer:<%= options %>:'<%= reference_key %>' | dig:'<%= text_field %>'}}
+    </p>
   </div>
-  <div class="col-7">{{<%= ng_model %> | select_transformer:<%= options %>:'<%= reference_key %>' | dig:'<%= text_field %>' }}</div>
 </div>

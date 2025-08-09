@@ -11,9 +11,9 @@ module Processor
   included do
     private_class_method :new
 
-    def self.process(*args, &block)
+    def self.process(...)
       Rails.logger.debug("Running #{self}")
-      new(*args, &block).process.tap do
+      new(...).process.tap do
         Rails.logger.debug("Finished running #{self}")
       end
     end

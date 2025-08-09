@@ -1,0 +1,35 @@
+<div class="card shadow-sm">
+  <div class="card-header">
+    <h4 class="my-0 font-weight-normal">
+      User
+    </h4>
+  </div>
+  <div class="card-body">
+    <%= form.input(:name, placeholder: "User name") %>
+    <%= form.input(:login, placeholder: "Login") %>
+    <%= form.input(:email, placeholder: "Email") %>
+    <%= form.input(:password, placeholder: "Password") %>
+
+    <div class="form-group row">
+      <div class="offset-2 col-10">
+        <%= form.only(:form) do
+          form.button(
+            ng_click: 'gnc.save()',
+            ng_disabled: 'gnc.ongoing',
+            classes: 'btn-primary',
+            text: 'Save'
+          )
+        end %>
+        <%= form.only(:display) do
+          angular_safe_link_to(
+            :edit_admin_user, { id: "{{gnc.data.id}}" },
+            class: 'btn btn-primary'
+          ) do
+            'Edit'
+          end
+        end %>
+      </div>
+    </div>
+  </div>
+</div>
+

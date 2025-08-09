@@ -1,6 +1,8 @@
+.PHONY: build-base push-base build push dev
+
 PROJECT?=plague_inc
 IMAGE?=$(PROJECT)
-BASE_VERSION?=0.7.0
+BASE_VERSION?=0.8.0
 BASE_IMAGE?=$(DOCKER_ID_USER)/$(PROJECT)-base
 PUSH_IMAGE=$(DOCKER_ID_USER)/$(PROJECT)
 DOCKER_FILE_BASE=Dockerfile.$(PROJECT)-base
@@ -31,3 +33,12 @@ push:
 	make build
 	docker push $(PUSH_IMAGE)
 	docker push $(PUSH_IMAGE):$(BASE_VERSION)
+
+tests:
+	docker-compose run $(PROJECT)_tests /bin/bash
+
+dev:
+	docker-compose run $(PROJECT)_app /bin/bash
+
+dev-up:
+	docker-compose up $(PROJECT)_app

@@ -3,91 +3,71 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.0'
+ruby '3.3.1'
 
-gem 'bundler', '~> 1.16.1'
-
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.6'
-
-# Use pg as the database for Active Record
+gem 'importmap-rails'
+gem 'jbuilder'
 gem 'mysql2'
-# Use Puma as the app server
-gem 'puma', '~> 4.3.8'
-# Use SCSS for stylesheets
-gem 'sass-rails', '5.1.0'
-# Use Uglifier as compressor for JavaScript assets
+gem 'puma', '~> 6.0.0'
+gem 'rails', '~> 7.2.x'
+gem 'sidekiq', '~> 7.0'
+gem 'sprockets-rails'
+gem 'stimulus-rails'
+gem 'turbo-rails'
+
+gem 'bootsnap', require: false
+gem 'globalid', '>= 1.1.0'
+gem 'rack', '>= 2.2.6.3'
+gem 'sassc-rails', '>= 2.1.2'
+gem 'tzinfo-data'
 gem 'uglifier', '4.2.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'mini_racer', platforms: :ruby
 
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-gem 'sidekiq'
-
-# Use ActiveStorage variant
-# gem 'mini_magick', '~> 4.8'
-
-# Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.1.0', require: false
-
-gem 'arstotzka',    '~> 1.6.2'
-gem 'azeroth',      '>= 0.8.1'
-gem 'bower-rails',  '~> 0.12.0'
-gem 'danica',       '2.7.7'
-gem 'gnuplot',      '2.6.2'
-gem 'magicka',      '~> 0.5.5'
-gem 'newrelic_rpm', '~> 6.9.0.363'
-gem 'nokogiri',     '1.11.4'
-gem 'rake',         '13.0.3'
-gem 'sinclair',     '~> 1.6.7'
-gem 'tarquinn',     '~> 0.2.0'
-gem 'turbolinks',   '5.2.1'
-
-gem 'darthjee-core_ext', '>= 2.0.0'
-
-group :development do
-  # Access an interactive console on exception pages
-  # or by calling 'console' anywhere in the code.
-  gem 'listen',                '3.2.1'
-  gem 'spring',                '2.1.0'
-  gem 'spring-watcher-listen', '2.0.1'
-  gem 'web-console',           '3.7.0'
-
-  gem 'factory_bot',           '5.1.1'
-  gem 'pry',                   '0.12.2'
-  gem 'pry-nav',               '0.3.0'
-  gem 'pry-rails',             '0.3.9'
-  gem 'reek',                  '6.0.3'
-  gem 'rspec',                 '3.9.0'
-  gem 'rspec-core',            '3.9.3'
-  gem 'rspec-expectations',    '3.9.4'
-  gem 'rspec-mocks',           '3.9.1'
-  gem 'rspec-rails',           '3.9.0'
-  gem 'rspec-support',         '3.9.4'
-  gem 'rubocop',               '0.80.1'
-  gem 'rubocop-rspec',         '1.38.1'
-  gem 'rubycritic',            '4.6.1'
-  gem 'shoulda-matchers',      '4.3.0'
-  gem 'simplecov',             '0.17.1'
-  gem 'yard',                  '0.9.26'
-  gem 'yardstick',             '0.9.9'
-  gem 'zonebie',               '0.6.1'
-end
+gem 'arstotzka', '1.6.2'
+gem 'azeroth', '>= 2.1.1'
+gem 'danica', '3.0.0'
+gem 'darthjee-active_ext', '>= 1.3.2'
+gem 'darthjee-core_ext', '>= 3.0.0'
+gem 'docile', '>= 1.4.1'
+gem 'gnuplot', '2.6.2'
+gem 'magicka', '~> 1.1.0'
+gem 'matrix', '0.4.3'
+gem 'nokogiri', '1.18.8'
+gem 'sinclair', '3.0.0'
+gem 'tarquinn', '~> 0.3.0'
+gem 'zyra', '1.2.0'
 
 group :development, :test do
-  gem 'timecop', '0.9.1'
+  gem 'factory_bot',        '6.2.1'
+  gem 'pry',                '>= 0.14.2'
+  gem 'pry-nav',            '>= 1.0.0'
+  gem 'pry-rails',          '>= 0.3.9'
+  gem 'reek',               '>= 6.4.0'
+  gem 'rspec',              '>= 3.13.0'
+  gem 'rspec-core',         '>= 3.13.3'
+  gem 'rspec-expectations', '>= 3.13.3'
+  gem 'rspec-mocks',        '>= 3.13.2'
+  gem 'rspec-rails',        '>= 8.0.0'
+  gem 'rspec-support',      '>= 3.13.2'
+  gem 'rubocop',            '>= 1.75.5'
+  gem 'rubocop-rspec',      '>= 3.6.0'
+  gem 'rubycritic',         '>= 4.9.2'
+  gem 'shoulda-matchers',   '5.3.0'
+  gem 'simplecov',          '0.22.0'
+  gem 'timecop',            '0.9.6'
+  gem 'yard',               '0.9.37'
+  gem 'yardstick',          '0.9.9'
+  gem 'zonebie',            '0.6.1'
 
-  gem 'rails-controller-testing', '1.0.4'
+  gem 'rails-controller-testing', '1.0.5'
+end
+
+group :development do
+  gem 'web-console', '4.2.0'
 end
 
 group :test do
-  gem 'webmock', '3.8.2'
+  gem 'database_cleaner', '2.0.2'
+  gem 'webmock',          '3.18.1'
 
-  gem 'database_cleaner',          '1.8.3'
-  gem 'rspec-collection_matchers', '1.2.0'
+  gem 'rspec-collection_matchers', '1.2.1'
 end

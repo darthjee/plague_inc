@@ -6,7 +6,7 @@ shared_context 'with instant incomplete' do |day|
 
     create(
       :contagion_population, :infected,
-      size: 2 * day + 2,
+      size: (2 * day) + 2,
       instant: instant,
       group: group,
       days: 0
@@ -59,7 +59,7 @@ shared_context 'with instant complete' do |day|
       size: size - instant.populations.sum(:size),
       instant: instant,
       group: group,
-      new_infections: 2 * day + 4,
+      new_infections: (2 * day) + 4,
       days: day
     )
   end

@@ -84,8 +84,7 @@ describe Simulation::Contagion::InteractionStore, :contagion_cache do
         let(:random_box) { RandomBox.instance }
 
         before do
-          allow(random_box).to receive(:<).and_return(0)
-          allow(random_box).to receive(:person).and_return(true)
+          allow(random_box).to receive_messages('<': 0, person: true)
         end
 
         it 'caps ignores on poulation interactions' do

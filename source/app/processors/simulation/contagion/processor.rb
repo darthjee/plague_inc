@@ -29,6 +29,7 @@ class Simulation < ApplicationRecord
       private
 
       attr_reader :contagion, :options, :instant
+
       delegate :instants, to: :contagion
       delegate :simulation, to: :contagion
 
@@ -44,7 +45,7 @@ class Simulation < ApplicationRecord
       end
 
       def processing_previous?
-        return unless contagion.instants.processing.any?
+        return false unless contagion.instants.processing.any?
 
         contagion
           .instants

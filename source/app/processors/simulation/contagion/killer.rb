@@ -23,7 +23,9 @@ class Simulation < ApplicationRecord
       # (days >= days_till_start_death) is randomly killed
       def process
         calculate_deaths
-        death.deaths.each(&method(:build_dead))
+        death.deaths.each do |group, dead|
+          build_dead(group, dead)
+        end
       end
 
       private
