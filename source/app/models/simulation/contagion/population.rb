@@ -54,7 +54,7 @@ class Simulation < ApplicationRecord
                 numericality: {
                   greater_than_or_equal_to: 0,
                   only_integer: true,
-                  less_than: 2_147_483_648  # limite do INT no MySQL
+                  less_than: 9_223_372_036_854_775_808  # BIGINT MySQL limit
                 }
 
       validates :new_infections,
