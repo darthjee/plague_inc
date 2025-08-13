@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IncreaseSizeOfGroupsSize < ActiveRecord::Migration[7.2]
   def up
     change_column :simulation_contagion_groups,

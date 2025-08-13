@@ -47,7 +47,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_13_182708) do
     t.integer "infected", default: 0, null: false
     t.index ["behavior_id"], name: "fk_rails_31dbcf6ede"
     t.index ["contagion_id"], name: "fk_rails_feaa742918"
-    t.index ["reference", "contagion_id"], name: "index_simulation_contagion_groups_on_reference_and_contagion_id", unique: true
+    t.index ["reference", "contagion_id"], name: "index_simulation_contagion_groups_on_reference_and_contagion_id",
+                                           unique: true
   end
 
   create_table "simulation_contagion_instants", charset: "utf8mb3", force: :cascade do |t|
