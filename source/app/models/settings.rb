@@ -35,5 +35,5 @@ class Settings
   )
   setting_with_options(:hex_code_size, default: 16, type: :integer)
   setting_with_options(:session_period, default: 2.days, type: :seconds)
-  setting_with_options(:background_worker, default: true, type: :boolean)
+  setting_with_options(:background_worker, default: true, type: :boolean, cached: false)
 end
