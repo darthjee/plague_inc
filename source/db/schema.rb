@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_13_182708) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_13_184709) do
   create_table "active_settings", charset: "utf8mb3", force: :cascade do |t|
     t.string "key", limit: 50, null: false
     t.string "value", null: false
@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_13_182708) do
     t.string "name", null: false
     t.bigint "contagion_id", null: false
     t.float "lethality_override"
-    t.integer "size", null: false
+    t.bigint "size", null: false
     t.string "reference", limit: 10
     t.integer "behavior_id", null: false
     t.integer "infected", default: 0, null: false
