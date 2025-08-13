@@ -30,37 +30,36 @@ class Simulation < ApplicationRecord
               presence: true,
               numericality: {
                 greater_than_or_equal_to: 0,
-                only_integer: true
+                only_integer: true,
+                less_than: 2_147_483_648 # INT MySQL limit
               }
     validates :days_till_sympthoms,
               presence: true,
               numericality: {
                 greater_than_or_equal_to: 0,
-                only_integer: true
+                only_integer: true,
+                less_than: 2_147_483_648 # INT MySQL limit
               }
     validates :days_till_start_death,
               presence: true,
               numericality: {
                 greater_than_or_equal_to: 0,
-                only_integer: true
+                only_integer: true,
+                less_than: 2_147_483_648 # INT MySQL limit
               }
     validates :days_till_contagion,
               presence: true,
               numericality: {
                 greater_than_or_equal_to: 0,
-                only_integer: true
-              }
-    validates :days_till_contagion,
-              presence: true,
-              numericality: {
-                greater_than_or_equal_to: 0,
-                only_integer: true
+                only_integer: true,
+                less_than: 2_147_483_648 # INT MySQL limit
               }
 
     validates :days_till_immunization_end,
               numericality: {
                 greater_than_or_equal_to: 0,
-                only_integer: true
+                only_integer: true,
+                less_than: 2_147_483_648 # INT MySQL limit
               },
               allow_nil: true
 

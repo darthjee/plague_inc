@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2023_07_22_014647) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_13_184709) do
   create_table "active_settings", charset: "utf8mb3", force: :cascade do |t|
     t.string "key", limit: 50, null: false
     t.string "value", null: false
@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.2].define(version: 2023_07_22_014647) do
     t.string "name", null: false
     t.bigint "contagion_id", null: false
     t.float "lethality_override"
-    t.integer "size", null: false
+    t.bigint "size", null: false
     t.string "reference", limit: 10
     t.integer "behavior_id", null: false
     t.integer "infected", default: 0, null: false
@@ -65,7 +65,7 @@ ActiveRecord::Schema[7.2].define(version: 2023_07_22_014647) do
     t.bigint "size", default: 0, null: false
     t.string "state", null: false
     t.integer "days", limit: 2, default: 0, null: false
-    t.integer "interactions", default: 0, null: false
+    t.bigint "interactions", default: 0, null: false
     t.integer "new_infections", default: 0, null: false
     t.index ["behavior_id"], name: "fk_rails_8cc87c0981"
     t.index ["group_id"], name: "fk_rails_ab58ee1256"
