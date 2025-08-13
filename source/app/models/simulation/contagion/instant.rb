@@ -32,7 +32,7 @@ class Simulation < ApplicationRecord
                 numericality: {
                   greater_than_or_equal_to: 0,
                   only_integer: true,
-                  less_than: 2147483648  # limite do INT no MySQL
+                  less_than: 2_147_483_648 # limite do INT no MySQL
                 }
       validates :status,
                 presence: true,

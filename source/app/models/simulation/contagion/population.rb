@@ -38,7 +38,7 @@ class Simulation < ApplicationRecord
                 numericality: {
                   greater_than_or_equal_to: 0,
                   only_integer: true,
-                  less_than: 18446744073709551616  # limite do BIGINT UNSIGNED no MySQL
+                  less_than: 18_446_744_073_709_551_616 # limite do BIGINT UNSIGNED no MySQL
                 }
 
       validates :days,
@@ -46,7 +46,7 @@ class Simulation < ApplicationRecord
                 numericality: {
                   greater_than_or_equal_to: 0,
                   only_integer: true,
-                  less_than: 65536  # limite do SMALLINT no MySQL (limit: 2)
+                  less_than: 65_536 # limite do SMALLINT no MySQL (limit: 2)
                 }
 
       validates :interactions,
@@ -54,7 +54,7 @@ class Simulation < ApplicationRecord
                 numericality: {
                   greater_than_or_equal_to: 0,
                   only_integer: true,
-                  less_than: 2147483648  # limite do INT no MySQL
+                  less_than: 2_147_483_648  # limite do INT no MySQL
                 }
 
       validates :new_infections,
@@ -62,7 +62,7 @@ class Simulation < ApplicationRecord
                   greater_than_or_equal_to: 0,
                   allow_nil: true,
                   only_integer: true,
-                  less_than: 2147483648  # limite do INT no MySQL
+                  less_than: 2_147_483_648  # limite do INT no MySQL
                 }
 
       validates :state,
