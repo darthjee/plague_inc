@@ -37,33 +37,38 @@ class Simulation < ApplicationRecord
                 presence: true,
                 numericality: {
                   greater_than_or_equal_to: 0,
-                  only_integer: true
+                  only_integer: true,
+                  less_than: 18446744073709551616  # limite do BIGINT UNSIGNED no MySQL
                 }
 
       validates :days,
                 presence: true,
                 numericality: {
                   greater_than_or_equal_to: 0,
-                  only_integer: true
+                  only_integer: true,
+                  less_than: 65536  # limite do SMALLINT no MySQL (limit: 2)
                 }
-
-      validates :state,
-                presence: true,
-                inclusion: { in: STATES }
 
       validates :interactions,
                 presence: true,
                 numericality: {
                   greater_than_or_equal_to: 0,
-                  only_integer: true
+                  only_integer: true,
+                  less_than: 2147483648  # limite do INT no MySQL
                 }
 
       validates :new_infections,
                 numericality: {
                   greater_than_or_equal_to: 0,
                   allow_nil: true,
-                  only_integer: true
+                  only_integer: true,
+                  less_than: 2147483648  # limite do INT no MySQL
                 }
+
+      validates :state,
+                presence: true,
+                inclusion: { in: STATES },
+                length: { maximum: 255 }
 
       def infected?
         state == INFECTED
