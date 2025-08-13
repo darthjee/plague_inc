@@ -46,6 +46,7 @@ services:
       - plague_inc_prod_redis:redis
     volumes:
       - ./source/app:/home/app/app/app
+      - ./source/db:/home/app/app/db
 
   base_build:
     <<: *base
