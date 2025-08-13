@@ -12,7 +12,8 @@ class Simulation < ApplicationRecord
       validates_presence_of :contagion, :behavior
       validates :reference,
                 presence: true,
-                length: { maximum: 10 }
+                length: { maximum: 10 },
+                uniqueness: { scope: :contagion_id }
       validates :name,
                 presence: true,
                 length: { maximum: 255 }

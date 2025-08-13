@@ -2,7 +2,7 @@
 
 source "scripts/render.sh"
 
-IMAGE="$RENDER_SERVICE_NAME"_production
+IMAGE=plague_inc_production
 
 function run() {
   SERVICE_ID=$(service_id)

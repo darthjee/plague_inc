@@ -50,6 +50,19 @@ class Simulation < ApplicationRecord
                 greater_than_or_equal_to: 0,
                 only_integer: true
               }
+    validates :days_till_contagion,
+              presence: true,
+              numericality: {
+                greater_than_or_equal_to: 0,
+                only_integer: true
+              }
+
+    validates :days_till_immunization_end,
+              numericality: {
+                greater_than_or_equal_to: 0,
+                only_integer: true
+              },
+              allow_nil: true
 
     validate :validate_days_till_sympthoms
     validate :validate_days_till_start_death

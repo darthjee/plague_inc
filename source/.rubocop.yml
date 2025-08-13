@@ -1,6 +1,6 @@
 inherit_from: .rubocop_todo.yml
 
-require: rubocop-rspec
+plugins: rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 3.3
@@ -366,7 +366,7 @@ Style/SuperWithArgsParentheses: # new in 1.58
   Enabled: true
 Style/YAMLFileRead: # new in 1.53
   Enabled: true
-Capybara/RSpec/PredicateMatcher: # new in 2.19
+RSpec/PredicateMatcher: # new in 2.19
   Enabled: true
 RSpec/EmptyMetadata: # new in 2.24
   Enabled: true
