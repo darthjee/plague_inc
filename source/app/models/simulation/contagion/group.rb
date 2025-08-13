@@ -22,7 +22,7 @@ class Simulation < ApplicationRecord
                 numericality: {
                   greater_than_or_equal_to: 1,
                   only_integer: true,
-                  less_than: 2_147_483_648 # INT MySQL limit
+                  less_than: 9_223_372_036_854_775_808 # BIGINT MySQL limit
                 }
       validates :infected,
                 numericality: {
