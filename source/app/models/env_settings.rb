@@ -18,6 +18,7 @@ class EnvSettings
     :processing_timeout,
     :processing_wait_time,
     :tmp_plot_folder,
-    :log_level
+    :log_level,
+    :background_worker
   )
 end
