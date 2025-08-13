@@ -28,11 +28,19 @@ class Simulation < ApplicationRecord
   scope :contagion, -> { where(algorithm: :contagion) }
 
   validates_presence_of :algorithm, :settings, :status
-  validates_inclusion_of :algorithm, in: ALGORITHMS
-  validates_inclusion_of :status, in: STATUSES
   validates_associated :settings
   validates :name,
             presence: true,
+            length: { maximum: 255 }
+
+  validates :algorithm,
+            presence: true,
+            inclusion: { in: ALGORITHMS },
+            length: { maximum: 255 }
+
+  validates :status,
+            presence: true,
+            inclusion: { in: STATUSES },
             length: { maximum: 255 }
 
   def settings

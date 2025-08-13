@@ -14,12 +14,14 @@ class Simulation < ApplicationRecord
                 length: { maximum: 255 }
       validates :reference,
                 presence: true,
-                length: { maximum: 10 }
+                length: { maximum: 10 },
+                uniqueness: { scope: :contagion_id }
       validates :interactions,
                 presence: true,
                 numericality: {
                   greater_than_or_equal_to: 0,
-                  only_integer: true
+                  only_integer: true,
+                  less_than: 2_147_483_648 # INT MySQL limit
                 }
       validates :contagion_risk,
                 presence: true,

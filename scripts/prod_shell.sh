@@ -2,7 +2,6 @@
 
 source "scripts/render.sh"
 
-
 IMAGE=plague_inc_production
 
 function run() {

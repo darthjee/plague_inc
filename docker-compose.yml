@@ -44,6 +44,8 @@ services:
       REDISCLOUD_URL: redis://redis:6379/1
     links:
       - plague_inc_prod_redis:redis
+    volumes:
+      - ./source/app:/home/app/app/app
 
   base_build:
     <<: *base
