@@ -21,12 +21,14 @@ class Simulation < ApplicationRecord
                 presence: true,
                 numericality: {
                   greater_than_or_equal_to: 1,
-                  only_integer: true
+                  only_integer: true,
+                  less_than: 2_147_483_648 # INT MySQL limit
                 }
       validates :infected,
                 numericality: {
                   greater_than_or_equal_to: 0,
-                  only_integer: true
+                  only_integer: true,
+                  less_than: 2_147_483_648 # INT MySQL limit
                 }
 
       validate :validate_infected
