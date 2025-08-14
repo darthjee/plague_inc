@@ -407,7 +407,7 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
-    sinclair (3.0.0)
+    sinclair (3.0.1)
       activesupport (~> 7.2.x)
     sprockets (4.2.2)
       concurrent-ruby (~> 1.0)
@@ -517,7 +517,7 @@ DEPENDENCIES
   shoulda-matchers (= 5.3.0)
   sidekiq (~> 7.0)
   simplecov (= 0.22.0)
-  sinclair (= 3.0.0)
+  sinclair (= 3.0.1)
   sprockets-rails
   stimulus-rails
   tarquinn (~> 0.3.0)
