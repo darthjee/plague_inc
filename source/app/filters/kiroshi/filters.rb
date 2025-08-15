@@ -3,13 +3,13 @@
 module Kiroshi
   class Filters
     class << self
-      def filter_by(attribute)
-        @filter_attributes ||= []
-        @filter_attributes << attribute
+      def filter_by(attribute, **options)
+        @filter_configs ||= []
+        @filter_configs << Filter.new(attribute, **options)
       end
 
-      def filter_attributes
-        @filter_attributes || []
+      def filter_configs
+        @filter_configs || []
       end
     end
 
@@ -20,12 +20,8 @@ module Kiroshi
     end
 
     def apply(scope)
-      self.class.filter_attributes.each do |attribute|
-        filter_value = filters[attribute]
-        if filter_value.present?
-          # scope = scope.where(attribute => filter_value)
-          scope = scope.where("#{attribute} LIKE ?", "%#{filter_value}%")
-        end
+      self.class.filter_configs.each do |filter|
+        scope = filter.apply(scope, filters)
       end
 
       scope
