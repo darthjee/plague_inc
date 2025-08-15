@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe Simulation::Filter, type: :model do
@@ -10,10 +11,10 @@ RSpec.describe Simulation::Filter, type: :model do
     let(:other_attributes) { {} }
     let!(:simulation) { create(:simulation, **attributes) }
     let!(:other_simulation) { create(:simulation, **other_attributes) }
-    
+
     context 'when no filters are provided' do
       let(:filter_hash) { {} }
-      
+
       it 'returns the original scope unchanged' do
         expect(filter.apply(scope)).to eq(scope)
       end
@@ -25,7 +26,7 @@ RSpec.describe Simulation::Filter, type: :model do
       let(:other_attributes) { { name: 'Flu Simulation' } }
 
       let(:filter_hash) { { name: filter_name } }
-      
+
       it 'returns simulations matching the name filter' do
         expect(filter.apply(scope)).to include(simulation)
       end
