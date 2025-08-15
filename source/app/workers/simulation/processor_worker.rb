@@ -3,11 +3,12 @@
 class Simulation < ApplicationRecord
   class ProcessorWorker
     include Sidekiq::Worker
-    include ConditionalWorker
 
     attr_reader :id
 
-    def process(id)
+    def perform(id)
+      return unless process?
+
       @id = id
 
       Simulation::Processor.process(simulation, times: 1)
@@ -20,6 +21,10 @@ class Simulation < ApplicationRecord
     private
 
     delegate :finished?, to: :simulation
+
+    def process?
+      Settings.background_worker
+    end
 
     def simulation
       @simulation ||= Simulation
