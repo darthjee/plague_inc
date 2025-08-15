@@ -20,4 +20,5 @@ class EnvSettings
     :tmp_plot_folder,
     :log_level
   )
+  setting_with_options(:background_worker, cached: false)
 end

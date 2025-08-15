@@ -80,6 +80,24 @@ shared_examples 'a processor worker' do
         .with(simulation_id)
     end
 
+    context 'when background worker is disabled' do
+      before do
+        allow(Settings).to receive(:background_worker).and_return(false)
+      end
+
+      it 'does not process the simulation' do
+        expect { worker.perform(simulation_id) }
+          .not_to(change { contagion.reload.instants.count })
+      end
+
+      it 'does not reschedule the worker' do
+        worker.perform(simulation_id)
+
+        expect(next_worker)
+          .not_to have_received(:perform_async).with(simulation_id)
+      end
+    end
+
     context 'when simulation is not processable' do
       let(:current_status) { Simulation::PROCESSING }
       let(:updated_at)     { 3.seconds.ago }

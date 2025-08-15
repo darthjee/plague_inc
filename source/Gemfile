@@ -32,7 +32,7 @@ gem 'gnuplot', '2.6.2'
 gem 'magicka', '~> 1.1.0'
 gem 'matrix', '0.4.3'
 gem 'nokogiri', '1.18.8'
-gem 'sinclair', '3.0.0'
+gem 'sinclair', '3.0.1'
 gem 'tarquinn', '~> 0.3.0'
 gem 'zyra', '1.2.0'
 
