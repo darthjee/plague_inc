@@ -17,7 +17,7 @@ RSpec.describe Simulation::Filter, type: :model do
       end
     end
 
-    context 'when filter by name' do
+    context 'when filtering by name' do
       let(:filter_name) { 'Covid Simulation' }
       let(:attributes) { { name: filter_name } }
       let(:other_attributes) { { name: 'Flu Simulation' } }
@@ -29,6 +29,22 @@ RSpec.describe Simulation::Filter, type: :model do
       end
 
       it 'does not return simulations not matching the name filter' do
+        expect(filter.apply(scope)).not_to include(other_simulation)
+      end
+    end
+    
+    context 'when filtering by status' do
+      let(:filter_status) { 'finished' }
+      let(:attributes) { { status: filter_status } }
+      let(:other_attributes) { { status: 'processing' } }
+
+      subject(:filter) { described_class.new(status: filter_status) }
+      
+      it 'returns simulations matching the status filter' do
+        expect(filter.apply(scope)).to include(simulation)
+      end
+
+      it 'does not return simulations not matching the status filter' do
         expect(filter.apply(scope)).not_to include(other_simulation)
       end
     end

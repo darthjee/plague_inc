@@ -10,6 +10,7 @@ class Simulation < ApplicationRecord
 
     def apply(scope)
       scope = scope.where(name: filters[:name]) if filters[:name].present?
+      scope = scope.where(status: filters[:status]) if filters[:status].present?
       scope
     end
   end
