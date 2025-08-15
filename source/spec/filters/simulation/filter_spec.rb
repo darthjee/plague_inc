@@ -27,12 +27,27 @@ RSpec.describe Simulation::Filter, type: :model do
 
       let(:filter_hash) { { name: filter_name } }
 
-      it 'returns simulations matching the name filter' do
-        expect(filter.apply(scope)).to include(simulation)
+      context 'when it is an exact match' do
+        it 'returns simulations matching the name filter' do
+          expect(filter.apply(scope)).to include(simulation)
+        end
+
+        it 'does not return simulations not matching the name filter' do
+          expect(filter.apply(scope)).not_to include(other_simulation)
+        end
       end
 
-      it 'does not return simulations not matching the name filter' do
-        expect(filter.apply(scope)).not_to include(other_simulation)
+      context 'when it is not an exact match' do
+        let(:filter_name) { 'Covid' }
+        let(:attributes) { { name: 'Covid Simulation' } }
+
+        it 'returns simulations that partially match the name filter' do
+          expect(filter.apply(scope)).to include(simulation)
+        end
+
+        it 'does not return simulations that do not match the name filter' do
+          expect(filter.apply(scope)).not_to include(other_simulation)
+        end
       end
     end
 
