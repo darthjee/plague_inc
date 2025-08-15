@@ -4,6 +4,10 @@ require 'spec_helper'
 RSpec.describe Simulation::Filter, type: :model do
   describe '#apply' do
     let(:scope) { Simulation.all }
+    let(:attributes) { {} }
+    let(:other_attributes) { {} }
+    let!(:simulation) { create(:simulation, **attributes) }
+    let!(:other_simulation) { create(:simulation, **other_attributes) }
     
     context 'when no filters are provided' do
       subject(:filter) { described_class.new }
@@ -15,9 +19,9 @@ RSpec.describe Simulation::Filter, type: :model do
 
     context 'when filter by name' do
       let(:filter_name) { 'Covid Simulation' }
-      let!(:simulation) { create(:simulation, name: filter_name) }
-      let!(:other_simulation) { create(:simulation, name: 'Flu Simulation') }
-      
+      let(:attributes) { { name: filter_name } }
+      let(:other_attributes) { { name: 'Flu Simulation' } }
+
       subject(:filter) { described_class.new(name: filter_name) }
       
       it 'returns simulations matching the name filter' do
