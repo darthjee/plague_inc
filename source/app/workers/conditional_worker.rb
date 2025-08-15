@@ -1,9 +1,10 @@
+# frozen_string_literal: true
 
 module ConditionalWorker
-  def perform(*args)
+  def perform(*)
     return unless process?
 
-    process(*args)
+    process(*)
   end
 
   def process?
