@@ -21,7 +21,10 @@ class BaseFilter
   def apply(scope)
     self.class.filter_attributes.each do |attribute|
       filter_value = filters[attribute]
-      scope = scope.where(attribute => filter_value) if filter_value.present?
+      if filter_value.present?
+        # scope = scope.where(attribute => filter_value)
+        scope = scope.where("#{attribute} LIKE ?", "%#{filter_value}%")
+      end
     end
     
     scope
