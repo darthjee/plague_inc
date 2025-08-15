@@ -9,8 +9,7 @@ class Simulation < ApplicationRecord
     end
 
     def apply(scope)
-      # TODO: Implement filtering logic based on filters hash
-      # For now, just return the original scope
+      scope = scope.where(name: filters[:name]) if filters[:name].present?
       scope
     end
   end
