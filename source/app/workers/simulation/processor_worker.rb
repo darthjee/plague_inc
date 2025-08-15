@@ -3,10 +3,11 @@
 class Simulation < ApplicationRecord
   class ProcessorWorker
     include Sidekiq::Worker
+    include ConditionalWorker
 
     attr_reader :id
 
-    def perform(id)
+    def process(id)
       @id = id
 
       Simulation::Processor.process(simulation, times: 1)
