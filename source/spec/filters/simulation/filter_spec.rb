@@ -65,6 +65,19 @@ RSpec.describe Simulation::Filter, type: :model do
       it 'does not return simulations not matching the status filter' do
         expect(filter.apply(scope)).not_to include(other_simulation)
       end
+
+      context 'when it is not an exact match' do
+        let(:filter_status) { 'fin' }
+        let(:attributes) { { status: 'finished' } }
+
+        it 'does not return simulations that partially match the status filter' do
+          expect(filter.apply(scope)).not_to include(simulation)
+        end
+
+        it 'does not return simulations that do not match the status filter' do
+          expect(filter.apply(scope)).not_to include(other_simulation)
+        end
+      end
     end
   end
 end
