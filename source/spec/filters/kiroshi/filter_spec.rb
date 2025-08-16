@@ -40,7 +40,7 @@ RSpec.describe Kiroshi::Filter, type: :model do
 
     context 'when match is :like' do
       subject(:filter) { described_class.new(:name, match: :like) }
-      
+
       let(:filter_value) { 'test' }
       let!(:matching_simulation) { create(:simulation, name: 'test_simulation') }
       let!(:non_matching_simulation) { create(:simulation, name: 'other_value') }
@@ -80,7 +80,7 @@ RSpec.describe Kiroshi::Filter, type: :model do
 
     context 'when filter value is not present' do
       subject(:filter) { described_class.new(:name) }
-      
+
       let(:filters) { { name: nil } }
 
       it 'returns the original scope unchanged' do

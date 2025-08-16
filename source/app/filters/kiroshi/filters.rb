@@ -3,9 +3,9 @@
 module Kiroshi
   class Filters
     class << self
-      def filter_by(attribute, **options)
+      def filter_by(attribute, **)
         @filter_configs ||= []
-        @filter_configs << Filter.new(attribute, **options)
+        @filter_configs << Filter.new(attribute, **)
       end
 
       def filter_configs
