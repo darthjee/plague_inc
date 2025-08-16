@@ -11,16 +11,16 @@ RSpec.describe Kiroshi::Filters, type: :model do
     let!(:simulation) { create(:simulation, name: 'test_name', status: 'finished') }
     let!(:other_simulation) { create(:simulation, name: 'other_name', status: 'processing') }
 
-    context 'when no filters are configured' do
-      let(:filters_class) { Class.new(described_class) }
+    let(:filters_class) { Class.new(described_class) }
 
-      context 'and no filters are provided' do
+    context 'when no filters are configured' do
+      context 'when no filters are provided' do
         it 'returns the original scope unchanged' do
           expect(filter_instance.apply(scope)).to eq(scope)
         end
       end
 
-      context 'and filters are provided' do
+      context 'when filters are provided' do
         let(:filters) { { name: 'test_name' } }
 
         it 'returns the original scope unchanged' do
@@ -30,12 +30,11 @@ RSpec.describe Kiroshi::Filters, type: :model do
     end
 
     context 'when one exact filter is configured' do
-      let(:filters_class) do
-        Class.new(described_class) do
-          filter_by :name
-        end
-      end
       let(:filters) { { name: 'test_name' } }
+
+      before do
+        filters_class.filter_by :name
+      end
 
       it 'returns simulations matching the exact filter' do
         expect(filter_instance.apply(scope)).to include(simulation)
@@ -47,12 +46,11 @@ RSpec.describe Kiroshi::Filters, type: :model do
     end
 
     context 'when one like filter is configured' do
-      let(:filters_class) do
-        Class.new(described_class) do
-          filter_by :name, match: :like
-        end
-      end
       let(:filters) { { name: 'test' } }
+
+      before do
+        filters_class.filter_by :name, match: :like
+      end
 
       it 'returns simulations matching the like filter' do
         expect(filter_instance.apply(scope)).to include(simulation)
@@ -64,13 +62,12 @@ RSpec.describe Kiroshi::Filters, type: :model do
     end
 
     context 'when multiple filters are configured' do
-      let(:filters_class) do
-        Class.new(described_class) do
-          filter_by :name, match: :like
-          filter_by :status
-        end
-      end
       let(:filters) { { name: 'test', status: 'finished' } }
+
+      before do
+        filters_class.filter_by :name, match: :like
+        filters_class.filter_by :status
+      end
 
       it 'returns simulations matching all filters' do
         expect(filter_instance.apply(scope)).to include(simulation)
@@ -82,12 +79,11 @@ RSpec.describe Kiroshi::Filters, type: :model do
     end
 
     context 'when filters hash is empty' do
-      let(:filters_class) do
-        Class.new(described_class) do
-          filter_by :name
-          filter_by :status
-        end
+      before do
+        filters_class.filter_by :name
+        filters_class.filter_by :status
       end
+
       let(:filters) { {} }
 
       it 'returns the original scope unchanged' do
