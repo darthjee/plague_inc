@@ -41,10 +41,12 @@ RSpec.describe Kiroshi::Filter, type: :model do
     context 'when match is not specified (default)' do
       subject(:filter) { described_class.new(:name) }
 
-      it 'defaults to exact match' do
-        result = filter.apply(scope, filters)
-        expect(result).to include(matching_simulation)
-        expect(result).not_to include(non_matching_simulation)
+      it 'defaults to exact match returning only exact matches' do
+        expect(filter.apply(scope, filters)).to include(matching_simulation)
+      end
+
+      it 'defaults to exact match returning not returning when filtering by a non-matching value' do
+        expect(filter.apply(scope, filters)).not_to include(non_matching_simulation)
       end
     end
 
