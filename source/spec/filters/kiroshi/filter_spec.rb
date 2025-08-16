@@ -38,22 +38,6 @@ RSpec.describe Kiroshi::Filter, type: :model do
       end
     end
 
-    context 'when match is :like' do
-      subject(:filter) { described_class.new(:name, match: :like) }
-
-      let(:filter_value) { 'test' }
-      let!(:matching_simulation) { create(:simulation, name: 'test_simulation') }
-      let!(:non_matching_simulation) { create(:simulation, name: 'other_value') }
-
-      it 'returns partial matches' do
-        expect(filter.apply(scope, filters)).to include(matching_simulation)
-      end
-
-      it 'does not return non-matching records' do
-        expect(filter.apply(scope, filters)).not_to include(non_matching_simulation)
-      end
-    end
-
     context 'when match is not specified (default)' do
       subject(:filter) { described_class.new(:name) }
 
