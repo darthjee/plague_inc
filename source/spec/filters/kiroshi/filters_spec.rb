@@ -38,13 +38,11 @@ RSpec.describe Kiroshi::Filters, type: :model do
       let(:filters) { { name: 'test_name' } }
 
       it 'returns simulations matching the exact filter' do
-        result = filter_instance.apply(scope)
-        expect(result).to include(simulation)
+        expect(filter_instance.apply(scope)).to include(simulation)
       end
 
       it 'does not return simulations not matching the exact filter' do
-        result = filter_instance.apply(scope)
-        expect(result).not_to include(other_simulation)
+        expect(filter_instance.apply(scope)).not_to include(other_simulation)
       end
     end
 
@@ -57,13 +55,11 @@ RSpec.describe Kiroshi::Filters, type: :model do
       let(:filters) { { name: 'test' } }
 
       it 'returns simulations matching the like filter' do
-        result = filter_instance.apply(scope)
-        expect(result).to include(simulation)
+        expect(filter_instance.apply(scope)).to include(simulation)
       end
 
       it 'does not return simulations not matching the like filter' do
-        result = filter_instance.apply(scope)
-        expect(result).not_to include(other_simulation)
+        expect(filter_instance.apply(scope)).not_to include(other_simulation)
       end
     end
 
@@ -77,13 +73,11 @@ RSpec.describe Kiroshi::Filters, type: :model do
       let(:filters) { { name: 'test', status: 'finished' } }
 
       it 'returns simulations matching all filters' do
-        result = filter_instance.apply(scope)
-        expect(result).to include(simulation)
+        expect(filter_instance.apply(scope)).to include(simulation)
       end
 
       it 'does not return simulations not matching all filters' do
-        result = filter_instance.apply(scope)
-        expect(result).not_to include(other_simulation)
+        expect(filter_instance.apply(scope)).not_to include(other_simulation)
       end
     end
 
