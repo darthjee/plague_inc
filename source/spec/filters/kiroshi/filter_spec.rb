@@ -56,8 +56,7 @@ RSpec.describe Kiroshi::Filter, type: :model do
       let(:filters) { { name: nil } }
 
       it 'returns the original scope unchanged' do
-        result = filter.apply(scope, filters)
-        expect(result).to eq(scope)
+        expect(filter.apply(scope, filters)).to eq(scope)
       end
     end
   end
