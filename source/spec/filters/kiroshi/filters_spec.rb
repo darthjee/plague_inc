@@ -4,12 +4,12 @@ require 'spec_helper'
 
 RSpec.describe Kiroshi::Filters, type: :model do
   describe '#apply' do
+    subject(:filter_instance) { filters_class.new(filters) }
+
     let(:scope) { Simulation.all }
     let(:filters) { {} }
     let!(:simulation) { create(:simulation, name: 'test_name', status: 'finished') }
     let!(:other_simulation) { create(:simulation, name: 'other_name', status: 'processing') }
-
-    subject(:filter_instance) { filters_class.new(filters) }
 
     context 'when no filters are configured' do
       let(:filters_class) { Class.new(described_class) }
