@@ -14,8 +14,18 @@ RSpec.describe Kiroshi::Filters, type: :model do
     context 'when no filters are configured' do
       let(:filters_class) { Class.new(described_class) }
 
-      it 'returns the original scope unchanged' do
-        expect(filter_instance.apply(scope)).to eq(scope)
+      context 'and no filters are provided' do
+        it 'returns the original scope unchanged' do
+          expect(filter_instance.apply(scope)).to eq(scope)
+        end
+      end
+
+      context 'and filters are provided' do
+        let(:filters) { { name: 'test_name' } }
+
+        it 'returns the original scope unchanged' do
+          expect(filter_instance.apply(scope)).to eq(scope)
+        end
       end
     end
 
