@@ -140,7 +140,7 @@ describe SimulationsController do
         it { expect(response).to be_successful }
 
         it 'returns filtered simulations serialized' do
-          expect(response.body).to eq(expected_json)
+          expect(response.body).to eq(decorator_class.new(expected_object).to_json)
         end
       end
     end
