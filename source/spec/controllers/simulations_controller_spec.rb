@@ -4,8 +4,9 @@ require 'spec_helper'
 
 describe SimulationsController do
   let(:expected_json) do
-    Simulation::Decorator.new(expected_object).to_json
+    decorator_class.new(expected_object).to_json
   end
+  let(:decorator_class) { Simulation::Decorator }
 
   describe 'GET new' do
     render_views
@@ -122,6 +123,58 @@ describe SimulationsController do
 
         it 'adds per_page header' do
           expect(response.headers['per_page']).to eq(10)
+        end
+      end
+
+      context 'when requesting with name filters' do
+        let(:parameters) { { filter: { name: 'my simulation' } } }
+        let!(:expected_object) do
+          create_list(:simulation, simulations_count, name: 'my simulation')
+        end
+
+        before do
+          create_list(:simulation, simulations_count, name: 'other simulation')
+          get :index, params: parameters.merge(format: :json)
+        end
+
+        it { expect(response).to be_successful }
+
+        it 'returns filtered simulations serialized' do
+          expect(response.body).to eq(decorator_class.new(expected_object).to_json)
+        end
+      end
+
+      context 'when requesting with status filters' do
+        let(:parameters) { { filter: { status: 'processing' } } }
+        let!(:expected_object) do
+          create_list(:simulation, simulations_count, status: 'processing')
+        end
+
+        before do
+          create_list(:simulation, simulations_count, status: 'created')
+          get :index, params: parameters.merge(format: :json)
+        end
+
+        it { expect(response).to be_successful }
+
+        it 'returns filtered simulations serialized' do
+          expect(response.body).to eq(decorator_class.new(expected_object).to_json)
+        end
+      end
+
+      context 'when requesting with id filters' do
+        let(:parameters) { { filter: { id: expected_simulation.id } } }
+        let(:expected_simulation) { create(:simulation) }
+
+        before do
+          create_list(:simulation, simulations_count)
+          get :index, params: parameters.merge(format: :json)
+        end
+
+        it { expect(response).to be_successful }
+
+        it 'returns filtered simulations serialized' do
+          expect(response.body).to eq(expected_json)
         end
       end
     end

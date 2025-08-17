@@ -19,6 +19,14 @@ class SimulationsController < ApplicationController
   private
 
   def simulations
+    @simulations ||= filter.apply(loaded_simulations)
+  end
+
+  def filter
+    Simulation::Filter.new(params[:filter])
+  end
+
+  def loaded_simulations
     Simulation
       .eager_load(:contagion, :tags)
       .eager_load(contagion: :groups)
