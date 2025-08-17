@@ -18,6 +18,22 @@ module Kiroshi
   #
   # @since 0.1.0
   class Filter
+    attr_reader :attribute, :match
+
+    # @!method attribute
+    #   @api private
+    #
+    #   Returns the attribute name to filter by
+    #
+    #   @return [Symbol] the attribute name to filter by
+
+    # @!method match
+    #   @api private
+    #
+    #   Returns the matching type (+:exact+ or +:like+)
+    #
+    #   @return [Symbol] the matching type (+:exact+ or +:like+)
+
     # Creates a new Filter instance
     #
     # @param attribute [Symbol] the attribute name to filter by
@@ -65,35 +81,8 @@ module Kiroshi
     #
     # @since 0.1.0
     def apply(scope, filters)
-      filter_value = filters[attribute]
-      return scope unless filter_value.present?
-
-      case match
-      when :like
-        scope.where("#{attribute} LIKE ?", "%#{filter_value}%")
-      else # :exact (default)
-        scope.where(attribute => filter_value)
-      end
+      runner = FilterRunner.new(filter: self, scope: scope, filters: filters)
+      runner.apply
     end
-
-    private
-
-    attr_reader :attribute, :match
-
-    # @!method attribute
-    #   @api private
-    #   @private
-    #
-    #   Returns the attribute name to filter by
-    #
-    #   @return [Symbol] the attribute name to filter by
-
-    # @!method match
-    #   @api private
-    #   @private
-    #
-    #   Returns the matching type (+:exact+ or +:like+)
-    #
-    #   @return [Symbol] the matching type (+:exact+ or +:like+)
   end
 end
