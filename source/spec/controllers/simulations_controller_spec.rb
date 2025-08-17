@@ -161,6 +161,22 @@ describe SimulationsController do
           expect(response.body).to eq(decorator_class.new(expected_object).to_json)
         end
       end
+
+      context 'when requesting with id filters' do
+        let(:parameters) { { filter: { id: expected_simulation.id } } }
+        let(:expected_simulation) { create(:simulation) }
+
+        before do
+          create_list(:simulation, simulations_count)
+          get :index, params: parameters.merge(format: :json)
+        end
+
+        it { expect(response).to be_successful }
+
+        it 'returns filtered simulations serialized' do
+          expect(response.body).to eq(expected_json)
+        end
+      end
     end
 
     context 'when requesting html and ajax is true', :cached do
