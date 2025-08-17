@@ -4,8 +4,9 @@ require 'spec_helper'
 
 describe SimulationsController do
   let(:expected_json) do
-    Simulation::Decorator.new(expected_object).to_json
+    decorator_class.new(expected_object).to_json
   end
+  let(:decorator_class) { Simulation::Decorator }
 
   describe 'GET new' do
     render_views
