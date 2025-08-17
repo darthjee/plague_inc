@@ -23,11 +23,7 @@ class SimulationsController < ApplicationController
   end
 
   def filter
-    Simulation::Filter.new(filter_hash)
-  end
-
-  def filter_hash
-    params[:filter]&.permit(:name, :status)
+    Simulation::Filter.new(params[:filter])
   end
 
   def loaded_simulations
