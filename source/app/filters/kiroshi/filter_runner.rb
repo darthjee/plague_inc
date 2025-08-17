@@ -56,7 +56,7 @@ module Kiroshi
 
       case filter.match
       when :like
-        scope.where("#{filter.attribute} LIKE ?", "%#{filter_value}%")
+        scope.where("#{table_name}.#{filter.attribute} LIKE ?", "%#{filter_value}%")
       else # :exact (default)
         scope.where(filter.attribute => filter_value)
       end
@@ -83,5 +83,7 @@ module Kiroshi
     #   Returns the matching type (+:exact+ or +:like+)
     #
     #   @return [Symbol] the matching type (+:exact+ or +:like+)
+
+    delegate :table_name, to: :scope
   end
 end
