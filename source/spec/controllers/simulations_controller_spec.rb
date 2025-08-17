@@ -126,7 +126,7 @@ describe SimulationsController do
         end
       end
 
-      context 'when requesting with filters' do
+      context 'when requesting with name filters' do
         let(:parameters) { { filter: { name: 'my simulation' } } }
         let!(:expected_object) do
           create_list(:simulation, simulations_count, name: 'my simulation')
@@ -134,6 +134,24 @@ describe SimulationsController do
 
         before do
           create_list(:simulation, simulations_count, name: 'other simulation')
+          get :index, params: parameters.merge(format: :json)
+        end
+
+        it { expect(response).to be_successful }
+
+        it 'returns filtered simulations serialized' do
+          expect(response.body).to eq(decorator_class.new(expected_object).to_json)
+        end
+      end
+
+      context 'when requesting with status filters' do
+        let(:parameters) { { filter: { status: 'processing' } } }
+        let!(:expected_object) do
+          create_list(:simulation, simulations_count, status: 'processing')
+        end
+
+        before do
+          create_list(:simulation, simulations_count, status: 'created')
           get :index, params: parameters.merge(format: :json)
         end
 
