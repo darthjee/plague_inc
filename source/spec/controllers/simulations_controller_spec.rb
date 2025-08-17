@@ -124,6 +124,24 @@ describe SimulationsController do
           expect(response.headers['per_page']).to eq(10)
         end
       end
+
+      context 'when requesting with filters' do
+        let(:parameters) { { filter: { name: 'my simulation' } } }
+        let!(:expected_object) do
+          create_list(:simulation, simulations_count, name: 'my simulation')
+        end
+
+        before do
+          create_list(:simulation, simulations_count, name: 'other simulation')
+          get :index, params: parameters.merge(format: :json)
+        end
+
+        it { expect(response).to be_successful }
+
+        it 'returns filtered simulations serialized' do
+          expect(response.body).to eq(expected_json)
+        end
+      end
     end
 
     context 'when requesting html and ajax is true', :cached do
