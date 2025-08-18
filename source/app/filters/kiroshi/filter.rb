@@ -18,7 +18,7 @@ module Kiroshi
   #
   # @since 0.1.0
   class Filter
-    attr_reader :attribute, :match
+    attr_reader :attribute, :match, :table_name
 
     # @!method attribute
     #   @api private
@@ -34,10 +34,18 @@ module Kiroshi
     #
     #   @return [Symbol] the matching type (+:exact+ or +:like+)
 
+    # @!method table_name
+    #   @api private
+    #
+    #   Returns the table name to qualify the attribute
+    #
+    #   @return [String, String, nil] the table name or nil if not specified
+
     # Creates a new Filter instance
     #
     # @param attribute [Symbol] the attribute name to filter by
     # @param match [Symbol] the matching type, defaults to :exact
+    # @param table [String, Symbol, nil] the table name to qualify the attribute, defaults to nil
     # @option match [Symbol] :exact performs exact matching (default)
     # @option match [Symbol] :like performs partial matching using SQL LIKE
     #
@@ -47,10 +55,14 @@ module Kiroshi
     # @example Creating a partial match filter
     #   filter = Kiroshi::Filter.new(:name, match: :like)
     #
+    # @example Creating a filter with table qualification
+    #   filter = Kiroshi::Filter.new(:name, table: 'documents')
+    #
     # @since 0.1.0
-    def initialize(attribute, match: :exact)
+    def initialize(attribute, match: :exact, table: nil)
       @attribute = attribute
       @match = match
+      @table_name = table
     end
 
     # Applies the filter to the given scope
@@ -73,6 +85,16 @@ module Kiroshi
     #   filter = Kiroshi::Filter.new(:title, match: :like)
     #   filter.apply(Article.all, { title: 'Ruby' })
     #   # Generates: WHERE title LIKE '%Ruby%'
+    #
+    # @example Applying a filter with table qualification
+    #   filter = Kiroshi::Filter.new(:name, table: 'documents')
+    #   filter.apply(Document.joins(:tags), { name: 'report' })
+    #   # Generates: WHERE documents.name = 'report'
+    #
+    # @example Applying a filter with table qualification for tags
+    #   filter = Kiroshi::Filter.new(:name, table: 'tags')
+    #   filter.apply(Document.joins(:tags), { name: 'ruby' })
+    #   # Generates: WHERE tags.name = 'ruby'
     #
     # @example With empty filter value
     #   filter = Kiroshi::Filter.new(:name)

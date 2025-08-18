@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Kiroshi
+  # @api private
   # @author darthjee
   #
   # A filter runner that applies filtering logic to ActiveRecord scopes
@@ -51,39 +52,101 @@ module Kiroshi
     #
     # @since 0.1.1
     def apply
-      filter_value = filters[filter.attribute]
       return scope unless filter_value.present?
 
-      case filter.match
-      when :like
-        scope.where("#{table_name}.#{filter.attribute} LIKE ?", "%#{filter_value}%")
-      else # :exact (default)
-        scope.where(filter.attribute => filter_value)
-      end
+      query_strategy = FilterQuery.for(filter.match).new(self)
+      query_strategy.apply
     end
+
+    # Returns the filter value for the current filter's attribute
+    #
+    # @return [Object, nil] the filter value or nil if not present
+    #
+    # @since 0.1.1
+    def filter_value
+      filters[filter.attribute]
+    end
+
+    # Returns the current scope being filtered
+    #
+    # @return [ActiveRecord::Relation] the scope
+    #
+    # @since 0.1.1
+    attr_reader :scope
+
+    # Returns the table name to use for the filter
+    #
+    # This method prioritizes the filter's table_name over the scope's table_name.
+    # If the filter has a specific table_name configured, it uses that;
+    # otherwise, it falls back to the scope's table_name.
+    #
+    # @return [String] the table name to use for filtering
+    #
+    # @example With filter table_name specified
+    #   filter = Kiroshi::Filter.new(:name, table: 'tags')
+    #   runner = FilterRunner.new(filter: filter, scope: Document.joins(:tags), filters: {})
+    #   runner.table_name # => 'tags'
+    #
+    # @example Without filter table_name (fallback to scope)
+    #   filter = Kiroshi::Filter.new(:name)
+    #   runner = FilterRunner.new(filter: filter, scope: Document.all, filters: {})
+    #   runner.table_name # => 'documents'
+    #
+    # @since 0.1.1
+    def table_name
+      filter_table_name || scope_table_name
+    end
+
+    # @!method scope
+    #   @api private
+    #
+    #   Returns the current scope being filtered
+    #
+    #   @return [ActiveRecord::Relation] the scope
 
     private
 
-    attr_reader :filter, :scope, :filters
+    attr_reader :filter, :filters
 
-    delegate :attribute, :match, to: :filter
+    # @!method filter
+    #   @api private
+    #   @private
+    #
+    #   Returns the filter configuration
+    #
+    #   @return [Kiroshi::Filter] the filter configuration
+
+    # @!method filters
+    #   @api private
+    #   @private
+    #
+    #   Returns the hash of filter values
+    #
+    #   @return [Hash] the hash of filter values
+
+    delegate :attribute, to: :filter
+    delegate :table_name, to: :scope, prefix: true
+    delegate :table_name, to: :filter, prefix: true
 
     # @!method attribute
     #   @api private
-    #   @private
     #
     #   Returns the attribute name to filter by
     #
     #   @return [Symbol] the attribute name to filter by
 
-    # @!method match
+    # @!method scope_table_name
     #   @api private
-    #   @private
     #
-    #   Returns the matching type (+:exact+ or +:like+)
+    #   Returns the table name from the scope
     #
-    #   @return [Symbol] the matching type (+:exact+ or +:like+)
+    #   @return [String] the table name from the scope
 
-    delegate :table_name, to: :scope
+    # @!method filter_table_name
+    #   @api private
+    #
+    #   Returns the table name from the filter configuration
+    #
+    #   @return [String, nil] the table name from the filter or nil if not specified
   end
 end
