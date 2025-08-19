@@ -6,6 +6,7 @@
       </h4>
     </div>
     <div class="card-body">
+      <%= render partial: 'index_filters' %>
       <%= render partial: 'index_table' %>
 
       <%= magicka_display('gnc') do |display|
