@@ -102,8 +102,8 @@ RSpec.describe Simulation::Filter, type: :model do
         let(:tag_name) { 'epi' }
         let(:tag) { create(:tag, name: 'epidemic') }
 
-        it 'returns simulations that partially match the tag name filter' do
-          expect(filter.apply(scope)).to include(simulation)
+        it 'does not return simulations that partially match the tag name filter' do
+          expect(filter.apply(scope)).not_to include(simulation)
         end
 
         it 'does not return simulations that do not match the tag name filter' do
