@@ -79,5 +79,37 @@ RSpec.describe Simulation::Filter, type: :model do
         end
       end
     end
+    
+    context 'when filtering by tag name' do
+      let(:tag_name) { 'epidemic' }
+      let(:tag) { create(:tag, name: tag_name) }
+      let(:other_tag) { create(:tag, name: 'pandemic') }
+      let(:attributes) { { tags: [tag] } }
+      let(:other_attributes) { { tags: [other_tag] } }
+      let(:scope) { Simulation.joins(:tags) }
+
+      let(:filter_hash) { { tag_name: tag_name } }
+
+      it 'returns simulations matching the tag name filter' do
+        expect(filter.apply(scope)).to include(simulation)
+      end
+
+      it 'does not return simulations not matching the tag name filter' do
+        expect(filter.apply(scope)).not_to include(other_simulation)
+      end
+
+      context 'when it is not an exact match' do
+        let(:tag_name) { 'epi' }
+        let(:tag) { create(:tag, name: 'epidemic') }
+
+        it 'returns simulations that partially match the tag name filter' do
+          expect(filter.apply(scope)).to include(simulation)
+        end
+
+        it 'does not return simulations that do not match the tag name filter' do
+          expect(filter.apply(scope)).not_to include(other_simulation)
+        end
+      end
+    end
   end
 end
