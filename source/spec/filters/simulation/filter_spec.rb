@@ -84,8 +84,8 @@ RSpec.describe Simulation::Filter, type: :model do
       let(:tag_name) { 'epidemic' }
       let(:tag) { create(:tag, name: tag_name) }
       let(:other_tag) { create(:tag, name: 'pandemic') }
-      let(:attributes) { { tags: [tag] } }
-      let(:other_attributes) { { tags: [other_tag] } }
+      let(:attributes) { { tags: [tag.name] } }
+      let(:other_attributes) { { tags: [other_tag.name] } }
       let(:scope) { Simulation.joins(:tags) }
 
       let(:filter_hash) { { tag_name: tag_name } }
