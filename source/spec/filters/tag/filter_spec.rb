@@ -41,8 +41,8 @@ RSpec.describe Tag::Filter, type: :model do
         let(:filter_name) { 'epi' }
         let(:attributes) { { name: 'epidemic' } }
 
-        it 'returns tags that partially match the name filter' do
-          expect(filter.apply(scope)).to include(tag)
+        it 'does not return tags that partially match the name filter' do
+          expect(filter.apply(scope)).not_to include(tag)
         end
 
         it 'does not return tags that do not match the name filter' do

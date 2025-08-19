@@ -2,6 +2,6 @@
 
 class Tag < ApplicationRecord
   class Filter < Kiroshi::Filters
-    filter_by :name, match: :like
+    filter_by :name, match: :exact
   end
 end
