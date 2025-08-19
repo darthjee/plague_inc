@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     resources :users
   end
 
+  resources :tags, only: %i[index]
+
   resources :simulations, only: %i[index create new show] do
     get :clone
 
