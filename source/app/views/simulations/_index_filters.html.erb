@@ -1,4 +1,4 @@
-<div class="row mb-3">
+<div class="row mb-3" ng-controller="Simulation.FilterController as filter">
   <div class="col-12">
     <form class="form-inline">
       <div class="form-group mr-3">
@@ -6,7 +6,7 @@
         <input type="text"
                class="form-control"
                id="filter_name"
-               name="filter[name]"
+               ng-model="filter.filters.name"
                placeholder="Filter by name">
       </div>
 
@@ -15,7 +15,7 @@
         <input type="text"
                class="form-control"
                id="filter_tag_name"
-               name="filter[tag_name]"
+               ng-model="filter.tag_name"
                placeholder="Filter by tag">
       </div>
 
