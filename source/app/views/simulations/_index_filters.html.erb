@@ -2,7 +2,7 @@
   <div class="col-12">
     <form class="form-inline">
       <% magicka_form('filter') do |form| %>
-        <%= form.input(:'filters.name', placeholder: "Simulation name") %>
+        <%= form.input(:'filters.name', placeholder: "Simulation name", label: 'Name') %>
         <%= form.tags(:tags) %>
 
         <button type="submit" class="btn btn-primary">
