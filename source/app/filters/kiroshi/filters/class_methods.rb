@@ -85,7 +85,7 @@ module Kiroshi
       #
       # @since 0.2.0
       def filter_for(attribute)
-        filter_configs[attribute] || inherited_filter_for(attribute)
+        filter_configs[attribute.to_sym] || inherited_filter_for(attribute)
       end
 
       private
