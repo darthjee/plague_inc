@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Kiroshi
+  # @api private
   # @author darthjee
   #
   # A filter class that applies filtering logic to ActiveRecord scopes
@@ -10,11 +11,15 @@ module Kiroshi
   #
   # @example Creating and applying an exact filter
   #   filter = Kiroshi::Filter.new(:name)
-  #   filtered_scope = filter.apply(Document.all, { name: 'John' })
+  #   filtered_scope = filter.apply(scope: Document.all, value: 'John')
   #
   # @example Creating and applying a LIKE filter
   #   filter = Kiroshi::Filter.new(:title, match: :like)
-  #   filtered_scope = filter.apply(Article.all, { title: 'Ruby' })
+  #   filtered_scope = filter.apply(scope: Article.all, value: 'Ruby')
+  #
+  # @example Creating and applying a filter with specific value
+  #   filter = Kiroshi::Filter.new(:status)
+  #   filtered_scope = filter.apply(scope: Document.all, value: 'published')
   #
   # @since 0.1.0
   class Filter
@@ -67,43 +72,43 @@ module Kiroshi
 
     # Applies the filter to the given scope
     #
-    # This method examines the filters hash for a value corresponding to the
-    # filter's attribute and applies the appropriate WHERE clause to the scope.
-    # If no value is present or the value is blank, the original scope is returned unchanged.
+    # This method applies the appropriate WHERE clause to the scope using the
+    # provided value. If no value is present or the value is blank, the original
+    # scope is returned unchanged.
     #
     # @param scope [ActiveRecord::Relation] the ActiveRecord scope to filter
-    # @param filters [Hash] a hash containing filter values
+    # @param value [Object, nil] the value to use for filtering, defaults to nil
     #
     # @return [ActiveRecord::Relation] the filtered scope
     #
     # @example Applying an exact filter
     #   filter = Kiroshi::Filter.new(:status)
-    #   filter.apply(Document.all, { status: 'published' })
+    #   filter.apply(scope: Document.all, value: 'published')
     #   # Generates: WHERE status = 'published'
     #
     # @example Applying a LIKE filter
     #   filter = Kiroshi::Filter.new(:title, match: :like)
-    #   filter.apply(Article.all, { title: 'Ruby' })
+    #   filter.apply(scope: Article.all, value: 'Ruby')
     #   # Generates: WHERE title LIKE '%Ruby%'
     #
     # @example Applying a filter with table qualification
     #   filter = Kiroshi::Filter.new(:name, table: 'documents')
-    #   filter.apply(Document.joins(:tags), { name: 'report' })
+    #   filter.apply(scope: Document.joins(:tags), value: 'report')
     #   # Generates: WHERE documents.name = 'report'
     #
     # @example Applying a filter with table qualification for tags
     #   filter = Kiroshi::Filter.new(:name, table: 'tags')
-    #   filter.apply(Document.joins(:tags), { name: 'ruby' })
+    #   filter.apply(scope: Document.joins(:tags), value: 'ruby')
     #   # Generates: WHERE tags.name = 'ruby'
     #
     # @example With empty filter value
     #   filter = Kiroshi::Filter.new(:name)
-    #   filter.apply(User.all, { name: nil })
+    #   filter.apply(scope: User.all, value: nil)
     #   # Returns the original scope unchanged
     #
-    # @since 0.1.0
-    def apply(scope, filters)
-      runner = FilterRunner.new(filter: self, scope: scope, filters: filters)
+    # @since 0.2.0
+    def apply(scope:, value: nil)
+      runner = FilterRunner.new(filter: self, scope: scope, value: value)
       runner.apply
     end
   end

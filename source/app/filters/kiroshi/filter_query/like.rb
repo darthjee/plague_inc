@@ -34,7 +34,7 @@ module Kiroshi
       def apply
         scope.where(
           "#{table_name}.#{attribute} LIKE ?",
-          "%#{filter_value}%"
+          "%#{value}%"
         )
       end
     end

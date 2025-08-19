@@ -36,73 +36,69 @@ module Kiroshi
   #
   # @since 0.1.0
   class Filters
-    class << self
-      # Defines a filter for the current filter class
-      #
-      # This method is used at the class level to configure filters that will
-      # be applied when {#apply} is called. Each call creates a new {Filter}
-      # instance with the specified configuration.
-      #
-      # @overload filter_by(attribute, **options)
-      #   @param attribute [Symbol] the attribute name to filter by
-      #   @param options [Hash] additional options passed to {Filter#initialize}
-      #   @option options [Symbol] :match (:exact) the matching type
-      #     - +:exact+ for exact matching (default)
-      #     - +:like+ for partial matching using SQL LIKE
-      #   @option options [String, Symbol, nil] :table (nil) the table name to qualify the attribute
-      #
-      # @return [Filter] the new filter instance
-      #
-      # @example Defining exact match filters
-      #   class ProductFilters < Kiroshi::Filters
-      #     filter_by :category
-      #     filter_by :brand
-      #   end
-      #
-      # @example Defining partial match filters
-      #   class SearchFilters < Kiroshi::Filters
-      #     filter_by :title, match: :like
-      #     filter_by :description, match: :like
-      #   end
-      #
-      # @example Mixed filter types
-      #   class OrderFilters < Kiroshi::Filters
-      #     filter_by :customer_name, match: :like
-      #     filter_by :status, match: :exact
-      #     filter_by :payment_method
-      #   end
-      #
-      # @example Filter with table qualification
-      #   class DocumentTagFilters < Kiroshi::Filters
-      #     filter_by :name, table: :tags
-      #   end
-      #
-      # @since 0.1.0
-      def filter_by(attribute, **)
-        Filter.new(attribute, **).tap do |filter|
-          filter_configs << filter
-        end
-      end
+    autoload :ClassMethods, 'kiroshi/filters/class_methods'
 
-      # Returns the list of configured filters for this class
-      #
-      # @return [Array<Filter>] array of {Filter} instances configured
-      #   for this filter class
-      #
-      # @example Accessing configured filters
-      #   class MyFilters < Kiroshi::Filters
-      #     filter_by :name
-      #     filter_by :status, match: :like
-      #   end
-      #
-      #   MyFilters.filter_configs.length # => 2
-      #   MyFilters.filter_configs.first.attribute # => :name
-      #
-      # @since 0.1.0
-      def filter_configs
-        @filter_configs ||= []
-      end
-    end
+    extend ClassMethods
+
+    # @method self.filter_by(attribute, **options)
+    #   @api public
+    #   @param attribute [Symbol] the attribute name to filter by
+    #   @param options [Hash] additional options passed to {Filter#initialize}
+    #   @option options [Symbol] :match (:exact) the matching type
+    #     - +:exact+ for exact matching (default)
+    #     - +:like+ for partial matching using SQL LIKE with wildcards
+    #   @option options [String, Symbol, nil] :table (nil) the table name to qualify the attribute
+    #     when dealing with joined tables that have conflicting column names
+    #
+    #   @return [Filter] the new filter instance that was created and registered
+    #
+    #   @example Defining exact match filters
+    #     class ProductFilters < Kiroshi::Filters
+    #       filter_by :category      # Exact match on category
+    #       filter_by :brand         # Exact match on brand
+    #       filter_by :active        # Exact match on active status
+    #     end
+    #
+    #   @example Defining partial match filters
+    #     class SearchFilters < Kiroshi::Filters
+    #       filter_by :title, match: :like         # Partial match on title
+    #       filter_by :description, match: :like   # Partial match on description
+    #       filter_by :author_name, match: :like   # Partial match on author name
+    #     end
+    #
+    #   @example Mixed filter types with different matching strategies
+    #     class OrderFilters < Kiroshi::Filters
+    #       filter_by :customer_name, match: :like  # Partial match for customer search
+    #       filter_by :status, match: :exact        # Exact match for order status
+    #       filter_by :payment_method               # Exact match (default) for payment
+    #     end
+    #
+    #   @example Filters with table qualification for joined queries
+    #     class DocumentTagFilters < Kiroshi::Filters
+    #       filter_by :name, table: :documents      # Filter by document name
+    #       filter_by :tag_name, table: :tags       # Filter by tag name
+    #       filter_by :category, table: :categories # Filter by category name
+    #     end
+    #
+    #   @example Complex real-world filter class
+    #     class ProductSearchFilters < Kiroshi::Filters
+    #       filter_by :name, match: :like                    # Product name search
+    #       filter_by :category_id                           # Exact category match
+    #       filter_by :brand, match: :like                   # Brand name search
+    #       filter_by :price_min                             # Minimum price
+    #       filter_by :price_max                             # Maximum price
+    #       filter_by :in_stock                              # Availability filter
+    #       filter_by :category_name, table: :categories     # Category name via join
+    #     end
+    #
+    #   @note When using table qualification, ensure that the specified table
+    #     is properly joined in the scope being filtered. The filter will not
+    #     automatically add joins - it only qualifies the column name.
+    #
+    #   @see Filter#initialize for detailed information about filter options
+    #   @see Filters#apply for how these filters are used during query execution
+    #
+    #   @since 0.1.0
 
     # Creates a new Filters instance
     #
@@ -160,10 +156,13 @@ module Kiroshi
     #   filtered_articles = filters.apply(Article.all)
     #   # Generates: WHERE title LIKE '%Ruby%'
     #
-    # @since 0.1.0
+    # @since 0.2.0
     def apply(scope)
-      self.class.filter_configs.each do |filter|
-        scope = filter.apply(scope, filters)
+      filters.compact.each do |attribute, value|
+        filter = self.class.filter_for(attribute)
+        next unless filter
+
+        scope = filter.apply(scope: scope, value: value)
       end
 
       scope
