@@ -9,6 +9,7 @@
   var options = {
     callback: function() {
       _.extend(this, Methods);
+      window.debug = this;
     }
   }
 

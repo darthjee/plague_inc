@@ -1,28 +1,15 @@
 <div class="row mb-3" ng-controller="Simulation.FilterController as filter">
   <div class="col-12">
     <form class="form-inline">
-      <div class="form-group mr-3">
-        <label for="filter_name" class="sr-only">Name</label>
-        <input type="text"
-               class="form-control"
-               id="filter_name"
-               ng-model="filter.filters.name"
-               placeholder="Filter by name">
-      </div>
+      <% magicka_form('filter') do |form| %>
+        <%= form.input(:'filters.name', placeholder: "Simulation name") %>
+        <%= form.tags(:tags) %>
 
-      <div class="form-group mr-3">
-        <label for="filter_tag_name" class="sr-only">Tag</label>
-        <input type="text"
-               class="form-control"
-               id="filter_tag_name"
-               ng-model="filter.tag_name"
-               placeholder="Filter by tag">
-      </div>
-
-      <button type="submit" class="btn btn-primary">
-        <i class="fas fa-filter"></i>
-        Filter
-      </button>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-filter"></i>
+          Filter
+        </button>
+        <% end %>
     </form>
   </div>
 </div>
