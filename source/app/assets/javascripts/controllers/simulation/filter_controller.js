@@ -9,6 +9,7 @@
   var options = {
     callback: function() {
       _.extend(this, Methods);
+      this.tags = []
       window.debug = this;
     }
   }
