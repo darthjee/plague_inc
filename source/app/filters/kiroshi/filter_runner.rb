@@ -136,16 +136,16 @@ module Kiroshi
     #
     #   @return [Kiroshi::Filter] the filter configuration
 
-    delegate :attribute, to: :filter
+    delegate :column, to: :filter
     delegate :table_name, to: :scope, prefix: true
     delegate :table_name, to: :filter, prefix: true
 
-    # @!method attribute
+    # @!method column
     #   @api private
     #
-    #   Returns the attribute name to filter by
+    #   Returns the column name to use in database queries
     #
-    #   @return [Symbol] the attribute name to filter by
+    #   @return [Symbol] the column name to use in database queries
 
     # @!method scope_table_name
     #   @api private

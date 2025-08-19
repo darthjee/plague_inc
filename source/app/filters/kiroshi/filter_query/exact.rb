@@ -13,14 +13,14 @@ module Kiroshi
     # @example Applying exact match query
     #   query = Kiroshi::FilterQuery::Exact.new(filter_runner)
     #   query.apply
-    #   # Generates: WHERE attribute = 'value'
+    #   # Generates: WHERE table_name.column = value
     #
     # @since 0.1.1
     class Exact < FilterQuery
       # Applies exact match filtering to the scope
       #
       # This method generates a WHERE clause with exact equality matching
-      # for the filter's attribute and value.
+      # for the filter's column and value.
       #
       # @return [ActiveRecord::Relation] the filtered scope with exact match
       #
@@ -31,7 +31,7 @@ module Kiroshi
       #
       # @since 0.1.1
       def apply
-        scope.where(table_name => { attribute => value })
+        scope.where(table_name => { column => value })
       end
     end
   end

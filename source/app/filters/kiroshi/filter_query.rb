@@ -94,7 +94,7 @@ module Kiroshi
     #
     #   @return [Kiroshi::FilterRunner] the filter runner instance
 
-    delegate :scope, :attribute, :table_name, :value, to: :filter_runner
+    delegate :scope, :column, :table_name, :value, to: :filter_runner
 
     # @!method scope
     #   @api private
@@ -103,12 +103,12 @@ module Kiroshi
     #
     #   @return [ActiveRecord::Relation] the scope
 
-    # @!method attribute
+    # @!method column
     #   @api private
     #
-    #   Returns the attribute name to filter by
+    #   Returns the column name to use in database queries
     #
-    #   @return [Symbol] the attribute name
+    #   @return [Symbol] the column name
 
     # @!method table_name
     #   @api private
