@@ -79,7 +79,7 @@ RSpec.describe Simulation::Filter, type: :model do
         end
       end
     end
-    
+
     context 'when filtering by tag name' do
       let(:tag_name) { 'epidemic' }
       let(:tag) { create(:tag, name: tag_name) }
