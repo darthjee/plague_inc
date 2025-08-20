@@ -9,8 +9,6 @@
     },
     
     filter: function() {
-      console.info(this);
-      console.info(this.filters);
       this.location.search(this._filterQuery())
     },
 
@@ -22,7 +20,7 @@
       }
       
       if (this.filters.tags) {
-        query['filter[tag_name]'] = this.filters.tags;
+        query['filter[tag_name][]'] = this.filters.tags;
       }
       return query;
     }
