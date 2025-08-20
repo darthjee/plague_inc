@@ -22,7 +22,8 @@ class Simulation < ApplicationRecord
   ].freeze
 
   has_one :contagion
-  has_and_belongs_to_many :tags
+  has_many :simulations_tags, dependent: :destroy
+  has_many :tags, through: :simulations_tags
   has_and_belongs_to_many :query_tags, class_name: 'Tag'
 
   scope :finished,  -> { where(status: FINISHED) }
