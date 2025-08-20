@@ -2,14 +2,29 @@
   <div class="col-12">
     <form class="form-inline">
       <% magicka_form('filter') do |form| %>
-        <%= form.input(:'filters.name', placeholder: "Simulation name", label: 'Name') %>
-        <%= form.tags(:tags) %>
+        <div class="row">
+          <div class="col-5">
+            <%= form.input(:'filters.name', placeholder: "Simulation name", label: 'Name') %>
+          </div>
+          <div class="col-5">
+            <%= form.tags(:tags) %>
+          </div>
 
-        <button type="submit" class="btn btn-primary">
-          <i class="fas fa-filter"></i>
-          Filter
-        </button>
-        <% end %>
+          <div class="col-1">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-filter"></i>
+              Filter
+            </button>
+          </div>
+
+          <div class="col-1">
+            <button type="button" class="btn btn-secondary" ng-click="filter.clear()">
+              <i class="fas fa-times"></i>
+              Clear
+            </button>
+          </div>
+        </div>
+      <% end %>
     </form>
   </div>
 </div>
