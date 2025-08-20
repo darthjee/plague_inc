@@ -93,6 +93,9 @@ jobs:
       - run:
           name: Rubocop
           command: rubocop
+      - run:
+          name: Lint
+          command: npm run lint
   build-and-release:
     machine: true
     steps:
