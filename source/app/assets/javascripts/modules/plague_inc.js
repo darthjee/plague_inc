@@ -5,7 +5,7 @@
     'johto',
     'home',
     'login',
-    "simulation"
+    'simulation'
   ]);
 
   module.config(['$httpProvider', function($httpProvider) {
