@@ -8,7 +8,12 @@
       this.filters = {};
       var search = this.location.search();
       this.filters.name = search['filter[name]'];
-      this.filters.tags = search['filter[tag_name][]'] || [];
+      var tagValue = search['filter[tag_name][]'];
+
+      this.filters.tags = [].concat(tagValue || []).filter(function(item) {
+        return item != null && item !== '';
+      });
+      
       console.info(this.location.search());
     },
 
