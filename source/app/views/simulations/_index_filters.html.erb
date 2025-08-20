@@ -1,0 +1,30 @@
+<div class="row mb-3" ng-controller="Simulation.FilterController as filter">
+  <div class="col-12">
+    <form class="form-inline">
+      <% magicka_form('filter.filters') do |form| %>
+        <div class="row">
+          <div class="col-5">
+            <%= form.input(:name, placeholder: "Simulation name") %>
+          </div>
+          <div class="col-5">
+            <%= form.tags(:tags) %>
+          </div>
+
+          <div class="col-1">
+            <button type="submit" class="btn btn-primary" ng-click="filter.filter()">
+              <i class="fas fa-filter"></i>
+              Filter
+            </button>
+          </div>
+
+          <div class="col-1">
+            <button type="button" class="btn btn-secondary" ng-click="filter.clear()">
+              <i class="fas fa-times"></i>
+              Clear
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </form>
+  </div>
+</div>

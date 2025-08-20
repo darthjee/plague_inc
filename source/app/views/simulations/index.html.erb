@@ -6,39 +6,8 @@
       </h4>
     </div>
     <div class="card-body">
-      <table class="table">
-        <thead>
-          <th scope="col">Name</th>
-          <th scope="col">Status</th>
-          <th scope="col">Tags</th>
-          <th scope="col">Days</th>
-          <th scope="col">Lethality</th>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="2">
-              <%= angular_safe_link_to(:new_simulation, {}, class: "text-dark") do %>
-                + New simulation
-              <% end %>
-            </td>
-          </tr>
-          <tr ng-repeat="simulation in gnc.data">
-            <td>
-              <%= angular_safe_link_to(:simulation, { id: "{{simulation.id}}" }, class: "text-dark") do %>
-                {{simulation.name}}
-              <% end %>
-            </td>
-            <td>{{simulation.status}}</td>
-            <td>
-              <span ng-repeat="tag in simulation.tags" class="badge badge-secondary">
-                {{tag}}
-              </span>
-            </td>
-            <td>{{simulation.settings.current_day}}</td>
-            <td>{{simulation.settings.lethality}}</td>
-          </tr>
-        </tbody>
-      </table>
+      <%= render partial: 'index_filters' %>
+      <%= render partial: 'index_table' %>
 
       <%= magicka_display('gnc') do |display|
         display.pagination('pagination',

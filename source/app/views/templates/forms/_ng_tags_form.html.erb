@@ -17,14 +17,7 @@
       </button>
     </div>
   </div>
-  <div class="form-group row" ng-repeat="tag in <%= ng_model %>">
-    <div class="col-7">{{tag}}</div>
-    <div class="col-1">
-      <button ng-click="tc.removeTag(<%= ng_model %>, $index)"
-              type="submit"
-              class="btn btn-secondary">
-              -
-      </button>
-    </div>
-  </div>
+  <span ng-repeat="tag in <%= ng_model %>" class="tag badge badge-primary" ng-click="tc.removeTag(<%= ng_model %>, $index)">
+  {{tag}}
+  </span>
 </div>
