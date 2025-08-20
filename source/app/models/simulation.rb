@@ -23,6 +23,7 @@ class Simulation < ApplicationRecord
 
   has_one :contagion
   has_and_belongs_to_many :tags
+  has_and_belongs_to_many :query_tags, class_name: 'Tag'
 
   scope :finished,  -> { where(status: FINISHED) }
   scope :contagion, -> { where(algorithm: :contagion) }

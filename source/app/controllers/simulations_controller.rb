@@ -33,6 +33,7 @@ class SimulationsController < ApplicationController
       .eager_load(contagion: :behaviors)
       .eager_load(contagion: :current_instant)
       .eager_load(contagion: { groups: :behavior })
+      .left_joins(:query_tags)
   end
 
   def simulation_id
