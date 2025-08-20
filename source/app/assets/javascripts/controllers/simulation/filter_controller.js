@@ -10,7 +10,7 @@
         tagValue = search['filter[tag_name][]'];
 
       this.filters.name = search['filter[name]'];
-      this.filters.tags = Array.from(tagValue || []);
+      this.filters.tags = Array.asArray(tagValue);
     },
 
     clear: function() {
