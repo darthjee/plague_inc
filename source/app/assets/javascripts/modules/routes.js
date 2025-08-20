@@ -5,7 +5,7 @@
     provider.defaultConfig = {
       controller: 'Global.GenericController',
       controllerAs: 'gnc',
-      templateBuilder: function(route, params) {
+      templateBuilder: function(route) {
         return route + '?ajax=true';
       }
     };

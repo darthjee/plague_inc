@@ -1,4 +1,4 @@
-(function(_, angular, Cyberhawk) {
+(function(_, angular) {
   var app = angular.module('tags/controller', [
     'cyberhawk/builder'
   ]);
@@ -38,4 +38,4 @@
   }
 
   //window.Tag.Controller = Controller;
-}(window._, window.angular, window.Cyberhawk));
+}(window._, window.angular));

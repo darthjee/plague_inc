@@ -1,4 +1,4 @@
-(function(_, angular) {
+(function(angular) {
   var app = angular.module('simulation/graph_controller', [
     'cyberhawk/notifier',
     'simulation/process'
@@ -111,4 +111,4 @@
     'simulation_processor',
     Controller
   ]);
-}(window._, window.angular));
+}(window.angular));
