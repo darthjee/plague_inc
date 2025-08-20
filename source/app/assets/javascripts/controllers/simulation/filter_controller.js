@@ -6,10 +6,11 @@
   var Methods = {
     load: function(){
       this.filters = {};
-      var search = this.location.search();
+      var search = this.location.search(),
+          tagValue = search['filter[tag_name][]'];
+
       this.filters.name = search['filter[name]'];
-      this.filters.tags = search['filter[tag_name][]'] || [];
-      console.info(this.location.search());
+      this.filters.tags = Array.from(tagValue || []);
     },
 
     clear: function() {
