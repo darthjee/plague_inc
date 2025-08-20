@@ -9,7 +9,7 @@
   var options = {
     callback: function() {
       _.extend(this, Methods);
-      this.tags = []
+      this.filters = { tags: [] };
       window.debug = this;
     }
   }

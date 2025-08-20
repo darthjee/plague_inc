@@ -1,10 +1,10 @@
 <div class="row mb-3" ng-controller="Simulation.FilterController as filter">
   <div class="col-12">
     <form class="form-inline">
-      <% magicka_form('filter') do |form| %>
+      <% magicka_form('filter.filters') do |form| %>
         <div class="row">
           <div class="col-5">
-            <%= form.input(:'filters.name', placeholder: "Simulation name", label: 'Name') %>
+            <%= form.input(:name, placeholder: "Simulation name") %>
           </div>
           <div class="col-5">
             <%= form.tags(:tags) %>
