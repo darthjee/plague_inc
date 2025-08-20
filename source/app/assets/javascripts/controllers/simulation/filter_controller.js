@@ -4,11 +4,19 @@
   ]);
 
   var Methods = {
+    clear: function() {
+      this.filters = { tags: [] };
+    },
+    
+    filter: function() {
+      console.info(this.location);
+    },
   };
 
   var options = {
     callback: function() {
       _.extend(this, Methods);
+      this.clear();
       this.filters = { tags: [] };
       window.debug = this;
     }
