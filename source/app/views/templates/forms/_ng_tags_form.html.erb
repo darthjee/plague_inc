@@ -17,7 +17,7 @@
       </button>
     </div>
   </div>
-  <span ng-repeat="tag in <%= ng_model %>" class="badge badge-secondary" ng-click="tc.removeTag(<%= ng_model %>, $index)">
+  <span ng-repeat="tag in <%= ng_model %>" class="tag badge badge-primary" ng-click="tc.removeTag(<%= ng_model %>, $index)">
   {{tag}}
   </span>
 </div>
