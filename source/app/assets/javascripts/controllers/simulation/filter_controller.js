@@ -10,7 +10,7 @@
       this.filters.name = search['filter[name]'];
       var tagValue = search['filter[tag_name][]'];
 
-      this.filters.tags = [].concat(tagValue || []).filter(function(item) {
+      this.filters.tags = [].concat(tagValue).filter(function(item) {
         return item != null && item !== '';
       });
     },
