@@ -13,8 +13,6 @@
       this.filters.tags = [].concat(tagValue || []).filter(function(item) {
         return item != null && item !== '';
       });
-      
-      console.info(this.location.search());
     },
 
     clear: function() {
