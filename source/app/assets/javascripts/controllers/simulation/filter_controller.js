@@ -4,6 +4,14 @@
   ]);
 
   var Methods = {
+    load: function(){
+      this.filters = {};
+      var search = this.location.search();
+      this.filters.name = search['filter[name]'];
+      this.filters.tags = search['filter[tag_name][]'] || [];
+      console.info(this.location.search());
+    },
+
     clear: function() {
       this.filters = { tags: [] };
     },
@@ -29,9 +37,7 @@
   var options = {
     callback: function() {
       _.extend(this, Methods);
-      this.clear();
-      this.filters = { tags: [] };
-      window.debug = this;
+      this.load();
     }
   }
 
