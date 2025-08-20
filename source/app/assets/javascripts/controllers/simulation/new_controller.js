@@ -1,4 +1,4 @@
-(function(_, angular, Cyberhawk) {
+(function(_, angular) {
   var app = angular.module('simulation/new_controller', [
     'cyberhawk/builder'
   ]);
@@ -75,5 +75,5 @@
   app.controller('Simulation.NewController', [
     'cyberhawk_builder', function(builder) { builder.buildAndRequest(this, options); }
   ]);
-}(window._, window.angular, window.Cyberhawk));
+}(window._, window.angular));
 
