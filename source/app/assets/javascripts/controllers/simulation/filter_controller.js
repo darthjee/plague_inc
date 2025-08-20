@@ -1,4 +1,4 @@
-(function(_, angular, Cyberhawk) {
+(function(_, angular) {
   var app = angular.module('simulation/filter_controller', [
     'cyberhawk/builder'
   ]);
@@ -45,4 +45,4 @@
   app.controller('Simulation.FilterController', [
     'cyberhawk_builder', function(builder) { builder.build(this, options); }
   ]);
-}(window._, window.angular, window.Cyberhawk));
+}(window._, window.angular));
