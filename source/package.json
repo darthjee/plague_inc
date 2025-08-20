@@ -19,6 +19,7 @@
     "eslint-plugin-promise": "^6.0.1"
   },
   "scripts": {
-    "lint": "npx eslint app/assets/javascripts/"
+    "lint": "npx eslint app/assets/javascripts/",
+    "lint-fix": "npx eslint app/assets/javascripts/ --fix"
   }
 }
