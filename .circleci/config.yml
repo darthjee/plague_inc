@@ -91,6 +91,9 @@ jobs:
           name: Bundle Install
           command: bundle install
       - run:
+          name: Yarn Install
+          command: yarn install
+      - run:
           name: Rubocop
           command: rubocop
       - run:
