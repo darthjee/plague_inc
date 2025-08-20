@@ -31,7 +31,7 @@
     }
   };
 
-  fn._error = function(_, code) {
+  fn._error = function() {
     this.timeout(this._loadData, 120000);
   };
 
