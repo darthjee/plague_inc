@@ -9,8 +9,23 @@
     },
     
     filter: function() {
-      console.info(this.location);
+      console.info(this);
+      console.info(this.filters);
+      this.location.search(this._filterQuery())
     },
+
+    _filterQuery: function() {
+      var query = {};
+    
+      if (this.filters.name) {
+        query['filter[name]'] = this.filters.name;
+      }
+      
+      if (this.filters.tags) {
+        query['filter[tag_name]'] = this.filters.tags;
+      }
+      return query;
+    }
   };
 
   var options = {
