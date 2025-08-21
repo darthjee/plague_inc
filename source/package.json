@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "angular": "1.4.8",
+    "angular": "1.8.3",
     "angular-route": "1.4.8",
     "bootstrap": "4.6.2",
     "cyberhawk": "0.11.0",

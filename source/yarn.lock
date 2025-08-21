@@ -119,6 +119,11 @@ angular@1.4.8:
   resolved "https://registry.npmjs.org/angular/-/angular-1.4.8.tgz"
   integrity sha512-Ku266I8YeRwtdnBWv3gAQPGxCZ4ASQAibbe+kHH5z6aNswv8juQrfGnWcwnvZ3iuL0ge2VgZe8OtrcvXBRufgg==
 
+angular@1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/angular/-/angular-1.8.3.tgz#851ad75d5163c105a7e329555ef70c90aa706894"
+  integrity sha512-5qjkWIQQVsHj4Sb5TcEs4WZWpFeVFHXwxEBHUhrny41D8UrBAd6T/6nPPAsLngJCReIOqi95W3mxdveveutpZw==
+
 ansi-regex@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-5.0.1.tgz#082cb2c89c9fe8659a311a53bd6a4dc5301db304"
