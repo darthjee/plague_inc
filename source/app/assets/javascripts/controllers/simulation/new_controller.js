@@ -1,6 +1,6 @@
-(function(_, angular, Cyberhawk) {
-  var app = angular.module("simulation/new_controller", [
-    "cyberhawk/builder"
+(function(_, angular) {
+  var app = angular.module('simulation/new_controller', [
+    'cyberhawk/builder'
   ]);
 
   var Methods = {
@@ -50,19 +50,19 @@
     },
 
     addBehavior: function() {
-      this.addObject("behaviors");
+      this.addObject('behaviors');
     },
 
     removeBehavior: function(index) {
-      this.removeObject("behaviors", index);
+      this.removeObject('behaviors', index);
     },
 
     addGroup: function() {
-      this.addObject("groups");
+      this.addObject('groups');
     },
 
     removeGroup: function(index) {
-      this.removeObject("groups", index);
+      this.removeObject('groups', index);
     }
   };
 
@@ -70,10 +70,10 @@
     callback: function() {
       _.extend(this, Methods);
     }
-  }
+  };
 
-  app.controller("Simulation.NewController", [
-    "cyberhawk_builder", function(builder) { builder.buildAndRequest(this, options); }
+  app.controller('Simulation.NewController', [
+    'cyberhawk_builder', function(builder) { builder.buildAndRequest(this, options); }
   ]);
-}(window._, window.angular, window.Cyberhawk));
+}(window._, window.angular));
 

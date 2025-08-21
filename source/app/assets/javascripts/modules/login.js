@@ -3,6 +3,6 @@
 
   angular.module('login', [
     'login/controller'
-  ])
+  ]);
 }(window.angular));
 

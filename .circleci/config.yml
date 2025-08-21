@@ -91,8 +91,14 @@ jobs:
           name: Bundle Install
           command: bundle install
       - run:
+          name: Yarn Install
+          command: yarn install
+      - run:
           name: Rubocop
           command: rubocop
+      - run:
+          name: Lint
+          command: npm run lint
   build-and-release:
     machine: true
     steps:

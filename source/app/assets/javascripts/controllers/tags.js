@@ -1,19 +1,19 @@
-(function(_, angular, Cyberhawk) {
-  var app = angular.module("tags/controller", [
-    "cyberhawk/builder"
+(function(_, angular) {
+  var app = angular.module('tags/controller', [
+    'cyberhawk/builder'
   ]);
 
   var Methods = {
     addTag: function(tags) {
       if (this.tag) {
         var tag = this.tag.trim(),
-            contains = _.contains(tags, tag);
+          contains = _.contains(tags, tag);
 
-        if (!(tag === "") && !contains) {
+        if (!(tag === '') && !contains) {
           tags.push(tag);
         }
 
-        this.tag = "";
+        this.tag = '';
       }
     },
 
@@ -25,12 +25,12 @@
   var options = {
     callback: function() {
       _.extend(this, Methods);
-      _.bindAll(this, "addTag", "removeTag");
+      _.bindAll(this, 'addTag', 'removeTag');
     }
-  }
+  };
 
-  app.controller("Tags.Controller", [
-    "cyberhawk_builder", function(builder) { builder.build(this, options); }
+  app.controller('Tags.Controller', [
+    'cyberhawk_builder', function(builder) { builder.build(this, options); }
   ]);
 
   if (!window.Tag) {
@@ -38,4 +38,4 @@
   }
 
   //window.Tag.Controller = Controller;
-}(window._, window.angular, window.Cyberhawk));
+}(window._, window.angular));

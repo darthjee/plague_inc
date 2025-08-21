@@ -1,7 +1,7 @@
-(function(_, angular, Cyberhawk) {
-  var app = angular.module("simulation/graph_controller", [
-    "cyberhawk/notifier",
-    "simulation/process"
+(function(_, angular) {
+  var app = angular.module('simulation/graph_controller', [
+    'cyberhawk/notifier',
+    'simulation/process'
   ]);
 
   function Controller(timeout, $routeParams, processor) {
@@ -10,11 +10,11 @@
     this.processor = processor.bind(this);
 
     _.bindAll(
-      this, "_loadData", "_success", "_error", "_enqueueProcess", "_process"
+      this, '_loadData', '_success', '_error', '_enqueueProcess', '_process'
     );
     this._loadData();
 
-    this.mode = "read";
+    this.mode = 'read';
     this.process = false;
   }
 
@@ -24,14 +24,14 @@
     this._setSimulation(data);
     this._updateMode();
 
-    if (this.mode === "read") {
+    if (this.mode === 'read') {
       this._loadData();
-    } else if (this.process && this.mode === "process") {
+    } else if (this.process && this.mode === 'process') {
       this._enqueueProcess();
     }
   };
 
-  fn._error = function(_, code) {
+  fn._error = function() {
     this.timeout(this._loadData, 120000);
   };
 
@@ -53,10 +53,10 @@
 
   fn._updateMode = function() {
     if (this.simulation.instants.length >= this.simulation.instants_total) {
-      if (this.simulation.status === "finished") {
-        this.mode = "finished";
+      if (this.simulation.status === 'finished') {
+        this.mode = 'finished';
       } else {
-        this.mode = "process";
+        this.mode = 'process';
       }
     }
   };
@@ -92,7 +92,7 @@
   };
 
   fn._process = function() {
-    this.mode = "process";
+    this.mode = 'process';
 
     var promisse = this.processor.process();
 
@@ -105,10 +105,10 @@
       .error(this._error);
   };
 
-  app.controller("Simulation.GraphController", [
-    "$timeout",
-    "$routeParams",
-    "simulation_processor",
+  app.controller('Simulation.GraphController', [
+    '$timeout',
+    '$routeParams',
+    'simulation_processor',
     Controller
   ]);
-}(window._, window.angular, window.Cyberhawk));
+}(window._, window.angular));

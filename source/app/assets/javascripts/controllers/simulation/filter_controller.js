@@ -1,16 +1,16 @@
-(function(_, angular, Cyberhawk) {
-  var app = angular.module("simulation/filter_controller", [
-    "cyberhawk/builder"
+(function(_, angular) {
+  var app = angular.module('simulation/filter_controller', [
+    'cyberhawk/builder'
   ]);
 
   var Methods = {
     load: function(){
       this.filters = {};
       var search = this.location.search(),
-          tagValue = search['filter[tag_name][]'];
+        tagValue = search['filter[tag_name][]'];
 
       this.filters.name = search['filter[name]'];
-      this.filters.tags = Array.from(tagValue || []);
+      this.filters.tags = Array.asArray(tagValue);
     },
 
     clear: function() {
@@ -18,7 +18,7 @@
     },
     
     filter: function() {
-      this.location.search(this._filterQuery())
+      this.location.search(this._filterQuery());
     },
 
     _filterQuery: function() {
@@ -40,9 +40,9 @@
       _.extend(this, Methods);
       this.load();
     }
-  }
+  };
 
-  app.controller("Simulation.FilterController", [
-    "cyberhawk_builder", function(builder) { builder.build(this, options); }
+  app.controller('Simulation.FilterController', [
+    'cyberhawk_builder', function(builder) { builder.build(this, options); }
   ]);
-}(window._, window.angular, window.Cyberhawk));
+}(window._, window.angular));

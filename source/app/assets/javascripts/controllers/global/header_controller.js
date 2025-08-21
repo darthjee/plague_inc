@@ -36,7 +36,7 @@
     this.user = null;
     this.logged = false;
     this.global_state.logged = false;
-    this.notifier.notify("logoff-success", {});
+    this.notifier.notify('logoff-success', {});
   };
 
   fn._login = function(user) {
@@ -46,7 +46,7 @@
       that.user = user;
       that.logged = true;
       that.global_state.logged = true;
-      that.notifier.notify("logged", {});
+      that.notifier.notify('logged', {});
     }, 1);
   };
 

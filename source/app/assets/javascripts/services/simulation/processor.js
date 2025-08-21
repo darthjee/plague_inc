@@ -1,6 +1,6 @@
 (function(_, angular) {
-  var module = angular.module("simulation/process", [
-    "binded_http"
+  var module = angular.module('simulation/process', [
+    'binded_http'
   ]);
 
   class Processor {
@@ -8,7 +8,7 @@
       this.http     = http;
       this.location = $location;
 
-      _.bindAll(this, "_success");
+      _.bindAll(this, '_success');
     }
 
     bind(controller) {
@@ -43,7 +43,7 @@
     }
 
     _processingPath() {
-      return this.location.$$path + "/contagion/process";
+      return this.location.$$path + '/contagion/process';
     }
 
     _summaryUrl() {
@@ -51,21 +51,21 @@
 
       var lastInstant = this.lastInstant;
       if (lastInstant) {
-        return path + "?pagination[last_instant_id]="+lastInstant.id;
+        return path + '?pagination[last_instant_id]='+lastInstant.id;
       } else {
         return path;
       }
     }
 
     _summaryPath() {
-      return this.location.$$path + "/contagion/summary";
+      return this.location.$$path + '/contagion/summary';
     }
 
     _findLastInstant(instants) {
       for (var index = instants.length - 1; index >= 0; index--) {
         var instant = instants[index];
 
-        if (instant.status === "processed") {
+        if (instant.status === 'processed') {
           return instant;
         }
       }
@@ -76,9 +76,9 @@
     return new Processor(http, $location);
   };
 
-  module.service("simulation_processor", [
-    "binded_http",
-    "$location",
+  module.service('simulation_processor', [
+    'binded_http',
+    '$location',
     ProcessorServiceFactory
   ]);
 }(window._, window.angular, window.Cyberhawk));
