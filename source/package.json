@@ -2,7 +2,7 @@
   "dependencies": {
     "angular": "1.4.8",
     "angular-route": "1.4.8",
-    "bootstrap": "4.6.2",
+    "bootstrap": "5.0.0",
     "cyberhawk": "0.11.0",
     "johto": "^0.0.1",
     "jquery": "3.6.1",
